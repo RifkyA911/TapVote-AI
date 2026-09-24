@@ -5,36 +5,19 @@
 @source '../views/**/*.blade.php';
 
 @theme {
-    --font-sans: 'Plus Jakarta Sans', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     --color-brand-50: #eff6ff;
-    --color-brand-500: #3b82f6;
-    --color-brand-600: #2563eb;
-    --color-brand-700: #1d4ed8;
-    --color-brand-900: #1e3a8a;
+    --color-brand-100: #dbeafe;
+    --color-brand-500: #2563eb;
+    --color-brand-600: #1d4ed8;
+    --color-brand-700: #1e40af;
 }
 
-@keyframes pulseGlow {
-    0%, 100% {
-        box-shadow: 0 0 15px rgba(59, 130, 246, 0.4), inset 0 0 15px rgba(59, 130, 246, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 35px rgba(59, 130, 246, 0.8), inset 0 0 25px rgba(59, 130, 246, 0.5);
-    }
-}
-
-@keyframes fluidFloat {
-    0%, 100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-8px) rotate(0.5deg);
-    }
-}
-
+/* 1. Ripple wave animation for wireless RFID tap target */
 @keyframes radarWave {
     0% {
-        transform: scale(0.85);
-        opacity: 0.9;
+        transform: scale(0.92);
+        opacity: 0.75;
     }
     100% {
         transform: scale(2.2);
@@ -45,7 +28,8 @@
 .radar-ring {
     position: absolute;
     border-radius: 9999px;
-    border: 2px solid rgba(59, 130, 246, 0.6);
+    border: 2.5px solid rgba(37, 99, 235, 0.4);
+    pointer-events: none;
     animation: radarWave 2.4s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
 }
 
@@ -57,25 +41,88 @@
     animation-delay: 1.6s;
 }
 
-.fluid-card {
-    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+/* 2. Smooth Bouncing Floating Card Animation */
+@keyframes smoothBounce {
+    0%, 100% {
+        transform: translateY(0px) rotate(-3deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(-1deg);
+    }
 }
 
-.fluid-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15), 0 0 25px -5px rgba(59, 130, 246, 0.25);
+.animate-smooth-bounce {
+    animation: smoothBounce 2.6s ease-in-out infinite;
 }
 
-.glass-panel {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+/* 3. Fluid Nova Green Success Ripple */
+@keyframes novaSuccessWave {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+        border-color: rgba(16, 185, 129, 0.8);
+    }
+    100% {
+        transform: scale(2.6);
+        opacity: 0;
+        border-color: rgba(16, 185, 129, 0);
+    }
 }
 
-.glass-dark {
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+.nova-success-ring {
+    position: absolute;
+    border-radius: 9999px;
+    border: 4px solid rgba(16, 185, 129, 0.7);
+    pointer-events: none;
+    animation: novaSuccessWave 1.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* 4. Distracted Red Danger Ripple */
+@keyframes dangerRipple {
+    0% {
+        transform: scale(0.85);
+        opacity: 0.9;
+        border-color: rgba(239, 68, 68, 0.9);
+    }
+    50% {
+        transform: scale(1.6);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(2.4);
+        opacity: 0;
+        border-color: rgba(239, 68, 68, 0);
+    }
+}
+
+@keyframes distractedShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+
+.danger-ring {
+    position: absolute;
+    border-radius: 9999px;
+    border: 3.5px solid rgba(239, 68, 68, 0.7);
+    pointer-events: none;
+    animation: dangerRipple 1.4s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+}
+
+.animate-distracted-shake {
+    animation: distractedShake 0.45s ease-in-out;
+}
+
+/* Touch targets and kiosk cards */
+.touch-target {
+    min-height: 48px;
+    min-width: 48px;
+}
+
+.kiosk-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.kiosk-card:active {
+    transform: scale(0.99);
 }
