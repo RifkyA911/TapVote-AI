@@ -2,9 +2,14 @@
     "$schema": "https://www.schemastore.org/package.json",
     "private": true,
     "type": "module",
+    "bin": {
+        "tapvote-ai-mcp": "./mcp/server.js"
+    },
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "mcp": "node mcp/server.js",
+        "mcp:http": "node mcp/server.js --http"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
@@ -17,6 +22,7 @@
         "@laravel/multiplex": "^0.4.1"
     },
     "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.30.1",
         "canvas-confetti": "^1.9.4",
         "chart.js": "^4.5.1",
         "simple-datatables": "^10.3.0"

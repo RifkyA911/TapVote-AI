@@ -1,74 +1,93 @@
-# TapVote AI — Cooperative E-Voting System (RFID & Realtime SSE)
+# TapVote AI — Next-Gen E-Voting System & Realtime Election Intelligence
 
-**TapVote AI** is a modern, transparent, and accessible electronic voting system designed specifically for Cooperative General Elections (Chairman and Supervisory Board). The system features contactless **RFID Mifare (ISO 14443A)** card authentication, tablet-friendly kiosk voting booths, an **AI Election Conclusion & Analytics Engine**, and real-time live result streaming via **Server-Sent Events (SSE)**.
+[![Laravel 12](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=flat&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP 8.3+](https://img.shields.io/badge/PHP-8.3%2B-777BB4?style=flat&logo=php&logoColor=white)](https://www.php.net)
+[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![Model Context Protocol](https://img.shields.io/badge/MCP-Compatible-blueviolet?style=flat)](https://modelcontextprotocol.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+**TapVote AI** is a state-of-the-art, transparent, and senior/boomer-friendly electronic voting system engineered for institutional and Cooperative General Elections (*Ketua & Pengawas*). It features contactless **RFID Mifare (ISO 14443A)** card tap authentication, tactile tablet voting kiosks, **AI Election Conclusions & Predictive Analytics**, real-time live result streaming via **Server-Sent Events (SSE)**, and a built-in **Model Context Protocol (MCP)** server for AI agent integration.
 
 ---
 
 ## 🌟 Key Features
 
-### 1. Tablet Kiosk Voting Booth (`/voter`)
-- **Card-Only RFID Tap**: Members simply tap their RFID card on the USB reader scanner. No manual text input on screen.
-- **Fluid Kiosk Animations**:
-  - Smooth bouncing floating card animation (`animate-smooth-bounce`).
-  - **Nova Green** fluid expanding wave on successful card verification.
-  - **Danger Red** distracted ripple waves and shake animation on card error or duplicate vote.
-- **Universal Sound Effects (Web Audio API)**: Zero-latency audio cues for card tap, successful vote, error warning, candidate selection, and modal popup.
-- **Dual Ballot in One Flow**: Simultaneously elect 1 Chairman and 1 Supervisor with atomic transactions and row-level locking.
-- **Demo Accounts Toggle**: A collapsible drawer for test cards that can be shown or hidden with a single click.
-- **Internationalization (i18n)**: Default English interface with one-click instant toggle to Indonesian (`EN` / `ID`).
+### 1. Tablet Kiosk Voting Booth (`/voter` & `/vote`)
+- **Card-Only RFID Tap**: Fast contactless voting. Hardware RFID reader keystrokes are automatically captured; zero on-screen text input required.
+- **Calm, Senior-Friendly Visuals**:
+  - Relaxed, gentle ripple waves (4.5s) optimized for older eyes.
+  - Floating card hover animation with tactile spring-lift ("sundul") on touch/hover (`.ballot-card-sundul`).
+  - Fluid **Nova Green** success transition and gentle **Danger Red** error warning wave.
+- **Candidate Image Zoom-In Lightbox**: Tap candidate photo to preview high-resolution portraits with manifesto overview.
+- **Interactive Audio Feedback (Web Audio API)**: Zero-latency, browser-synthesized audio effects for card tap, successful vote, errors, candidate selection, and modal transitions.
+- **Dual-Ballot Unified Flow**: Elect 1 Chairman and 1 Supervisor in a single, verified transaction with database-level row locking.
+- **Demo Cards Drawer**: Toggleable test account drawer for demonstration and rehearsals.
 
 ### 2. Public Live Count Display (`/`)
-- **Real-Time SSE Streaming**: Live updates streamed directly from server without page reloads.
-- **Advanced Comparative Bar Chart**: Grouped multi-candidate comparison powered by Chart.js with tabbed filters (*All Candidates*, *Chairman Only*, *Supervisors Only*).
-- **Candidate Manifesto & Profile Modal**: Clickable detail modals displaying full bio, track record, Vision (Visi), Mission (Misi), and vote tallies.
-- **Public Election Summary**: Clean overview showing voter participation percentage, verified ballots count, and frontrunners. Confidential voter rosters are reserved strictly for admins.
+- **Real-Time SSE Streaming**: Live updates broadcast without page refreshes.
+- **Comparative Bar Chart**: Grouped multi-candidate comparative charts powered by Chart.js with tabbed filtering (*All Candidates*, *Chairman Only*, *Supervisors Only*).
+- **Candidate Manifesto & Profile Modals**: Click to inspect Vision (*Visi*), Mission (*Misi*), and background.
+- **Clean Public Header**: High-contrast, spacious layout with instant language switcher (`EN` / `ID`).
 
 ### 3. Admin Control Panel (`/admin`)
 - **AI Election Conclusion & Analytical Insights**:
-  - Automated analysis of voting margins and participation rates.
-  - Dynamic statistical confidence score (e.g. `98.4% Confidence`).
-  - Quorum verification status tracking (50% threshold).
-  - Frontrunner election projections for Chairman and Supervisory Board.
-  - On-demand refresh endpoint (`/admin/api/ai-conclusion`).
-- **Clean Light Theme**: Fully unified modern light theme across all admin pages, tables, reports, and audit logs.
-- **Candidate Management**: Full CRUD for Chairman and Supervisor candidates.
-- **Voter Management (DPT)**: Bulk Excel/CSV import, template download, manual voter registration, and audit trace-back.
-- **Doorprize Lottery Module**: Automated random raffle draw for members who have cast their votes.
+  - Real-time quorum verification ($50\%$ threshold).
+  - Margin of victory calculations and winner projections.
+  - Statistical confidence score indicator (e.g. `98.4% Confidence`).
+  - Commission recommendations with on-demand refresh.
+- **DataTables Integration**:
+  - Live client-side instant search, column sorting, pagination, and per-page entries selector (`10, 25, 50, 100 entries`).
+- **Excel & PDF Rekapitulasi Exports**:
+  - Instant Excel (`.csv` with UTF-8 BOM encoding for Microsoft Excel) for DPT Voters, Rekapitulasi Ketua, Rekapitulasi Pengawas, and Forensic Traceback.
+  - Dedicated "Cetak / Export PDF" buttons on all report tables.
+- **Responsive Collapsible Sidebar**: Matches navbar height (`64px`) and collapses into an off-canvas drawer on mobile and tablet devices.
+
+### 4. Model Context Protocol (MCP) Server
+- Integrated MCP server (`mcp/server.js`) compliant with standard MCP JSON-RPC protocol.
+- Connect **Claude Desktop**, **Cursor**, **Antigravity**, or remote LLMs to query live voter turnout, candidate profiles, AI conclusions, and verify voter card validity.
+- Supports both **Stdio** and **HTTP/SSE** transport (`--http 3100`).
 
 ---
 
-## 💻 Tech Stack & Requirements
+## 💻 System Prerequisites
 
-- **PHP**: `>= 8.3.0` (`pdo_mysql`, `mbstring`, `openssl`, `bcmath`, `curl`)
-- **Framework**: Laravel 12 (Tailwind CSS v4 & Vite)
-- **Database**: MySQL `>= 8.0` / MariaDB
-- **Node.js**: `>= 18.x` & NPM
-- **Charts & Audio**: Chart.js, Canvas-Confetti, Web Audio API
-- **Hardware**: USB RFID Mifare Reader 13.56 MHz (ISO 14443A)
+| Requirement | Minimum Version | Notes |
+|---|---|---|
+| **PHP** | `^8.3.0` | Extensions: `pdo_mysql`, `mbstring`, `openssl`, `bcmath`, `curl`, `xml` |
+| **Composer** | `^2.5.0` | PHP dependency manager |
+| **Node.js** | `^18.0.0` (LTS recommended) | With npm |
+| **MySQL / MariaDB** | `^8.0` / `^10.4` | Database service |
+| **RFID Reader** | USB Mifare 13.56MHz | Emulates keyboard keystrokes ending with `Enter` |
 
 ---
 
-## 🚀 Installation & Setup
+## 🚀 Step-by-Step Installation Guide
 
-### 1. Clone & Enter Directory
+### 1. Clone Repository
 ```bash
-git clone <repository-url> TapVote-AI
+git clone https://github.com/RifkyA911/TapVote-AI.git
 cd TapVote-AI
 ```
 
 ### 2. Install Dependencies
 ```bash
+# Install PHP dependencies
 composer install
+
+# Install Node.js frontend & MCP dependencies
 npm install
 ```
 
-### 3. Configure Environment
+### 3. Environment Configuration
 ```bash
-copy .env.example .env
+# Copy environment file
+cp .env.example .env
+
+# Generate application encryption key
 php artisan key:generate
 ```
 
-Configure your `.env` database settings:
+Edit `.env` to configure your database connection:
 ```ini
 APP_NAME="TapVote AI"
 APP_ENV=local
@@ -83,46 +102,105 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
+> **Note for Laragon users**: Make sure MySQL is started from Laragon, and PHP 8.3 is selected.
+
 ### 4. Database Migration & Seed
-Make sure MySQL is running (e.g. in Laragon / XAMPP):
+Run migrations and load default seeders (candidates, demo voters, and administrator account):
 ```bash
 php artisan migrate --seed
 ```
 
-### 5. Build Assets
+### 5. Build Frontend Assets
 ```bash
+# Production build
 npm run build
+
+# Or development hot-reload
+npm run dev
 ```
 
-### 6. Run Application
+### 6. Start Application Server
 ```bash
 php artisan serve
 ```
 
-Access the application in your browser:
-- **Public Live Count**: `http://localhost:8000/`
-- **Kiosk Voting Booth**: `http://localhost:8000/voter`
-- **Admin Panel**: `http://localhost:8000/admin/login`
+Access the system at:
+- **Public Live Count**: [http://localhost:8000/](http://localhost:8000/)
+- **Voter Kiosk**: [http://localhost:8000/voter](http://localhost:8000/voter)
+- **Admin Control Panel**: [http://localhost:8000/admin/dashboard](http://localhost:8000/admin/dashboard)
 
 ---
 
-## 🔑 Default Credentials
+## 🔐 Default Credentials
 
-### Administrator
-- **URL**: `/admin/login`
-- **Email**: `admin@tapvote.ai`
-- **Password**: `admin123`
+### Admin Account
+- **URL**: [http://localhost:8000/admin/login](http://localhost:8000/admin/login)
+- **Email**: `admin@tapvote.test`
+- **Password**: `password`
 
-### Sample Test Voters (DPT)
-| NIK | Full Name | Department | RFID UID |
-| :--- | :--- | :--- | :--- |
-| `2024001` | Ahmad Subarjo | Produksi | `E2806894` |
-| `2024002` | Siti Aminah | Keuangan | `A1B2C3D4` |
-| `2024003` | Budi Santoso | Logistik | `98765432` |
-| `2024004` | Ratna Dewi | HRD | `11223344` |
-| `2024005` | Joko Wibowo | IT & Operasional | `55667788` |
+### Test Demo RFID Cards
+| Member Name | NIK | RFID UID | Status |
+|---|---|---|---|
+| **Budi Santoso** | `1001` | `A1B2C3D4` | Eligible (Belum Memilih) |
+| **Siti Aminah** | `1002` | `E5F6A7B8` | Eligible (Belum Memilih) |
+| **Ahmad Dahlan** | `1003` | `C9D8E7F6` | Eligible (Belum Memilih) |
+| **Dewi Sartika** | `1004` | `1A2B3C4D` | Eligible (Belum Memilih) |
+
+---
+
+## 🤖 Model Context Protocol (MCP) Integration
+
+Connect your favorite AI agent to query TapVote AI live data.
+
+### Available MCP Tools
+- `get_election_metrics`: Live turnout %, total verified ballots, quorum status, and current leaders.
+- `get_candidate_standings`: Vote count and percentage breakdown for Chairman and Supervisory Board.
+- `get_candidate_profile`: Retrieve full biography, Vision, Mission, and live votes for any candidate.
+- `get_ai_election_conclusion`: Run the analytical AI engine to get quorum status, victory margin, and guidance.
+- `verify_voter_card`: Check if an RFID card UID or member NIK is registered and eligible to vote.
+
+### 1. Stdio Mode (Claude Desktop, Cursor, Antigravity)
+Run via stdio:
+```bash
+npm run mcp
+# or
+node mcp/server.js
+```
+
+**Claude Desktop Configuration (`claude_desktop_config.json`)**:
+```json
+{
+  "mcpServers": {
+    "tapvote-ai": {
+      "command": "node",
+      "args": ["C:\\laragon\\www\\TapVote-AI\\mcp\\server.js"],
+      "cwd": "C:\\laragon\\www\\TapVote-AI"
+    }
+  }
+}
+```
+
+### 2. Public HTTP / SSE Mode
+Run the MCP server over HTTP/SSE:
+```bash
+npm run mcp:http
+# Server will listen on http://0.0.0.0:3100
+```
+- Health Check: `http://localhost:3100/health`
+- Tool Catalog: `http://localhost:3100/tools`
+- Query Endpoint: `POST http://localhost:3100/query` with payload `{"tool": "get_election_metrics"}`
+
+---
+
+## 🧪 Testing
+
+Run automated PHPUnit test suites:
+```bash
+php artisan test
+```
 
 ---
 
 ## 📄 License
-Copyright © 2026 TapVote AI. Developed for transparent, accessible digital cooperative governance.
+
+This open-source project is licensed under the [MIT License](LICENSE).
