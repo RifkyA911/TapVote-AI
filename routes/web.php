@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\KandidatPengawasController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\VoterController as AdminVoterController;
+use App\Http\Controllers\LiveCountController;
 use App\Http\Controllers\VoterController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,10 +17,18 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Redirect root to /voter or overview
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// Language Switcher
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'id'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
+// Public Live Count SSE Dashboard
+Route::get('/', [LiveCountController::class, 'index'])->name('home');
+Route::get('/live-count/stream', [LiveCountController::class, 'stream'])->name('live.stream');
+Route::get('/live-count/data', [LiveCountController::class, 'apiData'])->name('live.data');
 
 // ==========================================
 // VOTER FLOW (RFID Mifare ISO 14443A)
@@ -61,6 +70,7 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/stream/results', [DashboardController::class, 'sseStream'])->name('admin.stream.results');
     Route::get('/api/live-results', [DashboardController::class, 'liveResults'])->name('admin.api.live-results');
+    Route::get('/api/ai-conclusion', [DashboardController::class, 'getAiConclusion'])->name('admin.api.ai-conclusion');
 
     // CRUD Kandidat Ketua
     Route::resource('ketua', KandidatKetuaController::class, [

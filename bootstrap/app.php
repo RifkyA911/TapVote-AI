@@ -12,6 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocaleMiddleware::class,
+        ]);
+
         $middleware->alias([
             'voter.auth' => \App\Http\Middleware\VoterAuthMiddleware::class,
             'role.admin' => \App\Http\Middleware\AdminAuthMiddleware::class,
