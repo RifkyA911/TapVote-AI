@@ -32,7 +32,7 @@ class LogController extends Controller
             });
         }
 
-        $logs = $query->orderBy('created_at', 'desc')->paginate(25)->withQueryString();
+        $logs = $query->orderBy('created_at', 'desc')->take(200)->get();
         $modules = ActivityLog::distinct()->pluck('module')->sort();
         $actions = ActivityLog::distinct()->pluck('action')->sort();
 

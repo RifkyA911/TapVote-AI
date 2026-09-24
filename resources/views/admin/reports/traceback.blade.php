@@ -15,18 +15,23 @@
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Audit log pemilih dan pasangan pilihan calon (Ketua & Pengawas) per transaksi.</p>
         </div>
 
-        <div class="flex items-center gap-3">
-            <a href="{{ route('admin.reports.traceback.export') }}" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition flex items-center space-x-2">
+        <div class="flex items-center gap-2.5 self-start sm:self-auto">
+            <a href="{{ route('admin.reports.traceback.export') }}" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                <span>Export CSV Trace Back</span>
+                <span>{{ __('Export Excel') }}</span>
             </a>
+
+            <button onclick="window.print()" type="button" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
+                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                <span>{{ __('Export PDF / Print') }}</span>
+            </button>
         </div>
     </div>
 
     <!-- Trace Back Table -->
     <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm">
+            <table class="datatable w-full text-left text-xs sm:text-sm">
                 <thead>
                     <tr class="border-b border-slate-200 text-slate-500 font-bold uppercase text-[11px] tracking-wider">
                         <th class="py-3 px-3">Waktu Vote</th>
@@ -70,10 +75,6 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
-
-        <div class="mt-4 pt-4 border-t border-slate-200">
-            {{ $voters->links() }}
         </div>
     </div>
 

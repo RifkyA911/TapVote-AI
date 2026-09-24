@@ -1,8 +1,34 @@
 import Chart from 'chart.js/auto';
 import confetti from 'canvas-confetti';
+import { DataTable } from 'simple-datatables';
 
 window.Chart = Chart;
 window.confetti = confetti;
+window.DataTable = DataTable;
+
+window.initDataTables = function() {
+    document.querySelectorAll('.datatable').forEach(table => {
+        if (!table.dataset.dataTableInitialized) {
+            new DataTable(table, {
+                searchable: true,
+                fixedHeight: false,
+                perPage: 10,
+                perPageSelect: [10, 25, 50, 100],
+                labels: {
+                    placeholder: window.datatableSearchPlaceholder || "Search / Cari...",
+                    perPage: "{select} entries per page",
+                    noRows: "No records found / Data tidak ditemukan",
+                    info: "Showing {start} to {end} of {rows} entries",
+                }
+            });
+            table.dataset.dataTableInitialized = "true";
+        }
+    });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    window.initDataTables();
+});
 
 // Universal Audio Synthesizer via Web Audio API (Zero Latency, High Fidelity, No External Audio Files)
 class SoundFX {

@@ -36,7 +36,8 @@ class ReportController extends Controller
             ->orderBy('kandidat_ketua.nomor_urut')
             ->get();
 
-        return view('admin.reports.ketua', compact('kandidatList', 'totalSuara', 'pemenang', 'deptBreakdown'));
+        $kandidatKetua = $kandidatList;
+        return view('admin.reports.ketua', compact('kandidatList', 'kandidatKetua', 'totalSuara', 'pemenang', 'deptBreakdown'));
     }
 
     /**
@@ -62,7 +63,8 @@ class ReportController extends Controller
             ->orderBy('kandidat_pengawas.nomor_urut')
             ->get();
 
-        return view('admin.reports.pengawas', compact('kandidatList', 'totalSuara', 'pemenang', 'deptBreakdown'));
+        $kandidatPengawas = $kandidatList;
+        return view('admin.reports.pengawas', compact('kandidatList', 'kandidatPengawas', 'totalSuara', 'pemenang', 'deptBreakdown'));
     }
 
     /**
@@ -83,10 +85,71 @@ class ReportController extends Controller
             });
         }
 
-        $records = $query->orderBy('voted_at', 'desc')->paginate(20)->withQueryString();
+        $records = $query->orderBy('voted_at', 'desc')->get();
+        $voters = $records;
         $totalVoted = Pemilih::where('pilih', 'T')->count();
 
-        return view('admin.reports.traceback', compact('records', 'totalVoted', 'search'));
+        return view('admin.reports.traceback', compact('records', 'voters', 'totalVoted', 'search'));
+    }
+
+    /**
+     * Export Rekapitulasi Ketua ke Excel / CSV
+     */
+    public function exportKetua()
+    {
+        $kandidatList = KandidatKetua::withCount('perolehanSuara')
+            ->orderBy('perolehan_suara_count', 'desc')
+            ->orderBy('nomor_urut', 'asc')
+            ->get();
+
+        $totalSuara = HasilKetua::count();
+
+        $csv = "\xEF\xBB\xBF"; // UTF-8 BOM for Microsoft Excel
+        $csv .= "REKAPITULASI HASIL PEMILIHAN KETUA KOPERASI\n";
+        $csv .= "Waktu Unduh," . date('Y-m-d H:i:s') . "\n";
+        $csv .= "Total Suara Masuk," . $totalSuara . "\n\n";
+        $csv .= "Nomor Urut,Nama Calon Ketua,Perolehan Suara,Persentase Suara,Status\n";
+
+        foreach ($kandidatList as $idx => $k) {
+            $persen = $totalSuara > 0 ? round(($k->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
+            $status = $idx === 0 && $k->perolehan_suara_count > 0 ? 'Pemenang Unggul' : 'Kandidat';
+            $csv .= "\"{$k->nomor_urut}\",\"{$k->nama}\",\"{$k->perolehan_suara_count}\",\"{$persen}%\",\"{$status}\"\n";
+        }
+
+        return response($csv, 200, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="rekapitulasi_ketua_' . date('Ymd_His') . '.csv"',
+        ]);
+    }
+
+    /**
+     * Export Rekapitulasi Pengawas ke Excel / CSV
+     */
+    public function exportPengawas()
+    {
+        $kandidatList = KandidatPengawas::withCount('perolehanSuara')
+            ->orderBy('perolehan_suara_count', 'desc')
+            ->orderBy('nomor_urut', 'asc')
+            ->get();
+
+        $totalSuara = HasilPengawas::count();
+
+        $csv = "\xEF\xBB\xBF"; // UTF-8 BOM for Microsoft Excel
+        $csv .= "REKAPITULASI HASIL PEMILIHAN PENGAWAS KOPERASI\n";
+        $csv .= "Waktu Unduh," . date('Y-m-d H:i:s') . "\n";
+        $csv .= "Total Suara Masuk," . $totalSuara . "\n\n";
+        $csv .= "Nomor Urut,Nama Calon Pengawas,Perolehan Suara,Persentase Suara,Status\n";
+
+        foreach ($kandidatList as $idx => $k) {
+            $persen = $totalSuara > 0 ? round(($k->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
+            $status = $idx === 0 && $k->perolehan_suara_count > 0 ? 'Pemenang Unggul' : 'Kandidat';
+            $csv .= "\"{$k->nomor_urut}\",\"{$k->nama}\",\"{$k->perolehan_suara_count}\",\"{$persen}%\",\"{$status}\"\n";
+        }
+
+        return response($csv, 200, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="rekapitulasi_pengawas_' . date('Ymd_His') . '.csv"',
+        ]);
     }
 
     /**
@@ -99,7 +162,8 @@ class ReportController extends Controller
             ->orderBy('voted_at', 'desc')
             ->get();
 
-        $csv = "NIK,Nama Anggota,Departemen,Pilihan Ketua,Pilihan Pengawas,Waktu Memilih\n";
+        $csv = "\xEF\xBB\xBF"; // UTF-8 BOM for Microsoft Excel
+        $csv .= "NIK,Nama Anggota,Departemen,Pilihan Ketua,Pilihan Pengawas,Waktu Memilih\n";
 
         foreach ($records as $r) {
             $ketua = $r->hasilKetua?->kandidatKetua?->nama ?? '-';
@@ -110,7 +174,7 @@ class ReportController extends Controller
         }
 
         return response($csv, 200, [
-            'Content-Type' => 'text/csv',
+            'Content-Type' => 'text/csv; charset=UTF-8',
             'Content-Disposition' => 'attachment; filename="audit_traceback_suara_' . date('Ymd_His') . '.csv"',
         ]);
     }

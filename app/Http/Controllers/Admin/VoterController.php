@@ -37,7 +37,7 @@ class VoterController extends Controller
             $query->where('pilih', $status);
         }
 
-        $voters = $query->orderBy('nama', 'asc')->paginate(15)->withQueryString();
+        $voters = $query->orderBy('nama', 'asc')->get();
         $departments = Pemilih::distinct()->pluck('dept')->sort();
 
         $stats = [
@@ -188,6 +188,31 @@ class VoterController extends Controller
         return response($csvContent, 200, [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="template_voters_tapvote.csv"',
+        ]);
+    }
+
+    /**
+     * Export Seluruh DPT ke Excel / CSV
+     */
+    public function export()
+    {
+        $voters = Pemilih::orderBy('nama', 'asc')->get();
+
+        $csv = "\xEF\xBB\xBF"; // UTF-8 BOM
+        $csv .= "DAFTAR PEMILIH TETAP (DPT) - PEMILU KOPERASI\n";
+        $csv .= "Tanggal Unduh," . date('Y-m-d H:i:s') . "\n";
+        $csv .= "Total Anggota," . $voters->count() . "\n\n";
+        $csv .= "NIK,Nama Anggota,Departemen,UID RFID Mifare,Status Hak Suara,Waktu Memilih\n";
+
+        foreach ($voters as $v) {
+            $status = $v->pilih === 'T' ? 'Sudah Memilih' : 'Belum Memilih';
+            $waktu = $v->voted_at ? $v->voted_at->format('Y-m-d H:i:s') : '-';
+            $csv .= "\"{$v->nik}\",\"{$v->nama}\",\"{$v->dept}\",\"{$v->rfid}\",\"{$status}\",\"{$waktu}\"\n";
+        }
+
+        return response($csv, 200, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="dpt_pemilih_' . date('Ymd_His') . '.csv"',
         ]);
     }
 
