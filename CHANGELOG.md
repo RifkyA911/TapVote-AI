@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] - 2026-09-24
+
+### Added
+- **Ballot Booth UI/UX Overhaul (`/vote`)**:
+  - Interactive "Sundul" (spring-lift) animations on candidate card hover, focus, and selection (`.ballot-card-sundul`, `.card-selected-pop`).
+  - High-resolution candidate photo preview lightbox modal (`#image-preview-modal`) with smooth zoom and dismiss controls.
+  - Boomer-friendly modal animations (`.boomer-modal-dialog`) featuring generous touch targets ($\ge 48\text{px}$) and high-contrast typography.
+  - Elevated floating action dock with clear step-by-step indicators, status highlights, and safe bottom clearance (`pb-44 sm:pb-48`).
+- **Interactive DataTables Integration in Admin Panel**:
+  - Installed and configured `simple-datatables` across DPT Voters, Audit Logs, Rekapitulasi Ketua, Rekapitulasi Pengawas, and Traceback tables.
+  - Client-side real-time search, column sorting, pagination controls, and per-page show list selector (`10, 25, 50, 100 entries`).
+- **Comprehensive Excel & PDF Rekapitulasi Exports**:
+  - Native Excel/CSV export with UTF-8 BOM encoding for Microsoft Excel compatibility:
+    - `/admin/voters/export`: DPT voter roster with RFID UIDs and voting timestamps.
+    - `/admin/reports/ketua/export`: Official Chairman election vote rekapitulasi.
+    - `/admin/reports/pengawas/export`: Official Supervisory Board election vote rekapitulasi.
+    - `/admin/reports/traceback/export`: Forensic ballot trace-back audit log.
+  - Dedicated "Cetak / Export PDF" buttons on all admin reports triggering clean, print-optimized document layouts.
+- **Admin Collapsible Sidebar & Tablet Responsive Layout**:
+  - Added responsive toggle button in navbar for collapsing sidebar on desktop and toggling an off-canvas drawer on tablets/mobiles.
+  - Exact height alignment between Top App Bar and Sidebar Brand header (`h-16` / `64px`).
+  - Responsive flex layouts across all admin action headers preventing button wrap collisions on tablets.
+
+### Changed
+- **Calmed RFID Tap Ripple Animation (`/voter`)**:
+  - Relaxed and slowed radar ripple wave from 2.4s to 4.5s with softened opacity, tailored for senior / 40+ year-old voters.
+  - Calmed card bounce and fluid Nova green success ring to 3.2s for pleasant, gentle visual feedback.
+- **Public Live Count Header Polish (`/`)**:
+  - Removed/hidden Admin Panel button from public view to streamline the kiosk-friendly interface.
+  - Reorganized header with a clean, spacious 2-column flex layout eliminating space competition.
+- **Persistent Internationalization (i18n)**:
+  - Synchronized language selection across persistent cookies (`app_locale`) and server sessions.
+  - Replaced hardcoded strings across `/vote`, `/`, and `/voter` with standard Laravel `__()` translation tags.
+
+---
+
 ## [1.2.0] - 2026-09-24
 
 ### Added
