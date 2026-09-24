@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'id'])) {
         session(['locale' => $locale]);
+        session()->save();
+        \Illuminate\Support\Facades\Cookie::queue(cookie()->forever('app_locale', $locale));
+        \Illuminate\Support\Facades\App::setLocale($locale);
     }
     return redirect()->back();
 })->name('lang.switch');
@@ -84,16 +87,19 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
 
     // CRUD Voters & Import Excel/CSV
     Route::get('/voters', [AdminVoterController::class, 'index'])->name('admin.voters.index');
+    Route::get('/voters/export', [AdminVoterController::class, 'export'])->name('admin.voters.export');
     Route::post('/voters', [AdminVoterController::class, 'store'])->name('admin.voters.store');
     Route::post('/voters/import', [AdminVoterController::class, 'import'])->name('admin.voters.import');
     Route::get('/voters/template', [AdminVoterController::class, 'downloadTemplate'])->name('admin.voters.template');
     Route::post('/voters/reset-votes', [AdminVoterController::class, 'resetVotes'])->name('admin.voters.reset');
     Route::delete('/voters/{nik}', [AdminVoterController::class, 'destroy'])->name('admin.voters.destroy');
 
-    // Laporan-Laporan Resmi
+    // Laporan-Laporan Resmi & Rekapitulasi
     Route::prefix('reports')->group(function () {
         Route::get('/ketua', [ReportController::class, 'pemenangKetua'])->name('admin.reports.ketua');
+        Route::get('/ketua/export', [ReportController::class, 'exportKetua'])->name('admin.reports.ketua.export');
         Route::get('/pengawas', [ReportController::class, 'pemenangPengawas'])->name('admin.reports.pengawas');
+        Route::get('/pengawas/export', [ReportController::class, 'exportPengawas'])->name('admin.reports.pengawas.export');
         Route::get('/traceback', [ReportController::class, 'traceback'])->name('admin.reports.traceback');
         Route::get('/traceback/export', [ReportController::class, 'exportTraceback'])->name('admin.reports.traceback.export');
         Route::get('/doorprize', [ReportController::class, 'doorprize'])->name('admin.reports.doorprize');
