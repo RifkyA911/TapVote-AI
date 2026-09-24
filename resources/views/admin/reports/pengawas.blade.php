@@ -9,14 +9,14 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <div class="flex items-center space-x-2">
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400">Laporan Resmi 02</span>
-                <h2 class="text-2xl font-black text-white">Hasil & Pemenang Pengawas Koperasi</h2>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">Laporan Resmi 02</span>
+                <h2 class="text-2xl font-extrabold text-slate-900">Hasil & Pemenang Pengawas Koperasi</h2>
             </div>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Perolehan suara resmi, penetapan calon pengawas terpilih, dan rincian suara.</p>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Perolehan suara resmi, penetapan calon pengawas terpilih, dan rincian suara.</p>
         </div>
 
-        <button onclick="window.print()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition flex items-center space-x-2 self-start sm:self-auto">
-            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+        <button onclick="window.print()" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-2 self-start sm:self-auto">
+            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
             <span>Cetak Dokumen Laporan</span>
         </button>
     </div>
@@ -26,14 +26,12 @@
         @php
             $persenPemenang = $totalSuara > 0 ? round(($pemenang->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
         @endphp
-        <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-emerald-950/80 via-teal-950/60 to-slate-900 border-2 border-emerald-500/40 backdrop-blur-xl shadow-2xl relative overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
-
+        <div class="p-6 sm:p-8 rounded-3xl bg-emerald-50/80 border-2 border-emerald-200 shadow-sm relative overflow-hidden">
             <div class="flex flex-col sm:flex-row items-center gap-6 relative z-10">
                 <div class="relative">
-                    <div class="w-32 h-32 rounded-3xl overflow-hidden bg-slate-950 border-2 border-emerald-400 shadow-xl">
+                    <div class="w-32 h-32 rounded-3xl overflow-hidden bg-slate-100 border-2 border-emerald-500 shadow-md">
                         <img 
-                            src="{{ $pemenang->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($pemenang->nama).'&background=1e293b&color=10b981&size=400' }}" 
+                            src="{{ $pemenang->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($pemenang->nama).'&background=059669&color=ffffff&size=400' }}" 
                             alt="{{ $pemenang->nama }}" 
                             class="w-full h-full object-cover object-top"
                         >
@@ -44,86 +42,55 @@
                 </div>
 
                 <div class="text-center sm:text-left flex-1">
-                    <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-extrabold uppercase tracking-wider mb-2">
+                    <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-extrabold uppercase tracking-wider mb-2">
                         <span>🏆</span>
-                        <span>Pengawas Terpilih (Suara Terbanyak)</span>
+                        <span>Kandidat Terpilih (Suara Terbanyak)</span>
                     </div>
-                    <h3 class="text-2xl sm:text-3xl font-black text-white">{{ $pemenang->nama }}</h3>
-                    <p class="text-xs text-emerald-300 font-mono mt-0.5">NIK: {{ $pemenang->nik }}</p>
+                    <h3 class="text-2xl sm:text-3xl font-black text-slate-900">{{ $pemenang->nama }}</h3>
+                    <p class="text-xs text-emerald-700 font-mono mt-0.5">NIK: {{ $pemenang->nik }}</p>
 
-                    <div class="flex flex-wrap items-center gap-6 mt-4 pt-4 border-t border-emerald-900/60">
+                    <div class="flex flex-wrap items-center gap-6 mt-4 pt-4 border-t border-emerald-200">
                         <div>
-                            <span class="text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Total Suara</span>
-                            <strong class="text-2xl font-black text-white font-mono">{{ $pemenang->perolehan_suara_count }} Suara</strong>
+                            <span class="text-[11px] uppercase tracking-wider text-slate-500 block font-semibold">Total Suara</span>
+                            <strong class="text-2xl font-black text-slate-900 font-mono">{{ $pemenang->perolehan_suara_count }} Suara</strong>
                         </div>
-                        <div class="h-8 w-px bg-slate-800"></div>
+                        <div class="h-8 w-px bg-emerald-200"></div>
                         <div>
-                            <span class="text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Persentase</span>
-                            <strong class="text-2xl font-black text-emerald-400 font-mono">{{ $persenPemenang }}%</strong>
-                        </div>
-                        <div class="h-8 w-px bg-slate-800"></div>
-                        <div>
-                            <span class="text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Total Partisipasi</span>
-                            <strong class="text-2xl font-black text-slate-300 font-mono">{{ $totalSuara }} Suara Sah</strong>
+                            <span class="text-[11px] uppercase tracking-wider text-slate-500 block font-semibold">Persentase</span>
+                            <strong class="text-2xl font-black text-emerald-600 font-mono">{{ $persenPemenang }}%</strong>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    @else
-        <div class="p-8 rounded-3xl bg-slate-900/60 border border-slate-800 text-center text-slate-400">
-            Belum ada suara pemilihan pengawas yang masuk ke sistem.
-        </div>
     @endif
 
-    <!-- Breakdown Table: Tiap Calon Pengawas Dapat Berapa Suara -->
-    <div class="rounded-3xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-xl overflow-hidden">
-        <div class="p-5 border-b border-slate-800">
-            <h3 class="text-base font-bold text-white">Rincian Perolehan Suara Seluruh Calon Pengawas</h3>
-            <p class="text-xs text-slate-400">Tabel komparasi suara dan persentase dari total {{ $totalSuara }} suara sah.</p>
-        </div>
+    <!-- Breakdown Table -->
+    <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+        <h3 class="text-base font-bold text-slate-900 mb-4">Tabel Rekapitulasi Suara Pengawas</h3>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
+            <table class="w-full text-left text-xs sm:text-sm">
                 <thead>
-                    <tr class="border-b border-slate-800 bg-slate-950/50 text-slate-400 uppercase tracking-wider font-semibold">
-                        <th class="py-3.5 px-5">Peringkat</th>
-                        <th class="py-3.5 px-5">No. Urut</th>
-                        <th class="py-3.5 px-5">Nama Calon Pengawas</th>
-                        <th class="py-3.5 px-5">NIK</th>
-                        <th class="py-3.5 px-5">Perolehan Suara</th>
-                        <th class="py-3.5 px-5">Persentase</th>
-                        <th class="py-3.5 px-5">Visual Bar</th>
+                    <tr class="border-b border-slate-200 text-slate-500 font-bold uppercase text-[11px] tracking-wider">
+                        <th class="py-3 px-3">No. Urut</th>
+                        <th class="py-3 px-3">Nama Kandidat</th>
+                        <th class="py-3 px-3">NIK</th>
+                        <th class="py-3 px-3 text-right">Perolehan Suara</th>
+                        <th class="py-3 px-3 text-right">Persentase</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-800/60 text-slate-300">
-                    @foreach($kandidatList as $idx => $p)
+                <tbody class="divide-y divide-slate-100">
+                    @foreach($kandidatPengawas as $p)
                         @php
-                            $pct = $totalSuara > 0 ? round(($p->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
+                            $persen = $totalSuara > 0 ? round(($p->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
                         @endphp
-                        <tr class="{{ $idx === 0 && $p->perolehan_suara_count > 0 ? 'bg-emerald-950/20' : '' }} hover:bg-slate-800/30 transition">
-                            <td class="py-4 px-5">
-                                @if($idx === 0 && $p->perolehan_suara_count > 0)
-                                    <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-300 font-bold text-xs inline-flex items-center justify-center">1</span>
-                                @else
-                                    <span class="w-6 h-6 rounded-full bg-slate-800 text-slate-400 font-bold text-xs inline-flex items-center justify-center">{{ $idx + 1 }}</span>
-                                @endif
-                            </td>
-                            <td class="py-4 px-5 font-mono font-bold text-emerald-400">No. {{ $p->nomor_urut }}</td>
-                            <td class="py-4 px-5 font-bold text-white text-sm">
-                                {{ $p->nama }}
-                                @if($idx === 0 && $p->perolehan_suara_count > 0)
-                                    <span class="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-normal">Pemenang</span>
-                                @endif
-                            </td>
-                            <td class="py-4 px-5 font-mono text-slate-400">{{ $p->nik }}</td>
-                            <td class="py-4 px-5 font-mono font-black text-white text-sm">{{ $p->perolehan_suara_count }} Suara</td>
-                            <td class="py-4 px-5 font-mono font-bold text-emerald-400">{{ $pct }}%</td>
-                            <td class="py-4 px-5 w-48">
-                                <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
-                                    <div class="h-full bg-emerald-500 rounded-full" style="width: {{ $pct }}%;"></div>
-                                </div>
-                            </td>
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="py-3 px-3 font-bold text-slate-900">{{ $p->nomor_urut }}</td>
+                            <td class="py-3 px-3 font-bold text-slate-900">{{ $p->nama }}</td>
+                            <td class="py-3 px-3 text-slate-500 font-mono">{{ $p->nik }}</td>
+                            <td class="py-3 px-3 text-right font-bold text-slate-900">{{ $p->perolehan_suara_count }} Suara</td>
+                            <td class="py-3 px-3 text-right font-extrabold text-emerald-600">{{ $persen }}%</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -131,31 +98,5 @@
         </div>
     </div>
 
-    <!-- Rincian Suara per Departemen -->
-    <div class="rounded-3xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-xl p-6">
-        <h3 class="text-base font-bold text-white mb-1">Rincian Sebaran Suara Berdasarkan Departemen</h3>
-        <p class="text-xs text-slate-400 mb-6">Melihat distribusi preferensi suara masing-masing divisi/departemen.</p>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            @forelse($deptBreakdown->groupBy('dept') as $deptName => $votes)
-                <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
-                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3 pb-2 border-b border-slate-800 flex items-center justify-between">
-                        <span>{{ $deptName }}</span>
-                        <span class="text-slate-400 font-mono">{{ $votes->sum('total') }} Suara</span>
-                    </h4>
-                    <div class="space-y-2">
-                        @foreach($votes as $v)
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-slate-300 truncate max-w-[180px]">No. {{ $v->nomor_urut }} {{ $v->kandidat_nama }}</span>
-                                <strong class="text-emerald-400 font-mono">{{ $v->total }}</strong>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @empty
-                <div class="col-span-3 text-center py-6 text-slate-500 text-xs">Belum ada data distribusi suara per departemen.</div>
-            @endforelse
-        </div>
-    </div>
 </div>
 @endsection

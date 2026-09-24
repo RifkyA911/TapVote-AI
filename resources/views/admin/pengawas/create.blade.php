@@ -3,69 +3,67 @@
 @section('title', 'Tambah Kandidat Pengawas')
 
 @section('content')
-<div class="max-w-3xl mx-auto space-y-6">
+<div class="max-w-2xl mx-auto space-y-6">
     <div class="flex items-center justify-between">
         <div>
-            <h2 class="text-2xl font-black text-white">Tambah Calon Pengawas Koperasi</h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Daftarkan nomor urut, visi, misi, dan foto calon pengawas baru.</p>
+            <h2 class="text-2xl font-extrabold text-slate-900">Tambah Calon Pengawas Koperasi</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Lengkapi informasi biodata, visi, dan misi kandidat.</p>
         </div>
-        <a href="{{ route('admin.pengawas.index') }}" class="text-xs text-slate-400 hover:text-white transition">← Kembali</a>
+        <a href="{{ route('admin.pengawas.index') }}" class="text-xs font-bold text-slate-600 hover:text-slate-900">
+            ← Kembali
+        </a>
     </div>
 
-    <div class="p-8 rounded-3xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-xl">
-        <form action="{{ route('admin.pengawas.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <div class="p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+        <form action="{{ route('admin.pengawas.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Nomor Urut</label>
-                    <input type="number" name="nomor_urut" value="{{ old('nomor_urut', $nextNomor) }}" required min="1" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:border-emerald-500 outline-none">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Nomor Urut</label>
+                    <input type="number" name="nomor_urut" value="{{ old('nomor_urut', $nextNomor) }}" required min="1" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 outline-none">
                 </div>
 
-                <div class="sm:col-span-2">
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">NIK Kandidat</label>
-                    <input type="text" name="nik" value="{{ old('nik') }}" required placeholder="Contoh: PW04 atau 102499" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:border-emerald-500 outline-none">
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Nama Lengkap & Gelar</label>
-                <input type="text" name="nama" value="{{ old('nama') }}" required placeholder="Contoh: Siti Fatimah, S.E., Ak." class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:border-emerald-500 outline-none">
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Upload Foto (File)</label>
-                    <input type="file" name="foto" accept="image/*" class="w-full text-xs text-slate-400 file:mr-3 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">NIK (Nomor Induk Kandidat)</label>
+                    <input type="text" name="nik" value="{{ old('nik') }}" required placeholder="Contoh: PW04 atau 102499" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 outline-none">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap & Gelar</label>
+                <input type="text" name="nama" value="{{ old('nama') }}" required placeholder="Contoh: Dra. Hj. Maryani, Ak., C.A." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 outline-none">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Upload File Foto</label>
+                    <input type="file" name="foto_file" accept="image/*" class="w-full px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-700 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-800">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Atau URL Foto (Opsional)</label>
-                    <input type="url" name="foto_url" value="{{ old('foto_url') }}" placeholder="https://..." class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:border-emerald-500 outline-none">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Atau Gunakan URL Gambar</label>
+                    <input type="url" name="foto_url" value="{{ old('foto_url') }}" placeholder="https://..." class="w-full px-4 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-emerald-500 outline-none">
                 </div>
             </div>
 
             <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-                    Visi Kandidat <span class="text-emerald-400 font-mono text-[10px]">(Tipe: TEXT)</span>
-                </label>
-                <textarea name="visi" rows="3" required placeholder="Tuliskan visi calon pengawas koperasi..." class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:border-emerald-500 outline-none">{{ old('visi') }}</textarea>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Visi (Tipe TEXT)</label>
+                <textarea name="visi" rows="3" required placeholder="Tuliskan visi calon pengawas koperasi..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 outline-none">{{ old('visi') }}</textarea>
             </div>
 
             <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-                    Misi Kandidat <span class="text-emerald-400 font-mono text-[10px]">(Tipe: TEXT)</span>
-                </label>
-                <textarea name="misi" rows="4" required placeholder="Tuliskan poin-poin misi calon pengawas koperasi..." class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:border-emerald-500 outline-none">{{ old('misi') }}</textarea>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Misi (Tipe TEXT)</label>
+                <textarea name="misi" rows="4" required placeholder="Tuliskan poin-poin misi calon pengawas koperasi..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 outline-none">{{ old('misi') }}</textarea>
             </div>
 
             <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Deskripsi Ringkas / Profil Tambahan</label>
-                <textarea name="deskripsi" rows="2" placeholder="Keahlian audit atau latar belakang hukum..." class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white focus:border-emerald-500 outline-none">{{ old('deskripsi') }}</textarea>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat / Rekam Jejak</label>
+                <textarea name="deskripsi" rows="2" placeholder="Pengalaman audit, kepatuhan, atau pengawasan..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 outline-none">{{ old('deskripsi') }}</textarea>
             </div>
 
-            <div class="flex items-center justify-end space-x-3 pt-4 border-t border-slate-800">
-                <a href="{{ route('admin.pengawas.index') }}" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition">Batal</a>
-                <button type="submit" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 transition">Simpan Calon Pengawas</button>
+            <div class="pt-4 border-t border-slate-200 flex justify-end space-x-3">
+                <a href="{{ route('admin.pengawas.index') }}" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition">Batal</a>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition">Simpan Calon Pengawas</button>
             </div>
         </form>
     </div>
