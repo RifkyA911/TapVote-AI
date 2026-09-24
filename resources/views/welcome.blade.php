@@ -6,22 +6,22 @@
 <div class="flex-1 flex flex-col p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
 
     <!-- Top Navigation & Live Header -->
-    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 mb-6 border-b border-slate-200">
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-slate-200">
         <div class="flex items-center space-x-3.5">
-            <div class="w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-sm shrink-0">
+            <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-sm shrink-0">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                 </svg>
             </div>
             <div>
-                <div class="flex items-center space-x-2.5">
-                    <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">{{ __('Live Count Cooperative Election') }}</h1>
+                <div class="flex flex-wrap items-center gap-2">
+                    <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">{{ __('Live Count Cooperative Election') }}</h1>
                     <span id="sse-status-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
                         <span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-600 animate-ping"></span>
                         <span id="sse-status-text">Live SSE</span>
                     </span>
                 </div>
-                <p class="text-xs text-slate-500 font-medium">
+                <p class="text-xs text-slate-500 font-medium mt-0.5">
                     {{ __('Real-time Updates') }} • <span id="last-updated-text" class="font-semibold text-slate-700">{{ $metrics['last_updated'] }}</span>
                 </p>
             </div>
@@ -35,13 +35,9 @@
                 <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 rounded-md transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
             </div>
 
-            <a href="{{ route('voter.tap') }}" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-sm transition flex items-center space-x-2">
+            <a href="{{ route('voter.tap') }}" class="px-5 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm shadow-md transition flex items-center space-x-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 004 11m0 0a8 8 0 00.99 7.132"></path></svg>
                 <span>{{ __('Open Voter Kiosk (Tap Card)') }}</span>
-            </a>
-            <a href="{{ route('admin.login') }}" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs sm:text-sm border border-slate-200 transition flex items-center space-x-1.5">
-                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-                <span>{{ __('Admin Panel') }}</span>
             </a>
         </div>
     </header>
@@ -74,15 +70,15 @@
 
             <!-- Frontrunners Spotlight -->
             <div class="border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-6">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">Kandidat Unggul Sementara</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">{{ __('Frontrunners Spotlight') }}</span>
                 <div class="space-y-1">
                     <div class="text-xs text-slate-700 flex items-center justify-between">
-                        <span class="font-medium">Ketua:</span>
-                        <strong id="leader-ketua-text" class="text-blue-700 truncate max-w-[170px]">{{ $metrics['leader_ketua'] ?: '(Belum Ada Suara)' }}</strong>
+                        <span class="font-medium">{{ __('Chairman:') }}</span>
+                        <strong id="leader-ketua-text" class="text-blue-700 truncate max-w-[170px]">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                     </div>
                     <div class="text-xs text-slate-700 flex items-center justify-between">
-                        <span class="font-medium">Pengawas:</span>
-                        <strong id="leader-pengawas-text" class="text-emerald-700 truncate max-w-[170px]">{{ $metrics['leader_pengawas'] ?: '(Belum Ada Suara)' }}</strong>
+                        <span class="font-medium">{{ __('Supervisors:') }}</span>
+                        <strong id="leader-pengawas-text" class="text-emerald-700 truncate max-w-[170px]">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                     </div>
                 </div>
             </div>
@@ -96,15 +92,15 @@
     <div class="mb-10 p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b border-slate-200 gap-3">
             <div>
-                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">Grafik Komparasi Hasil Suara Seluruh Kandidat</h2>
-                <p class="text-xs text-slate-500 font-medium">Perbandingan perolehan suara Ketua & Pengawas secara komprehensif</p>
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">{{ __('Comparative Bar Chart of All Candidates') }}</h2>
+                <p class="text-xs text-slate-500 font-medium">Real-time vote distribution across Chairman & Supervisory Board</p>
             </div>
 
             <!-- Filter Tabs for Chart Comparison -->
             <div class="inline-flex rounded-xl bg-slate-100 p-1 text-xs font-bold self-start sm:self-auto">
-                <button type="button" onclick="switchChartMode('all')" id="btn-chart-all" class="px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-2xs transition">Semua Calon</button>
-                <button type="button" onclick="switchChartMode('ketua')" id="btn-chart-ketua" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">Ketua Saja</button>
-                <button type="button" onclick="switchChartMode('pengawas')" id="btn-chart-pengawas" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">Pengawas Saja</button>
+                <button type="button" onclick="switchChartMode('all')" id="btn-chart-all" class="px-3.5 py-1.5 rounded-lg bg-white text-slate-900 shadow-2xs transition cursor-pointer">{{ __('All Candidates') }}</button>
+                <button type="button" onclick="switchChartMode('ketua')" id="btn-chart-ketua" class="px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer">{{ __('Chairman Candidates') }}</button>
+                <button type="button" onclick="switchChartMode('pengawas')" id="btn-chart-pengawas" class="px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer">{{ __('Supervisor Candidates') }}</button>
             </div>
         </div>
 
@@ -243,8 +239,8 @@
 <!-- ======================================================== -->
 <!-- MODAL DETAIL LENGKAP KANDIDAT & VISI MISI                -->
 <!-- ======================================================== -->
-<div id="candidate-detail-modal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-white border border-slate-200 rounded-3xl max-w-xl w-full p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto">
+<div id="candidate-detail-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="boomer-modal-dialog bg-white border border-slate-200 rounded-3xl max-w-xl w-full p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto">
         <button onclick="closeCandidateModal()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 p-2 rounded-xl bg-slate-100 text-lg font-bold">✕</button>
 
         <div class="flex items-center space-x-4 mb-5 pb-4 border-b border-slate-200">

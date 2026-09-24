@@ -13,14 +13,17 @@
     --color-brand-700: #1e40af;
 }
 
-/* 1. Ripple wave animation for wireless RFID tap target */
+/* 1. Calm, Relaxed Boomer-Friendly Radar Wave (Slow 4.5s) */
 @keyframes radarWave {
     0% {
-        transform: scale(0.92);
-        opacity: 0.75;
+        transform: scale(0.95);
+        opacity: 0.55;
+    }
+    50% {
+        opacity: 0.28;
     }
     100% {
-        transform: scale(2.2);
+        transform: scale(2.4);
         opacity: 0;
     }
 }
@@ -28,39 +31,42 @@
 .radar-ring {
     position: absolute;
     border-radius: 9999px;
-    border: 2.5px solid rgba(37, 99, 235, 0.4);
+    border: 2px solid rgba(37, 99, 235, 0.35);
     pointer-events: none;
-    animation: radarWave 2.4s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+    animation: radarWave 4.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
 }
 
 .radar-ring:nth-child(2) {
-    animation-delay: 0.8s;
+    animation-delay: 1.5s;
 }
 
 .radar-ring:nth-child(3) {
-    animation-delay: 1.6s;
+    animation-delay: 3.0s;
 }
 
-/* 2. Smooth Bouncing Floating Card Animation */
+/* 2. Gentle Floating Card Animation (Slow 4.0s) */
 @keyframes smoothBounce {
     0%, 100% {
-        transform: translateY(0px) rotate(-3deg);
+        transform: translateY(0px) rotate(-1.5deg);
     }
     50% {
-        transform: translateY(-10px) rotate(-1deg);
+        transform: translateY(-8px) rotate(-0.5deg);
     }
 }
 
 .animate-smooth-bounce {
-    animation: smoothBounce 2.6s ease-in-out infinite;
+    animation: smoothBounce 4.0s ease-in-out infinite;
 }
 
-/* 3. Fluid Nova Green Success Ripple */
+/* 3. Fluid Nova Green Success Ripple (Slow 3.2s) */
 @keyframes novaSuccessWave {
     0% {
-        transform: scale(0.8);
-        opacity: 1;
-        border-color: rgba(16, 185, 129, 0.8);
+        transform: scale(0.85);
+        opacity: 0.85;
+        border-color: rgba(16, 185, 129, 0.7);
+    }
+    50% {
+        opacity: 0.45;
     }
     100% {
         transform: scale(2.6);
@@ -72,21 +78,21 @@
 .nova-success-ring {
     position: absolute;
     border-radius: 9999px;
-    border: 4px solid rgba(16, 185, 129, 0.7);
+    border: 3px solid rgba(16, 185, 129, 0.6);
     pointer-events: none;
-    animation: novaSuccessWave 1.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    animation: novaSuccessWave 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
-/* 4. Distracted Red Danger Ripple */
+/* 4. Distracted Red Danger Ripple (Gentle 3.0s) */
 @keyframes dangerRipple {
     0% {
-        transform: scale(0.85);
-        opacity: 0.9;
-        border-color: rgba(239, 68, 68, 0.9);
+        transform: scale(0.9);
+        opacity: 0.8;
+        border-color: rgba(239, 68, 68, 0.8);
     }
     50% {
-        transform: scale(1.6);
-        opacity: 0.5;
+        transform: scale(1.7);
+        opacity: 0.35;
     }
     100% {
         transform: scale(2.4);
@@ -97,32 +103,166 @@
 
 @keyframes distractedShake {
     0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-8px); }
-    40%, 80% { transform: translateX(8px); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
 }
 
-.danger-ring {
-    position: absolute;
-    border-radius: 9999px;
-    border: 3.5px solid rgba(239, 68, 68, 0.7);
-    pointer-events: none;
-    animation: dangerRipple 1.4s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+.animate-distracted {
+    animation: distractedShake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
-.animate-distracted-shake {
-    animation: distractedShake 0.45s ease-in-out;
+/* 5. Ballot Card Interactive "Sundul" / Spring Lift */
+.ballot-card-sundul {
+    transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.32s ease, border-color 0.25s ease;
+    transform-origin: center bottom;
+    will-change: transform, box-shadow;
 }
 
-/* Touch targets and kiosk cards */
-.touch-target {
-    min-height: 48px;
-    min-width: 48px;
+.ballot-card-sundul:hover {
+    transform: translateY(-8px) scale(1.015);
+    box-shadow: 0 16px 30px -6px rgba(37, 99, 235, 0.14), 0 6px 12px -4px rgba(37, 99, 235, 0.08);
 }
 
-.kiosk-card {
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+.ballot-card-sundul:active {
+    transform: translateY(-2px) scale(0.995);
 }
 
-.kiosk-card:active {
-    transform: scale(0.99);
+/* Card Spring Selection Pop */
+@keyframes selectSundulPop {
+    0% {
+        transform: scale(0.96) translateY(0);
+    }
+    45% {
+        transform: scale(1.03) translateY(-10px);
+    }
+    100% {
+        transform: scale(1.01) translateY(-6px);
+    }
+}
+
+.card-selected-pop {
+    animation: selectSundulPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* 6. Smooth Boomer-Friendly Modal Animation */
+@keyframes boomerModalPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.93) translateY(14px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.boomer-modal-dialog {
+    animation: boomerModalPop 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 7. Image Lightbox Zoom Overlay */
+.lightbox-img-zoom {
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox-img-zoom:hover {
+    transform: scale(1.03);
+}
+
+/* 8. Simple-DataTables Light Modern Styling */
+.datatable-wrapper .datatable-top,
+.datatable-wrapper .datatable-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    font-size: 0.825rem;
+    color: #475569;
+}
+
+.datatable-wrapper .datatable-input {
+    border: 1px solid #cbd5e1;
+    border-radius: 0.75rem;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.815rem;
+    background-color: #f8fafc;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.datatable-wrapper .datatable-input:focus {
+    border-color: #2563eb;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.datatable-wrapper .datatable-selector {
+    border: 1px solid #cbd5e1;
+    border-radius: 0.65rem;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.815rem;
+    background-color: #f8fafc;
+    outline: none;
+    margin: 0 0.35rem;
+}
+
+.datatable-wrapper .datatable-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.datatable-wrapper .datatable-table th {
+    background-color: #f8fafc;
+    color: #334155;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.datatable-wrapper .datatable-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.825rem;
+    color: #1e293b;
+}
+
+.datatable-wrapper .datatable-pagination ul {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.datatable-wrapper .datatable-pagination li a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.datatable-wrapper .datatable-pagination li a:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+.datatable-wrapper .datatable-pagination li.datatable-active a {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
 }
