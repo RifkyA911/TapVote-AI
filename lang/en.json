@@ -68,5 +68,18 @@
     "Export PDF / Print": "Export PDF / Print",
     "Search:": "Search:",
     "Show": "Show",
-    "entries": "entries"
+    "entries": "entries",
+    "Activate Smartphone NFC Sensor (Tap on Back of Phone)": "Activate Smartphone NFC Sensor (Tap on Back of Phone)",
+    "Chrome NFC Permissions Required": "Chrome NFC Permissions Required",
+    "Test Unknown Card (Foreign)": "Test Unknown Card (Foreign)",
+    "Demo Accounts DataTable": "Demo Accounts DataTable",
+    "Master Doorprize Rewards": "Master Doorprize Rewards",
+    "Doorprize Winner Claim Status": "Doorprize Winner Claim Status",
+    "Accepted": "Accepted",
+    "Rejected": "Rejected",
+    "Pending Claim": "Pending Claim",
+    "Other Reason": "Other Reason",
+    "Test Gemini API Key": "Test Gemini API Key",
+    "Export Official Recap PDF": "Export Official Recap PDF",
+    "Export Official Recap Excel": "Export Official Recap Excel"
 }
