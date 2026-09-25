@@ -115,6 +115,108 @@
     </div>
 
     <!-- ======================================================== -->
+    <!-- 3D INTERACTIVE RFID SMART CARD SHOWCASE (THREE.JS)       -->
+    <!-- Showcase Portofolio & Hardware Credential                -->
+    <!-- ======================================================== -->
+    <div class="mb-12 p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white border border-slate-800 shadow-2xl relative overflow-hidden">
+        <!-- Ambient decorative lights -->
+        <div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-blue-600/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-indigo-600/15 blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- Left Column: Showcase Info & Controls -->
+            <div class="lg:col-span-5 space-y-4 text-left">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-black uppercase tracking-wider">
+                    <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                    <span>Three.js 3D Asset Showcase</span>
+                </div>
+
+                <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
+                    Kartu RFID Mifare Contactless 3D
+                </h2>
+
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Visualisasi kartu pintar pemilih berbasis WebGL 3D. Arahkan kursor mouse atau sentuh dan geser layar untuk memutar kartu <strong>360° pada sumbu X & Y</strong> secara interaktif.
+                </p>
+
+                <!-- Feature Specs Badges -->
+                <div class="grid grid-cols-2 gap-2.5 pt-2 text-xs">
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Standard</span>
+                        <strong class="text-white font-mono">ISO/IEC 14443A</strong>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Chip Frequency</span>
+                        <strong class="text-amber-400 font-mono">13.56 MHz HF</strong>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Enkripsi</span>
+                        <strong class="text-emerald-400 font-mono">Crypto-1 / AES</strong>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Form Factor</span>
+                        <strong class="text-blue-400 font-mono">ID-1 Dimensions</strong>
+                    </div>
+                </div>
+
+                <!-- Interactive 3D Controls -->
+                <div class="flex flex-wrap items-center gap-2 pt-3">
+                    <button 
+                        type="button" 
+                        id="btn-3d-toggle-spin"
+                        onclick="toggleCardAutoSpin()"
+                        class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition cursor-pointer flex items-center space-x-1.5"
+                    >
+                        <span id="btn-spin-icon">⏸</span>
+                        <span id="btn-spin-text">Jeda Putaran</span>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        onclick="flipCard3D()"
+                        class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition cursor-pointer flex items-center space-x-1.5"
+                    >
+                        <span>🔄 Balik Kartu</span>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        onclick="rotateCard360X()"
+                        class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition cursor-pointer flex items-center space-x-1.5"
+                    >
+                        <span>↕ Putar 360° X</span>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        onclick="resetCardView()"
+                        class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/15 text-slate-300 font-bold text-xs border border-white/10 transition cursor-pointer"
+                        title="Reset Sudut"
+                    >
+                        ⟲ Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Interactive Three.js 3D Canvas Viewport -->
+            <div class="lg:col-span-7 flex flex-col items-center justify-center">
+                <div class="relative w-full max-w-lg aspect-[1.35/1] sm:aspect-[1.45/1] rounded-3xl bg-slate-900/60 border border-white/10 shadow-2xl backdrop-blur-md overflow-hidden flex items-center justify-center group cursor-grab active:cursor-grabbing">
+                    <!-- Canvas Container -->
+                    <div id="rfid-3d-card-canvas" class="w-full h-full"></div>
+
+                    <!-- Subtle Interaction Badge -->
+                    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-slate-950/80 border border-white/15 text-[11px] text-slate-300 font-medium pointer-events-none backdrop-blur-xs flex items-center space-x-1.5 shadow-md">
+                        <span>👆</span>
+                        <span>Geser kursor atau drag untuk memutar 360°</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
     <!-- KANDIDAT KETUA KOPERASI SHOWCASE (PALET MERAH)           -->
     <!-- ======================================================== -->
     <section class="mb-10">
@@ -339,12 +441,62 @@
     let rawPengawasData = @json($pengawasResults);
     let currentChartMode = 'all'; // 'all', 'ketua', 'pengawas'
     let comparisonChart = null;
+    let rfid3dInstance = null;
 
     document.addEventListener('DOMContentLoaded', function() {
         initLiveWibClock();
         initComparisonChart();
         initLiveSSE();
+        initRfid3DShowcase();
     });
+
+    // Three.js 3D RFID Showcase Initializer & Handlers
+    function initRfid3DShowcase() {
+        const container = document.getElementById('rfid-3d-card-canvas');
+        if (!container) return;
+
+        if (typeof window.initRfid3DCard === 'function') {
+            rfid3dInstance = window.initRfid3DCard('rfid-3d-card-canvas', {
+                autoRotate: true,
+                rotationSpeed: 0.012
+            });
+        }
+    }
+
+    function toggleCardAutoSpin() {
+        if (!rfid3dInstance) return;
+        const isSpinning = rfid3dInstance.toggleAutoRotate();
+        const icon = document.getElementById('btn-spin-icon');
+        const text = document.getElementById('btn-spin-text');
+        if (icon && text) {
+            icon.innerText = isSpinning ? '⏸' : '▶';
+            text.innerText = isSpinning ? 'Jeda Putaran' : 'Mulai Putar';
+        }
+    }
+
+    function flipCard3D() {
+        if (rfid3dInstance) {
+            rfid3dInstance.flipCard();
+        }
+    }
+
+    function rotateCard360X() {
+        if (rfid3dInstance) {
+            rfid3dInstance.rotateX360();
+        }
+    }
+
+    function resetCardView() {
+        if (rfid3dInstance) {
+            rfid3dInstance.resetAngle();
+            const icon = document.getElementById('btn-spin-icon');
+            const text = document.getElementById('btn-spin-text');
+            if (icon && text) {
+                icon.innerText = '⏸';
+                text.innerText = 'Jeda Putaran';
+            }
+        }
+    }
 
     // 0. Live Clock WIB
     function initLiveWibClock() {

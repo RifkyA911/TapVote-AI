@@ -181,10 +181,6 @@
                             <!-- Identitas Calon: Font Elegan, Besar & Kontras -->
                             <div class="p-5 pb-3">
                                 <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-snug">{{ $ketua->nama }}</h3>
-                                <div class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs sm:text-sm font-mono font-bold text-red-800 mt-1.5">
-                                    <span>NIK:</span>
-                                    <span>{{ $ketua->nik }}</span>
-                                </div>
                             </div>
                         </div>
 
@@ -288,10 +284,6 @@
                             <!-- Identitas Calon: Font Elegan, Besar & Kontras -->
                             <div class="p-5 pb-3">
                                 <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-snug">{{ $pengawas->nama }}</h3>
-                                <div class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-xs sm:text-sm font-mono font-bold text-emerald-800 mt-1.5">
-                                    <span>NIK:</span>
-                                    <span>{{ $pengawas->nik }}</span>
-                                </div>
                             </div>
                         </div>
 
@@ -382,10 +374,6 @@
                         <div>
                             <span class="text-xs uppercase font-extrabold text-red-700 tracking-wider block mb-1">{{ __('Calon Ketua Koperasi') }}</span>
                             <h4 id="review-ketua-nama" class="text-xl sm:text-2xl font-black text-slate-950 leading-snug">Nama Calon</h4>
-                            <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-red-50 border border-red-200 text-xs sm:text-sm font-mono font-bold text-red-900 mt-2">
-                                <span>NIK:</span>
-                                <span id="review-ketua-nik">-</span>
-                            </div>
                         </div>
                     </div>
 
@@ -417,10 +405,6 @@
                         <div>
                             <span class="text-xs uppercase font-extrabold text-emerald-800 tracking-wider block mb-1">{{ __('Calon Pengawas Koperasi') }}</span>
                             <h4 id="review-pengawas-nama" class="text-xl sm:text-2xl font-black text-slate-950 leading-snug">Nama Calon</h4>
-                            <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm font-mono font-bold text-emerald-900 mt-2">
-                                <span>NIK:</span>
-                                <span id="review-pengawas-nik">-</span>
-                            </div>
                         </div>
                     </div>
 
@@ -882,13 +866,11 @@
         document.getElementById('review-ketua-img').src = selectedKetua.foto;
         document.getElementById('review-ketua-nomor').innerText = selectedKetua.nomor;
         document.getElementById('review-ketua-nama').innerText = selectedKetua.nama;
-        document.getElementById('review-ketua-nik').innerText = selectedKetua.nik;
 
         // Pengawas
         document.getElementById('review-pengawas-img').src = selectedPengawas.foto;
         document.getElementById('review-pengawas-nomor').innerText = selectedPengawas.nomor;
         document.getElementById('review-pengawas-nama').innerText = selectedPengawas.nama;
-        document.getElementById('review-pengawas-nik').innerText = selectedPengawas.nik;
     }
 
     // 6. Submit Suara Final dengan Throttle, Spinner, Gebyar Congrats & Spicy Error

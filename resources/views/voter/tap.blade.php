@@ -228,12 +228,47 @@
                 @elseif(($votingStatus ?? 'STARTED') === 'PAUSED' || ($votingStatus ?? 'STARTED') === 'STOPPED')
                     {{ __('Bilik suara sedang dikunci oleh panitia.') }}
                 @else
-                    {{ __('Input otomatis terdeteksi tanpa perlu menekan layar.') }}
+                    {{ __('Input otomatis terdeteksi via NFC HP atau Hardware Scanner.') }}
                 @endif
             </p>
+
+            <!-- Mobile Native Web NFC & Manual Input Section -->
+            <div class="w-full max-w-sm mx-auto mt-4 space-y-2.5">
+                <!-- Native Web NFC Button (Auto-detected if supported) -->
+                <div id="nfc-support-container" class="hidden">
+                    <button 
+                        type="button" 
+                        id="btn-start-nfc"
+                        onclick="startNfcScan()" 
+                        class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-extrabold text-xs sm:text-sm shadow-md transition flex items-center justify-center space-x-2 cursor-pointer"
+                    >
+                        <span class="text-lg">📱</span>
+                        <span id="nfc-btn-label">Aktifkan Sensor NFC HP (Tempel di Punggung HP)</span>
+                    </button>
+                </div>
+
+                <!-- Manual UID / NIK Input for Mobile Test & Typing -->
+                <div class="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-slate-200 shadow-sm">
+                    <form onsubmit="handleManualMobileSubmit(event)" class="flex gap-2">
+                        <input 
+                            type="text" 
+                            id="mobile_manual_input" 
+                            placeholder="Ketik UID / RFID (contoh: 2024001)..." 
+                            class="flex-1 px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm font-mono text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition"
+                        >
+                        <button 
+                            type="submit" 
+                            class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs transition shadow-xs cursor-pointer shrink-0"
+                        >
+                            Masuk →
+                        </button>
+                    </form>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Hidden Form & Input (Hanya menerima input dari Keplek Hardware Reader) -->
+        <!-- Hidden Form & Input (Menerima input dari Keplek Hardware Reader & JS) -->
         <form action="{{ route('voter.tap.process') }}" method="POST" id="tap-form" class="opacity-0 pointer-events-none absolute -top-96 -left-96" aria-hidden="true" tabindex="-1">
             @csrf
             <input 
@@ -344,6 +379,70 @@
     const tapTitle = document.getElementById('tap-title');
     const tapStatusPill = document.getElementById('tap-status-pill');
     const tapStatusText = document.getElementById('tap-status-text');
+
+    // Mobile Manual Input Submit
+    function handleManualMobileSubmit(e) {
+        e.preventDefault();
+        const inp = document.getElementById('mobile_manual_input');
+        const val = inp ? inp.value.trim() : '';
+        if (!val) {
+            alert('Masukkan UID kartu atau NIK terlebih dahulu.');
+            return;
+        }
+        triggerCardTap(val);
+    }
+
+    // Web NFC API Support (Google Chrome on Android)
+    async function initWebNfcDetection() {
+        if ('NDEFReader' in window) {
+            const container = document.getElementById('nfc-support-container');
+            if (container) container.classList.remove('hidden');
+        }
+    }
+
+    async function startNfcScan() {
+        if (!('NDEFReader' in window)) {
+            alert('Web NFC tidak didukung oleh browser ini. Pastikan Anda membuka melalui browser Google Chrome di HP Android dengan fitur NFC aktif.');
+            return;
+        }
+
+        const btnLabel = document.getElementById('nfc-btn-label');
+        if (btnLabel) btnLabel.innerText = 'Sensor NFC Aktif... Tempelkan Kartu di Punggung HP!';
+
+        try {
+            const ndef = new NDEFReader();
+            await ndef.scan();
+            
+            tapTitle.innerText = "Sensor NFC HP Aktif!";
+            tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-blue-100 border-2 border-blue-400 text-blue-950 text-sm sm:text-base font-black shadow-md";
+            tapStatusText.innerText = "Tempelkan kartu ke punggung HP Anda...";
+
+            ndef.onreading = (event) => {
+                const serial = event.serialNumber;
+                if (serial) {
+                    const clean = serial.replace(/[:\s-]/g, '').toUpperCase();
+                    triggerCardTap(clean);
+                } else if (event.message && event.message.records.length > 0) {
+                    const record = event.message.records[0];
+                    const textDecoder = new TextDecoder(record.encoding || 'utf-8');
+                    const content = textDecoder.decode(record.data);
+                    triggerCardTap(content.trim());
+                }
+            };
+
+            ndef.onreadingerror = () => {
+                triggerUnknownCardTest('NFC_READ_ERROR');
+            };
+        } catch (err) {
+            console.error('NFC error:', err);
+            alert('Gagal menyalakan sensor NFC: ' + err.message + '\nPastikan izin NFC diizinkan.');
+            if (btnLabel) btnLabel.innerText = 'Aktifkan Sensor NFC HP (Tempel di Punggung HP)';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initWebNfcDetection();
+    });
 
     // 1. Toggle Akun Demo
     function toggleDemoSection() {
