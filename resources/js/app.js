@@ -1,10 +1,12 @@
 import Chart from 'chart.js/auto';
+import ApexCharts from 'apexcharts';
 import confetti from 'canvas-confetti';
 import { DataTable } from 'simple-datatables';
 import * as THREE from 'three';
 import { initRfid3DCard } from './rfid3d';
 
 window.Chart = Chart;
+window.ApexCharts = ApexCharts;
 window.confetti = confetti;
 window.DataTable = DataTable;
 window.THREE = THREE;
