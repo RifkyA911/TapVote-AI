@@ -463,43 +463,79 @@
 </div>
 
 <!-- ============================================== -->
-<!-- FLOATING SUMMARY DOCK (Hanya Tampil di Step 1 & 2) -->
+<!-- UNIFIED STICKY FOOTER NAVIGATION BAR           -->
 <!-- ============================================== -->
-<div id="floating-ballot-dock" class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t-2 border-slate-200 shadow-2xl py-3.5 px-4 sm:px-6 z-40">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+<div id="floating-ballot-dock" class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t-2 border-slate-200 shadow-2xl py-3 px-4 sm:px-6 z-40">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
         
         <!-- Status Pilihan Pemilih -->
-        <div class="flex items-center gap-4 text-xs sm:text-sm w-full sm:w-auto justify-between sm:justify-start">
-            <div class="flex items-center space-x-2.5">
-                <span class="w-8 h-8 rounded-xl bg-red-600 text-white font-black text-sm flex items-center justify-center shadow-xs">1</span>
+        <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm w-full md:w-auto justify-between md:justify-start">
+            <div class="flex items-center space-x-2 sm:space-x-2.5">
+                <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-red-600 text-white font-black text-xs sm:text-sm flex items-center justify-center shadow-xs">1</span>
                 <div>
-                    <span class="text-[11px] sm:text-xs text-slate-500 font-bold block">{{ __('Ketua Koperasi:') }}</span>
-                    <strong id="dock-summary-ketua" class="text-rose-600 font-black text-xs sm:text-sm">{{ __('(Belum Dipilih)') }}</strong>
+                    <span class="text-[10px] sm:text-xs text-slate-500 font-bold block">{{ __('Ketua:') }}</span>
+                    <strong id="dock-summary-ketua" class="text-rose-600 font-black text-xs sm:text-sm truncate max-w-[130px] sm:max-w-[180px] block">{{ __('(Belum Dipilih)') }}</strong>
                 </div>
             </div>
 
-            <div class="h-9 w-px bg-slate-200"></div>
+            <div class="h-8 w-px bg-slate-200"></div>
 
-            <div class="flex items-center space-x-2.5">
-                <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center shadow-xs">2</span>
+            <div class="flex items-center space-x-2 sm:space-x-2.5">
+                <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-600 text-white font-black text-xs sm:text-sm flex items-center justify-center shadow-xs">2</span>
                 <div>
-                    <span class="text-[11px] sm:text-xs text-slate-500 font-bold block">{{ __('Pengawas Koperasi:') }}</span>
-                    <strong id="dock-summary-pengawas" class="text-rose-600 font-black text-xs sm:text-sm">{{ __('(Belum Dipilih)') }}</strong>
+                    <span class="text-[10px] sm:text-xs text-slate-500 font-bold block">{{ __('Pengawas:') }}</span>
+                    <strong id="dock-summary-pengawas" class="text-rose-600 font-black text-xs sm:text-sm truncate max-w-[130px] sm:max-w-[180px] block">{{ __('(Belum Dipilih)') }}</strong>
                 </div>
             </div>
         </div>
 
-        <!-- Tombol Lanjut ke Review / Konfirmasi -->
-        <button 
-            type="button" 
-            id="dock-btn-review"
-            disabled
-            onclick="goToStep(3)"
-            class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-sm sm:text-base shadow-md disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 transition-all duration-300 cursor-pointer flex items-center justify-center space-x-2.5"
-        >
-            <span>{{ __('TINJAU & KIRIM SUARA') }}</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-        </button>
+        <!-- Group Navigasi: Kembali, Lanjut, Tinjau, Vote Sekarang -->
+        <div class="flex items-center gap-2 sm:gap-3 w-full md:w-auto justify-end">
+            <!-- Tombol Kembali -->
+            <button 
+                type="button" 
+                id="dock-btn-back"
+                onclick="navigateStepBack()"
+                class="hidden px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs sm:text-sm transition flex items-center space-x-1.5 cursor-pointer border border-slate-300"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                <span>{{ __('Kembali') }}</span>
+            </button>
+
+            <!-- Tombol Lanjut -->
+            <button 
+                type="button" 
+                id="dock-btn-next"
+                onclick="navigateStepNext()"
+                class="px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm shadow-md transition flex items-center space-x-1.5 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500"
+                disabled
+            >
+                <span id="dock-btn-next-label">{{ __('Lanjut ke Pengawas') }}</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+
+            <!-- Tombol Tinjau (Shortcut jika kedua pilihan sudah siap) -->
+            <button 
+                type="button" 
+                id="dock-btn-review"
+                onclick="goToStep(3)"
+                class="hidden px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow-md transition flex items-center space-x-1.5 cursor-pointer"
+            >
+                <span>{{ __('Tinjau Pilihan') }}</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </button>
+
+            <!-- Tombol Vote Sekarang (Hanya di Step 3) -->
+            <button 
+                type="button" 
+                id="dock-btn-submit"
+                onclick="executeVoteSubmission()"
+                class="hidden px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-base shadow-xl transition flex items-center space-x-2 cursor-pointer ring-4 ring-emerald-300"
+            >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" /></svg>
+                <span>{{ __('Vote Sekarang') }}</span>
+            </button>
+        </div>
     </div>
 </div>
 
@@ -674,6 +710,8 @@
         @if(session('error'))
             showSpicyError("{{ session('error') }}");
         @endif
+
+        updateDockControls();
     });
 
     // 2. Wizard Navigation System
@@ -702,18 +740,88 @@
         // Update stepper tab indicators
         updateStepperIndicators();
 
-        // Control floating dock visibility (hide on step 3)
+        // Control floating dock visibility & dynamic buttons across all steps
         const dock = document.getElementById('floating-ballot-dock');
         if (dock) {
+            dock.classList.remove('hidden');
             if (stepNumber === 3) {
-                dock.classList.add('hidden');
                 populateReviewStep();
-            } else {
-                dock.classList.remove('hidden');
             }
+            updateDockControls();
         }
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function navigateStepBack() {
+        if (currentStep === 3) {
+            goToStep(2);
+        } else if (currentStep === 2) {
+            goToStep(1);
+        }
+    }
+
+    function navigateStepNext() {
+        if (currentStep === 1) {
+            if (!selectedKetua) {
+                alert("{{ __('Silakan sentuh 1 Calon Ketua terlebih dahulu.') }}");
+                return;
+            }
+            goToStep(2);
+        } else if (currentStep === 2) {
+            if (!selectedPengawas) {
+                alert("{{ __('Silakan sentuh 1 Calon Pengawas terlebih dahulu.') }}");
+                return;
+            }
+            goToStep(3);
+        }
+    }
+
+    function updateDockControls() {
+        const btnBack = document.getElementById('dock-btn-back');
+        const btnNext = document.getElementById('dock-btn-next');
+        const btnNextLabel = document.getElementById('dock-btn-next-label');
+        const btnReview = document.getElementById('dock-btn-review');
+        const btnSubmit = document.getElementById('dock-btn-submit');
+
+        if (!btnBack || !btnNext || !btnSubmit) return;
+
+        if (currentStep === 1) {
+            btnBack.classList.add('hidden');
+            btnNext.classList.remove('hidden');
+            if (btnNextLabel) btnNextLabel.innerText = "{{ __('Lanjut ke Pengawas') }}";
+            if (selectedKetua) {
+                btnNext.removeAttribute('disabled');
+            } else {
+                btnNext.setAttribute('disabled', 'disabled');
+            }
+            if (selectedKetua && selectedPengawas) {
+                btnReview.classList.remove('hidden');
+            } else {
+                btnReview.classList.add('hidden');
+            }
+            btnSubmit.classList.add('hidden');
+        } else if (currentStep === 2) {
+            btnBack.classList.remove('hidden');
+            btnNext.classList.remove('hidden');
+            if (btnNextLabel) btnNextLabel.innerText = "{{ __('Lanjut ke Tinjau') }}";
+            if (selectedPengawas) {
+                btnNext.removeAttribute('disabled');
+            } else {
+                btnNext.setAttribute('disabled', 'disabled');
+            }
+            if (selectedKetua && selectedPengawas) {
+                btnReview.classList.remove('hidden');
+            } else {
+                btnReview.classList.add('hidden');
+            }
+            btnSubmit.classList.add('hidden');
+        } else if (currentStep === 3) {
+            btnBack.classList.remove('hidden');
+            btnNext.classList.add('hidden');
+            btnReview.classList.add('hidden');
+            btnSubmit.classList.remove('hidden');
+        }
     }
 
     function updateStepperIndicators() {
@@ -848,14 +956,7 @@
     }
 
     function checkDockReadiness() {
-        const btnDock = document.getElementById('dock-btn-review');
-        if (selectedKetua && selectedPengawas) {
-            btnDock.removeAttribute('disabled');
-            btnDock.classList.add('animate-pulse');
-        } else {
-            btnDock.setAttribute('disabled', 'disabled');
-            btnDock.classList.remove('animate-pulse');
-        }
+        updateDockControls();
     }
 
     // 5. Populate Step 3 Review Screen
