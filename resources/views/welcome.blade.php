@@ -104,6 +104,86 @@
         </div>
     </div>
 
+    <!-- ======================================================== -->
+    <!-- ELECTION CATEGORIES & PROCEDURAL GUIDE                   -->
+    <!-- (Simple, Clean, Easy to understand for all ages)         -->
+    <!-- ======================================================== -->
+    <div class="mb-10 p-6 sm:p-7 rounded-3xl bg-slate-50 border border-slate-200">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 mb-5 border-b border-slate-200">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div>
+                    <h3 class="text-base sm:text-lg font-black text-slate-900">{{ __('Panduan & Kategori Pemilihan') }}</h3>
+                    <p class="text-xs text-slate-500 font-medium">{{ __('Ringkasan peran kepengurusan koperasi dan ketentuan pemberian suara sah') }}</p>
+                </div>
+            </div>
+            <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white text-slate-700 border border-slate-200 shadow-2xs self-start md:self-auto">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>{{ __('Asas Luber Jurdil & Terverifikasi') }}</span>
+            </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            <!-- Card 1: Ketua Koperasi -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2.5">
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase bg-red-50 text-red-700 border border-red-200">Kategori 1</span>
+                        <span class="text-xs font-bold text-slate-400">1 Suara Sah</span>
+                    </div>
+                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 mb-1.5">{{ __('Ketua Koperasi') }}</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        {{ __('Pemimpin eksekutif yang bertugas menyusun visi strategis, mengelola operasional usaha, dan mengayomi kesejahteraan seluruh anggota koperasi.') }}
+                    </p>
+                </div>
+                <div class="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-red-700">
+                    <span>{{ count($ketuaResults) }} {{ __('Kandidat Terdaftar') }}</span>
+                    <span>Wajib Memilih 1</span>
+                </div>
+            </div>
+
+            <!-- Card 2: Pengawas Koperasi -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2.5">
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase bg-emerald-50 text-emerald-800 border border-emerald-200">Kategori 2</span>
+                        <span class="text-xs font-bold text-slate-400">1 Suara Sah</span>
+                    </div>
+                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 mb-1.5">{{ __('Badan Pengawas') }}</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        {{ __('Badan independen yang bertanggung jawab melakukan audit kepatuhan, pengawasan laporan keuangan, serta tata kelola organisasi koperasi.') }}
+                    </p>
+                </div>
+                <div class="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-emerald-800">
+                    <span>{{ count($pengawasResults) }} {{ __('Kandidat Terdaftar') }}</span>
+                    <span>Wajib Memilih 1</span>
+                </div>
+            </div>
+
+            <!-- Card 3: Prosedur Voting -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2.5">
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase bg-blue-50 text-blue-700 border border-blue-200">Prosedur</span>
+                        <span class="text-xs font-mono font-bold text-slate-500">Mifare RFID</span>
+                    </div>
+                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 mb-1.5">{{ __('Tata Cara Memilih') }}</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        {{ __('1. Tempelkan kartu ID / Keplek di sensor scanner bilik suara.') }}<br>
+                        {{ __('2. Pilih masing-masing 1 kandidat Ketua & Pengawas.') }}<br>
+                        {{ __('3. Tinjau pilihan & sentuh Vote Sekarang.') }}
+                    </p>
+                </div>
+                <div class="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-700">
+                    <span>{{ __('Enkripsi SHA-256') }}</span>
+                    <span>1 Anggota 1 Suara</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- ======================================================== -->
@@ -525,6 +605,8 @@
                         }
                     },
                     x: {
+                        barPercentage: 0.6,
+                        categoryPercentage: 0.6,
                         ticks: {
                             display: false // Hide text ticks, rendered as circular photo avatars by candidateAvatarPlugin
                         },
@@ -548,7 +630,9 @@
                     hoverBackgroundColor: '#dc2626',
                     borderColor: '#b91c1c',
                     borderWidth: 2,
-                    borderRadius: 10,
+                    borderRadius: 8,
+                    barThickness: 22,
+                    maxBarThickness: 30,
                 }]
             };
         } else if (mode === 'pengawas') {
@@ -561,7 +645,9 @@
                     hoverBackgroundColor: '#059669',
                     borderColor: '#047857',
                     borderWidth: 2,
-                    borderRadius: 10,
+                    borderRadius: 8,
+                    barThickness: 22,
+                    maxBarThickness: 30,
                 }]
             };
         } else {
@@ -582,7 +668,9 @@
                         hoverBackgroundColor: '#dc2626',
                         borderColor: '#b91c1c',
                         borderWidth: 2,
-                        borderRadius: 10,
+                        borderRadius: 8,
+                        barThickness: 22,
+                        maxBarThickness: 30,
                         grouped: false,
                     },
                     {
@@ -592,7 +680,9 @@
                         hoverBackgroundColor: '#059669',
                         borderColor: '#047857',
                         borderWidth: 2,
-                        borderRadius: 10,
+                        borderRadius: 8,
+                        barThickness: 22,
+                        maxBarThickness: 30,
                         grouped: false,
                     }
                 ]
