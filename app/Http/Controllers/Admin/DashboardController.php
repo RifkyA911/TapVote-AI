@@ -31,6 +31,7 @@ class DashboardController extends Controller
         $aiConclusion = null; // Lazy-loaded on explicit user click
         $votingStatus = AppSetting::get('voting_status', 'STARTED');
         $geminiKey = AppSetting::get('gemini_api_key', '');
+        $timelineData = $this->gatherVotingTimeline();
 
         return view('admin.dashboard', compact(
             'totalVoters',
@@ -43,7 +44,8 @@ class DashboardController extends Controller
             'recentLogs',
             'aiConclusion',
             'votingStatus',
-            'geminiKey'
+            'geminiKey',
+            'timelineData'
         ));
     }
 
@@ -157,6 +159,164 @@ class DashboardController extends Controller
         }
 
         return redirect()->back()->with('success', empty($key) ? 'Gemini API Key dihapus. AI Conclusion beralih ke analisis statistik lokal.' : 'Gemini API Key Google AI Studio berhasil disimpan!');
+    }
+
+    /**
+     * Test Konektivitas Google Gemini Generative AI Key dengan Feedback Latensi
+     */
+    public function testGeminiKey(Request $request)
+    {
+        $request->validate([
+            'gemini_api_key' => 'nullable|string|max:255',
+            'api_key' => 'nullable|string|max:255',
+        ]);
+
+        $apiKey = trim($request->gemini_api_key ?? $request->api_key ?? AppSetting::get('gemini_api_key', ''));
+        if (empty($apiKey)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'API Key kosong. Silakan masukkan Gemini API Key dari Google AI Studio.'
+            ], 422);
+        }
+
+        $startTime = microtime(true);
+        $models = ['gemini-2.0-flash', 'gemini-1.5-flash'];
+        $lastError = null;
+
+        foreach ($models as $model) {
+            try {
+                $response = Http::timeout(10)->post("https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}", [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                ['text' => 'Hello Gemini! Ping test connection for TapVote-AI election system. Reply with word PONG and confirm connection is working.']
+                            ]
+                        ]
+                    ],
+                    'generationConfig' => [
+                        'temperature' => 0.1,
+                        'maxOutputTokens' => 60,
+                    ]
+                ]);
+
+                $latencyMs = round((microtime(true) - $startTime) * 1000);
+
+                if ($response->successful()) {
+                    $resData = $response->json();
+                    $replyText = $resData['candidates'][0]['content']['parts'][0]['text'] ?? 'Connected';
+
+                    return response()->json([
+                        'success' => true,
+                        'model' => $model,
+                        'latency_ms' => $latencyMs,
+                        'message' => "Koneksi Google Gemini API BERHASIL! (Model: {$model}, Latensi: {$latencyMs}ms)",
+                        'reply' => trim($replyText),
+                    ]);
+                } else {
+                    $errBody = $response->json();
+                    $lastError = $errBody['error']['message'] ?? $response->body();
+                }
+            } catch (\Throwable $e) {
+                $lastError = $e->getMessage();
+            }
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => "Gagal terhubung ke Google Gemini API: " . ($lastError ?: 'Koneksi timeout atau API key tidak valid.'),
+        ], 422);
+    }
+
+    /**
+     * Ekspor Rekapitulasi Resmi ke Format Excel (CSV UTF-8 BOM)
+     */
+    public function exportRecapExcel()
+    {
+        $payload = $this->gatherVotingMetrics();
+        $totalVoters = $payload['metrics']['total_voters'];
+        $totalVoted = $payload['metrics']['total_voted'];
+        $remaining = $payload['metrics']['remaining_voters'];
+        $turnout = $payload['metrics']['turnout_percentage'];
+        $status = $payload['voting_status'];
+
+        $csv = "\xEF\xBB\xBF"; // UTF-8 BOM for Microsoft Excel
+        $csv .= "REKAPITULASI RESMI HASIL PEMILIHAN - TAPVOTE AI\n";
+        $csv .= "Waktu Unduh," . now()->format('Y-m-d H:i:s') . " WIB\n";
+        $csv .= "Status Operasional Sistem," . $status . "\n";
+        $csv .= "Total DPT Terdaftar," . $totalVoters . " Pemilih\n";
+        $csv .= "Total Suara Masuk," . $totalVoted . " Suara (" . $turnout . "% Partisipasi)\n";
+        $csv .= "Sisa Belum Memilih," . $remaining . " Pemilih\n";
+        $csv .= "Status Kuorum," . ($turnout >= 50.0 ? "KUORUM TERPENUHI (SAH)" : "BELUM KUORUM") . "\n\n";
+
+        $csv .= "--- PEROLEHAN SUARA CALON KETUA KOPERASI ---\n";
+        $csv .= "Nomor Urut,Nama Calon Ketua,Perolehan Suara,Persentase,Status\n";
+        foreach ($payload['ketua_results'] as $k) {
+            $st = $k['is_leader'] ? 'Unggul Sementara' : ($k['is_tie'] ? 'Seri (Draw)' : 'Kandidat');
+            $csv .= "\"{$k['nomor_urut']}\",\"{$k['nama']}\",\"{$k['suara']}\",\"{$k['persen']}%\",\"{$st}\"\n";
+        }
+
+        $csv .= "\n--- PEROLEHAN SUARA CALON PENGAWAS KOPERASI ---\n";
+        $csv .= "Nomor Urut,Nama Calon Pengawas,Perolehan Suara,Persentase,Status\n";
+        foreach ($payload['pengawas_results'] as $p) {
+            $st = $p['is_leader'] ? 'Unggul Sementara' : ($p['is_tie'] ? 'Seri (Draw)' : 'Kandidat');
+            $csv .= "\"{$p['nomor_urut']}\",\"{$p['nama']}\",\"{$p['suara']}\",\"{$p['persen']}%\",\"{$st}\"\n";
+        }
+
+        return response($csv, 200, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="rekapitulasi_pemilihan_' . date('Ymd_His') . '.csv"',
+        ]);
+    }
+
+    /**
+     * Ekspor Berita Acara & Rekapitulasi Resmi ke PDF Vector Beresolusi Tinggi (DomPDF)
+     */
+    public function exportRecapPdf()
+    {
+        $metrics = $this->gatherVotingMetrics();
+        $timeline = $this->gatherVotingTimeline();
+        
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.reports.pdf_recap', compact('metrics', 'timeline'));
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->download('Berita_Acara_Rekapitulasi_Pemilihan_' . date('Ymd_His') . '.pdf');
+    }
+
+    /**
+     * Ambil Distribusi Waktu Jam Pemilih Mencoblos
+     */
+    public function gatherVotingTimeline(): array
+    {
+        $votedRecords = Pemilih::where('pilih', 'T')
+            ->whereNotNull('voted_at')
+            ->orderBy('voted_at', 'asc')
+            ->get(['voted_at']);
+
+        // Default buckets dari jam 07:00 sampai 17:00
+        $hourBuckets = [];
+        for ($h = 7; $h <= 17; $h++) {
+            $hourStr = sprintf('%02d:00', $h);
+            $hourBuckets[$hourStr] = 0;
+        }
+
+        foreach ($votedRecords as $r) {
+            if ($r->voted_at) {
+                $h = $r->voted_at->timezone('Asia/Jakarta')->format('H') . ':00';
+                if (isset($hourBuckets[$h])) {
+                    $hourBuckets[$h]++;
+                } else {
+                    $hourBuckets[$h] = 1;
+                }
+            }
+        }
+
+        ksort($hourBuckets);
+
+        return [
+            'categories' => array_keys($hourBuckets),
+            'series' => array_values($hourBuckets),
+            'total_recorded' => $votedRecords->count(),
+        ];
     }
 
     /**
