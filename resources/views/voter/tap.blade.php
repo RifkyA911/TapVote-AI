@@ -2,6 +2,10 @@
 
 @section('title', __('Kios Pemilih - Tempelkan Kartu'))
 
+@section('custom_backdrop')
+    <div class="fixed inset-0 pointer-events-none z-0 bg-square-mesh"></div>
+@endsection
+
 @section('content')
 <div class="flex-1 flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-h-screen">
 

@@ -2,10 +2,6 @@
 
 @section('title', __('Ballot Booth - Cooperative Election'))
 
-@section('custom_backdrop')
-    <div class="fixed inset-0 pointer-events-none z-0 bg-square-mesh"></div>
-@endsection
-
 @section('content')
 <!-- Full-Screen Cinematic Lottie/GSAP-Style Welcoming Overlay (3 Detik) -->
 <div id="vote-welcome-overlay" class="fixed inset-0 z-[100] bg-slate-950 flex flex-col items-center justify-center p-6 text-white overflow-hidden transition-all duration-700 ease-out">
