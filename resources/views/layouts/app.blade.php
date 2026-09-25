@@ -17,13 +17,6 @@
 
     @hasSection('custom_backdrop')
         @yield('custom_backdrop')
-    @else
-        <!-- Soft Light Ambient Backdrop -->
-        <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-            <div class="absolute -top-32 -left-32 w-96 h-96 bg-blue-200/40 rounded-full blur-3xl"></div>
-            <div class="absolute top-1/3 -right-32 w-96 h-96 bg-indigo-200/30 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-32 left-1/3 w-96 h-96 bg-emerald-200/30 rounded-full blur-3xl"></div>
-        </div>
     @endif
 
     <!-- Alert Notifications with Audio Triggers -->

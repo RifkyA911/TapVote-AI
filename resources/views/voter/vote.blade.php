@@ -3,60 +3,45 @@
 @section('title', __('Ballot Booth - Cooperative Election'))
 
 @section('content')
-<!-- Full-Screen Cinematic Lottie/GSAP-Style Welcoming Overlay (3 Detik) -->
-<div id="vote-welcome-overlay" class="fixed inset-0 z-[100] bg-slate-950 flex flex-col items-center justify-center p-6 text-white overflow-hidden transition-all duration-700 ease-out">
-    <!-- Ambient Backdrop Effects -->
-    <div class="absolute inset-0 bg-square-mesh opacity-15 pointer-events-none"></div>
-    <div class="absolute -top-32 -left-32 w-96 h-96 bg-red-600/25 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-emerald-600/25 rounded-full blur-3xl pointer-events-none"></div>
-
-    <div id="vote-welcome-card" class="relative z-10 flex flex-col items-center text-center max-w-lg w-full transform transition-all duration-700 scale-100">
-        <!-- Expanding Lottie Rings -->
-        <div class="relative w-28 h-28 sm:w-36 sm:h-36 flex items-center justify-center mb-6">
-            <div class="absolute inset-0 rounded-full border-2 border-red-500/60 animate-lottie-ring"></div>
-            <div class="absolute inset-0 rounded-full border-2 border-emerald-500/60 animate-lottie-ring" style="animation-delay: 0.8s;"></div>
-            <div class="absolute inset-0 rounded-full border border-white/40 animate-lottie-ring" style="animation-delay: 1.6s;"></div>
-            
-            <div class="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-tr from-red-600 via-rose-600 to-emerald-600 text-white flex items-center justify-center shadow-[0_0_50px_rgba(239,68,68,0.4)] ring-4 ring-white/20">
-                <svg class="w-12 h-12 sm:w-14 sm:h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
-                </svg>
-            </div>
+<!-- Friendly Warm Light Welcoming Overlay (Sopan, Teduh & Nyaman untuk Mata 40+ Tahun) -->
+<div id="vote-welcome-overlay" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm flex flex-col items-center justify-center p-4 sm:p-6 transition-all duration-700 ease-out">
+    <div id="vote-welcome-card" class="relative z-10 flex flex-col items-center text-center max-w-lg w-full bg-white border-2 border-slate-200/90 rounded-3xl p-6 sm:p-9 shadow-2xl transform transition-all duration-700 scale-100">
+        
+        <!-- Icon Koperasi Sejuk & Ramah -->
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-blue-50 border-2 border-blue-200 text-blue-700 flex items-center justify-center shadow-sm mb-5">
+            <svg class="w-10 h-10 sm:w-12 sm:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+            </svg>
         </div>
 
-        <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-black tracking-widest uppercase bg-white/10 text-emerald-300 border border-white/15 mb-3">
+        <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-black tracking-wide uppercase bg-emerald-100 text-emerald-800 border border-emerald-300 mb-3">
             {{ __('Bilik Suara Terverifikasi') }}
         </span>
 
-        <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight mb-2">
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-2">
             {{ __('Selamat Datang!') }}
         </h2>
 
-        <p class="text-slate-200 text-lg sm:text-xl font-black mb-1">
+        <p class="text-slate-800 text-lg sm:text-xl font-black mb-1">
             {{ $pemilih->nama }}
         </p>
-        <p class="text-slate-400 text-xs sm:text-sm font-mono mb-6">
-            NIK: {{ $pemilih->nik }} • {{ $pemilih->dept }}
+        <p class="text-slate-500 text-xs sm:text-sm font-semibold mb-6">
+            NIK: <span class="font-mono text-slate-700">{{ $pemilih->nik }}</span> • {{ $pemilih->dept }}
         </p>
 
         <!-- 3-Second Welcoming Progress Indicator -->
-        <div class="w-64 sm:w-80 bg-white/10 rounded-full h-2.5 overflow-hidden border border-white/15 mb-2">
-            <div id="welcome-progress-fill" class="h-full bg-gradient-to-r from-red-500 via-rose-400 to-emerald-400 rounded-full transition-all duration-[2600ms] ease-linear" style="width: 0%;"></div>
+        <div class="w-full max-w-xs bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200 mb-2.5">
+            <div id="welcome-progress-fill" class="h-full bg-blue-600 rounded-full transition-all duration-[2600ms] ease-linear" style="width: 0%;"></div>
         </div>
-        <span class="text-[11px] font-bold text-slate-400 tracking-wider uppercase">{{ __('Menyiapkan Bilik Suara...') }}</span>
+        <span class="text-xs font-bold text-slate-500 tracking-normal">{{ __('Menyiapkan surat suara pemilihan...') }}</span>
     </div>
 </div>
 
 <div class="flex-1 flex flex-col p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full pb-44 sm:pb-52">
 
-    <!-- Header Identitas Pemilih & Kontrol Aksi (Boomer Friendly Size) dengan Ambient Dot Backdrop -->
-    <header class="relative p-4 sm:p-5 rounded-3xl bg-white/80 backdrop-blur-md border-2 border-slate-200/90 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 overflow-hidden">
-        <!-- Ambient Dot Glows Behind Navbar -->
-        <div class="absolute -top-10 -left-10 w-44 h-44 bg-blue-400/20 rounded-full blur-2xl pointer-events-none"></div>
-        <div class="absolute top-1/2 left-1/3 -translate-y-1/2 w-48 h-24 bg-indigo-300/20 rounded-full blur-2xl pointer-events-none"></div>
-        <div class="absolute -bottom-10 -right-10 w-44 h-44 bg-emerald-400/20 rounded-full blur-2xl pointer-events-none"></div>
-
-        <div class="relative z-10 flex items-center space-x-3.5 sm:space-x-4">
+    <!-- Header Identitas Pemilih & Kontrol Aksi (Boomer Friendly Size) -->
+    <header class="p-4 sm:p-5 rounded-3xl bg-white border-2 border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div class="flex items-center space-x-3.5 sm:space-x-4">
             <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black text-lg sm:text-xl shadow-sm shrink-0">
                 {{ strtoupper(substr($pemilih->nama, 0, 2)) }}
             </div>
