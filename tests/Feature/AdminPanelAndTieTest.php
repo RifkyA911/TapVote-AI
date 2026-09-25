@@ -278,4 +278,20 @@ class AdminPanelAndTieTest extends TestCase
         $this->assertArrayHasKey('data', $response->json());
         $this->assertEquals('Query Tester', $response->json('data.0.nama'));
     }
+
+    public function test_artisan_tapvote_health_command_executes_successfully(): void
+    {
+        $this->artisan('tapvote:health')
+            ->expectsOutputToContain('TapVote-AI System Health Check')
+            ->expectsOutputToContain('System check completed.')
+            ->assertExitCode(0);
+    }
+
+    public function test_artisan_tapvote_recap_command_executes_successfully(): void
+    {
+        $this->artisan('tapvote:recap')
+            ->expectsOutputToContain('REKAPITULASI HASIL PEMILIHAN TAPVOTE-AI')
+            ->expectsOutputToContain('Total DPT')
+            ->assertExitCode(0);
+    }
 }
