@@ -1,0 +1,60 @@
+{
+  "name": "TapVote AI - Cooperative E-Voting System",
+  "short_name": "TapVote AI",
+  "description": "Next-Gen Contactless E-Voting System & Realtime Election Intelligence",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#090d16",
+  "theme_color": "#2563eb",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    {
+      "src": "/images/pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/pwa/maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/pwa/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Voter Booth",
+      "short_name": "Vote",
+      "description": "Open Contactless Card Voting Booth",
+      "url": "/voter",
+      "icons": [{ "src": "/images/pwa/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Live Count",
+      "short_name": "Live",
+      "description": "View Live Election Results",
+      "url": "/",
+      "icons": [{ "src": "/images/pwa/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Admin Dashboard",
+      "short_name": "Admin",
+      "description": "Command Center & Telemetry",
+      "url": "/admin/dashboard",
+      "icons": [{ "src": "/images/pwa/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
