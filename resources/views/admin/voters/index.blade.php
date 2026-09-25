@@ -10,14 +10,14 @@
         <div>
             <div class="flex items-center space-x-2 mb-1">
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-800 border border-blue-200">
-                    Daftar Pemilih Tetap
+                    Eligible Voters
                 </span>
                 <span id="http-method-badge" class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
                     HTTP Method: QUERY
                 </span>
             </div>
-            <h2 class="text-2xl font-extrabold text-slate-900">Data Pemilih (DPT) & Live Query</h2>
-            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Kelola data anggota, hak suara (Pilih T/F), UID RFID Mifare, dan import bulk.</p>
+            <h2 class="text-2xl font-extrabold text-slate-900">Eligible Voters & Dynamic Query</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Manage voter roster, voting eligibility, RFID credentials, and CSV operations.</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
@@ -26,10 +26,10 @@
                 <span>Export CSV</span>
             </a>
 
-            <button onclick="window.print()" type="button" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
-                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                <span>Cetak / PDF</span>
-            </button>
+            <a href="{{ route('admin.voters.export.pdf') }}" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="Download Official Vector PDF">
+                <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <span>Export PDF</span>
+            </a>
 
             <button onclick="openImportModal()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
                 <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
@@ -38,7 +38,7 @@
 
             <button onclick="openAddModal()" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                <span>Tambah Pemilih</span>
+                <span>Add Voter</span>
             </button>
 
             <form action="{{ route('admin.voters.reset') }}" method="POST" onsubmit="return confirm('PERINGATAN: Apakah Anda yakin ingin ME-RESET SELURUH SUARA pemilihan? Semua data suara ketua & pengawas akan dikosongkan dan status pemilih dikembalikan ke Belum Memilih (F).')">
@@ -54,7 +54,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-slate-500 font-semibold">Total Terdaftar</span>
+                <span class="text-xs text-slate-500 font-semibold">Total Registered</span>
                 <strong id="stat-total" class="block text-2xl font-black text-slate-900 font-mono">{{ $stats['total'] }}</strong>
             </div>
             <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
@@ -64,7 +64,7 @@
 
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-emerald-700 font-semibold">Sudah Memilih (Pilih = T)</span>
+                <span class="text-xs text-emerald-700 font-semibold">Already Voted (T)</span>
                 <strong id="stat-voted" class="block text-2xl font-black text-emerald-600 font-mono">{{ $stats['voted'] }}</strong>
             </div>
             <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
@@ -74,7 +74,7 @@
 
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-amber-700 font-semibold">Belum Memilih (Pilih = F)</span>
+                <span class="text-xs text-amber-700 font-semibold">Pending Vote (F)</span>
                 <strong id="stat-not-voted" class="block text-2xl font-black text-amber-600 font-mono">{{ $stats['not_voted'] }}</strong>
             </div>
             <span class="p-2.5 rounded-xl bg-amber-50 text-amber-600">
@@ -83,82 +83,100 @@
         </div>
     </div>
 
-    <!-- Interactive Query Toolbar (Unified, Clean, Responsive on iPad Mini & Mobile) -->
+    <!-- Foldable Interactive Query Toolbar -->
     <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
-        <!-- Row 1: Full Width Search Input with Shortcut Hints -->
-        <div class="flex items-center gap-3">
-            <div class="relative flex-1">
-                <input 
-                    type="text" 
-                    id="query-search-input" 
-                    placeholder="Ketik NIK, Nama, Departemen, atau RFID (Tekan '/' untuk fokus)..."
-                    oninput="debounceExecuteQuery()"
-                    class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
-                >
-                <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                <button type="button" onclick="clearSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="Hapus Pencarian">✕</button>
+        <!-- Foldable Header with Icon -->
+        <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100" onclick="toggleFilterFold()">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                </div>
+                <div>
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">Filter & Dynamic Search</h4>
+                    <p class="text-[11px] text-slate-400">Refine voter roster by keyword, status, and department</p>
+                </div>
             </div>
-            <div class="hidden md:flex items-center shrink-0">
-                <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
-                    /
-                </kbd>
-            </div>
+            <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
+                <span id="filter-fold-icon" class="text-xs font-mono font-bold block transform transition-transform duration-200">▲</span>
+            </button>
         </div>
 
-        <!-- Row 2: Filters Grid Optimized for iPad Mini (md: 768px), Mobile, and Desktop -->
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-2.5">
-            <!-- Status Filter -->
-            <div class="col-span-1">
-                <select id="query-status-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
-                    <option value="">Semua Hak Suara</option>
-                    <option value="T">Sudah Memilih (T)</option>
-                    <option value="F">Belum Memilih (F)</option>
-                </select>
+        <div id="filter-body-container" class="space-y-3.5 transition-all duration-300">
+            <!-- Row 1: Full Width Search Input with Shortcut Hints -->
+            <div class="flex items-center gap-3">
+                <div class="relative flex-1">
+                    <input 
+                        type="text" 
+                        id="query-search-input" 
+                        placeholder="Search by NIK, Name, Department, or RFID UID (Press '/' to focus)..."
+                        oninput="debounceExecuteQuery()"
+                        class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
+                    >
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <button type="button" onclick="clearSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="Hapus Pencarian">✕</button>
+                </div>
+                <div class="hidden md:flex items-center shrink-0">
+                    <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
+                        /
+                    </kbd>
+                </div>
             </div>
 
-            <!-- Department Filter -->
-            <div class="col-span-1">
-                <select id="query-dept-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
-                    <option value="">Semua Departemen</option>
-                    @foreach($departments as $d)
-                        <option value="{{ $d }}">{{ $d }}</option>
-                    @endforeach
-                </select>
-            </div>
+            <!-- Row 2: Filters Grid Optimized for iPad Mini (md: 768px), Mobile, and Desktop -->
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-2.5">
+                <!-- Status Filter -->
+                <div class="col-span-1">
+                    <select id="query-status-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                        <option value="">All Eligibility Status</option>
+                        <option value="T">Already Voted (T)</option>
+                        <option value="F">Pending Vote (F)</option>
+                    </select>
+                </div>
 
-            <!-- Items Per Page -->
-            <div class="col-span-1">
-                <select id="query-per-page-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
-                    <option value="10">10 / Halaman</option>
-                    <option value="25">25 / Halaman</option>
-                    <option value="50">50 / Halaman</option>
-                    <option value="100">100 / Halaman</option>
-                </select>
-            </div>
+                <!-- Department Filter -->
+                <div class="col-span-1">
+                    <select id="query-dept-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                        <option value="">All Departments</option>
+                        @foreach($departments as $d)
+                            <option value="{{ $d }}">{{ $d }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <!-- Execute QUERY Button -->
-            <div class="col-span-1">
-                <button 
-                    type="button" 
-                    onclick="executeQuery(1)" 
-                    class="w-full h-11 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-black shadow-xs transition flex items-center justify-center space-x-1.5 cursor-pointer"
-                    title="Jalankan HTTP QUERY Request"
-                >
-                    <span id="query-btn-icon">⚡</span>
-                    <span>Run QUERY</span>
-                </button>
-            </div>
+                <!-- Items Per Page -->
+                <div class="col-span-1">
+                    <select id="query-per-page-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                        <option value="10">10 / Page</option>
+                        <option value="25">25 / Page</option>
+                        <option value="50">50 / Page</option>
+                        <option value="100">100 / Page</option>
+                    </select>
+                </div>
 
-            <!-- Reset Filter Button -->
-            <div class="col-span-2 sm:col-span-2 md:col-span-1">
-                <button 
-                    type="button" 
-                    onclick="resetAllFilters()" 
-                    class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
-                >
-                    <span>↺</span>
-                    <span>Reset</span>
-                </button>
+                <!-- Apply Filters Button -->
+                <div class="col-span-1">
+                    <button 
+                        type="button" 
+                        onclick="executeQuery(1)" 
+                        class="w-full h-11 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-black shadow-xs transition flex items-center justify-center space-x-1.5 cursor-pointer"
+                        title="Apply Current Filters"
+                    >
+                        <span id="query-btn-icon">⚡</span>
+                        <span>Apply</span>
+                    </button>
+                </div>
+
+                <!-- Reset Filter Button -->
+                <div class="col-span-2 sm:col-span-2 md:col-span-1">
+                    <button 
+                        type="button" 
+                        onclick="resetAllFilters()" 
+                        class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
+                    >
+                        <span>↺</span>
+                        <span>Reset</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -288,7 +306,19 @@
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">Departemen / Bagian</label>
-                <input type="text" name="dept" required placeholder="Contoh: Logistik / Keuangan" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-blue-500 outline-none">
+                <select name="dept" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-blue-500 outline-none cursor-pointer">
+                    <option value="" disabled selected>Pilih Departemen...</option>
+                    @foreach($departments as $d)
+                        <option value="{{ $d }}">{{ $d }}</option>
+                    @endforeach
+                    <option value="ICT">ICT</option>
+                    <option value="Keuangan">Keuangan</option>
+                    <option value="Operasional">Operasional</option>
+                    <option value="HRD">HRD</option>
+                    <option value="Logistik">Logistik</option>
+                    <option value="Produksi">Produksi</option>
+                    <option value="Pemasaran">Pemasaran</option>
+                </select>
             </div>
 
             <div>
@@ -344,12 +374,25 @@
     let debounceTimer = null;
 
     document.addEventListener('keydown', (e) => {
-        // Quick shortcut '/' to focus search input
         if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
             e.preventDefault();
-            document.getElementById('query-search-input').focus();
+            document.getElementById('query-search-input')?.focus();
         }
     });
+
+    function toggleFilterFold() {
+        const container = document.getElementById('filter-body-container');
+        const icon = document.getElementById('filter-fold-icon');
+        if (!container) return;
+
+        if (container.classList.contains('hidden')) {
+            container.classList.remove('hidden');
+            if (icon) icon.textContent = '▲';
+        } else {
+            container.classList.add('hidden');
+            if (icon) icon.textContent = '▼';
+        }
+    }
 
     function openAddModal() {
         if (window.SoundEffects) window.SoundEffects.modal();

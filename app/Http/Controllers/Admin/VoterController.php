@@ -217,6 +217,19 @@ class VoterController extends Controller
     }
 
     /**
+     * Export Seluruh DPT / Eligible Voters ke PDF (DomPDF)
+     */
+    public function exportPdf()
+    {
+        $voters = Pemilih::orderBy('nama', 'asc')->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.voters.pdf', compact('voters'));
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->download('daftar_pemilih_tetap_' . date('Ymd_His') . '.pdf');
+    }
+
+    /**
      * Reset Seluruh Suara Pemilihan (Gladi Resik / Demo Test)
      */
     public function resetVotes()
