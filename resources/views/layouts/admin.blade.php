@@ -132,64 +132,54 @@
                     $adminVotingStatus = \App\Models\AppSetting::get('voting_status', 'STARTED');
                 @endphp
 
-                <!-- Voting System Status Indicator & Controls -->
-                <div class="hidden sm:flex items-center space-x-2">
-                    @if($adminVotingStatus === 'STARTED')
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
-                            <span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                            Sistem Aktif (STARTED)
-                        </span>
-                    @elseif($adminVotingStatus === 'PAUSED')
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-900 border border-amber-300">
-                            <span class="w-2 h-2 mr-1.5 rounded-full bg-amber-600 animate-ping"></span>
-                            Sistem Di-Jeda (PAUSED)
-                        </span>
-                    @else
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 border border-rose-300">
-                            <span class="w-2 h-2 mr-1.5 rounded-full bg-rose-600"></span>
-                            Sistem Ditutup (STOPPED)
-                        </span>
-                    @endif
+                <!-- Compact Voting System Status Dot & Label -->
+                <div class="flex items-center space-x-2">
+                    <div id="voting-status-badge" class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-black tracking-wide uppercase {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' : ($adminVotingStatus === 'PAUSED' ? 'bg-amber-50 text-amber-800 border border-amber-300' : 'bg-rose-50 text-rose-800 border border-rose-300') }}">
+                        <span id="voting-status-dot" class="w-2 h-2 rounded-full {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-500 animate-pulse' : ($adminVotingStatus === 'PAUSED' ? 'bg-amber-500 animate-ping' : 'bg-rose-500') }}"></span>
+                        <span id="voting-status-text">{{ $adminVotingStatus }}</span>
+                    </div>
                 </div>
 
-                <!-- Control Buttons: START / PAUSE / STOP -->
-                <div class="inline-flex items-center rounded-xl bg-slate-100 p-0.5 border border-slate-200 shadow-2xs">
-                    <form action="{{ route('admin.voting.status') }}" method="POST" class="inline">
-                        @csrf
-                        <input type="hidden" name="status" value="STARTED">
-                        <button type="submit" title="Mulai / Lanjutkan Voting" class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-700 hover:bg-emerald-50' }}">
-                            ▶ START
-                        </button>
-                    </form>
-                    <form action="{{ route('admin.voting.status') }}" method="POST" class="inline" onsubmit="return confirm('Jeda pemungutan suara sementara? Pemilih tidak akan dapat melakukan tap kartu.')">
-                        @csrf
-                        <input type="hidden" name="status" value="PAUSED">
-                        <button type="submit" title="Jeda Voting Sementara" class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer {{ $adminVotingStatus === 'PAUSED' ? 'bg-amber-500 text-white shadow-xs' : 'text-slate-600 hover:text-amber-700 hover:bg-amber-50' }}">
-                            ⏸ PAUSE
-                        </button>
-                    </form>
-                    <form action="{{ route('admin.voting.status') }}" method="POST" class="inline" onsubmit="return confirm('PERINGATAN: Tutup dan akhiri pemungutan suara secara resmi?')">
-                        @csrf
-                        <input type="hidden" name="status" value="STOPPED">
-                        <button type="submit" title="Tutup Pemilihan Resmi" class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer {{ $adminVotingStatus === 'STOPPED' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 hover:text-rose-700 hover:bg-rose-50' }}">
-                            ⏹ STOP
-                        </button>
-                    </form>
+                <!-- Modern Throttled Segmented Controls: START / PAUSE / STOP -->
+                <div id="voting-controls-group" class="inline-flex items-center rounded-xl bg-slate-100 p-0.5 border border-slate-200/90 shadow-2xs space-x-0.5">
+                    <button 
+                        type="button" 
+                        id="btn-status-started"
+                        onclick="handleVotingStatusAction('STARTED')"
+                        title="Mulai / Lanjutkan Pemungutan Suara"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-700 hover:bg-white' }}"
+                    >
+                        <span>▶</span>
+                        <span>START</span>
+                    </button>
+                    <button 
+                        type="button" 
+                        id="btn-status-paused"
+                        onclick="handleVotingStatusAction('PAUSED')"
+                        title="Jeda Pemungutan Suara Sementara"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'PAUSED' ? 'bg-amber-500 text-white shadow-xs' : 'text-slate-600 hover:text-amber-700 hover:bg-white' }}"
+                    >
+                        <span>⏸</span>
+                        <span>PAUSE</span>
+                    </button>
+                    <button 
+                        type="button" 
+                        id="btn-status-stopped"
+                        onclick="handleVotingStatusAction('STOPPED')"
+                        title="Tutup Pemilihan Resmi"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STOPPED' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 hover:text-rose-700 hover:bg-white' }}"
+                    >
+                        <span>⏹</span>
+                        <span>STOP</span>
+                    </button>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3 sm:space-x-4 text-xs text-slate-600">
-                <div class="hidden lg:block">
-                    <span id="header-clock" class="font-bold text-slate-700"></span>
-                </div>
-
-                <a href="{{ route('doorprize.public') }}" target="_blank" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold border border-amber-200 transition flex items-center space-x-1.5 shadow-2xs">
-                    <span>🎪 Stage</span>
-                </a>
-
-                <a href="{{ route('home') }}" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-blue-700 font-bold border border-slate-200 transition flex items-center space-x-1.5">
+            <!-- Right Header Actions (Cleaned up: Stage & Clock Removed) -->
+            <div class="flex items-center space-x-2.5 text-xs text-slate-600">
+                <a href="{{ route('home') }}" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-blue-700 font-bold border border-slate-200 transition flex items-center space-x-1.5 shadow-2xs">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                    <span class="hidden sm:inline">Live SSE</span>
+                    <span>Live SSE</span>
                 </a>
             </div>
         </header>
@@ -234,15 +224,96 @@
             }
         }
 
-        function updateClock() {
-            const el = document.getElementById('header-clock');
-            if (el) {
-                const now = new Date();
-                el.innerText = now.toLocaleDateString('id-ID', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) + ' ' + now.toLocaleTimeString('id-ID') + ' WIB';
+        // Throttled Voting Status Action (Prevents double clicks and provides instant feedback)
+        let isVotingStatusUpdating = false;
+
+        async function handleVotingStatusAction(newStatus) {
+            if (isVotingStatusUpdating) {
+                console.warn('Voting status update throttled. Please wait...');
+                return;
+            }
+
+            if (newStatus === 'PAUSED') {
+                if (!confirm('Jeda pemungutan suara sementara? Pemilih di bilik tidak dapat melakukan tap.')) {
+                    return;
+                }
+            } else if (newStatus === 'STOPPED') {
+                if (!confirm('PERINGATAN: Tutup dan akhiri pemungutan suara secara resmi?')) {
+                    return;
+                }
+            }
+
+            isVotingStatusUpdating = true;
+            const group = document.getElementById('voting-controls-group');
+            const btns = group ? group.querySelectorAll('button') : [];
+            btns.forEach(b => {
+                b.disabled = true;
+                b.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const response = await fetch("{{ route('admin.voting.status') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    updateVotingStatusBadgeUI(newStatus);
+                    if (window.SoundEffects) window.SoundEffects.click();
+                } else {
+                    alert(data.message || 'Gagal mengubah status voting.');
+                }
+            } catch (err) {
+                console.error('Error updating voting status:', err);
+                alert('Terjadi kesalahan koneksi saat mengubah status sistem voting.');
+            } finally {
+                setTimeout(() => {
+                    btns.forEach(b => {
+                        b.disabled = false;
+                        b.classList.remove('opacity-50', 'cursor-not-allowed');
+                    });
+                    isVotingStatusUpdating = false;
+                }, 800); // 800ms cooldown throttle
             }
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+
+        function updateVotingStatusBadgeUI(status) {
+            const badge = document.getElementById('voting-status-badge');
+            const dot = document.getElementById('voting-status-dot');
+            const text = document.getElementById('voting-status-text');
+            const btnStarted = document.getElementById('btn-status-started');
+            const btnPaused = document.getElementById('btn-status-paused');
+            const btnStopped = document.getElementById('btn-status-stopped');
+
+            if (text) text.innerText = status;
+
+            // Reset active button classes
+            const defaultBtnClass = 'px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 text-slate-600 hover:bg-white';
+            if (btnStarted) btnStarted.className = defaultBtnClass + ' hover:text-emerald-700';
+            if (btnPaused) btnPaused.className = defaultBtnClass + ' hover:text-amber-700';
+            if (btnStopped) btnStopped.className = defaultBtnClass + ' hover:text-rose-700';
+
+            if (status === 'STARTED') {
+                if (badge) badge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-black tracking-wide uppercase bg-emerald-50 text-emerald-800 border border-emerald-300';
+                if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+                if (btnStarted) btnStarted.className = 'px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 bg-emerald-600 text-white shadow-xs';
+            } else if (status === 'PAUSED') {
+                if (badge) badge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-black tracking-wide uppercase bg-amber-50 text-amber-800 border border-amber-300';
+                if (dot) dot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-ping';
+                if (btnPaused) btnPaused.className = 'px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 bg-amber-500 text-white shadow-xs';
+            } else {
+                if (badge) badge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-black tracking-wide uppercase bg-rose-50 text-rose-800 border border-rose-300';
+                if (dot) dot.className = 'w-2 h-2 rounded-full bg-rose-500';
+                if (btnStopped) btnStopped.className = 'px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 bg-rose-600 text-white shadow-xs';
+            }
+        }
     </script>
     @stack('scripts')
 </body>
