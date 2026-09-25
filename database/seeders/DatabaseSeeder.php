@@ -121,17 +121,24 @@ class DatabaseSeeder extends Seeder
         mt_srand(12345);
 
         for ($i = 1; $i <= 100; $i++) {
-            $nik = sprintf('0%05d', $i); // Format NIK: 000001, 000002, ..., 000100
-            
-            // Generate standard 4-byte / 8-char Hex UID for Mifare Classic
-            $byte0 = sprintf('%02X', ($i * 17 + 23) % 256);
-            $byte1 = sprintf('%02X', ($i * 31 + 41) % 256);
-            $byte2 = sprintf('%02X', ($i * 47 + 59) % 256);
-            $byte3 = sprintf('%02X', ($i * 61 + 73) % 256);
-            $rfidHex = $byte0 . $byte1 . $byte2 . $byte3;
+            if ($i === 1) {
+                $nik = '018513';
+                $nama = 'Rifky Akhmad Fernanda';
+                $dept = 'ICT';
+                $rfidHex = '0549936289';
+            } else {
+                $nik = sprintf('0%05d', $i); // Format NIK: 000002, ..., 000100
+                
+                // Generate standard 4-byte / 8-char Hex UID for Mifare Classic
+                $byte0 = sprintf('%02X', ($i * 17 + 23) % 256);
+                $byte1 = sprintf('%02X', ($i * 31 + 41) % 256);
+                $byte2 = sprintf('%02X', ($i * 47 + 59) % 256);
+                $byte3 = sprintf('%02X', ($i * 61 + 73) % 256);
+                $rfidHex = $byte0 . $byte1 . $byte2 . $byte3;
 
-            $nama = $firstNames[($i - 1) % count($firstNames)] . ' ' . $lastNames[($i * 3) % count($lastNames)];
-            $dept = $departments[($i - 1) % count($departments)];
+                $nama = $firstNames[($i - 1) % count($firstNames)] . ' ' . $lastNames[($i * 3) % count($lastNames)];
+                $dept = $departments[($i - 1) % count($departments)];
+            }
 
             Pemilih::updateOrCreate(
                 ['nik' => $nik],

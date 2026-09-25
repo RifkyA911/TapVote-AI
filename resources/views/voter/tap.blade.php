@@ -16,7 +16,7 @@
                 </div>
                 <div>
                     <h1 class="text-base sm:text-lg font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition">TapVote AI</h1>
-                    <p class="text-xs text-slate-500 font-medium">Digital Voting Terminal • <span class="text-blue-600 font-bold">← Beranda</span></p>
+                    <p class="text-xs text-slate-500 font-medium">{{ __('Digital Voting Booth') }} • <span class="text-blue-600 font-bold">← {{ __('Beranda') }}</span></p>
                 </div>
             </a>
 
@@ -138,9 +138,9 @@
     @endif
 
     <!-- Main Tap Area (Padding atas nyaman & jarak proporsional dengan demo) -->
-    <div class="pt-8 sm:pt-12 pb-2 sm:pb-3 flex flex-col items-center justify-center text-center">
+    <div class="pt-5 sm:pt-7 pb-1 sm:pb-2 flex flex-col items-center justify-center text-center">
         
-        <div id="tap-kiosk-box" class="w-full max-w-xl bg-transparent p-3 sm:p-6 flex flex-col items-center relative transition-all duration-500 {{ session('error') ? 'animate-distracted-shake' : '' }}">
+        <div id="tap-kiosk-box" class="w-full max-w-xl bg-transparent p-2 sm:p-5 flex flex-col items-center relative transition-all duration-500 {{ session('error') ? 'animate-distracted-shake' : '' }}">
             
             <!-- Sensor Target Box (Bebas stroke biru & background putih) -->
             <div id="sensor-container" onclick="startNfcScan()" class="relative w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center mb-4 sm:mb-6 bg-transparent cursor-pointer" title="Tekan untuk Mengaktifkan Sensor NFC">
@@ -319,7 +319,7 @@
                     type="button"
                     onclick="triggerUnknownCardTest('99A88F11')"
                     class="inline-flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-800 text-xs font-black shadow-2xs transition cursor-pointer self-start sm:self-auto shrink-0"
-                    title="Simulasikan kartu RFID asing yang belum terdaftar di DPT"
+                    title="{{ __('Simulasikan kartu RFID asing yang belum terdaftar sebagai pemilih sah') }}"
                 >
                     <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     <span>{{ __('Uji Kartu Tidak Dikenali (Asing)') }}</span>
