@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.0] - 2026-09-25
+
+### Added
+- **Mobile Smartphone Web NFC Reader (`/voter`)**:
+  - Native hardware Web NFC integration via `window.NDEFReader` allowing direct contactless tap against the back of NFC-enabled Android smartphones.
+  - **Eliminated Manual Text Input**: Completely removed manual RFID text inputs from the voter interface to guarantee hardware-only authenticity and prevent manual tamper.
+  - **Chrome Web NFC Flags Guide**: Added helper modal and instructions for testing Web NFC over LAN HTTP origins (`chrome://flags/#unsafely-treat-insecure-origin-as-secure`).
+  - **Demo Accounts Interactive DataTable**: Converted the 4-card demo grid into a responsive, searchable DataTable with real-time status filters and one-click test simulation.
+- **3D Three.js Interactive RFID Showcase (`/`)**:
+  - Integrated Three.js 3D scene on the landing page hero featuring a high-fidelity Mifare RFID card with gold antenna traces, holographic microchip, and full 360° cursor-tracked X/Y axis rotation and float physics.
+- **Doorprize Master DataTable & Winner Claim Tracking (`/admin/reports/doorprize`)**:
+  - Harmonized with the admin light theme (removed dark background).
+  - Master reward catalog transformed into an interactive DataTable with image upload support (saved to `public/storage/doorprizes`), remaining inventory badges, and category/search filters.
+  - Winner claim management: official claim status workflow (`Sudah Diterima / accepted`, `Ditolak / rejected`, `Belum Diambil / pending`, `Alasan Lain / other`) with customizable reason notes modal and `received_at` timestamps.
+- **Executive Admin Navbar & Throttled System Controls (`layouts/admin.blade.php`)**:
+  - Streamlined navbar status indicator; removed clutter (stage button and digital clock removed from navbar).
+  - Modernized segmented START, PAUSE, STOP operational controls with anti-double-click throttling (`800ms` cooldown) and asynchronous API updates.
+- **ApexCharts & Official Multi-Format Recap Exports (`/admin/dashboard`)**:
+  - Replaced legacy charts with responsive **ApexCharts** interactive donut charts with custom tooltips and legend metrics.
+  - Added hourly voting timeline area chart showing voting flow distribution throughout the day.
+  - Official vector PDF export generated via `barryvdh/laravel-dompdf` (`/admin/dashboard/export/pdf`) formatted as an official A4 election recap certificate with panitia signature section.
+  - Excel/CSV recap export (`/admin/dashboard/export/excel`) with UTF-8 BOM encoding.
+  - Added live **Google Gemini API Key Test Tool** with real round-trip latency benchmarking and model connectivity status.
+- **Tablet & Mobile UI Polish (iPad Mini 768px-834px)**:
+  - Redesigned search and filter toolbars on DPT Voter Query and Doorprize tables with responsive grid layouts (`grid-cols-2 md:grid-cols-5`), unified control heights, and high-contrast typography.
+- **Candidate Privacy on Ballot Booth (`/vote`)**:
+  - Removed candidate personal NIK numbers from public voting cards.
+
+---
+
 ## [1.4.0] - 2026-09-25
 
 ### Added
