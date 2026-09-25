@@ -98,8 +98,8 @@ class AdminPanelAndTieTest extends TestCase
         $response = $this->get(route('admin.reports.doorprize'));
         $response->assertStatus(200);
         $response->assertViewHas('pemenang', null);
-        $response->assertSee('Siap Memulai Undian');
-        $response->assertSee('Mulai Putar Undian (10 Detik)');
+        $response->assertSee('Undian Doorprize Anggota');
+        $response->assertSee('Putar Undian Sekarang');
     }
 
     public function test_admin_can_save_gemini_api_key(): void
@@ -112,5 +112,98 @@ class AdminPanelAndTieTest extends TestCase
 
         $response->assertRedirect();
         $this->assertEquals('AIzaSyTestKey123', AppSetting::get('gemini_api_key'));
+    }
+
+    public function test_admin_can_export_recap_excel(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->get(route('admin.dashboard.export.excel'));
+        $response->assertStatus(200);
+        $this->assertTrue(str_contains($response->headers->get('content-type'), 'text/csv'));
+    }
+
+    public function test_admin_can_export_recap_pdf(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->get(route('admin.dashboard.export.pdf'));
+        $response->assertStatus(200);
+        $this->assertTrue(str_contains($response->headers->get('content-type'), 'application/pdf'));
+    }
+
+    public function test_admin_can_update_doorprize_winner_status(): void
+    {
+        $this->actingAs($this->admin);
+
+        $doorprize = \App\Models\Doorprize::create([
+            'title' => 'Rice Cooker Smart',
+            'category' => 'Elektronik',
+            'quantity' => 1
+        ]);
+
+        $pemilih = Pemilih::create([
+            'nik' => '990011',
+            'rfid' => 'RF990011',
+            'nama' => 'Pemenang Uji Coba',
+            'dept' => 'IT',
+            'pilih' => 'T'
+        ]);
+
+        $winner = \App\Models\DoorprizeWinner::create([
+            'doorprize_id' => $doorprize->id,
+            'nik' => $pemilih->nik,
+            'won_at' => now(),
+            'status' => 'pending'
+        ]);
+
+        $response = $this->post(route('admin.reports.doorprize.winner.status', $winner->id), [
+            'status' => 'accepted',
+            'status_note' => 'Hadiah diserahkan langsung oleh ketua panitia'
+        ], ['Accept' => 'application/json']);
+
+        $response->assertStatus(200);
+        $winner->refresh();
+        $this->assertEquals('accepted', $winner->status);
+        $this->assertNotNull($winner->received_at);
+        $this->assertEquals('Hadiah diserahkan langsung oleh ketua panitia', $winner->status_note);
+    }
+
+    public function test_doorprize_view_loads_successfully_for_admin(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->get(route('admin.reports.doorprize'));
+        $response->assertStatus(200);
+        $response->assertSee('Master Pilihan Hadiah Doorprize');
+        $response->assertSee('Log Pemenang & Status Klaim Doorprize', false);
+    }
+
+    public function test_gemini_api_key_test_endpoint(): void
+    {
+        $this->actingAs($this->admin);
+
+        \Illuminate\Support\Facades\Http::fake([
+            '*' => \Illuminate\Support\Facades\Http::response([
+                'candidates' => [
+                    [
+                        'content' => [
+                            'parts' => [
+                                ['text' => 'PONG: TapVote AI Gemini Connected']
+                            ]
+                        ]
+                    ]
+                ]
+            ], 200)
+        ]);
+
+        $response = $this->post(route('admin.settings.gemini-test'), [
+            'api_key' => 'AIzaSyFakeTestKeyForValidation123456789'
+        ], ['Accept' => 'application/json']);
+
+        $response->assertStatus(200);
+        $this->assertTrue($response->json('success'));
+        $this->assertArrayHasKey('latency_ms', $response->json());
+        $this->assertStringContainsString('PONG', $response->json('reply'));
     }
 }
