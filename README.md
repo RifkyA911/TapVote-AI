@@ -12,48 +12,57 @@
 
 ## 🌟 Key Features
 
-### 1. Tablet Kiosk Voting Booth (`/voter` & `/vote`)
-- **Card-Only RFID Tap**: Fast contactless voting. Hardware RFID reader keystrokes are automatically captured; zero on-screen text input required.
+### 1. Tablet & Mobile Kiosk Voting Booth (`/voter` & `/vote`)
+- **Direct Smartphone Web NFC Support (`NDEFReader`)**:
+  - Android Chrome users can tap physical NFC/RFID cards directly against the back of their smartphone.
+  - Built-in guidance modal for enabling Web NFC over LAN IP development origins via `chrome://flags/#unsafely-treat-insecure-origin-as-secure`.
+- **Hardware-Only Tap (Zero Text Input)**:
+  - Eliminated manual text input fields entirely to ensure complete voting integrity and prevent spoofing.
+  - Automatically captures hardware RFID reader keystrokes or Web NFC tag serial numbers without exposing any editable inputs.
 - **Calm, Senior-Friendly Visuals**:
   - Relaxed, gentle ripple waves (4.5s) optimized for older eyes.
   - Floating card hover animation with tactile spring-lift ("sundul") on touch/hover (`.ballot-card-sundul`).
   - Fluid **Nova Green** success transition and gentle **Danger Red** error warning wave.
-- **Candidate Image Zoom-In Lightbox**: Tap candidate photo to preview high-resolution portraits with manifesto overview.
-- **Interactive Audio Feedback (Web Audio API)**: Zero-latency, browser-synthesized audio effects for card tap, successful vote, errors, candidate selection, and modal transitions.
-- **Dual-Ballot Unified Flow**: Elect 1 Chairman and 1 Supervisor in a single, verified transaction with database-level row locking.
-- **Demo Cards Drawer**: Toggleable test account drawer for demonstration and rehearsals.
+- **Privacy & Security**:
+  - Personal NIK numbers are completely omitted from candidate cards on public voting ballots.
+- **Demo Accounts Interactive DataTable**:
+  - Searchable, status-filtered DataTable replacing old static card grids for testing and dry runs.
+- **Interactive Audio Feedback (Web Audio API)**:
+  - Zero-latency, browser-synthesized audio effects for card tap, successful vote, errors, candidate selection, and modal transitions.
 
-### 2. Public Live Count Display (`/`)
+### 2. Public Live Count & 3D RFID Showcase (`/`)
+- **Interactive 3D Three.js RFID Showcase**:
+  - High-fidelity 3D Mifare card model rendered in Three.js with metallic gold antenna traces, holographic microchip texture, and smooth 360° cursor-driven X/Y rotation and floating physics.
 - **Real-Time SSE Streaming**: Live updates broadcast without page refreshes.
 - **Comparative Bar Chart**: Grouped multi-candidate comparative charts powered by Chart.js with tabbed filtering (*All Candidates*, *Chairman Only*, *Supervisors Only*).
 - **Candidate Manifesto & Profile Modals**: Click to inspect Vision (*Visi*), Mission (*Misi*), and background.
 - **Clean Public Header**: High-contrast, spacious layout with instant language switcher (`EN` / `ID`).
 
-### 3. Admin Control Panel (`/admin`)
-- **Executive Telemetry Dashboard**: High-contrast, sleek executive UI designed for young, tech-savvy administrators with live SSE connection status, dynamic turnout quorum milestone gauges, and real-time candidate comparison cards.
-- **On-Demand Google Gemini 2.0 Flash AI Intelligence**:
-  - Lazy-loaded AI analysis: does not auto-consume quota on page load or SSE loops.
-  - Generates comprehensive election conclusions, margin stability metrics, and strategic bullet recommendations using Google Gemini 2.0 Flash / 1.5 Flash REST APIs, with local statistical heuristics fallback.
-  - Built-in Gemini API Key configuration drawer.
+### 3. Executive Admin Control Panel (`/admin`)
+- **Executive Telemetry Dashboard**:
+  - Sleek modern UI designed for tech-savvy administrators with live SSE connection status, dynamic turnout quorum milestone gauges, and real-time candidate comparison cards.
+  - **ApexCharts Data Visualizations**: Interactive donut charts for vote distributions and an hourly timeline area chart showing voting flow from 07:00 to 17:00.
+  - **Official Vector PDF Export**: Uses `barryvdh/laravel-dompdf` (`/admin/dashboard/export/pdf`) to produce clean, high-resolution A4 election recap certificates with panitia signature spaces.
+  - **Excel UTF-8 BOM Recap Export**: Generates `.csv` exports compatible with Microsoft Excel (`/admin/dashboard/export/excel`).
+  - **Live Gemini API Test Tool**: Live testing tool with round-trip latency benchmarking and model connectivity verification (`gemini-2.0-flash` & `gemini-1.5-flash`).
+- **Throttled Operational Controls**:
+  - Modernized segmented START, PAUSE, and STOP controls with anti-double-click throttling (`800ms`) and background API synchronization.
 - **Dynamic DataTables with RFC HTTP QUERY Method**:
   - Native implementation of the safe HTTP `QUERY` method (`draft-ietf-httpbis-safe-method-w-body`) with client-side query body (`/admin/voters/query`).
-  - Interactive toolbar with keyboard shortcut (`/` to focus), voting status filter, department filter, configurable entries per page (10, 25, 50, 100), and bidirectional column sorting.
-- **Excel & PDF Rekapitulasi Exports**:
-  - Instant Excel (`.csv` with UTF-8 BOM encoding for Microsoft Excel) for DPT Voters, Chairman Rekapitulasi, Supervisory Board Rekapitulasi, and Forensic Traceback.
-  - Dedicated "Cetak / Export PDF" buttons across all tabular reports.
-- **Mobile & iPad Mini Responsive Layout**:
-  - Off-canvas drawer navigation for viewports up to 1024px width, providing maximum workspace for tables and charts on tablets and phones.
+  - Polished responsive filter toolbar optimized for **iPad Mini (768px-834px)**, mobile, and desktop.
 
-### 4. Doorprize System & Public Audience Stage (`/doorprize`)
-- **Master Reward Catalog (`doorprizes`)**: Manage reward items, quantities, categories, and sponsors.
-- **Automated Winner Audit Logging (`doorprize_winners`)**: Records winning voters with timestamps, ensuring fair allocation and inventory tracking.
+### 4. Doorprize System & Winner Claim Tracking (`/admin/reports/doorprize`)
+- **Admin Light Theme Harmonization**: Full light theme overhaul replacing dark backgrounds.
+- **Master Rewards DataTable with Image Upload**:
+  - Inventories rewards with title, quantity, category, and sponsor.
+  - Direct prize image upload with preview, stored on the `public/storage/doorprizes` disk.
+- **Official Winner Claim Management**:
+  - Tracks winner claim status: **Sudah Diterima** (`accepted`), **Ditolak / Gugur** (`rejected`), **Belum Diambil** (`pending`), or **Alasan Lain** (`other`).
+  - Claim notes modal and automated `received_at` timestamps.
 - **No-Countdown High-FPS Animated SVG Lottery Machine**:
-  - Replaced numerical countdowns with a vibrant animated SVG slot reel and tumbler.
-  - Synthetic Web Audio ticker sounds and smooth cubic-bezier deceleration into the winner reveal.
+  - Dynamic animated SVG slot reel and tumbler with synthetic Web Audio ticker sounds and smooth deceleration easing.
 - **Standalone Cinema Stage View (`/doorprize`)**:
-  - Dedicated big-screen projector display without admin controls.
-  - Large-format typography legible across event venues, keyboard shortcuts (`Space` to roll, `F` for fullscreen), and bottom winner ticker marquee.
-  - One-click shortcut button available directly in the Admin Panel header and navigation.
+  - Dedicated big-screen projector display without admin controls with winner ticker marquee and keyboard shortcuts (`Space` to roll, `F` for fullscreen).
 
 ### 5. Model Context Protocol (MCP) Server
 - Integrated MCP server (`mcp/server.js`) compliant with standard MCP JSON-RPC protocol.
