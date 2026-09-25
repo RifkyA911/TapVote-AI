@@ -83,65 +83,81 @@
         </div>
     </div>
 
-    <!-- Interactive Query Toolbar (Unified, Clean, with Real HTTP QUERY Method) -->
-    <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-3">
-        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
-            <!-- Search Input -->
+    <!-- Interactive Query Toolbar (Unified, Clean, Responsive on iPad Mini & Mobile) -->
+    <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
+        <!-- Row 1: Full Width Search Input with Shortcut Hints -->
+        <div class="flex items-center gap-3">
             <div class="relative flex-1">
                 <input 
                     type="text" 
                     id="query-search-input" 
                     placeholder="Ketik NIK, Nama, Departemen, atau RFID (Tekan '/' untuk fokus)..."
                     oninput="debounceExecuteQuery()"
-                    class="w-full pl-9 pr-9 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:bg-white outline-none transition font-medium"
+                    class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
                 >
-                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                <button type="button" onclick="clearSearch()" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer">✕</button>
+                <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <button type="button" onclick="clearSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="Hapus Pencarian">✕</button>
             </div>
+            <div class="hidden md:flex items-center shrink-0">
+                <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
+                    /
+                </kbd>
+            </div>
+        </div>
 
-            <!-- Filters & Buttons Grid -->
-            <div class="flex flex-wrap items-center gap-2">
-                <!-- Status Filter -->
-                <select id="query-status-select" onchange="executeQuery(1)" class="px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-700 font-bold focus:border-indigo-500 outline-none cursor-pointer">
+        <!-- Row 2: Filters Grid Optimized for iPad Mini (md: 768px), Mobile, and Desktop -->
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-2.5">
+            <!-- Status Filter -->
+            <div class="col-span-1">
+                <select id="query-status-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
                     <option value="">Semua Hak Suara</option>
                     <option value="T">Sudah Memilih (T)</option>
                     <option value="F">Belum Memilih (F)</option>
                 </select>
+            </div>
 
-                <!-- Department Filter -->
-                <select id="query-dept-select" onchange="executeQuery(1)" class="px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-700 font-bold focus:border-indigo-500 outline-none cursor-pointer">
+            <!-- Department Filter -->
+            <div class="col-span-1">
+                <select id="query-dept-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
                     <option value="">Semua Departemen</option>
                     @foreach($departments as $d)
                         <option value="{{ $d }}">{{ $d }}</option>
                     @endforeach
                 </select>
+            </div>
 
-                <!-- Items Per Page -->
-                <select id="query-per-page-select" onchange="executeQuery(1)" class="px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-700 font-bold focus:border-indigo-500 outline-none cursor-pointer">
-                    <option value="10">10 / Hal</option>
-                    <option value="25">25 / Hal</option>
-                    <option value="50">50 / Hal</option>
-                    <option value="100">100 / Hal</option>
+            <!-- Items Per Page -->
+            <div class="col-span-1">
+                <select id="query-per-page-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                    <option value="10">10 / Halaman</option>
+                    <option value="25">25 / Halaman</option>
+                    <option value="50">50 / Halaman</option>
+                    <option value="100">100 / Halaman</option>
                 </select>
+            </div>
 
-                <!-- Execute QUERY Button -->
+            <!-- Execute QUERY Button -->
+            <div class="col-span-1">
                 <button 
                     type="button" 
                     onclick="executeQuery(1)" 
-                    class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-black shadow-xs transition flex items-center space-x-1.5 cursor-pointer"
+                    class="w-full h-11 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-black shadow-xs transition flex items-center justify-center space-x-1.5 cursor-pointer"
                     title="Jalankan HTTP QUERY Request"
                 >
                     <span id="query-btn-icon">⚡</span>
                     <span>Run QUERY</span>
                 </button>
+            </div>
 
-                <!-- Reset Filter Button -->
+            <!-- Reset Filter Button -->
+            <div class="col-span-2 sm:col-span-2 md:col-span-1">
                 <button 
                     type="button" 
                     onclick="resetAllFilters()" 
-                    class="px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer"
+                    class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
                 >
-                    Reset
+                    <span>↺</span>
+                    <span>Reset</span>
                 </button>
             </div>
         </div>
