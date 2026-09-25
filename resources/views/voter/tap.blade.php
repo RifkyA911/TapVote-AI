@@ -143,7 +143,7 @@
         <div id="tap-kiosk-box" class="w-full max-w-xl bg-transparent p-3 sm:p-8 flex flex-col items-center relative transition-all duration-500 {{ session('error') ? 'animate-distracted-shake' : '' }}">
             
             <!-- Sensor Target Box (Bebas stroke biru & background putih) -->
-            <div id="sensor-container" class="relative w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center mb-4 sm:mb-6 bg-transparent">
+            <div id="sensor-container" onclick="startNfcScan()" class="relative w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center mb-4 sm:mb-6 bg-transparent cursor-pointer" title="Tekan untuk Mengaktifkan Sensor NFC">
                 
                 <!-- Normal Radar Rings (Ripple Lembut Tanpa Stroke Biru) -->
                 <div id="normal-rings" class="absolute inset-0 flex items-center justify-center {{ session('error') || session('already_voted') || ($votingStatus ?? 'STARTED') !== 'STARTED' ? 'hidden' : '' }}">
@@ -232,7 +232,7 @@
                 @endif
             </p>
 
-            <!-- Mobile Native Web NFC & Manual Input Section -->
+            <!-- Mobile Native Web NFC Section (NO MANUAL TEXT INPUT!) -->
             <div class="w-full max-w-sm mx-auto mt-4 space-y-2.5">
                 <!-- Native Web NFC Button (Auto-detected if supported) -->
                 <div id="nfc-support-container" class="hidden">
@@ -240,29 +240,33 @@
                         type="button" 
                         id="btn-start-nfc"
                         onclick="startNfcScan()" 
-                        class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-extrabold text-xs sm:text-sm shadow-md transition flex items-center justify-center space-x-2 cursor-pointer"
+                        class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-extrabold text-xs sm:text-sm shadow-md transition flex items-center justify-center space-x-2 cursor-pointer"
                     >
-                        <span class="text-lg">📱</span>
+                        <span class="text-xl">📱</span>
                         <span id="nfc-btn-label">Aktifkan Sensor NFC HP (Tempel di Punggung HP)</span>
                     </button>
                 </div>
 
-                <!-- Manual UID / NIK Input for Mobile Test & Typing -->
-                <div class="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-slate-200 shadow-sm">
-                    <form onsubmit="handleManualMobileSubmit(event)" class="flex gap-2">
-                        <input 
-                            type="text" 
-                            id="mobile_manual_input" 
-                            placeholder="Ketik UID / RFID (contoh: 2024001)..." 
-                            class="flex-1 px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm font-mono text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white transition"
-                        >
+                <!-- HTTP LAN Notice on Mobile Chrome (if NDEFReader is blocked due to non-HTTPS origin) -->
+                <div id="nfc-http-notice" class="hidden">
+                    <div class="p-3 rounded-2xl bg-amber-50 border border-amber-300 text-left space-y-2">
+                        <div class="flex items-start space-x-2">
+                            <span class="text-amber-600 text-base">⚠️</span>
+                            <div>
+                                <h4 class="text-xs font-black text-amber-950">Sensor NFC HP Membutuhkan Izin Chrome</h4>
+                                <p class="text-[11px] text-amber-800 leading-relaxed mt-0.5">
+                                    Google Chrome di HP membatasi Web NFC jika web diakses via IP LAN (<code class="bg-amber-100 px-1 py-0.5 rounded font-mono text-[10px]" id="current-lan-origin">http://...</code>).
+                                </p>
+                            </div>
+                        </div>
                         <button 
-                            type="submit" 
-                            class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs transition shadow-xs cursor-pointer shrink-0"
+                            type="button" 
+                            onclick="openNfcGuideModal()" 
+                            class="w-full py-2 px-3 rounded-xl bg-amber-200 hover:bg-amber-300 text-amber-950 font-black text-xs transition cursor-pointer flex items-center justify-center space-x-1.5"
                         >
-                            Masuk →
+                            <span>📖 Lihat Cara Aktifkan NFC di Chrome HP (10 Detik)</span>
                         </button>
-                    </form>
+                    </div>
                 </div>
             </div>
 
@@ -322,50 +326,117 @@
                 </button>
             </div>
 
-            <!-- Grid Akun Demo: Tampilkan Semua Tanpa Scroll Sesuai Request -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-                @foreach($demoVoters as $demo)
-                    <div class="p-3 rounded-2xl border {{ $demo->sudahMemilih() ? 'bg-slate-50 border-slate-200 text-slate-400' : 'bg-white border-slate-200 hover:border-blue-400 shadow-2xs' }} flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="font-mono text-[11px] font-extrabold text-blue-600">{{ $demo->nik }}</span>
-                                @if($demo->sudahMemilih())
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-200">{{ __('Sudah Memilih') }}</span>
-                                @else
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">{{ __('Tersedia') }}</span>
-                                @endif
-                            </div>
-                            <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate" title="{{ $demo->nama }}">{{ $demo->nama }}</h4>
-                            <p class="text-[11px] text-slate-500 truncate">{{ $demo->dept }}</p>
-                        </div>
-
-                        <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
-                            <span class="text-[10px] font-mono text-slate-400">UID: {{ $demo->rfid }}</span>
-                            @if(!$demo->sudahMemilih())
-                                <button 
-                                    type="button"
-                                    onclick="triggerCardTap('{{ $demo->rfid }}')"
-                                    class="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-2xs transition cursor-pointer"
-                                >
-                                    {{ __('Tap') }}
-                                </button>
-                            @else
-                                <button 
-                                    type="button"
-                                    onclick="showAlreadyVotedWarning('{{ addslashes($demo->nama) }}', '{{ $demo->voted_at ? $demo->voted_at->timezone('Asia/Jakarta')->format('d M Y, H:i') . ' WIB' : '' }}')"
-                                    class="px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 text-[11px] font-bold transition cursor-pointer border border-amber-300"
-                                    title="Coba tap pemilih yang sudah memilih"
-                                >
-                                    {{ __('Uji Dicegah') }}
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-                @endforeach
+            <!-- DataTable Akun Demo (Replaces Grid 4 Cards) -->
+            <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+                <table class="w-full text-left text-xs datatable" id="demo-voters-datatable">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold uppercase text-[10px] tracking-wider">
+                            <th class="py-3 px-3.5">NIK</th>
+                            <th class="py-3 px-3.5">Nama Pemilih</th>
+                            <th class="py-3 px-3.5">Departemen</th>
+                            <th class="py-3 px-3.5">UID / RFID</th>
+                            <th class="py-3 px-3.5">Status</th>
+                            <th class="py-3 px-3.5 text-right">Aksi Simulasi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 font-medium">
+                        @foreach($demoVoters as $demo)
+                            <tr class="hover:bg-slate-50/80 transition">
+                                <td class="py-2.5 px-3.5 font-mono font-bold text-blue-700 text-xs">{{ $demo->nik }}</td>
+                                <td class="py-2.5 px-3.5 font-bold text-slate-900">{{ $demo->nama }}</td>
+                                <td class="py-2.5 px-3.5 text-slate-600">{{ $demo->dept }}</td>
+                                <td class="py-2.5 px-3.5 font-mono text-[11px] text-slate-500">{{ $demo->rfid }}</td>
+                                <td class="py-2.5 px-3.5">
+                                    @if($demo->sudahMemilih())
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                                            Sudah Memilih
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                            Tersedia (Siap)
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="py-2.5 px-3.5 text-right">
+                                    @if(!$demo->sudahMemilih())
+                                        <button 
+                                            type="button"
+                                            onclick="triggerCardTap('{{ $demo->rfid }}')"
+                                            class="inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow-xs transition cursor-pointer"
+                                        >
+                                            <span>⚡ Tap Kartu</span>
+                                        </button>
+                                    @else
+                                        <button 
+                                            type="button"
+                                            onclick="showAlreadyVotedWarning('{{ addslashes($demo->nama) }}', '{{ $demo->voted_at ? $demo->voted_at->timezone('Asia/Jakarta')->format('d M Y, H:i') . ' WIB' : '' }}')"
+                                            class="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-[11px] font-bold transition cursor-pointer border border-amber-300"
+                                            title="Uji coba tap kartu yang sudah digunakan"
+                                        >
+                                            <span>🚫 Uji Dicegah</span>
+                                        </button>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
+</div>
+
+<!-- Modal Panduan Aktivasi Sensor Web NFC di Google Chrome HP (10 Detik) -->
+<div id="nfc-guide-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white border-2 border-slate-200 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">📱</span>
+                <h3 class="text-base sm:text-lg font-black text-slate-900">Aktivasi Sensor NFC di HP Chrome</h3>
+            </div>
+            <button onclick="closeNfcGuideModal()" type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1 rounded-xl">✕</button>
+        </div>
+
+        <div class="text-xs sm:text-sm text-slate-600 space-y-3 leading-relaxed">
+            <p>
+                Google Chrome Android mewajibkan izin <em>Insecure Origins Treated as Secure</em> agar sensor Web NFC dapat membaca kartu saat web diakses via IP LAN lokal (<strong class="text-slate-900 font-mono">http://...</strong>).
+            </p>
+
+            <div class="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 space-y-2 text-slate-800 text-xs">
+                <div class="font-extrabold text-blue-950 flex items-center space-x-1.5">
+                    <span>1. Buka Tab Baru di Chrome HP & Ketik:</span>
+                </div>
+                <div class="p-2 rounded-xl bg-white border border-blue-200 font-mono text-[11px] text-blue-800 select-all break-all">
+                    chrome://flags/#unsafely-treat-insecure-origin-as-secure
+                </div>
+
+                <div class="font-extrabold text-blue-950 pt-1">
+                    <span>2. Di Kolom "Insecure origins treated as secure", Masukkan URL ini:</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <input type="text" id="flag-origin-input" readonly value="http://192.168.1.5:8000" class="flex-1 px-3 py-1.5 rounded-xl bg-white border border-blue-200 font-mono text-xs text-slate-900 font-bold">
+                    <button type="button" onclick="copyNfcOrigin()" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs transition cursor-pointer">
+                        Salin URL
+                    </button>
+                </div>
+
+                <div class="font-extrabold text-blue-950 pt-1">
+                    <span>3. Ubah dropdown menjadi <strong class="text-emerald-700">"Enabled"</strong>, lalu klik tombol biru <strong class="text-blue-700">"Relaunch"</strong> di bawah layar.</span>
+                </div>
+            </div>
+
+            <p class="text-[11px] text-slate-500">
+                ✅ Setelah Chrome terbuka kembali, buka ulang halaman bilik pemilih ini. Tombol <strong>"Aktifkan Sensor NFC HP"</strong> akan langsung aktif dan membaca kartu RFID Mifare seketika saat ditempelkan ke punggung HP Anda!
+            </p>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+            <button onclick="closeNfcGuideModal()" type="button" class="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition cursor-pointer">
+                Tutup Panduan
+            </button>
+        </div>
+    </div>
 </div>
 
 @push('scripts')
@@ -380,63 +451,94 @@
     const tapStatusPill = document.getElementById('tap-status-pill');
     const tapStatusText = document.getElementById('tap-status-text');
 
-    // Mobile Manual Input Submit
-    function handleManualMobileSubmit(e) {
-        e.preventDefault();
-        const inp = document.getElementById('mobile_manual_input');
-        const val = inp ? inp.value.trim() : '';
-        if (!val) {
-            alert('Masukkan UID kartu atau NIK terlebih dahulu.');
-            return;
-        }
-        triggerCardTap(val);
-    }
-
     // Web NFC API Support (Google Chrome on Android)
+    let nfcReaderInstance = null;
+
     async function initWebNfcDetection() {
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || ('ontouchstart' in window);
+        const originEl = document.getElementById('current-lan-origin');
+        if (originEl) originEl.innerText = window.location.origin;
+
+        const flagOriginInput = document.getElementById('flag-origin-input');
+        if (flagOriginInput) flagOriginInput.value = window.location.origin;
+
         if ('NDEFReader' in window) {
             const container = document.getElementById('nfc-support-container');
             if (container) container.classList.remove('hidden');
+            const notice = document.getElementById('nfc-http-notice');
+            if (notice) notice.classList.add('hidden');
+        } else if (isMobile) {
+            const notice = document.getElementById('nfc-http-notice');
+            if (notice) notice.classList.remove('hidden');
         }
     }
 
     async function startNfcScan() {
         if (!('NDEFReader' in window)) {
-            alert('Web NFC tidak didukung oleh browser ini. Pastikan Anda membuka melalui browser Google Chrome di HP Android dengan fitur NFC aktif.');
+            openNfcGuideModal();
             return;
         }
 
         const btnLabel = document.getElementById('nfc-btn-label');
-        if (btnLabel) btnLabel.innerText = 'Sensor NFC Aktif... Tempelkan Kartu di Punggung HP!';
+        if (btnLabel) btnLabel.innerText = '🟢 Sensor NFC HP Aktif! Tempelkan Kartu di Punggung HP';
 
         try {
-            const ndef = new NDEFReader();
-            await ndef.scan();
+            if (!nfcReaderInstance) {
+                nfcReaderInstance = new NDEFReader();
+            }
+            await nfcReaderInstance.scan();
             
             tapTitle.innerText = "Sensor NFC HP Aktif!";
-            tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-blue-100 border-2 border-blue-400 text-blue-950 text-sm sm:text-base font-black shadow-md";
+            tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-emerald-100 border-2 border-emerald-400 text-emerald-950 text-sm sm:text-base font-black shadow-md animate-pulse";
             tapStatusText.innerText = "Tempelkan kartu ke punggung HP Anda...";
 
-            ndef.onreading = (event) => {
+            nfcReaderInstance.onreading = (event) => {
                 const serial = event.serialNumber;
                 if (serial) {
                     const clean = serial.replace(/[:\s-]/g, '').toUpperCase();
                     triggerCardTap(clean);
                 } else if (event.message && event.message.records.length > 0) {
-                    const record = event.message.records[0];
-                    const textDecoder = new TextDecoder(record.encoding || 'utf-8');
-                    const content = textDecoder.decode(record.data);
-                    triggerCardTap(content.trim());
+                    for (const record of event.message.records) {
+                        const textDecoder = new TextDecoder(record.encoding || 'utf-8');
+                        const content = textDecoder.decode(record.data);
+                        if (content && content.trim()) {
+                            triggerCardTap(content.trim());
+                            return;
+                        }
+                    }
                 }
             };
 
-            ndef.onreadingerror = () => {
+            nfcReaderInstance.onreadingerror = () => {
                 triggerUnknownCardTest('NFC_READ_ERROR');
             };
         } catch (err) {
             console.error('NFC error:', err);
-            alert('Gagal menyalakan sensor NFC: ' + err.message + '\nPastikan izin NFC diizinkan.');
+            alert('Sensor NFC belum dapat membaca: ' + err.message + '\nPastikan izin NFC diizinkan pada browser.');
             if (btnLabel) btnLabel.innerText = 'Aktifkan Sensor NFC HP (Tempel di Punggung HP)';
+        }
+    }
+
+    function openNfcGuideModal() {
+        const modal = document.getElementById('nfc-guide-modal');
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeNfcGuideModal() {
+        const modal = document.getElementById('nfc-guide-modal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function copyNfcOrigin() {
+        const input = document.getElementById('flag-origin-input');
+        if (input) {
+            navigator.clipboard.writeText(input.value).then(() => {
+                alert('URL origin berhasil disalin: ' + input.value);
+            }).catch(() => {
+                input.select();
+                document.execCommand('copy');
+                alert('URL origin disalin!');
+            });
         }
     }
 
@@ -455,6 +557,9 @@
             content.classList.remove('hidden');
             btnText.innerText = '{{ __("Sembunyikan Akun Demo") }}';
             btnIcon.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>';
+            setTimeout(() => {
+                if (window.initDataTables) window.initDataTables();
+            }, 60);
         } else {
             content.classList.add('hidden');
             btnText.innerText = '{{ __("Buka Akun Demo") }}';
