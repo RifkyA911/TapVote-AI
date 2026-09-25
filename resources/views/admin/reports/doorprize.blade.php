@@ -141,10 +141,11 @@
                                     <button 
                                         type="button" 
                                         onclick="selectPrize({{ $d->id }}, '{{ addslashes($d->title) }}', '{{ $d->category }}', {{ $d->remaining_slots }})"
-                                        class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-xs transition cursor-pointer flex items-center space-x-1"
+                                        class="px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-xs border border-amber-300 transition cursor-pointer flex items-center space-x-1"
                                         title="Pilih reward ini untuk diundi pada mesin di bawah"
                                     >
-                                        <span>🎯 Pilih</span>
+                                        <span>🎯</span>
+                                        <span>Pilih</span>
                                     </button>
 
                                     <button 
@@ -178,12 +179,12 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- 2. ANIMATED SVG LOTTERY STAGE (LIGHT THEME MATCHING!)     -->
+    <!-- 2. ANIMATED DIGITAL LOTTERY STAGE (LIGHT THEME MATCHING)  -->
     <!-- ======================================================== -->
-    <div class="p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-amber-50/80 via-white to-yellow-50/60 text-slate-900 border-2 border-amber-300 shadow-lg relative overflow-hidden text-center">
+    <div id="undi-section" class="scroll-mt-24 p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-amber-50/90 via-white to-yellow-50/70 text-slate-900 border-2 border-amber-300 shadow-xl relative overflow-hidden text-center">
         <!-- Ambient decorative accents -->
-        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-amber-400/15 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-yellow-400/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-amber-400/20 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-yellow-400/20 blur-3xl pointer-events-none"></div>
 
         <div class="max-w-xl mx-auto relative z-10 space-y-6">
 
@@ -196,16 +197,15 @@
 
             <!-- STATE 1: INITIAL READY STATE -->
             <div id="doorprize-stage-initial" class="{{ $totalEligible > 0 ? '' : 'hidden' }} space-y-4">
-                <!-- Rich SVG Slot Tumbler Graphic -->
+                <!-- Sleek Digital Roulette Indicator -->
                 <div class="w-28 h-28 sm:w-32 sm:h-32 mx-auto relative flex items-center justify-center">
-                    <svg class="w-full h-full text-amber-500 drop-shadow-[0_4px_16px_rgba(245,158,11,0.35)]" viewBox="0 0 100 100" fill="none">
-                        <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="3" stroke-dasharray="6 4" class="animate-spin" style="animation-duration: 20s;" />
-                        <circle cx="50" cy="50" r="36" stroke="rgba(245,158,11,0.3)" stroke-width="2" />
-                        <rect x="35" y="35" width="30" height="30" rx="8" fill="url(#goldGradient)" />
-                        <path d="M42 45L50 38L58 45V60H42V45Z" fill="#1e293b" />
-                        <circle cx="50" cy="52" r="3" fill="#ffffff" />
+                    <svg class="w-full h-full text-amber-500 drop-shadow-[0_4px_16px_rgba(245,158,11,0.3)]" viewBox="0 0 100 100" fill="none">
+                        <circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 4" class="animate-spin" style="animation-duration: 25s;" />
+                        <circle cx="50" cy="50" r="36" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.4" />
+                        <circle cx="50" cy="50" r="26" fill="url(#digitalGoldGradient)" />
+                        <path d="M44 40L60 50L44 60V40Z" fill="#0f172a" />
                         <defs>
-                            <linearGradient id="goldGradient" x1="0" y1="0" x2="1" y2="1">
+                            <linearGradient id="digitalGoldGradient" x1="0" y1="0" x2="1" y2="1">
                                 <stop offset="0%" stop-color="#f59e0b" />
                                 <stop offset="100%" stop-color="#fbbf24" />
                             </linearGradient>
@@ -231,15 +231,16 @@
                 </div>
             </div>
 
-            <!-- STATE 2: ANIMATED SVG SPINNING STATE (NO COUNTDOWN TIMER!) -->
+            <!-- STATE 2: ANIMATED SVG SPINNING STATE (CLEAN DIGITAL ROULETTE - NO STARS / NO BOX CLIPPING) -->
             <div id="doorprize-stage-spinning" class="hidden space-y-6">
-                <!-- Glowing Animated SVG Reel Spinner -->
+                <!-- Clean High-Tech Digital Glowing Gyroscope Spinner -->
                 <div class="relative w-32 h-32 sm:w-36 sm:h-36 mx-auto flex items-center justify-center">
-                    <svg class="w-full h-full text-amber-500 drop-shadow-[0_4px_20px_rgba(245,158,11,0.5)]" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="46" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="30 15" class="animate-spin" style="animation-duration: 0.6s;" />
-                        <circle cx="50" cy="50" r="35" stroke="#3b82f6" stroke-width="3" stroke-dasharray="20 20" class="animate-spin" style="animation-duration: 0.9s; animation-direction: reverse;" />
-                        <circle cx="50" cy="50" r="22" fill="#ffffff" stroke="#f59e0b" stroke-width="2" />
-                        <polygon points="50,34 54,44 65,44 56,51 60,61 50,55 40,61 44,51 35,44 46,44" fill="#f59e0b" class="animate-pulse" />
+                    <svg class="w-full h-full text-amber-500 drop-shadow-[0_0_24px_rgba(245,158,11,0.6)]" viewBox="0 0 100 100" fill="none">
+                        <circle cx="50" cy="50" r="45" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" stroke-dasharray="25 15" class="animate-spin" style="animation-duration: 0.5s;" />
+                        <circle cx="50" cy="50" r="35" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="18 18" class="animate-spin" style="animation-duration: 0.75s; animation-direction: reverse;" />
+                        <circle cx="50" cy="50" r="24" stroke="#10b981" stroke-width="2" stroke-dasharray="12 12" class="animate-spin" style="animation-duration: 1.1s;" />
+                        <circle cx="50" cy="50" r="14" fill="#f59e0b" class="animate-ping" style="animation-duration: 1.2s;" />
+                        <circle cx="50" cy="50" r="10" fill="#ffffff" />
                     </svg>
                 </div>
 
@@ -249,7 +250,7 @@
                 </div>
 
                 <!-- Digital Reel Card in Light Theme -->
-                <div class="p-6 rounded-3xl bg-white border-2 border-amber-400 shadow-xl min-h-[140px] flex flex-col justify-center items-center">
+                <div class="p-6 rounded-3xl bg-white/95 border-2 border-amber-400 shadow-xl min-h-[140px] flex flex-col justify-center items-center">
                     <span class="text-[11px] font-extrabold text-amber-700 uppercase tracking-widest block mb-1">Mencari Nama Pemenang...</span>
                     <h4 id="slot-name" class="text-2xl sm:text-3xl font-black text-slate-950 transition-all">Memutar Data...</h4>
                     <p id="slot-dept" class="text-sm font-bold text-amber-900 mt-1 font-mono">Bagian: -</p>
@@ -311,9 +312,19 @@
                 <h3 class="text-base font-extrabold text-slate-900">3. Log Pemenang & Status Klaim Doorprize</h3>
                 <p class="text-xs text-slate-500">Pencatatan resmi pemenang undian, status serah terima (Diterima / Ditolak), dan alasan.</p>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 self-start sm:self-auto">
-                Total Pemenang: <strong id="log-count">{{ count($winners) }}</strong>
-            </span>
+            <div class="flex items-center space-x-2">
+                <a href="{{ route('admin.reports.doorprize.export.excel') }}" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-xs transition flex items-center space-x-1 cursor-pointer" title="Download Excel Doorprize Report">
+                    <span>📊</span>
+                    <span>Excel</span>
+                </a>
+                <a href="{{ route('admin.reports.doorprize.export.pdf') }}" class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-xs transition flex items-center space-x-1 cursor-pointer" title="Download PDF Doorprize Report">
+                    <span>📄</span>
+                    <span>PDF</span>
+                </a>
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 self-start sm:self-auto">
+                    Total Pemenang: <strong id="log-count">{{ count($winners) }}</strong>
+                </span>
+            </div>
         </div>
 
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
@@ -714,6 +725,12 @@
         }
 
         if (window.SoundEffects) window.SoundEffects.click();
+
+        // Smoothly anchor scroll to the lottery draw section
+        const undiSection = document.getElementById('undi-section');
+        if (undiSection) {
+            undiSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
     }
 
     // Play synthetic digital slot tick
