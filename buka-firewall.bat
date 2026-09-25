@@ -18,7 +18,7 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 
 echo ========================================================
-echo   MENGIZINKAN FIREWALL PORT 80 & 8000 UNTUK AKSES HP
+echo   MENGIZINKAN FIREWALL PORT 80 DAN 8000 UNTUK AKSES HP
 echo ========================================================
 powershell -NoProfile -Command "New-NetFirewallRule -DisplayName 'Laragon & PHP LAN Server (80, 8000)' -Direction Inbound -LocalPort 80,8000 -Protocol TCP -Action Allow -Profile Any"
 echo.
