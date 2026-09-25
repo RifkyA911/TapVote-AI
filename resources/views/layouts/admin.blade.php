@@ -10,6 +10,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- PWA Installation Support (Android, iOS, Windows, Linux) -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TapVote AI">
+    <link rel="apple-touch-icon" href="/images/pwa/icon-192.png">
+    <meta name="msapplication-TileColor" content="#2563eb">
+    <meta name="msapplication-TileImage" content="/images/pwa/icon-192.png">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
@@ -45,6 +56,13 @@
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 <span>Live Dashboard</span>
             </a>
+            <a href="{{ route('admin.analytics') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.analytics') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                <span class="flex items-center justify-between flex-1">
+                    <span>Mata Langit</span>
+                    <span class="text-[10px] bg-indigo-100 text-indigo-800 font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider">Sky Eye</span>
+                </span>
+            </a>
 
             <div class="text-[11px] uppercase tracking-wider text-slate-400 font-bold px-3 pt-4 pb-1">Master Data</div>
             <a href="{{ route('admin.ketua.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.ketua.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
@@ -57,7 +75,7 @@
             </a>
             <a href="{{ route('admin.voters.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.voters.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                <span>Voter Roster (DPT)</span>
+                <span>Eligible Voters</span>
             </a>
 
             <div class="text-[11px] uppercase tracking-wider text-slate-400 font-bold px-3 pt-4 pb-1">Reports & Analytics</div>
@@ -88,13 +106,19 @@
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <span>Audit Trail Logs</span>
             </a>
+
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-bold px-3 pt-4 pb-1">System</div>
+            <a href="{{ route('admin.settings') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.settings*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                <span>System Settings</span>
+            </a>
         </nav>
 
-        <!-- Quick Switch to Voter Kiosk & Logout -->
+        <!-- Quick Switch to Voting Terminal & Logout -->
         <div class="p-4 border-t border-slate-200 space-y-2 bg-slate-50 shrink-0">
             <a href="{{ route('voter.tap') }}" target="_blank" class="w-full flex items-center justify-center space-x-2 py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-bold text-white shadow-xs transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                <span>Open Voter Kiosk</span>
+                <span>Open Voting Terminal</span>
             </a>
 
             <div class="flex items-center justify-between pt-2">
@@ -210,6 +234,44 @@
         </main>
     </div>
 
+    <!-- HeadlessUI-style Confirmation Modal -->
+    <div id="headless-confirm-modal" class="fixed inset-0 z-50 hidden transition-opacity duration-200" aria-modal="true" role="dialog">
+        <!-- Backdrop -->
+        <div id="headless-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity opacity-0"></div>
+
+        <!-- Dialog Container -->
+        <div class="fixed inset-0 z-10 overflow-y-auto flex items-center justify-center p-4">
+            <div id="headless-modal-panel" class="relative bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 transform scale-95 opacity-0 transition-all duration-200">
+                <div class="flex items-start space-x-4">
+                    <div id="headless-modal-icon-wrap" class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
+                        <!-- Icon will be inserted here -->
+                    </div>
+                    <div class="flex-1">
+                        <h3 id="headless-modal-title" class="text-base font-black text-slate-900">Konfirmasi Status Voting</h3>
+                        <p id="headless-modal-desc" class="text-xs text-slate-500 mt-1 leading-relaxed">Deskripsi konfirmasi aksi.</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex items-center justify-end space-x-2.5">
+                    <button 
+                        type="button" 
+                        id="headless-modal-btn-cancel"
+                        class="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+                    >
+                        Batal
+                    </button>
+                    <button 
+                        type="button" 
+                        id="headless-modal-btn-confirm"
+                        class="px-5 py-2.5 rounded-xl text-xs font-black text-white shadow-xs transition cursor-pointer"
+                    >
+                        Ya, Lanjutkan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('admin-sidebar');
@@ -230,6 +292,62 @@
             }
         }
 
+        // HeadlessUI-style Promise-based modal confirmation
+        function showHeadlessConfirm({ title, description, confirmText, type = 'warning' }) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('headless-confirm-modal');
+                const backdrop = document.getElementById('headless-modal-backdrop');
+                const panel = document.getElementById('headless-modal-panel');
+                const titleEl = document.getElementById('headless-modal-title');
+                const descEl = document.getElementById('headless-modal-desc');
+                const iconWrap = document.getElementById('headless-modal-icon-wrap');
+                const btnConfirm = document.getElementById('headless-modal-btn-confirm');
+                const btnCancel = document.getElementById('headless-modal-btn-cancel');
+
+                titleEl.textContent = title;
+                descEl.textContent = description;
+                btnConfirm.textContent = confirmText || 'Konfirmasi';
+
+                if (type === 'danger') {
+                    iconWrap.className = 'w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-rose-100 text-rose-600';
+                    iconWrap.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+                    btnConfirm.className = 'px-5 py-2.5 rounded-xl text-xs font-black text-white shadow-xs transition cursor-pointer bg-rose-600 hover:bg-rose-700';
+                } else if (type === 'warning') {
+                    iconWrap.className = 'w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-amber-100 text-amber-600';
+                    iconWrap.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                    btnConfirm.className = 'px-5 py-2.5 rounded-xl text-xs font-black text-white shadow-xs transition cursor-pointer bg-amber-500 hover:bg-amber-600';
+                } else {
+                    iconWrap.className = 'w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-emerald-100 text-emerald-600';
+                    iconWrap.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                    btnConfirm.className = 'px-5 py-2.5 rounded-xl text-xs font-black text-white shadow-xs transition cursor-pointer bg-emerald-600 hover:bg-emerald-700';
+                }
+
+                modal.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    backdrop.classList.remove('opacity-0');
+                    backdrop.classList.add('opacity-100');
+                    panel.classList.remove('scale-95', 'opacity-0');
+                    panel.classList.add('scale-100', 'opacity-100');
+                });
+
+                function cleanup(confirmed) {
+                    backdrop.classList.remove('opacity-100');
+                    backdrop.classList.add('opacity-0');
+                    panel.classList.remove('scale-100', 'opacity-100');
+                    panel.classList.add('scale-95', 'opacity-0');
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                        btnConfirm.onclick = null;
+                        btnCancel.onclick = null;
+                        resolve(confirmed);
+                    }, 200);
+                }
+
+                btnConfirm.onclick = () => cleanup(true);
+                btnCancel.onclick = () => cleanup(false);
+            });
+        }
+
         // Throttled Voting Status Action (Prevents double clicks and provides instant feedback)
         let isVotingStatusUpdating = false;
 
@@ -240,13 +358,29 @@
             }
 
             if (newStatus === 'PAUSED') {
-                if (!confirm('Jeda pemungutan suara sementara? Pemilih di bilik tidak dapat melakukan tap.')) {
-                    return;
-                }
+                const confirmed = await showHeadlessConfirm({
+                    title: 'Jeda Pemungutan Suara?',
+                    description: 'Sistem pemungutan suara akan dijeda sementara. Seluruh bilik suara dan terminal NFC tidak akan menerima tap kartu sampai diaktifkan kembali.',
+                    confirmText: 'Ya, Jeda Sistem',
+                    type: 'warning'
+                });
+                if (!confirmed) return;
             } else if (newStatus === 'STOPPED') {
-                if (!confirm('PERINGATAN: Tutup dan akhiri pemungutan suara secara resmi?')) {
-                    return;
-                }
+                const confirmed = await showHeadlessConfirm({
+                    title: 'Tutup & Akhiri Pemungutan Suara?',
+                    description: 'PERINGATAN RESMI: Pemungutan suara akan dihentikan dan seluruh sesi bilik ditutup. Anda dapat mengunduh Rekapitulasi Berita Acara resmi setelah ini.',
+                    confirmText: 'Ya, Hentikan Resmi',
+                    type: 'danger'
+                });
+                if (!confirmed) return;
+            } else if (newStatus === 'STARTED') {
+                const confirmed = await showHeadlessConfirm({
+                    title: 'Aktifkan Sesi Pemungutan Suara?',
+                    description: 'Terminal bilik suara akan dibuka dan siap menerima pemilih untuk melakukan tap kartu RFID Mifare.',
+                    confirmText: 'Mulai / Lanjutkan',
+                    type: 'success'
+                });
+                if (!confirmed) return;
             }
 
             isVotingStatusUpdating = true;
@@ -322,5 +456,12 @@
         }
     </script>
     @stack('scripts')
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
 </body>
 </html>
