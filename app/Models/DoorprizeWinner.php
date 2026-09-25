@@ -11,10 +11,14 @@ class DoorprizeWinner extends Model
         'doorprize_id',
         'nik',
         'won_at',
+        'status',
+        'status_note',
+        'received_at',
     ];
 
     protected $casts = [
         'won_at' => 'datetime',
+        'received_at' => 'datetime',
     ];
 
     public function doorprize(): BelongsTo
