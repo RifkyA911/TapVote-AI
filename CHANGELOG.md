@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.7.0] - 2026-09-26
+
+### Added
+- **Procedural 3D RFID Smart Card Reconstructed (`rfid3d.js`)**:
+  - Procedural canvas generation referencing `contoh.png` without pasting static images: dynamic coral-crimson gradient, signature white wave curve, gentleman portrait in light blue collared shirt, solid black box with white "RIFKY" text and "018513 • ICT DIV.", vertical barcode, and TapVote diamond crest.
+  - Plain white spotless back face ("back itu putih polos") with slot cutout.
+  - Realistic 3D accessories: top oblong punch hole, black breakaway clasp, and double-loop crimson satin lanyard ribbon.
+- **Progressive Web App (PWA) Support**:
+  - Registered `manifest.json` and `sw.js` supporting standalone installation across Android, iOS, Windows, and Linux.
+- **Unified Sticky Footer Ballot Dock (`/vote`)**:
+  - Fixed-bottom voting dock with candidate selection summary chips, "Kembali", "Lanjut", "Tinjau Pilihan", and "Vote Sekarang" buttons dynamically updating across steps.
+- **"Mata Langit" (Sky Eye Analytics) Module (`/admin/analytics`)**:
+  - Deep-dive election telemetry module: 24-hour voting velocity histogram, department turnout ranking and matrix, RFID Mifare authenticity audit, foreign card scan detections, and forensic audit timeline.
+- **System Settings Management Panel (`/admin/settings`)**:
+  - Full-suite admin configuration for election title, quorum threshold percentage, Gemini AI API key and model selection, voice greeting, SFX toggles, and kiosk session timeouts.
+- **Ballot Priority Drag-and-Drop Reordering (`/admin/ketua`, `/admin/pengawas`)**:
+  - HTML5 drag-and-drop table row reordering with real-time ballot number recalculation and AJAX persistence (`POST /admin/ketua/reorder`, `POST /admin/pengawas/reorder`).
+- **Server-Side Controller Vector PDF & Excel Exports**:
+  - Implemented real server-side vector PDF generation via DomPDF (`Barryvdh\DomPDF\Facade\Pdf`) and CSV/Excel downloads for all admin reports and rosters (Chairman, Supervisor, Forensic Traceback, Doorprize, and Voter rosters).
+- **HeadlessUI-Style Popup Confirmation Dialog (`layouts/admin.blade.php`)**:
+  - Custom HeadlessUI-style animated popup modal replacing native browser `confirm()` for START, PAUSE, and STOP voting status actions.
+- **SpeechSynthesis Auto-Play Welcome Greeting (`/admin/dashboard`)**:
+  - Web Speech API greeting on admin landing: *"Selamat datang, Mas Admin di Control Panel TapVote AI."*
+
+### Changed
+- **Doorprize Raffle & Randomizer Overhaul (`/admin/reports/doorprize`)**:
+  - Matched "Pilih" button styling to "Edit" button with smooth anchor scroll directly to `#undi-section`.
+  - Replaced star polygon and square box clipping with a high-tech glowing digital roulette/tumbler animation.
+- **Eligible Voters (DPT) & Dynamic Query Refinements (`/admin/voters`)**:
+  - Renamed DPT to "Eligible Voters" and removed all "voter kiosk" phrasing.
+  - Added a collapsible "Filter" header with an icon and renamed "Run QUERY" to "Apply".
+  - Replaced department text input with `<select>` dropdown in the Add Voter modal.
+- **Dashboard Telemetry Enhancements (`/admin/dashboard`)**:
+  - Added custom date, department, and foreign card toggle filters to the voting activity timeline.
+  - Added candidate avatar thumbnail photos to tally lists and refined ApexCharts donut contrast.
+
+---
+
 ## [1.6.0] - 2026-09-26
 
 ### Added

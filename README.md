@@ -19,6 +19,8 @@
 - **Hardware-Only Tap (Zero Text Input)**:
   - Eliminated manual text input fields entirely to ensure complete voting integrity and prevent spoofing.
   - Automatically captures hardware RFID reader keystrokes or Web NFC tag serial numbers without exposing any editable inputs.
+- **Unified Sticky Footer Ballot Dock (`/vote`)**:
+  - Fixed-bottom persistent dock with candidate selection summary chips, "Kembali", "Lanjut", "Tinjau Pilihan", and "Vote Sekarang" buttons dynamically updating across ballot steps.
 - **Calm, Senior-Friendly Visuals**:
   - Relaxed, gentle ripple waves (4.5s) optimized for older eyes.
   - Floating card hover animation with tactile spring-lift ("sundul") on touch/hover (`.ballot-card-sundul`).
@@ -32,32 +34,36 @@
 
 ### 2. Public Live Count (`/`)
 - **Real-Time SSE Streaming**: Live updates broadcast without page refreshes.
-- **Comparative Bar Chart with Candidate Photo Avatars**: Grouped multi-candidate comparative charts powered by Chart.js featuring custom circular candidate portrait avatars, ballot numbers, and short names directly on the x-axis.
+- **Slimmed Bar Chart & Candidate Avatars**: Slimmer, modern bars (`barThickness: 22`) powered by Chart.js featuring custom circular candidate portrait avatars, ballot numbers, and candidate names directly on the x-axis.
+- **Election Categories & Procedural Guide**: Clean explanatory section between live tally charts and candidate cards explaining Chairman, Supervisory Board, and 3-step voting procedure.
 - **Candidate Manifesto & Profile Modals**: Click to inspect Vision (*Visi*), Mission (*Misi*), and background.
 - **Clean Public Header**: High-contrast, spacious layout with single official timestamp and instant language switcher (`EN` / `ID`).
 
 ### 3. Executive Admin Control Panel (`/admin`)
-- **Three.js 3D Keplek & Lanyard Showcase (`/admin/dashboard`)**:
-  - Interactive 3D model replicating the official UBS ID card with authentic badge texture (`id_card_ref.jpeg`), top slot cutout, black clasp, metallic swivel ring, and 3D woven red fabric lanyard ribbon loop.
-  - Interactive 360° rotation on X & Y axes with mouse/touch drag and control buttons.
-- **Full-Width Candidate Charts**:
-  - Restructured into single-row, full-width containers (`w-full`) with ApexCharts Donut on the left and candidate breakdown progress cards on the right for superior readability across mobile, iPad Mini (768px-834px), and PC.
-- **Executive Telemetry Dashboard**:
-  - Sleek modern UI designed for tech-savvy administrators with live SSE connection status, dynamic turnout quorum milestone gauges, and real-time candidate comparison cards.
-  - **ApexCharts Data Visualizations**: Interactive donut charts for vote distributions and an hourly timeline area chart showing voting flow from 07:00 to 17:00.
-  - **Official Vector PDF Export**: Uses `barryvdh/laravel-dompdf` (`/admin/dashboard/export/pdf`) to produce clean, high-resolution A4 election recap certificates with panitia signature spaces.
-  - **Excel UTF-8 BOM Recap Export**: Generates `.csv` exports compatible with Microsoft Excel (`/admin/dashboard/export/excel`).
-  - **Live Gemini API Test Tool**: Live testing tool with round-trip latency benchmarking and model connectivity verification (`gemini-2.0-flash` & `gemini-1.5-flash`).
-- **Candidate Management DataTables (`/admin/ketua`, `/admin/pengawas`)**:
-  - Replaced legacy card grids with uniform, responsive DataTables matching the DPT roster.
-  - **Cardless Floating Lightbox Preview Modal**: Seamless high-resolution candidate photo viewing without awkward card borders.
-  - Live client-side search across names, NIKs, and vision statements with keyboard shortcut `/`.
-- **Neumorphic Soft UI Admin Login (`/admin/login`)**:
-  - Tactile Neumorphism (Soft UI) design with multi-directional soft dual shadows, recessed inset inputs, and embossed buttons.
-- **Throttled Operational Controls**:
-  - Modernized segmented START, PAUSE, and STOP controls with anti-double-click throttling (`800ms`) and background API synchronization.
-- **Dynamic DataTables with RFC HTTP QUERY Method**:
-  - Native implementation of the safe HTTP `QUERY` method (`draft-ietf-httpbis-safe-method-w-body`) with client-side query body (`/admin/voters/query`).
+- **Procedural 3D RFID Smart Card Reconstructed (`/admin/dashboard`)**:
+  - High-resolution procedural Three.js model generated via HTML5 canvas mirroring `contoh.png`: coral-crimson gradient, dynamic white swoosh curve, gentleman photo in light blue collared shirt, solid black box with white "RIFKY" text and "018513 • ICT DIV.", vertical barcode, and TapVote diamond crest.
+  - Pure, spotless white back face ("back itu putih polos") with oblong slot punch hole.
+  - Full 3D accessories: black loop cord, black breakaway clasp buckle, and double-loop crimson satin lanyard ribbon.
+  - 360° interactive rotation on X & Y axes with auto-spin, flip, 360° X, and view reset controls.
+- **Mata Langit (Sky Eye Analytics) Module (`/admin/analytics`)**:
+  - Deep telemetry center featuring real database analytics: 24-hour voting velocity histogram, department turnout ranking and participation matrix, RFID Mifare authenticity audit & foreign card scan tracking, and forensic audit timeline.
+- **System Settings Management Panel (`/admin/settings`)**:
+  - Comprehensive control panel for election title, quorum threshold percentage, Gemini AI model and API keys, voice greeting autoplay, sound effects toggles, and kiosk session timeouts.
+- **SpeechSynthesis Auto-Play Welcome Greeting**:
+  - Web Speech API greeting upon administrator login: *"Selamat datang, Mas Admin di Control Panel TapVote AI."*
+- **HeadlessUI-Style Confirmation Modal (`layouts/admin.blade.php`)**:
+  - Custom HeadlessUI-style animated popup modal replacing native browser `confirm()` for START, PAUSE, and STOP voting system controls.
+- **Candidate Drag-and-Drop Reordering (`/admin/ketua`, `/admin/pengawas`)**:
+  - Interactive HTML5 table row drag-and-drop with real-time ballot number recalculation and asynchronous AJAX persistence.
+- **Custom Controller-Based Vector PDF & Excel Exports**:
+  - Real server-side PDF exports via DomPDF (`Barryvdh\DomPDF\Facade\Pdf`) and CSV/Excel downloads for Chairman, Supervisor, Forensic Traceback, Doorprize, and Voter rosters.
+- **Doorprize Raffle & Digital Gyroscope Roulette (`/admin/reports/doorprize`)**:
+  - Matched "Pilih" button styling to "Edit" button with smooth anchor scroll directly to `#undi-section`.
+  - High-tech digital gyroscope roulette animation with glowing concentric rings and clean light-theme styling.
+- **Uniform Eligible Voters DataTable (`/admin/voters`)**:
+  - Replaced DPT with "Eligible Voters", added a foldable "Filter" header with icon, renamed "Run QUERY" to "Apply", and changed department text input to `<select>` dropdown in the Add Voter modal.
+- **Progressive Web App (PWA)**:
+  - Supports installable standalone web application on Android, iOS, Windows, and Linux via Web App Manifest and Service Worker.
   - Polished responsive filter toolbar optimized for **iPad Mini (768px-834px)**, mobile, and desktop.
 
 ### 4. Doorprize System & Winner Claim Tracking (`/admin/reports/doorprize`)
