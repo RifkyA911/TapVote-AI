@@ -68,5 +68,18 @@
     "Export PDF / Print": "Cetak / Ekspor PDF",
     "Search:": "Cari:",
     "Show": "Tampilkan",
-    "entries": "data"
+    "entries": "data",
+    "Activate Smartphone NFC Sensor (Tap on Back of Phone)": "Aktifkan Sensor NFC HP (Tempel di Punggung HP)",
+    "Chrome NFC Permissions Required": "Sensor NFC HP Membutuhkan Izin Chrome",
+    "Test Unknown Card (Foreign)": "Uji Kartu Tidak Dikenali (Asing)",
+    "Demo Accounts DataTable": "Tabel Akun Demo",
+    "Master Doorprize Rewards": "Master Hadiah Doorprize",
+    "Doorprize Winner Claim Status": "Status Klaim Hadiah Doorprize",
+    "Accepted": "Sudah Diterima",
+    "Rejected": "Ditolak / Gugur",
+    "Pending Claim": "Belum Diambil",
+    "Other Reason": "Alasan Lain",
+    "Test Gemini API Key": "Uji Koneksi Gemini API",
+    "Export Official Recap PDF": "Unduh PDF Rekapitulasi Resmi",
+    "Export Official Recap Excel": "Unduh Excel Rekapitulasi Resmi"
 }
