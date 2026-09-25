@@ -62,6 +62,27 @@
             </div>
         </div>
 
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+            <div class="relative flex-1">
+                <input 
+                    type="text" 
+                    id="doorprize-search" 
+                    placeholder="Cari nama hadiah atau sponsor..." 
+                    oninput="filterDoorprizeTable()"
+                    class="w-full pl-9 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:border-amber-400 outline-none"
+                >
+                <svg class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <select id="doorprize-category-filter" onchange="filterDoorprizeTable()" class="h-9 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 focus:bg-white focus:border-amber-400 outline-none cursor-pointer">
+                <option value="">Semua Kategori</option>
+                <option value="Elektronik">Elektronik</option>
+                <option value="Peralatan Rumah">Peralatan Rumah</option>
+                <option value="Gadget">Gadget & Smartphone</option>
+                <option value="Voucher">Voucher</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
+        </div>
+
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="w-full text-left text-xs sm:text-sm datatable" id="doorprizes-datatable">
                 <thead>
@@ -283,6 +304,26 @@
             <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 self-start sm:self-auto">
                 Total Pemenang: <strong id="log-count">{{ count($winners) }}</strong>
             </span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+            <div class="relative flex-1">
+                <input 
+                    type="text" 
+                    id="winner-search" 
+                    placeholder="Cari pemenang, NIK, atau hadiah..." 
+                    oninput="filterWinnerTable()"
+                    class="w-full pl-9 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:border-amber-400 outline-none"
+                >
+                <svg class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <select id="winner-status-filter" onchange="filterWinnerTable()" class="h-9 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 focus:bg-white focus:border-amber-400 outline-none cursor-pointer">
+                <option value="">Semua Status Klaim</option>
+                <option value="Sudah Diterima">Sudah Diterima (accepted)</option>
+                <option value="Ditolak">Ditolak (rejected)</option>
+                <option value="Belum Diambil">Belum Diambil (pending)</option>
+                <option value="Alasan Lain">Alasan Lain (other)</option>
+            </select>
         </div>
 
         <div class="overflow-x-auto rounded-2xl border border-slate-200">
@@ -739,6 +780,38 @@
         document.getElementById('doorprize-stage-spinning').classList.add('hidden');
         document.getElementById('doorprize-stage-winner').classList.add('hidden');
         document.getElementById('doorprize-stage-initial').classList.remove('hidden');
+    }
+
+    function filterDoorprizeTable() {
+        const query = (document.getElementById('doorprize-search')?.value || '').toLowerCase().trim();
+        const cat = (document.getElementById('doorprize-category-filter')?.value || '').toLowerCase().trim();
+        const rows = document.querySelectorAll('#doorprizes-datatable tbody tr');
+
+        rows.forEach(r => {
+            if (r.cells.length < 3) return; // skip empty placeholder
+            const text = r.innerText.toLowerCase();
+            const catCell = (r.cells[2]?.innerText || '').toLowerCase();
+            const matchesQuery = !query || text.includes(query);
+            const matchesCat = !cat || catCell.includes(cat);
+
+            r.style.display = (matchesQuery && matchesCat) ? '' : 'none';
+        });
+    }
+
+    function filterWinnerTable() {
+        const query = (document.getElementById('winner-search')?.value || '').toLowerCase().trim();
+        const status = (document.getElementById('winner-status-filter')?.value || '').toLowerCase().trim();
+        const rows = document.querySelectorAll('#winners-datatable tbody tr');
+
+        rows.forEach(r => {
+            if (r.cells.length < 5) return; // skip empty placeholder
+            const text = r.innerText.toLowerCase();
+            const statusCell = (r.cells[5]?.innerText || '').toLowerCase();
+            const matchesQuery = !query || text.includes(query);
+            const matchesStatus = !status || statusCell.includes(status);
+
+            r.style.display = (matchesQuery && matchesStatus) ? '' : 'none';
+        });
     }
 </script>
 @endpush
