@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KandidatKetuaController;
 use App\Http\Controllers\Admin\KandidatPengawasController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\VoterController as AdminVoterController;
 use App\Http\Controllers\LiveCountController;
 use App\Http\Controllers\VoterController;
@@ -84,6 +86,17 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
     Route::get('/dashboard/export/excel', [DashboardController::class, 'exportRecapExcel'])->name('admin.dashboard.export.excel');
     Route::get('/dashboard/export/pdf', [DashboardController::class, 'exportRecapPdf'])->name('admin.dashboard.export.pdf');
 
+    // Mata Langit - Deep Telemetry Analytics
+    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('admin.analytics');
+
+    // System Settings Panel
+    Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings');
+    Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');
+
+    // Drag & Drop Prioritas Reorder Kandidat
+    Route::post('/ketua/reorder', [KandidatKetuaController::class, 'reorder'])->name('admin.ketua.reorder');
+    Route::post('/pengawas/reorder', [KandidatPengawasController::class, 'reorder'])->name('admin.pengawas.reorder');
+
     // CRUD Kandidat Ketua
     Route::resource('ketua', KandidatKetuaController::class, [
         'as' => 'admin',
@@ -98,6 +111,7 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
     Route::get('/voters', [AdminVoterController::class, 'index'])->name('admin.voters.index');
     Route::match(['GET', 'POST', 'QUERY'], '/voters/query', [AdminVoterController::class, 'queryVoters'])->name('admin.voters.query');
     Route::get('/voters/export', [AdminVoterController::class, 'export'])->name('admin.voters.export');
+    Route::get('/voters/export-pdf', [AdminVoterController::class, 'exportPdf'])->name('admin.voters.export.pdf');
     Route::post('/voters', [AdminVoterController::class, 'store'])->name('admin.voters.store');
     Route::post('/voters/import', [AdminVoterController::class, 'import'])->name('admin.voters.import');
     Route::get('/voters/template', [AdminVoterController::class, 'downloadTemplate'])->name('admin.voters.template');
@@ -108,13 +122,18 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
     Route::prefix('reports')->group(function () {
         Route::get('/ketua', [ReportController::class, 'pemenangKetua'])->name('admin.reports.ketua');
         Route::get('/ketua/export', [ReportController::class, 'exportKetua'])->name('admin.reports.ketua.export');
+        Route::get('/ketua/export-pdf', [ReportController::class, 'exportKetuaPdf'])->name('admin.reports.ketua.export.pdf');
         Route::get('/pengawas', [ReportController::class, 'pemenangPengawas'])->name('admin.reports.pengawas');
         Route::get('/pengawas/export', [ReportController::class, 'exportPengawas'])->name('admin.reports.pengawas.export');
+        Route::get('/pengawas/export-pdf', [ReportController::class, 'exportPengawasPdf'])->name('admin.reports.pengawas.export.pdf');
         Route::get('/traceback', [ReportController::class, 'traceback'])->name('admin.reports.traceback');
         Route::get('/traceback/export', [ReportController::class, 'exportTraceback'])->name('admin.reports.traceback.export');
+        Route::get('/traceback/export-pdf', [ReportController::class, 'exportTracebackPdf'])->name('admin.reports.traceback.export.pdf');
         
         // Doorprize Modul & Master Rewards
         Route::get('/doorprize', [ReportController::class, 'doorprize'])->name('admin.reports.doorprize');
+        Route::get('/doorprize/export-pdf', [ReportController::class, 'exportDoorprizePdf'])->name('admin.reports.doorprize.export.pdf');
+        Route::get('/doorprize/export-excel', [ReportController::class, 'exportDoorprizeExcel'])->name('admin.reports.doorprize.export.excel');
         Route::post('/doorprize/draw', [ReportController::class, 'drawWinner'])->name('admin.reports.doorprize.draw');
         Route::post('/doorprize/items', [ReportController::class, 'storeDoorprize'])->name('admin.reports.doorprize.store');
         Route::match(['POST', 'PUT', 'PATCH'], '/doorprize/items/{id}', [ReportController::class, 'updateDoorprize'])->name('admin.reports.doorprize.update');

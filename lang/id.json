@@ -81,5 +81,12 @@
     "Other Reason": "Alasan Lain",
     "Test Gemini API Key": "Uji Koneksi Gemini API",
     "Export Official Recap PDF": "Unduh PDF Rekapitulasi Resmi",
-    "Export Official Recap Excel": "Unduh Excel Rekapitulasi Resmi"
+    "Export Official Recap Excel": "Unduh Excel Rekapitulasi Resmi",
+    "Eligible Voters": "Daftar Pemilih Sah (Eligible Voters)",
+    "Mata Langit": "Mata Langit (Sky Eye Analytics)",
+    "Sky Eye Analytics": "Analitik Mata Langit",
+    "System Settings": "Pengaturan Sistem",
+    "Open Voting Terminal": "Buka Terminal Bilik Suara",
+    "Apply Filters": "Terapkan Filter",
+    "Audience Stage View": "Panggung Layar Penonton"
 }
