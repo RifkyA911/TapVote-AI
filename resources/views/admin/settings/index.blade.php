@@ -77,10 +77,21 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Status Operasional Sistem Voting</label>
                     <select name="voting_status" class="w-full h-10 px-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm font-bold text-slate-800 focus:bg-white focus:border-blue-500 outline-none cursor-pointer">
-                        <option value="STARTED" {{ $settings['voting_status'] === 'STARTED' ? 'selected' : '' }}>STARTED (Bilik Terbuka & Aktif)</option>
+                        <option value="STARTED" {{ $settings['voting_status'] === 'STARTED' ? 'selected' : '' }}>LIVE (Bilik Terbuka & Aktif)</option>
                         <option value="PAUSED" {{ $settings['voting_status'] === 'PAUSED' ? 'selected' : '' }}>PAUSED (Bilik Di-Jeda Sementara)</option>
-                        <option value="STOPPED" {{ $settings['voting_status'] === 'STOPPED' ? 'selected' : '' }}>STOPPED (Pemungutan Suara Resmi Ditutup)</option>
+                        <option value="STOPPED" {{ $settings['voting_status'] === 'STOPPED' ? 'selected' : '' }}>FINISHED (Pemungutan Suara Resmi Ditutup)</option>
                     </select>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between sm:col-span-2">
+                    <div>
+                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">Public Realtime SSE Stream</strong>
+                        <span class="text-[11px] text-slate-500">Izinkan publik mengakses siaran langsung Server-Sent Events di beranda utama tanpa login admin.</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer ml-3">
+                        <input type="checkbox" name="public_sse_enabled" value="1" {{ ($settings['public_sse_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
                 </div>
             </div>
         </div>

@@ -88,6 +88,7 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
 
     // Mata Langit - Deep Telemetry Analytics
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('admin.analytics');
+    Route::get('/analytics/ai-analysis', [AnalyticsController::class, 'getAiAnalysis'])->name('admin.analytics.ai');
 
     // System Settings Panel
     Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings');
@@ -144,4 +145,5 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
 
     // Audit Trail Logs Viewer
     Route::get('/logs', [LogController::class, 'index'])->name('admin.logs.index');
+    Route::get('/logs/ai-analysis', [LogController::class, 'getAiAnalysis'])->name('admin.logs.ai');
 });

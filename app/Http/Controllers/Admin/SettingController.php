@@ -20,6 +20,7 @@ class SettingController extends Controller
             'gemini_model' => AppSetting::get('gemini_model', 'gemini-2.0-flash'),
             'enable_voice_greeting' => AppSetting::get('enable_voice_greeting', '1'),
             'enable_sound_fx' => AppSetting::get('enable_sound_fx', '1'),
+            'public_sse_enabled' => AppSetting::get('public_sse_enabled', '1'),
             'kiosk_session_timeout' => AppSetting::get('kiosk_session_timeout', '60'),
         ];
 
@@ -35,10 +36,12 @@ class SettingController extends Controller
             'voting_status' => 'required|in:STARTED,PAUSED,STOPPED',
             'gemini_api_key' => 'nullable|string|max:255',
             'gemini_model' => 'required|string|in:gemini-2.0-flash,gemini-1.5-flash,gemini-1.5-pro',
-            'enable_voice_greeting' => 'nullable|in:0,1',
-            'enable_sound_fx' => 'nullable|in:0,1',
             'kiosk_session_timeout' => 'required|integer|min:10|max:600',
         ]);
+
+        $validated['enable_voice_greeting'] = $request->has('enable_voice_greeting') ? '1' : '0';
+        $validated['enable_sound_fx'] = $request->has('enable_sound_fx') ? '1' : '0';
+        $validated['public_sse_enabled'] = $request->has('public_sse_enabled') ? '1' : '0';
 
         foreach ($validated as $key => $val) {
             AppSetting::set($key, (string) ($val ?? '0'));

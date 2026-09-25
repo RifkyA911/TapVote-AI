@@ -59,7 +59,7 @@
                     <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span class="text-lg font-bold text-slate-800">{{ __('Active & Verified') }}</span>
                 </div>
-                <p class="text-xs text-slate-500 mt-1">Dual Ballot Kiosk • RFID Mifare ISO 14443A</p>
+                <p class="text-xs text-slate-500 mt-1 font-medium">Bilik Suara Siap Digunakan • Aman & Terverifikasi</p>
             </div>
 
             <!-- Frontrunners Spotlight -->
@@ -162,22 +162,22 @@
                 </div>
             </div>
 
-            <!-- Card 3: Prosedur Voting -->
+            <!-- Card 3: Prosedur Voting (Boomer-friendly) -->
             <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-2.5">
-                        <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase bg-blue-50 text-blue-700 border border-blue-200">Prosedur</span>
-                        <span class="text-xs font-mono font-bold text-slate-500">Mifare RFID</span>
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase bg-blue-50 text-blue-700 border border-blue-200">Cara Memilih</span>
+                        <span class="text-xs font-bold text-slate-500">Kartu Anggota</span>
                     </div>
                     <h4 class="text-sm sm:text-base font-extrabold text-slate-900 mb-1.5">{{ __('Tata Cara Memilih') }}</h4>
                     <p class="text-xs text-slate-600 leading-relaxed">
-                        {{ __('1. Tempelkan kartu ID / Keplek di sensor scanner bilik suara.') }}<br>
-                        {{ __('2. Pilih masing-masing 1 kandidat Ketua & Pengawas.') }}<br>
-                        {{ __('3. Tinjau pilihan & sentuh Vote Sekarang.') }}
+                        {{ __('1. Tempelkan kartu anggota Anda pada alat pemindai di bilik suara.') }}<br>
+                        {{ __('2. Sentuh foto calon Ketua dan calon Pengawas pilihan Anda.') }}<br>
+                        {{ __('3. Periksa kembali pilihan Anda, lalu sentuh tombol Kirim Suara.') }}
                     </p>
                 </div>
                 <div class="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-700">
-                    <span>{{ __('Enkripsi SHA-256') }}</span>
+                    <span>{{ __('Aman & Rahasia') }}</span>
                     <span>1 Anggota 1 Suara</span>
                 </div>
             </div>

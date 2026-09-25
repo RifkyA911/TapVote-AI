@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.8.0] - 2026-09-26
+
+### Added
+- **AI Deep Telemetry Reasoning & Disparity Analysis (`/admin/analytics`)**:
+  - Integrated `AiReasoningService` providing deep analytical reasoning over voter turnout velocity curves, department participation disparity, and peak voting hours anomaly detection.
+  - Interactive analysis card with executive summary, 3 analytical pillars, quorum confidence scoring, and strategic recommendations for the election committee.
+  - Supports Google Gemini 2.0 Flash / 1.5 Flash via REST API with fallback to deterministic local heuristic AI reasoner.
+- **AI Cybersecurity & Forensic Threat Intelligence Reasoner (`/admin/logs`)**:
+  - Deep forensic reasoning over audit trail records: threat level grading (SECURE, GUARDED, ELEVATED, HIGH, CRITICAL), tamper-proof cryptographic integrity verdict, foreign card scan attempt evaluation, and security recommendations.
+- **PWA Quick-Install Trigger**:
+  - Added dynamic `beforeinstallprompt` event listener with interactive "Install App" button in the admin navbar.
+- **Public SSE Stream Toggle (`/admin/settings`)**:
+  - Added administrative toggle to manage public Server-Sent Events availability.
+
+### Changed
+- **Three.js 3D RFID Model & Viewport Overhaul (`/admin/dashboard`, `rfid3d.js`)**:
+  - Switched Three.js canvas container to a vibrant corporate blue gradient (`from-blue-900 via-indigo-950 to-slate-900`) with rounded borders (`rounded-3xl`).
+  - Redrew portrait photo as a clean, modern **faceless avatar silhouette** ("tanpa wajah") with clean haircut contour, jawline, neck, and blue collar.
+  - Repurposed section copy from portfolio showcase to **Admin Hardware & RFID Credential Simulator** for RFID Mifare ISO/IEC 14443A diagnostic.
+  - Added colorful dot grid backdrop (`radial-gradient`) across the dashboard.
+- **Navbar Voting Status & State Labels (`layouts/admin.blade.php`)**:
+  - Synchronized state badge and button copy: `STARTED` -> **LIVE**, `PAUSED` -> **PAUSED**, `STOPPED` -> **FINISHED** / **END**.
+  - Renamed sidebar menu to **Analytics**.
+  - Fixed double scrollbar issue by enforcing `h-screen overflow-hidden` on `body`.
+- **Candidate Photo URLs & Chart Contrast Fixes**:
+  - Fixed candidate image URL generation on dashboard using `asset(ltrim($path, '/'))` to eliminate double storage path prefixes.
+  - Enhanced ApexCharts donut dataLabels with pure white typography and crisp drop shadows for maximum contrast.
+- **Boomer-Friendly Landing Page Polish (`/`)**:
+  - Replaced technical jargon (Mifare RFID, SHA-256) with simple, warm copy for non-technical cooperative members.
+
+---
+
 ## [1.7.0] - 2026-09-26
 
 ### Added

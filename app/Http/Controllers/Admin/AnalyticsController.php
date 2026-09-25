@@ -47,10 +47,13 @@ class AnalyticsController extends Controller
                 ];
             });
 
-        // 2. Hourly Voting Velocity (Histogram)
+        // 2. Hourly Voting Velocity (Histogram) - Database driver agnostic
+        $isSqlite = DB::connection()->getDriverName() === 'sqlite';
+        $hourExpr = $isSqlite ? "strftime('%H', voted_at)" : "DATE_FORMAT(voted_at, '%H')";
+
         $hourlyDistribution = Pemilih::where('pilih', 'T')
             ->whereNotNull('voted_at')
-            ->select(DB::raw("strftime('%H', voted_at) as hour_slot"), DB::raw('COUNT(*) as vote_count'))
+            ->select(DB::raw("{$hourExpr} as hour_slot"), DB::raw('COUNT(*) as vote_count'))
             ->groupBy('hour_slot')
             ->orderBy('hour_slot', 'asc')
             ->pluck('vote_count', 'hour_slot')
@@ -121,5 +124,63 @@ class AnalyticsController extends Controller
             'logsWithAgents',
             'recentSecurityEvents'
         ));
+    }
+
+    /**
+     * AI Deep Reasoning & Analytical Telemetry Endpoint
+     */
+    public function getAiAnalysis(\App\Services\AiReasoningService $aiService)
+    {
+        $totalVoters = Pemilih::count();
+        $totalVoted = Pemilih::where('pilih', 'T')->count();
+        $turnoutPct = $totalVoters > 0 ? round(($totalVoted / $totalVoters) * 100, 1) : 0;
+
+        $deptStats = Pemilih::select('dept', 
+                DB::raw('COUNT(*) as total_members'),
+                DB::raw("SUM(CASE WHEN pilih = 'T' THEN 1 ELSE 0 END) as voted_members")
+            )
+            ->groupBy('dept')
+            ->get()
+            ->map(function ($d) {
+                return [
+                    'dept' => $d->dept,
+                    'total' => $d->total_members,
+                    'voted' => $d->voted_members,
+                    'pct' => $d->total_members > 0 ? round(($d->voted_members / $d->total_members) * 100, 1) : 0,
+                ];
+            })->toArray();
+
+        $isSqlite = DB::connection()->getDriverName() === 'sqlite';
+        $hourExpr = $isSqlite ? "strftime('%H', voted_at)" : "DATE_FORMAT(voted_at, '%H')";
+
+        $hourlyDistribution = Pemilih::where('pilih', 'T')
+            ->whereNotNull('voted_at')
+            ->select(DB::raw("{$hourExpr} as hour_slot"), DB::raw('COUNT(*) as vote_count'))
+            ->groupBy('hour_slot')
+            ->orderBy('hour_slot', 'asc')
+            ->pluck('vote_count', 'hour_slot')
+            ->toArray();
+
+        $peakHour = '-';
+        $peakVotes = 0;
+        if (!empty($hourlyDistribution)) {
+            $peakSlot = array_search(max($hourlyDistribution), $hourlyDistribution);
+            $peakHour = $peakSlot . ':00';
+            $peakVotes = max($hourlyDistribution);
+        }
+
+        $analysis = $aiService->analyzeTelemetry([
+            'total_voters' => $totalVoters,
+            'total_voted' => $totalVoted,
+            'turnout_pct' => $turnoutPct,
+            'departments' => $deptStats,
+            'peak_hour' => $peakHour,
+            'peak_votes' => $peakVotes,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $analysis,
+        ]);
     }
 }

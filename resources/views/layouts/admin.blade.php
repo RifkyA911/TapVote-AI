@@ -24,7 +24,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="min-h-full bg-slate-100 text-slate-800 font-sans antialiased flex flex-col md:flex-row relative overflow-x-hidden">
+<body class="h-screen overflow-hidden bg-slate-100 text-slate-800 font-sans antialiased flex flex-col lg:flex-row relative">
 
     <!-- Mobile & iPad Mini Sidebar Backdrop Overlay -->
     <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-30 hidden lg:hidden transition-opacity duration-300"></div>
@@ -58,10 +58,7 @@
             </a>
             <a href="{{ route('admin.analytics') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.analytics') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                <span class="flex items-center justify-between flex-1">
-                    <span>Mata Langit</span>
-                    <span class="text-[10px] bg-indigo-100 text-indigo-800 font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider">Sky Eye</span>
-                </span>
+                <span>Analytics</span>
             </a>
 
             <div class="text-[11px] uppercase tracking-wider text-slate-400 font-bold px-3 pt-4 pb-1">Master Data</div>
@@ -154,27 +151,33 @@
 
                 @php
                     $adminVotingStatus = \App\Models\AppSetting::get('voting_status', 'STARTED');
+                    $statusDisplayLabel = match($adminVotingStatus) {
+                        'STARTED' => 'LIVE',
+                        'PAUSED' => 'PAUSED',
+                        'STOPPED' => 'FINISHED',
+                        default => 'LIVE',
+                    };
                 @endphp
 
                 <!-- Compact Voting System Status Dot & Label -->
                 <div class="flex items-center space-x-2">
                     <div id="voting-status-badge" class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-black tracking-wide uppercase {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' : ($adminVotingStatus === 'PAUSED' ? 'bg-amber-50 text-amber-800 border border-amber-300' : 'bg-rose-50 text-rose-800 border border-rose-300') }}">
                         <span id="voting-status-dot" class="w-2 h-2 rounded-full {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-500 animate-pulse' : ($adminVotingStatus === 'PAUSED' ? 'bg-amber-500 animate-ping' : 'bg-rose-500') }}"></span>
-                        <span id="voting-status-text">{{ $adminVotingStatus }}</span>
+                        <span id="voting-status-text">{{ $statusDisplayLabel }}</span>
                     </div>
                 </div>
 
-                <!-- Modern Throttled Segmented Controls: START / PAUSE / STOP -->
+                <!-- Modern Throttled Segmented Controls: LIVE / PAUSE / END -->
                 <div id="voting-controls-group" class="inline-flex items-center rounded-xl bg-slate-100 p-0.5 border border-slate-200/90 shadow-2xs space-x-0.5">
                     <button 
                         type="button" 
                         id="btn-status-started"
                         onclick="handleVotingStatusAction('STARTED')"
-                        title="Resume / Start Voting System"
+                        title="Start / Resume Voting System (LIVE)"
                         class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-700 hover:bg-white' }}"
                     >
-                        <span>▶</span>
-                        <span>START</span>
+                        <span>●</span>
+                        <span>LIVE</span>
                     </button>
                     <button 
                         type="button" 
@@ -190,17 +193,23 @@
                         type="button" 
                         id="btn-status-stopped"
                         onclick="handleVotingStatusAction('STOPPED')"
-                        title="Officially Stop Voting System"
+                        title="Officially End Voting System (FINISHED)"
                         class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STOPPED' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 hover:text-rose-700 hover:bg-white' }}"
                     >
                         <span>⏹</span>
-                        <span>STOP</span>
+                        <span>END</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Right Header Actions (Language Switcher & Live SSE) -->
+            <!-- Right Header Actions (Language Switcher & Live SSE & PWA Install) -->
             <div class="flex items-center space-x-2.5 text-xs text-slate-600">
+                <!-- PWA Install Button -->
+                <button id="pwa-install-btn" type="button" class="hidden px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold border border-indigo-200 transition items-center space-x-1 shadow-2xs cursor-pointer" title="Install Aplikasi TapVote AI">
+                    <span>📲</span>
+                    <span>Install App</span>
+                </button>
+
                 <!-- Language Switcher EN / ID -->
                 <div class="inline-flex items-center rounded-xl bg-slate-100 p-0.5 border border-slate-200 text-xs font-extrabold">
                     <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-slate-900' }}">EN</a>
@@ -359,7 +368,7 @@
 
             if (newStatus === 'PAUSED') {
                 const confirmed = await showHeadlessConfirm({
-                    title: 'Jeda Pemungutan Suara?',
+                    title: 'Jeda Pemungutan Suara (PAUSE)?',
                     description: 'Sistem pemungutan suara akan dijeda sementara. Seluruh bilik suara dan terminal NFC tidak akan menerima tap kartu sampai diaktifkan kembali.',
                     confirmText: 'Ya, Jeda Sistem',
                     type: 'warning'
@@ -367,17 +376,17 @@
                 if (!confirmed) return;
             } else if (newStatus === 'STOPPED') {
                 const confirmed = await showHeadlessConfirm({
-                    title: 'Tutup & Akhiri Pemungutan Suara?',
-                    description: 'PERINGATAN RESMI: Pemungutan suara akan dihentikan dan seluruh sesi bilik ditutup. Anda dapat mengunduh Rekapitulasi Berita Acara resmi setelah ini.',
-                    confirmText: 'Ya, Hentikan Resmi',
+                    title: 'Akhiri Pemungutan Suara (END)?',
+                    description: 'PERINGATAN RESMI: Pemungutan suara akan diakhiri secara resmi (FINISHED) dan seluruh sesi bilik ditutup. Anda dapat mengunduh Rekapitulasi Berita Acara resmi setelah ini.',
+                    confirmText: 'Ya, Akhiri Resmi (END)',
                     type: 'danger'
                 });
                 if (!confirmed) return;
             } else if (newStatus === 'STARTED') {
                 const confirmed = await showHeadlessConfirm({
-                    title: 'Aktifkan Sesi Pemungutan Suara?',
+                    title: 'Aktifkan Sesi Pemungutan Suara (LIVE)?',
                     description: 'Terminal bilik suara akan dibuka dan siap menerima pemilih untuk melakukan tap kartu RFID Mifare.',
-                    confirmText: 'Mulai / Lanjutkan',
+                    confirmText: 'Buka Sesi (LIVE)',
                     type: 'success'
                 });
                 if (!confirmed) return;
@@ -432,7 +441,11 @@
             const btnPaused = document.getElementById('btn-status-paused');
             const btnStopped = document.getElementById('btn-status-stopped');
 
-            if (text) text.innerText = status;
+            let displayLabel = 'LIVE';
+            if (status === 'PAUSED') displayLabel = 'PAUSED';
+            else if (status === 'STOPPED') displayLabel = 'FINISHED';
+
+            if (text) text.innerText = displayLabel;
 
             // Reset active button classes
             const defaultBtnClass = 'px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 text-slate-600 hover:bg-white';
@@ -462,6 +475,27 @@
                 navigator.serviceWorker.register('/sw.js').catch(() => {});
             });
         }
+
+        let pwaDeferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            pwaDeferredPrompt = e;
+            const btn = document.getElementById('pwa-install-btn');
+            if (btn) {
+                btn.classList.remove('hidden');
+                btn.classList.add('inline-flex');
+                btn.onclick = async () => {
+                    if (pwaDeferredPrompt) {
+                        pwaDeferredPrompt.prompt();
+                        const { outcome } = await pwaDeferredPrompt.userChoice;
+                        if (outcome === 'accepted') {
+                            btn.classList.add('hidden');
+                        }
+                        pwaDeferredPrompt = null;
+                    }
+                };
+            }
+        });
     </script>
 </body>
 </html>

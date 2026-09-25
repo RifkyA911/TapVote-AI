@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Mata Langit (Sky Eye Analytics) - TapVote AI')
+@section('title', 'Analytics - TapVote AI')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">
 
-    <!-- Top Sky Eye Header -->
+    <!-- Top Analytics Header -->
     <div class="p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-900/60 shadow-xl relative overflow-hidden">
         <div class="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none"></div>
         <div class="absolute -left-24 -bottom-24 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl pointer-events-none"></div>
@@ -14,13 +14,13 @@
             <div>
                 <div class="flex items-center space-x-2 mb-2">
                     <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-indigo-500/30 text-indigo-300 border border-indigo-400/30">
-                        🛰️ Telemetri Lintas Sektor
+                        🛰️ Telemetry Analytics
                     </span>
                     <span class="px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold bg-white/10 text-emerald-400 border border-white/15">
                         Live Database Stream
                     </span>
                 </div>
-                <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Mata Langit (Sky Eye Analytics)</h2>
+                <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Analytics</h2>
                 <p class="text-xs sm:text-sm text-indigo-200/80 mt-1 max-w-2xl font-medium">
                     Pusat observasi komprehensif metrik pemilu: lonjakan partisipasi per departemen, histori kecepatan voting, audit keaslian kartu RFID, dan deteksi anomali.
                 </p>
@@ -93,6 +93,53 @@
                 <span class="text-xs text-slate-500 font-semibold">Pass Rate</span>
             </div>
             <span class="text-xs text-slate-500 font-medium">Kartu asing dicegah: <strong class="text-rose-600 font-mono">{{ $unknownCardAttempts }} kali</strong></span>
+        </div>
+    <!-- AI DEEP TELEMETRY & REASONING CENTER -->
+    <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-900/60 shadow-xl relative overflow-hidden">
+        <div class="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-indigo-500/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-24 -bottom-24 w-80 h-80 rounded-full bg-blue-500/15 blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-indigo-800/40 gap-4">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 to-blue-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h3 class="text-lg sm:text-xl font-black text-white tracking-tight">AI Deep Telemetry Reasoning & Disparity Analysis</h3>
+                            <span id="analytics-ai-engine-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
+                                Google Gemini 2.0 Flash / Heuristic
+                            </span>
+                        </div>
+                        <p class="text-xs text-indigo-200/70 mt-0.5">Penalaran mendalam kurva kecepatan voting, disparitas antar departemen, dan proyeksi kuorum</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2.5">
+                    <button 
+                        id="btn-run-analytics-ai" 
+                        type="button" 
+                        onclick="runAnalyticsAiReasoning()" 
+                        class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white text-xs sm:text-sm font-extrabold shadow-lg shadow-indigo-500/25 transition cursor-pointer flex items-center space-x-2"
+                    >
+                        <span id="analytics-ai-btn-icon">⚡</span>
+                        <span id="analytics-ai-btn-text">Analisis dengan AI Reasoning</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Output Dynamic Container -->
+            <div id="analytics-ai-container" class="space-y-4">
+                <!-- Initial State -->
+                <div class="p-5 rounded-2xl bg-indigo-950/60 border border-indigo-800/40 text-center py-8">
+                    <span class="text-3xl block mb-2">🧠</span>
+                    <h4 class="text-sm font-black text-white">Deep AI Telemetry Reasoning Siap Dijalankan</h4>
+                    <p class="text-xs text-indigo-200/70 max-w-md mx-auto mt-1">
+                        Klik tombol di atas untuk menganalisis data telemetri, disparitas tingkat absensi departemen, lonjakan voting, dan rekomendasi strategis panitia pemilihan.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -318,6 +365,129 @@
         };
         new ApexCharts(document.querySelector("#chartDeptRanking"), deptOptions).render();
     });
+
+    async function runAnalyticsAiReasoning() {
+        const btn = document.getElementById('btn-run-analytics-ai');
+        const icon = document.getElementById('analytics-ai-btn-icon');
+        const text = document.getElementById('analytics-ai-btn-text');
+        const container = document.getElementById('analytics-ai-container');
+        const engineBadge = document.getElementById('analytics-ai-engine-badge');
+
+        if (!btn || !container) return;
+
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+        icon.innerHTML = '<span class="inline-block animate-spin">⚙️</span>';
+        text.innerText = 'Menalar Data Telemetri...';
+
+        container.innerHTML = `
+            <div class="p-6 rounded-2xl bg-indigo-950/60 border border-indigo-800/40 text-center py-10 space-y-3">
+                <div class="inline-block animate-spin text-3xl">🌀</div>
+                <h4 class="text-sm font-bold text-indigo-200">AI sedang memproses telemetri 24 jam & disparitas partisipasi...</h4>
+                <p class="text-xs text-indigo-300/60">Mengevaluasi kecepatan aliran surat suara, anomali lonjakan, dan gap antar departemen</p>
+            </div>
+        `;
+
+        try {
+            const res = await fetch("{{ route('admin.analytics.ai') }}", {
+                headers: { 'Accept': 'application/json' }
+            });
+            const payload = await res.json();
+
+            if (res.ok && payload.success && payload.data) {
+                const d = payload.data;
+                if (engineBadge && d.engine) {
+                    engineBadge.innerText = `${d.engine} • ${d.timestamp || ''}`;
+                }
+
+                const riskColor = d.risk_level === 'LOW' 
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' 
+                    : (d.risk_level === 'MEDIUM' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' : 'bg-rose-500/20 text-rose-300 border-rose-500/30');
+
+                let recsHtml = '';
+                if (Array.isArray(d.strategic_recommendations)) {
+                    recsHtml = d.strategic_recommendations.map(r => `
+                        <li class="flex items-start space-x-2 text-xs text-slate-200">
+                            <span class="text-emerald-400 font-bold shrink-0">✓</span>
+                            <span>${r}</span>
+                        </li>
+                    `).join('');
+                }
+
+                container.innerHTML = `
+                    <div class="space-y-4 animate-fadeIn">
+                        <!-- Top Reasoning Summary & Score -->
+                        <div class="p-5 rounded-2xl bg-indigo-900/40 border border-indigo-700/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-black uppercase tracking-widest text-indigo-300">Executive Analytical Summary</span>
+                                <p class="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">${d.executive_summary || '-'}</p>
+                            </div>
+                            <div class="flex items-center space-x-3 shrink-0">
+                                <div class="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Quorum Confidence</span>
+                                    <span class="text-lg font-black text-indigo-400 font-mono">${d.quorum_confidence_score || 95}%</span>
+                                </div>
+                                <div class="px-3 py-2 rounded-xl border text-xs font-black uppercase ${riskColor}">
+                                    Risk: ${d.risk_level || 'LOW'}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3 Pillars of Deep Telemetry Analysis -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
+                                <div class="flex items-center space-x-2 text-xs font-extrabold text-blue-300">
+                                    <span>📈</span>
+                                    <span>Kurva Kecepatan Suara</span>
+                                </div>
+                                <p class="text-xs text-slate-300 leading-relaxed">${d.turnout_velocity_reasoning || '-'}</p>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
+                                <div class="flex items-center space-x-2 text-xs font-extrabold text-emerald-300">
+                                    <span>🏢</span>
+                                    <span>Disparitas Departemen</span>
+                                </div>
+                                <p class="text-xs text-slate-300 leading-relaxed">${d.department_disparity_analysis || '-'}</p>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
+                                <div class="flex items-center space-x-2 text-xs font-extrabold text-amber-300">
+                                    <span>⚡</span>
+                                    <span>Jam Sibuk & Pola Anomali</span>
+                                </div>
+                                <p class="text-xs text-slate-300 leading-relaxed">${d.peak_hours_anomaly_assessment || '-'}</p>
+                            </div>
+                        </div>
+
+                        <!-- Strategic Recommendations -->
+                        <div class="p-4 rounded-2xl bg-slate-900/60 border border-indigo-900/60 space-y-2">
+                            <h5 class="text-xs font-black uppercase tracking-wider text-indigo-300">Rekomendasi Strategis Panitia Pemilihan:</h5>
+                            <ul class="space-y-1.5">${recsHtml}</ul>
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-rose-950/60 border border-rose-800 text-xs text-rose-200">
+                        Gagal memuat analisis AI: ${payload.message || 'Terjadi kesalahan sistem.'}
+                    </div>
+                `;
+            }
+        } catch (err) {
+            console.error(err);
+            container.innerHTML = `
+                <div class="p-4 rounded-2xl bg-rose-950/60 border border-rose-800 text-xs text-rose-200">
+                    Koneksi ke endpoint AI Reasoning terputus. Silakan coba lagi.
+                </div>
+            `;
+        } finally {
+            btn.disabled = false;
+            btn.classList.remove('opacity-70', 'cursor-not-allowed');
+            icon.innerText = '⚡';
+            text.innerText = 'Analisis Ulang dengan AI';
+        }
+    }
 </script>
 @endpush
 @endsection

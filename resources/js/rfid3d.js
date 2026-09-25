@@ -462,7 +462,7 @@ function createProceduralFrontTexture() {
     ctx.fill();
 
     // Neck
-    ctx.fillStyle = '#fbcfe8'; // Skin tone
+    ctx.fillStyle = '#fde2ce'; // Smooth warm skin tone
     ctx.beginPath();
     ctx.moveTo(photoX + 195, photoY + 280);
     ctx.lineTo(photoX + 265, photoY + 280);
@@ -471,13 +471,19 @@ function createProceduralFrontTexture() {
     ctx.closePath();
     ctx.fill();
 
-    // Head / Face
-    ctx.fillStyle = '#fbcfe8';
+    // Head / Face (Faceless Silhouette per user instruction: "tanpa wajah ya")
+    ctx.fillStyle = '#fde2ce';
     ctx.beginPath();
-    ctx.ellipse(photoX + 230, photoY + 235, 80, 105, 0, 0, Math.PI * 2);
+    ctx.ellipse(photoX + 230, photoY + 235, 78, 102, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Hair
+    // Subtle jawline contour shadow for modern 3D depth without facial features
+    ctx.fillStyle = 'rgba(217, 119, 6, 0.08)';
+    ctx.beginPath();
+    ctx.ellipse(photoX + 230, photoY + 265, 52, 60, 0, 0, Math.PI);
+    ctx.fill();
+
+    // Hair - Modern Professional Cut Contour
     ctx.fillStyle = '#0f172a';
     ctx.beginPath();
     ctx.ellipse(photoX + 230, photoY + 165, 88, 70, 0, Math.PI, Math.PI * 2);
@@ -489,29 +495,10 @@ function createProceduralFrontTexture() {
     ctx.closePath();
     ctx.fill();
 
-    // Eyes, eyebrows, smile
-    ctx.fillStyle = '#1e293b';
-    ctx.beginPath();
-    ctx.ellipse(photoX + 200, photoY + 230, 8, 5, 0, 0, Math.PI * 2);
-    ctx.ellipse(photoX + 260, photoY + 230, 8, 5, 0, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Eyebrows
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#0f172a';
-    ctx.beginPath();
-    ctx.moveTo(photoX + 188, photoY + 215);
-    ctx.quadraticCurveTo(photoX + 202, photoY + 210, photoX + 214, photoY + 216);
-    ctx.moveTo(photoX + 246, photoY + 216);
-    ctx.quadraticCurveTo(photoX + 258, photoY + 210, photoX + 272, photoY + 215);
-    ctx.stroke();
-
-    // Friendly smile
-    ctx.strokeStyle = '#9f1239';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.arc(photoX + 230, photoY + 270, 24, 0.2 * Math.PI, 0.8 * Math.PI);
-    ctx.stroke();
+    // Sideburns
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(photoX + 145, photoY + 215, 12, 38);
+    ctx.fillRect(photoX + 303, photoY + 215, 12, 38);
 
     ctx.restore(); // End photo clip
 

@@ -38,4 +38,36 @@ class LogController extends Controller
 
         return view('admin.logs.index', compact('logs', 'modules', 'actions', 'module', 'action', 'search'));
     }
+
+    /**
+     * AI Deep Forensic & Security Threat Intelligence Reasoning
+     */
+    public function getAiAnalysis(\App\Services\AiReasoningService $aiService)
+    {
+        $totalLogs = ActivityLog::count();
+        $unknownCardAttempts = ActivityLog::where('action', 'like', '%UNKNOWN%')
+            ->orWhere('description', 'like', '%tidak dikenali%')
+            ->orWhere('description', 'like', '%asing%')
+            ->count();
+
+        $alreadyVotedAttempts = ActivityLog::where('action', 'like', '%ALREADY%')
+            ->orWhere('description', 'like', '%sudah memilih%')
+            ->count();
+
+        $recentLogs = ActivityLog::latest()
+            ->take(30)
+            ->get(['action', 'module', 'description', 'ip_address', 'created_at'])
+            ->toArray();
+
+        $analysis = $aiService->analyzeAuditLogs($recentLogs, [
+            'total_logs' => $totalLogs,
+            'unknown_card_attempts' => $unknownCardAttempts,
+            'already_voted_attempts' => $alreadyVotedAttempts,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $analysis,
+        ]);
+    }
 }

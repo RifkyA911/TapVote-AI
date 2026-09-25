@@ -3,7 +3,9 @@
 @section('title', 'Live Telemetry Dashboard')
 
 @section('content')
-<div class="space-y-6 sm:space-y-8">
+<div class="space-y-6 sm:space-y-8 relative">
+    <!-- Colorful Dot Grid Backdrop Effect (Blue & Indigo Modern Pattern) -->
+    <div class="absolute inset-0 pointer-events-none -z-10 opacity-75" style="background-image: radial-gradient(rgba(59, 130, 246, 0.3) 1.5px, transparent 1.5px), radial-gradient(rgba(139, 92, 246, 0.22) 1.5px, transparent 1.5px); background-size: 26px 26px; background-position: 0 0, 13px 13px;"></div>
 
     <!-- Top Executive Header: Live SSE Status & Telemetry Indicators -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white shadow-xl border border-slate-700/50">
@@ -296,7 +298,7 @@
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center space-x-3 min-w-0">
                                 @if(!empty($k['foto']))
-                                    <img src="{{ str_starts_with($k['foto'], 'http') ? $k['foto'] : asset('storage/' . $k['foto']) }}" alt="{{ $k['nama'] }}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
+                                    <img src="{{ str_starts_with($k['foto'], 'http') ? $k['foto'] : asset(ltrim($k['foto'], '/')) }}" alt="{{ $k['nama'] }}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
                                 @else
                                     <span class="w-10 h-10 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-2xs">
                                         {{ $k['nomor_urut'] }}
@@ -352,7 +354,7 @@
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center space-x-3 min-w-0">
                                 @if(!empty($p['foto']))
-                                    <img src="{{ str_starts_with($p['foto'], 'http') ? $p['foto'] : asset('storage/' . $p['foto']) }}" alt="{{ $p['nama'] }}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
+                                    <img src="{{ str_starts_with($p['foto'], 'http') ? $p['foto'] : asset(ltrim($p['foto'], '/')) }}" alt="{{ $p['nama'] }}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
                                 @else
                                     <span class="w-10 h-10 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-2xs">
                                         {{ $p['nomor_urut'] }}
@@ -382,47 +384,47 @@
 
     <!-- ======================================================== -->
     <!-- 3D INTERACTIVE RFID SMART CARD & LANYARD (THREE.JS)      -->
-    <!-- Replicated from UBS ID Card & Red Ribbon Lanyard Ref     -->
+    <!-- Admin Hardware & RFID Credential Simulator (Blue & Rounded) -->
     <!-- ======================================================== -->
-    <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white border border-slate-800 shadow-2xl relative overflow-hidden">
-        <!-- Ambient decorative lights -->
-        <div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-blue-600/15 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-indigo-600/15 blur-3xl pointer-events-none"></div>
+    <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-blue-950 via-slate-900 to-indigo-950 text-white border-2 border-blue-500/30 shadow-2xl relative overflow-hidden">
+        <!-- Ambient decorative blue lights -->
+        <div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-blue-600/20 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-indigo-600/20 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            <!-- Left Column: Specs & Interactive Controls -->
+            <!-- Left Column: Admin Diagnostic Specs & Interactive Controls -->
             <div class="lg:col-span-5 space-y-4 text-left">
-                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-black uppercase tracking-wider">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/25 text-blue-300 border border-blue-400/40 text-xs font-black uppercase tracking-wider">
                     <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-                    <span>Three.js WebGL Interactive 3D Model</span>
+                    <span>Admin Hardware & RFID Credential Simulator</span>
                 </div>
 
                 <h3 class="text-xl sm:text-3xl font-black text-white tracking-tight leading-tight">
-                    Kartu RFID Mifare & Keplek Lanyard 3D
+                    Simulator Kredensial RFID & Identitas Anggota
                 </h3>
 
                 <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Visualisasi kartu pintar dan keplek identitas resmi pemilih lengkap dengan pita lanyard merah dan penjepit. Putar kartu bebas <strong>360° pada sumbu X & Y</strong> secara interaktif.
+                    Simulator diagnostik verifikasi visual kartu RFID Mifare ISO/IEC 14443A dan keplek resmi pemilih. Digunakan oleh admin untuk memvalidasi spesifikasi fisik, orientasi tap antena, dan struktur visual kartu secara interaktif <strong>360° pada sumbu X & Y</strong>.
                 </p>
 
                 <!-- Feature Specs Badges -->
                 <div class="grid grid-cols-2 gap-2.5 pt-1 text-xs">
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Standard</span>
+                    <div class="p-3 rounded-2xl bg-blue-900/40 border border-blue-400/20">
+                        <span class="text-blue-300 block text-[10px] uppercase font-bold">Standard RFID</span>
                         <strong class="text-white font-mono">ISO/IEC 14443A</strong>
                     </div>
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Frequency</span>
+                    <div class="p-3 rounded-2xl bg-blue-900/40 border border-blue-400/20">
+                        <span class="text-blue-300 block text-[10px] uppercase font-bold">Frekuensi Chip</span>
                         <strong class="text-amber-400 font-mono">13.56 MHz HF</strong>
                     </div>
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Credential Form</span>
-                        <strong class="text-blue-400 font-mono">Vertical Badge + Ribbon</strong>
+                    <div class="p-3 rounded-2xl bg-blue-900/40 border border-blue-400/20">
+                        <span class="text-blue-300 block text-[10px] uppercase font-bold">Kredensial Fisik</span>
+                        <strong class="text-blue-300 font-mono">Vertical Badge + Lanyard</strong>
                     </div>
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Encryption</span>
-                        <strong class="text-emerald-400 font-mono">Crypto-1 / AES</strong>
+                    <div class="p-3 rounded-2xl bg-blue-900/40 border border-blue-400/20">
+                        <span class="text-blue-300 block text-[10px] uppercase font-bold">Validasi Kunci</span>
+                        <strong class="text-emerald-400 font-mono">Sector Key A / AES-128</strong>
                     </div>
                 </div>
 
@@ -465,14 +467,14 @@
                 </div>
             </div>
 
-            <!-- Right Column: Interactive 3D Canvas Viewport -->
+            <!-- Right Column: Interactive 3D Canvas Viewport (Rounded Blue Theme) -->
             <div class="lg:col-span-7 flex flex-col items-center justify-center">
-                <div class="relative w-full max-w-lg aspect-[1.25/1] sm:aspect-[1.35/1] rounded-3xl bg-slate-900/70 border border-white/10 shadow-2xl backdrop-blur-md overflow-hidden flex items-center justify-center group cursor-grab active:cursor-grabbing">
+                <div class="relative w-full max-w-lg aspect-[1.25/1] sm:aspect-[1.35/1] rounded-3xl bg-gradient-to-br from-blue-900/90 via-indigo-950/90 to-blue-950/95 border-2 border-blue-400/30 shadow-2xl shadow-blue-900/60 backdrop-blur-md overflow-hidden flex items-center justify-center group cursor-grab active:cursor-grabbing">
                     <div id="dashboard-rfid-3d-canvas" class="w-full h-full"></div>
 
-                    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-slate-950/80 border border-white/15 text-[11px] text-slate-300 font-medium pointer-events-none backdrop-blur-xs flex items-center space-x-1.5 shadow-md">
+                    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-blue-950/90 border border-blue-400/30 text-[11px] text-blue-200 font-medium pointer-events-none backdrop-blur-xs flex items-center space-x-1.5 shadow-md">
                         <span>👆</span>
-                        <span>Drag mouse atau geser layar untuk memutar 360°</span>
+                        <span>Drag mouse atau sentuh layar untuk rotasi bebas 360°</span>
                     </div>
                 </div>
             </div>
@@ -653,8 +655,13 @@
             },
             dataLabels: { 
                 enabled: totalSuaraKetua > 0,
-                dropShadow: { enabled: false },
-                style: { fontSize: '11px', fontWeight: '800' }
+                dropShadow: { enabled: true, top: 1, left: 1, blur: 3, opacity: 0.95, color: '#000000' },
+                style: { 
+                    fontSize: '12px', 
+                    fontFamily: 'Plus Jakarta Sans, sans-serif',
+                    fontWeight: '900',
+                    colors: ['#ffffff']
+                }
             },
             legend: { position: 'bottom', fontSize: '11px', fontWeight: 600 },
             plotOptions: {
@@ -709,8 +716,13 @@
             },
             dataLabels: { 
                 enabled: totalSuaraPengawas > 0,
-                dropShadow: { enabled: false },
-                style: { fontSize: '11px', fontWeight: '800' }
+                dropShadow: { enabled: true, top: 1, left: 1, blur: 3, opacity: 0.95, color: '#000000' },
+                style: { 
+                    fontSize: '12px', 
+                    fontFamily: 'Plus Jakarta Sans, sans-serif',
+                    fontWeight: '900',
+                    colors: ['#ffffff']
+                }
             },
             legend: { position: 'bottom', fontSize: '11px', fontWeight: 600 },
             plotOptions: {
