@@ -117,7 +117,7 @@ class VoterController extends Controller
         if (!$pemilih) {
             ActivityLog::log('TAP_FAILED', 'VOTING', "Percobaan tap kartu tidak dikenal: [{$search}]");
             return redirect()->route('voter.tap')
-                ->with('error', "Kartu RFID UID [{$search}] tidak terdaftar dalam Daftar Pemilih Tetap (DPT).");
+                ->with('error', "Keplek belum bisa mengikuti voting.");
         }
 
         if ($pemilih->sudahMemilih()) {

@@ -2,17 +2,52 @@
 
 @section('title', __('Ballot Booth - Cooperative Election'))
 
+@section('custom_backdrop')
+    <div class="fixed inset-0 pointer-events-none z-0 bg-square-mesh"></div>
+@endsection
+
 @section('content')
-<!-- Smooth Boomer Satisfying 2-Second Initial Welcome Overlay -->
-<div id="vote-welcome-overlay" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-500 ease-out">
-    <div id="vote-welcome-card" class="flex flex-col items-center text-center p-6 sm:p-8 max-w-md bg-white border-2 border-slate-200 rounded-3xl shadow-2xl transform transition-transform duration-500 scale-100">
-        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-lg mb-4 ring-4 ring-blue-500/20">
-            <svg class="w-9 h-9 sm:w-11 sm:h-11" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
-            </svg>
+<!-- Full-Screen Cinematic Lottie/GSAP-Style Welcoming Overlay (3 Detik) -->
+<div id="vote-welcome-overlay" class="fixed inset-0 z-[100] bg-slate-950 flex flex-col items-center justify-center p-6 text-white overflow-hidden transition-all duration-700 ease-out">
+    <!-- Ambient Backdrop Effects -->
+    <div class="absolute inset-0 bg-square-mesh opacity-15 pointer-events-none"></div>
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-red-600/25 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-emerald-600/25 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div id="vote-welcome-card" class="relative z-10 flex flex-col items-center text-center max-w-lg w-full transform transition-all duration-700 scale-100">
+        <!-- Expanding Lottie Rings -->
+        <div class="relative w-28 h-28 sm:w-36 sm:h-36 flex items-center justify-center mb-6">
+            <div class="absolute inset-0 rounded-full border-2 border-red-500/60 animate-lottie-ring"></div>
+            <div class="absolute inset-0 rounded-full border-2 border-emerald-500/60 animate-lottie-ring" style="animation-delay: 0.8s;"></div>
+            <div class="absolute inset-0 rounded-full border border-white/40 animate-lottie-ring" style="animation-delay: 1.6s;"></div>
+            
+            <div class="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-tr from-red-600 via-rose-600 to-emerald-600 text-white flex items-center justify-center shadow-[0_0_50px_rgba(239,68,68,0.4)] ring-4 ring-white/20">
+                <svg class="w-12 h-12 sm:w-14 sm:h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                </svg>
+            </div>
         </div>
-        <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mb-1.5">{{ __('Bilik Suara Siap') }}</h2>
-        <p class="text-slate-600 text-xs sm:text-sm font-semibold leading-relaxed">{{ __('Selamat memilih! Tentukan calon pilihan Anda dengan mudah dan jelas.') }}</p>
+
+        <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-black tracking-widest uppercase bg-white/10 text-emerald-300 border border-white/15 mb-3">
+            {{ __('Bilik Suara Terverifikasi') }}
+        </span>
+
+        <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight mb-2">
+            {{ __('Selamat Datang!') }}
+        </h2>
+
+        <p class="text-slate-200 text-lg sm:text-xl font-black mb-1">
+            {{ $pemilih->nama }}
+        </p>
+        <p class="text-slate-400 text-xs sm:text-sm font-mono mb-6">
+            NIK: {{ $pemilih->nik }} • {{ $pemilih->dept }}
+        </p>
+
+        <!-- 3-Second Welcoming Progress Indicator -->
+        <div class="w-64 sm:w-80 bg-white/10 rounded-full h-2.5 overflow-hidden border border-white/15 mb-2">
+            <div id="welcome-progress-fill" class="h-full bg-gradient-to-r from-red-500 via-rose-400 to-emerald-400 rounded-full transition-all duration-[2600ms] ease-linear" style="width: 0%;"></div>
+        </div>
+        <span class="text-[11px] font-bold text-slate-400 tracking-wider uppercase">{{ __('Menyiapkan Bilik Suara...') }}</span>
     </div>
 </div>
 
@@ -64,9 +99,9 @@
                 type="button" 
                 id="stepper-tab-1"
                 onclick="goToStep(1)"
-                class="flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-blue-600 text-white font-black text-xs sm:text-base transition-all shadow-sm cursor-pointer"
+                class="flex-1 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-red-600 text-white font-black text-xs sm:text-base transition-all shadow-sm cursor-pointer"
             >
-                <span id="step-badge-1" class="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-white text-blue-700 flex items-center justify-center font-black text-xs sm:text-base shadow-xs shrink-0">1</span>
+                <span id="step-badge-1" class="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-white text-red-700 flex items-center justify-center font-black text-xs sm:text-base shadow-xs shrink-0">1</span>
                 <span class="truncate"><span class="sm:hidden">Ketua</span><span class="hidden sm:inline">{{ __('Pilih Ketua') }}</span></span>
             </button>
 
@@ -80,7 +115,7 @@
                 type="button" 
                 id="stepper-tab-2"
                 onclick="goToStep(2)"
-                class="flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-extrabold text-xs sm:text-base transition-all cursor-pointer"
+                class="flex-1 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-extrabold text-xs sm:text-base transition-all cursor-pointer"
             >
                 <span id="step-badge-2" class="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-slate-300 text-slate-700 flex items-center justify-center font-black text-xs sm:text-base shrink-0">2</span>
                 <span class="truncate"><span class="sm:hidden">Pengawas</span><span class="hidden sm:inline">{{ __('Pilih Pengawas') }}</span></span>
@@ -96,7 +131,7 @@
                 type="button" 
                 id="stepper-tab-3"
                 onclick="goToStep(3)"
-                class="flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-extrabold text-xs sm:text-base transition-all cursor-pointer"
+                class="flex-1 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-extrabold text-xs sm:text-base transition-all cursor-pointer"
             >
                 <span id="step-badge-3" class="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-slate-300 text-slate-700 flex items-center justify-center font-black text-xs sm:text-base shrink-0">3</span>
                 <span class="truncate"><span class="sm:hidden">Konfirmasi</span><span class="hidden sm:inline">{{ __('Konfirmasi Suara') }}</span></span>
@@ -114,7 +149,7 @@
         <section id="step-section-1" class="wizard-step-container">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b-2 border-slate-200 gap-3">
                 <div class="flex items-center space-x-3.5">
-                    <span class="w-11 h-11 rounded-2xl bg-blue-600 text-white font-black flex items-center justify-center text-lg shadow-sm shrink-0">1</span>
+                    <span class="w-11 h-11 rounded-2xl bg-red-600 text-white font-black flex items-center justify-center text-lg shadow-sm shrink-0">1</span>
                     <div>
                         <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight">{{ __('Langkah 1: Pilih 1 (Satu) Calon Ketua Koperasi') }}</h3>
                         <p class="text-sm sm:text-base text-slate-600 font-medium">{{ __('Sentuh kotak calon yang Anda inginkan untuk memilih') }}</p>
@@ -125,22 +160,22 @@
                 </div>
             </div>
 
-            <!-- Grid Card Calon Ketua (Foto Dipotong Lebih Ringkas, Tanpa Ikon Checked) -->
+            <!-- Grid Card Calon Ketua (Tinggi Foto 300px Sesuai Permintaan) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 @foreach($kandidatKetua as $ketua)
                     @php
-                        $fotoKetua = $ketua->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($ketua->nama).'&background=2563eb&color=ffffff&size=400';
+                        $fotoKetua = $ketua->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($ketua->nama).'&background=dc2626&color=ffffff&size=400';
                     @endphp
                     <div 
                         id="card-ketua-{{ $ketua->nik }}"
                         onclick="selectKetua('{{ $ketua->nik }}', '{{ addslashes($ketua->nama) }}', '{{ $ketua->nomor_urut }}', '{{ $fotoKetua }}')"
-                        class="candidate-card-ketua ballot-card-sundul relative rounded-3xl bg-white border-3 border-slate-200 hover:border-blue-400 overflow-hidden flex flex-col justify-between cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
+                        class="candidate-card-ketua ballot-card-sundul relative rounded-3xl bg-white border-3 border-slate-200 hover:border-red-400 overflow-hidden flex flex-col justify-between cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
                     >
                         <input type="radio" name="ketua_nik" value="{{ $ketua->nik }}" id="radio-ketua-{{ $ketua->nik }}" class="hidden">
 
                         <div>
-                            <!-- Foto Card: Rasio 3.5:5 Luwes & Pas Sesuai Permintaan -->
-                            <div class="relative w-full aspect-[3.5/5] max-h-[370px] bg-slate-900 overflow-hidden">
+                            <!-- Foto Card: Tinggi Pas 300px Sesuai Permintaan -->
+                            <div class="relative w-full h-[300px] max-h-[300px] bg-slate-900 overflow-hidden">
                                 <img 
                                     src="{{ $fotoKetua }}" 
                                     alt="{{ $ketua->nama }}" 
@@ -160,7 +195,7 @@
                             <!-- Identitas Calon: Font Elegan, Besar & Kontras -->
                             <div class="p-5 pb-3">
                                 <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-snug">{{ $ketua->nama }}</h3>
-                                <div class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-xs sm:text-sm font-mono font-bold text-blue-800 mt-1.5">
+                                <div class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs sm:text-sm font-mono font-bold text-red-800 mt-1.5">
                                     <span>NIK:</span>
                                     <span>{{ $ketua->nik }}</span>
                                 </div>
@@ -169,11 +204,11 @@
 
                         <!-- Actions: Tombol Visi Misi & Tombol Pilih -->
                         <div class="p-5 pt-0 flex flex-col gap-3.5">
-                            <!-- Tombol Baca Visi & Misi (Font Gede, BG Gradient Blue) -->
+                            <!-- Tombol Baca Visi & Misi (Font Gede, BG Gradient Red) -->
                             <button 
                                 type="button" 
                                 onclick="event.stopPropagation(); showDetailModal('{{ __('Calon Ketua Koperasi') }}', '{{ addslashes($ketua->nama) }}', '{{ $ketua->nomor_urut }}', `{{ addslashes($ketua->visi) }}`, `{{ addslashes($ketua->misi) }}`, '{{ $fotoKetua }}')"
-                                class="w-full py-3 sm:py-3.5 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-extrabold text-sm sm:text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2.5 cursor-pointer"
+                                class="w-full py-3 sm:py-3.5 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-700 hover:to-rose-800 text-white font-extrabold text-sm sm:text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2.5 cursor-pointer"
                             >
                                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
@@ -207,7 +242,7 @@
                     id="btn-goto-step-2"
                     onclick="goToStep(2)"
                     disabled
-                    class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-base sm:text-lg shadow-md disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 transition-all flex items-center justify-center space-x-3 cursor-pointer"
+                    class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black text-base sm:text-lg shadow-md disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 transition-all flex items-center justify-center space-x-3 cursor-pointer"
                 >
                     <span>{{ __('Lanjut ke Pilih Pengawas') }}</span>
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
@@ -246,8 +281,8 @@
                         <input type="radio" name="pengawas_nik" value="{{ $pengawas->nik }}" id="radio-pengawas-{{ $pengawas->nik }}" class="hidden">
 
                         <div>
-                            <!-- Foto Card: Rasio 3.5:5 Luwes & Pas Sesuai Permintaan -->
-                            <div class="relative w-full aspect-[3.5/5] max-h-[370px] bg-slate-900 overflow-hidden">
+                            <!-- Foto Card: Tinggi Pas 300px Sesuai Permintaan -->
+                            <div class="relative w-full h-[300px] max-h-[300px] bg-slate-900 overflow-hidden">
                                 <img 
                                     src="{{ $fotoPengawas }}" 
                                     alt="{{ $pengawas->nama }}" 
@@ -345,23 +380,23 @@
             <!-- Preview Card Berdampingan (Ketua & Pengawas) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 
-                <!-- Review Card Calon Ketua -->
-                <div class="p-6 sm:p-7 rounded-3xl bg-white border-3 border-blue-500 shadow-lg relative overflow-hidden flex flex-col justify-between">
-                    <div class="absolute top-0 right-0 bg-blue-600 text-white font-black text-xs uppercase px-4 py-1.5 rounded-bl-2xl shadow-sm tracking-wider">
+                <!-- Review Card Calon Ketua (Palet Merah) -->
+                <div class="p-6 sm:p-7 rounded-3xl bg-white border-3 border-red-500 shadow-lg relative overflow-hidden flex flex-col justify-between">
+                    <div class="absolute top-0 right-0 bg-red-600 text-white font-black text-xs uppercase px-4 py-1.5 rounded-bl-2xl shadow-sm tracking-wider">
                         {{ __('1. Calon Ketua Terpilih') }}
                     </div>
 
                     <div class="flex items-center space-x-5 mt-3 mb-6">
-                        <div class="relative w-28 h-36 sm:w-32 sm:h-40 rounded-2xl overflow-hidden bg-slate-900 border-2 border-blue-300 shadow-md shrink-0">
+                        <div class="relative w-28 h-36 sm:w-32 sm:h-40 rounded-2xl overflow-hidden bg-slate-900 border-2 border-red-300 shadow-md shrink-0">
                             <img id="review-ketua-img" src="" alt="Ketua" class="w-full h-full object-cover object-top">
                             <div class="absolute top-2 left-2 w-9 h-9 rounded-xl bg-white text-slate-950 border border-slate-300 font-black text-lg flex items-center justify-center shadow-md">
                                 <span id="review-ketua-nomor">1</span>
                             </div>
                         </div>
                         <div>
-                            <span class="text-xs uppercase font-extrabold text-blue-700 tracking-wider block mb-1">{{ __('Calon Ketua Koperasi') }}</span>
+                            <span class="text-xs uppercase font-extrabold text-red-700 tracking-wider block mb-1">{{ __('Calon Ketua Koperasi') }}</span>
                             <h4 id="review-ketua-nama" class="text-xl sm:text-2xl font-black text-slate-950 leading-snug">Nama Calon</h4>
-                            <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-blue-50 border border-blue-200 text-xs sm:text-sm font-mono font-bold text-blue-900 mt-2">
+                            <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-red-50 border border-red-200 text-xs sm:text-sm font-mono font-bold text-red-900 mt-2">
                                 <span>NIK:</span>
                                 <span id="review-ketua-nik">-</span>
                             </div>
@@ -373,7 +408,7 @@
                         <button 
                             type="button" 
                             onclick="goToStep(1)"
-                            class="px-4 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs sm:text-sm transition cursor-pointer"
+                            class="px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs sm:text-sm transition cursor-pointer"
                         >
                             {{ __('Ubah Pilihan Ketua') }}
                         </button>
@@ -466,7 +501,7 @@
         <!-- Status Pilihan Pemilih -->
         <div class="flex items-center gap-4 text-xs sm:text-sm w-full sm:w-auto justify-between sm:justify-start">
             <div class="flex items-center space-x-2.5">
-                <span class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shadow-xs">1</span>
+                <span class="w-8 h-8 rounded-xl bg-red-600 text-white font-black text-sm flex items-center justify-center shadow-xs">1</span>
                 <div>
                     <span class="text-[11px] sm:text-xs text-slate-500 font-bold block">{{ __('Ketua Koperasi:') }}</span>
                     <strong id="dock-summary-ketua" class="text-rose-600 font-black text-xs sm:text-sm">{{ __('(Belum Dipilih)') }}</strong>
@@ -642,22 +677,28 @@
         voteNow: "{{ __('Vote Sekarang') }}"
     };
 
-    // 1. Crisp 2-Second Welcome Overlay on Mount
+    // 1. Full-Screen Cinematic 3-Second Welcoming Overlay
     document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('vote-welcome-overlay');
-        const card = document.getElementById('vote-welcome-card');
+        const progressFill = document.getElementById('welcome-progress-fill');
+
         if (overlay) {
+            setTimeout(() => {
+                if (progressFill) progressFill.style.width = '100%';
+            }, 60);
+
             // Mainkan sound effect welcome saat masuk bilik suara
             if (window.SoundEffects && typeof window.SoundEffects.welcome === 'function') {
                 window.SoundEffects.welcome();
             }
+
+            // Welcoming tepat 3.0 detik, lalu smooth transisi ke konten bilik suara
             setTimeout(() => {
-                overlay.classList.add('opacity-0', 'pointer-events-none');
-                if (card) card.classList.add('scale-95');
+                overlay.classList.add('opacity-0', 'scale-105', 'pointer-events-none');
                 setTimeout(() => {
                     overlay.remove();
                 }, 500);
-            }, 1500); // 1.5s display + 0.5s fade = exactly 2.0s
+            }, 2500); // 2.5s tampil + 0.5s fadeout = tepat 3.0 detik
         }
 
         @if(session('error'))
@@ -712,8 +753,16 @@
             if (!tab || !badge) continue;
 
             if (i === currentStep) {
-                tab.className = "flex-1 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-blue-600 text-white font-black text-xs sm:text-base transition-all shadow-sm cursor-pointer";
-                badge.className = "w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white text-blue-700 flex items-center justify-center font-black text-sm sm:text-base shadow-xs shrink-0";
+                if (i === 1) {
+                    tab.className = "flex-1 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-red-600 text-white font-black text-xs sm:text-base transition-all shadow-sm cursor-pointer";
+                    badge.className = "w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white text-red-700 flex items-center justify-center font-black text-sm sm:text-base shadow-xs shrink-0";
+                } else if (i === 2) {
+                    tab.className = "flex-1 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-emerald-600 text-white font-black text-xs sm:text-base transition-all shadow-sm cursor-pointer";
+                    badge.className = "w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white text-emerald-700 flex items-center justify-center font-black text-sm sm:text-base shadow-xs shrink-0";
+                } else {
+                    tab.className = "flex-1 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-blue-600 text-white font-black text-xs sm:text-base transition-all shadow-sm cursor-pointer";
+                    badge.className = "w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white text-blue-700 flex items-center justify-center font-black text-sm sm:text-base shadow-xs shrink-0";
+                }
             } else if ((i === 1 && selectedKetua) || (i === 2 && selectedPengawas)) {
                 tab.className = "flex-1 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 p-2 sm:py-3.5 sm:px-4 rounded-2xl bg-emerald-50 text-emerald-800 border border-emerald-300 font-extrabold text-xs sm:text-base transition-all cursor-pointer";
                 badge.className = "w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-sm sm:text-base shrink-0";
@@ -726,7 +775,7 @@
         }
     }
 
-    // 3. Selection Calon Ketua
+    // 3. Selection Calon Ketua (Palet Merah)
     function selectKetua(nik, nama, nomor, foto) {
         if (window.SoundEffects) window.SoundEffects.click();
         selectedKetua = { nik, nama, nomor, foto };
@@ -734,7 +783,7 @@
 
         // Reset semua kartu ketua
         document.querySelectorAll('.candidate-card-ketua').forEach(card => {
-            card.classList.remove('border-4', 'border-blue-600', 'bg-blue-50/70', 'ring-8', 'ring-blue-300', 'shadow-2xl', 'card-selected-pop');
+            card.classList.remove('border-4', 'border-red-600', 'bg-red-50/70', 'ring-8', 'ring-red-300', 'shadow-2xl', 'card-selected-pop');
             card.classList.add('border-3', 'border-slate-200', 'bg-white');
 
             const btnSelect = card.querySelector('[id^="btn-select-ketua-"]');
@@ -744,10 +793,10 @@
             }
         });
 
-        // Set kartu terpilih (Stroke Ekstra Tebal 4px + Ring 8px Terang Kontras)
+        // Set kartu terpilih (Palet Merah Solid & Tegas)
         const activeCard = document.getElementById('card-ketua-' + nik);
         activeCard.classList.remove('border-3', 'border-slate-200', 'bg-white');
-        activeCard.classList.add('border-4', 'border-blue-600', 'bg-blue-50/70', 'ring-8', 'ring-blue-300', 'shadow-2xl', 'card-selected-pop');
+        activeCard.classList.add('border-4', 'border-red-600', 'bg-red-50/70', 'ring-8', 'ring-red-300', 'shadow-2xl', 'card-selected-pop');
 
         const activeBtn = document.getElementById('btn-select-ketua-' + nik);
         activeBtn.className = 'w-full py-3.5 sm:py-4 px-4 rounded-2xl bg-emerald-600 border-2 border-emerald-600 text-white font-black text-sm sm:text-base shadow-lg ring-4 ring-emerald-200 transition-all duration-300 flex items-center justify-center space-x-2.5 text-center';
@@ -755,12 +804,12 @@
 
         // Update badge kategori atas
         const badge = document.getElementById('ketua-status-badge');
-        badge.className = 'inline-flex self-start sm:self-auto px-4 py-2 rounded-2xl text-xs sm:text-sm font-extrabold bg-blue-100 text-blue-900 border-2 border-blue-300';
+        badge.className = 'inline-flex self-start sm:self-auto px-4 py-2 rounded-2xl text-xs sm:text-sm font-extrabold bg-red-100 text-red-900 border-2 border-red-300';
         badge.innerText = '✓ ' + i18n.chairmanSelectedPrefix + nomor;
 
         // Update summary di Step 1
         const step1Summary = document.getElementById('step1-summary-text');
-        step1Summary.className = 'text-base sm:text-lg font-black text-blue-700';
+        step1Summary.className = 'text-base sm:text-lg font-black text-red-700';
         step1Summary.innerText = 'No. ' + nomor + ' - ' + nama;
 
         // Enable tombol Lanjut ke Step 2
@@ -770,7 +819,7 @@
 
         // Update dock summary
         const dockKetua = document.getElementById('dock-summary-ketua');
-        dockKetua.className = 'text-blue-700 font-black text-xs sm:text-sm';
+        dockKetua.className = 'text-red-700 font-black text-xs sm:text-sm';
         dockKetua.innerText = 'No. ' + nomor + ' - ' + nama;
 
         updateStepperIndicators();

@@ -78,7 +78,7 @@
                 <div class="space-y-1">
                     <div class="text-xs text-slate-700 flex items-center justify-between">
                         <span class="font-medium">{{ __('Chairman:') }}</span>
-                        <strong id="leader-ketua-text" class="text-blue-700 truncate max-w-[170px]">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                        <strong id="leader-ketua-text" class="text-red-700 truncate max-w-[170px]">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                     </div>
                     <div class="text-xs text-slate-700 flex items-center justify-between">
                         <span class="font-medium">{{ __('Supervisors:') }}</span>
@@ -115,25 +115,25 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- KANDIDAT KETUA KOPERASI SHOWCASE                         -->
+    <!-- KANDIDAT KETUA KOPERASI SHOWCASE (PALET MERAH)           -->
     <!-- ======================================================== -->
     <section class="mb-10">
         <div class="flex items-center justify-between pb-3 mb-5 border-b border-slate-200">
             <div class="flex items-center space-x-3">
-                <span class="w-8 h-8 rounded-lg bg-blue-600 text-white font-extrabold flex items-center justify-center text-sm shadow-2xs">1</span>
+                <span class="w-8 h-8 rounded-lg bg-red-600 text-white font-extrabold flex items-center justify-center text-sm shadow-2xs">1</span>
                 <h3 class="text-lg font-bold text-slate-900">{{ __('Chairman Election Comparison') }}</h3>
             </div>
-            <span class="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
+            <span class="text-xs font-bold text-red-700 bg-red-50 px-2.5 py-1 rounded-full border border-red-200">
                 Total: <strong id="total-ketua-votes">{{ $metrics['total_suara_ketua'] }}</strong> {{ __('Votes') }}
             </span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7" id="ketua-cards-grid">
             @foreach($ketuaResults as $ketua)
-                <div class="rounded-3xl bg-white border-2 border-slate-200 hover:border-blue-400 overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                <div class="rounded-3xl bg-white border-2 border-slate-200 hover:border-red-400 overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
                     <div>
-                        <!-- Foto Card: Rasio 3.5:5 Luwes & Pas, Tanpa Padding Mengelilingi -->
-                        <div class="relative w-full aspect-[3.5/5] max-h-[370px] bg-slate-900 overflow-hidden">
+                        <!-- Foto Card: Tinggi Pas 300px Sesuai Permintaan -->
+                        <div class="relative w-full h-[300px] max-h-[300px] bg-slate-900 overflow-hidden">
                             <img 
                                 src="{{ $ketua['foto'] }}" 
                                 alt="{{ $ketua['nama'] }}" 
@@ -160,7 +160,7 @@
                         <!-- Identitas Calon: Font Elegan, Besar & Kontras -->
                         <div class="p-5 pb-3">
                             <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-snug">{{ $ketua['nama'] }}</h3>
-                            <div class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-xs sm:text-sm font-mono font-bold text-blue-800 mt-1.5">
+                            <div class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs sm:text-sm font-mono font-bold text-red-800 mt-1.5">
                                 <span>NIK:</span>
                                 <span>{{ $ketua['nik'] }}</span>
                             </div>
@@ -172,18 +172,18 @@
                         <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 mb-3.5">
                             <div class="flex items-baseline justify-between text-xs font-bold mb-1.5">
                                 <span id="ketua-vote-count-{{ $ketua['nik'] }}" class="text-slate-800 font-extrabold text-sm">{{ $ketua['suara'] }} {{ __('Suara') }}</span>
-                                <span id="ketua-pct-val-{{ $ketua['nik'] }}" class="text-blue-700 font-black text-base">{{ $ketua['persen'] }}%</span>
+                                <span id="ketua-pct-val-{{ $ketua['nik'] }}" class="text-red-700 font-black text-base">{{ $ketua['persen'] }}%</span>
                             </div>
                             <div class="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
-                                <div id="ketua-bar-fill-{{ $ketua['nik'] }}" class="bg-blue-600 h-2.5 rounded-full transition-all duration-700 ease-out" style="width: {{ $ketua['persen'] }}%;"></div>
+                                <div id="ketua-bar-fill-{{ $ketua['nik'] }}" class="bg-red-600 h-2.5 rounded-full transition-all duration-700 ease-out" style="width: {{ $ketua['persen'] }}%;"></div>
                             </div>
                         </div>
 
-                        <!-- Button View Details Modal (BG Gradient Blue Seperti di /vote) -->
+                        <!-- Button View Details Modal (BG Gradient Red) -->
                         <button 
                             type="button" 
                             onclick="openCandidateModal('Ketua Koperasi', '{{ addslashes($ketua['nama']) }}', '{{ $ketua['nomor_urut'] }}', `{{ addslashes($ketua['visi']) }}`, `{{ addslashes($ketua['misi']) }}`, `{{ addslashes($ketua['deskripsi']) }}`, '{{ $ketua['foto'] }}', '{{ $ketua['suara'] }}', '{{ $ketua['persen'] }}%')"
-                            class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer"
+                            class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-700 hover:to-rose-800 text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer"
                         >
                             <span>{{ __('Lihat Profil & Visi Misi') }}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
@@ -212,8 +212,8 @@
             @foreach($pengawasResults as $pengawas)
                 <div class="rounded-3xl bg-white border-2 border-slate-200 hover:border-emerald-400 overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
                     <div>
-                        <!-- Foto Card: Rasio 3.5:5 Luwes & Pas, Tanpa Padding Mengelilingi -->
-                        <div class="relative w-full aspect-[3.5/5] max-h-[370px] bg-slate-900 overflow-hidden">
+                        <!-- Foto Card: Tinggi Pas 300px Sesuai Permintaan -->
+                        <div class="relative w-full h-[300px] max-h-[300px] bg-slate-900 overflow-hidden">
                             <img 
                                 src="{{ $pengawas['foto'] }}" 
                                 alt="{{ $pengawas['nama'] }}" 
@@ -473,9 +473,9 @@
                 datasets: [{
                     label: 'Calon Ketua Koperasi',
                     data: rawKetuaData.map(k => k.suara),
-                    backgroundColor: 'rgba(37, 99, 235, 0.85)',
-                    hoverBackgroundColor: '#2563eb',
-                    borderColor: '#1d4ed8',
+                    backgroundColor: 'rgba(220, 38, 38, 0.85)',
+                    hoverBackgroundColor: '#dc2626',
+                    borderColor: '#b91c1c',
                     borderWidth: 2,
                     borderRadius: 10,
                 }]
@@ -508,9 +508,9 @@
                     {
                         label: 'Calon Ketua Koperasi',
                         data: ketuaVotes,
-                        backgroundColor: 'rgba(37, 99, 235, 0.85)',
-                        hoverBackgroundColor: '#2563eb',
-                        borderColor: '#1d4ed8',
+                        backgroundColor: 'rgba(220, 38, 38, 0.85)',
+                        hoverBackgroundColor: '#dc2626',
+                        borderColor: '#b91c1c',
                         borderWidth: 2,
                         borderRadius: 10,
                         grouped: false,
@@ -673,7 +673,7 @@
         document.getElementById('detail-modal-nama').innerText = nama;
         document.getElementById('detail-modal-no').innerText = 'No. ' + nomor;
         document.getElementById('detail-modal-badge').innerText = kategori;
-        document.getElementById('detail-modal-badge').className = kategori.includes('Ketua') ? 'px-2.5 py-0.5 rounded-md text-xs font-black bg-blue-100 text-blue-800 uppercase' : 'px-2.5 py-0.5 rounded-md text-xs font-black bg-emerald-100 text-emerald-800 uppercase';
+        document.getElementById('detail-modal-badge').className = kategori.includes('Ketua') ? 'px-2.5 py-0.5 rounded-md text-xs font-black bg-red-100 text-red-800 uppercase' : 'px-2.5 py-0.5 rounded-md text-xs font-black bg-emerald-100 text-emerald-800 uppercase';
         document.getElementById('detail-modal-tally').innerText = `${suara} Suara (${persen})`;
 
         document.getElementById('detail-modal-deskripsi').innerText = deskripsi || 'Calon terdaftar resmi.';

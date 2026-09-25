@@ -159,11 +159,13 @@
                     <div class="warning-ring w-38 h-38 sm:w-44 sm:h-44" style="animation-delay: 1s;"></div>
                 </div>
 
-                <!-- Danger Red Distracted Rings (Ketika Error/Gagal DPT) -->
+                <!-- Danger Red Waving Chaos Rings (Ketika Keplek Belum Terdaftar) -->
                 <div id="danger-rings" class="absolute inset-0 flex items-center justify-center {{ (session('error') && !session('already_voted')) ? '' : 'hidden' }}">
-                    <div class="danger-ring w-38 h-38 sm:w-44 sm:h-44"></div>
-                    <div class="danger-ring w-38 h-38 sm:w-44 sm:h-44" style="animation-delay: 0.5s;"></div>
-                    <div class="danger-ring w-38 h-38 sm:w-44 sm:h-44" style="animation-delay: 1s;"></div>
+                    <div class="danger-ring w-36 h-36 sm:w-44 sm:h-44"></div>
+                    <div class="danger-ring w-36 h-36 sm:w-44 sm:h-44" style="animation-delay: 0.35s;"></div>
+                    <div class="danger-ring w-36 h-36 sm:w-44 sm:h-44" style="animation-delay: 0.7s;"></div>
+                    <div class="danger-ring w-36 h-36 sm:w-44 sm:h-44" style="animation-delay: 1.05s;"></div>
+                    <div class="danger-ring w-36 h-36 sm:w-44 sm:h-44" style="animation-delay: 1.4s;"></div>
                 </div>
 
                 <!-- Green Nova Success Rings (Muncul saat Berhasil Tap) -->
@@ -400,11 +402,15 @@
         tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-emerald-100 border-2 border-emerald-400 text-emerald-950 text-sm sm:text-base font-black shadow-md";
         tapStatusText.innerText = "{{ __('Akses Diterima • Masuk ke Bilik Suara...') }}";
 
-        // Submit form secepatnya setelah animasi ripple (~550ms) TANPA full-screen overlay
+        // Transisi halus antar halaman: Biarkan audio selesai berbunyi, lalu fadeout smooth
+        setTimeout(() => {
+            document.body.classList.add('transition-opacity', 'duration-500', 'opacity-0');
+        }, 1800);
+
         setTimeout(() => {
             rfidInput.value = rfid;
             tapForm.submit();
-        }, 550);
+        }, 2300);
     }
 
     // 3. Pencegahan & Animasi Ripple Kuning/Amber Jika Sudah Pernah Memilih
@@ -435,11 +441,11 @@
         }, 4500);
     }
 
-    // 3b. Pengujian Kartu Tidak Dikenali / Asing (Ripple Merah & Audio Error Sesuai Konteks)
+    // 3b. Pengujian Kartu Tidak Dikenali / Asing (Ripple Merah Danger Waving Chaos)
     function triggerUnknownCardTest(mockUid = '99A88F11') {
         if (window.SoundEffects) window.SoundEffects.error();
 
-        // Aktifkan Ripple Merah Bahaya
+        // Aktifkan Ripple Merah Bahaya Waving Chaos
         normalRings.classList.add('hidden');
         warningRings.classList.add('hidden');
         novaRings.classList.add('hidden');
@@ -455,9 +461,9 @@
             badgeImg.classList.add('grayscale', 'opacity-70');
         }
 
-        tapTitle.innerText = "{{ __('Kartu Tidak Dikenali!') }}";
+        tapTitle.innerText = "{{ __('Belum Bisa Mengikuti Voting') }}";
         tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-rose-100 border-2 border-rose-400 text-rose-950 text-sm sm:text-base font-black shadow-md";
-        tapStatusText.innerText = "Kartu RFID UID [" + mockUid + "] Tidak Terdaftar dalam DPT!";
+        tapStatusText.innerText = "{{ __('Keplek belum bisa mengikuti voting.') }}";
 
         setTimeout(() => {
             dangerRings.classList.add('hidden');
@@ -484,10 +490,21 @@
             normalRings.classList.add('hidden');
             warningRings.classList.add('hidden');
 
+            const box = document.getElementById('tap-kiosk-box');
+            if (box) {
+                box.classList.remove('animate-distracted-shake');
+                void box.offsetWidth;
+                box.classList.add('animate-distracted-shake');
+            }
+
             const badgeImg = document.getElementById('card-badge-img');
             if (badgeImg) {
                 badgeImg.classList.add('grayscale', 'opacity-70');
             }
+
+            tapTitle.innerText = "{{ __('Belum Bisa Mengikuti Voting') }}";
+            tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-rose-100 border-2 border-rose-400 text-rose-950 text-sm sm:text-base font-black shadow-md";
+            tapStatusText.innerText = "{{ session('error') }}";
 
             // Reset otomatis ke mode normal setelah 4 detik
             setTimeout(() => {
