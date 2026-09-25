@@ -326,6 +326,25 @@
                 </button>
             </div>
 
+            <!-- Filter Bar for Demo Voters DataTable -->
+            <div class="mb-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                <div class="relative flex-1">
+                    <input 
+                        type="text" 
+                        id="demo-search-input" 
+                        placeholder="Cari nama pemilih demo, NIK, atau UID..." 
+                        oninput="filterDemoVotersTable()"
+                        class="w-full pl-9 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:border-blue-500 outline-none font-medium"
+                    >
+                    <svg class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <select id="demo-status-filter" onchange="filterDemoVotersTable()" class="h-9 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 focus:bg-white focus:border-blue-500 outline-none cursor-pointer">
+                    <option value="">Semua Status</option>
+                    <option value="Tersedia">Tersedia (Siap)</option>
+                    <option value="Sudah Memilih">Sudah Memilih</option>
+                </select>
+            </div>
+
             <!-- DataTable Akun Demo (Replaces Grid 4 Cards) -->
             <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
                 <table class="w-full text-left text-xs datatable" id="demo-voters-datatable">
@@ -833,6 +852,21 @@
             text.innerText = '{{ __("Dengarkan Petunjuk") }}';
             icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />';
         }
+    }
+
+    function filterDemoVotersTable() {
+        const query = (document.getElementById('demo-search-input')?.value || '').toLowerCase().trim();
+        const status = (document.getElementById('demo-status-filter')?.value || '').toLowerCase().trim();
+        const rows = document.querySelectorAll('#demo-voters-datatable tbody tr');
+
+        rows.forEach(r => {
+            const text = r.innerText.toLowerCase();
+            const statusCell = (r.cells[4]?.innerText || '').toLowerCase();
+            const matchesQuery = !query || text.includes(query);
+            const matchesStatus = !status || statusCell.includes(status);
+
+            r.style.display = (matchesQuery && matchesStatus) ? '' : 'none';
+        });
     }
 
     // Close guide modal on outside click
