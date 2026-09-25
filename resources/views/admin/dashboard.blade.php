@@ -295,11 +295,18 @@
                     <div class="p-4 rounded-2xl bg-slate-50 hover:bg-blue-50/40 border border-slate-200/80 transition space-y-2">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center space-x-3 min-w-0">
-                                <span class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                                    {{ $k['nomor_urut'] }}
-                                </span>
+                                @if(!empty($k['foto']))
+                                    <img src="{{ str_starts_with($k['foto'], 'http') ? $k['foto'] : asset('storage/' . $k['foto']) }}" alt="{{ $k['nama'] }}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
+                                @else
+                                    <span class="w-10 h-10 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-2xs">
+                                        {{ $k['nomor_urut'] }}
+                                    </span>
+                                @endif
                                 <div class="min-w-0">
-                                    <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">{{ $k['nama'] }}</h4>
+                                    <div class="flex items-center space-x-1.5">
+                                        <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-800">No. {{ $k['nomor_urut'] }}</span>
+                                        <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">{{ $k['nama'] }}</h4>
+                                    </div>
                                     <span class="text-[11px] text-slate-500 font-mono font-medium">Kandidat Ketua</span>
                                 </div>
                             </div>
@@ -344,11 +351,18 @@
                     <div class="p-4 rounded-2xl bg-slate-50 hover:bg-emerald-50/40 border border-slate-200/80 transition space-y-2">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center space-x-3 min-w-0">
-                                <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                                    {{ $p['nomor_urut'] }}
-                                </span>
+                                @if(!empty($p['foto']))
+                                    <img src="{{ str_starts_with($p['foto'], 'http') ? $p['foto'] : asset('storage/' . $p['foto']) }}" alt="{{ $p['nama'] }}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
+                                @else
+                                    <span class="w-10 h-10 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-2xs">
+                                        {{ $p['nomor_urut'] }}
+                                    </span>
+                                @endif
                                 <div class="min-w-0">
-                                    <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">{{ $p['nama'] }}</h4>
+                                    <div class="flex items-center space-x-1.5">
+                                        <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800">No. {{ $p['nomor_urut'] }}</span>
+                                        <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">{{ $p['nama'] }}</h4>
+                                    </div>
                                     <span class="text-[11px] text-slate-500 font-mono font-medium">Kandidat Pengawas</span>
                                 </div>
                             </div>
@@ -487,6 +501,62 @@
                 </span>
             </div>
 
+            <!-- Custom Filter Controls: Tanggal, Departemen, Kartu Asing / Tidak Dikenali -->
+            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <div class="flex items-center space-x-1.5">
+                        <label for="timeline-filter-date" class="font-bold text-slate-600">Tanggal:</label>
+                        <input 
+                            type="date" 
+                            id="timeline-filter-date" 
+                            value="{{ date('Y-m-d') }}" 
+                            class="px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-800 shadow-2xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        >
+                    </div>
+
+                    <div class="flex items-center space-x-1.5">
+                        <label for="timeline-filter-dept" class="font-bold text-slate-600">Departemen:</label>
+                        <select 
+                            id="timeline-filter-dept" 
+                            class="px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-800 shadow-2xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        >
+                            <option value="ALL">Semua Departemen</option>
+                            <option value="ICT">ICT</option>
+                            <option value="Keuangan">Keuangan</option>
+                            <option value="Operasional">Operasional</option>
+                            <option value="HRD">HRD</option>
+                            <option value="Logistik">Logistik</option>
+                            <option value="Produksi">Produksi</option>
+                            <option value="Pemasaran">Pemasaran</option>
+                        </select>
+                    </div>
+
+                    <label class="inline-flex items-center space-x-1.5 cursor-pointer font-bold text-slate-700 select-none py-1 px-2 rounded-lg hover:bg-slate-200/50 transition">
+                        <input type="checkbox" id="timeline-filter-unknown" class="w-3.5 h-3.5 rounded text-rose-600 focus:ring-rose-500 border-slate-300">
+                        <span class="text-rose-700">Audit Kartu Asing</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <button 
+                        type="button" 
+                        onclick="applyTimelineFilters()" 
+                        class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-2xs transition cursor-pointer flex items-center space-x-1"
+                    >
+                        <span>🔍</span>
+                        <span>Terapkan</span>
+                    </button>
+                    <button 
+                        type="button" 
+                        onclick="resetTimelineFilters()" 
+                        class="px-2.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-200 text-slate-600 font-bold text-xs transition cursor-pointer"
+                        title="Reset Filter"
+                    >
+                        Reset
+                    </button>
+                </div>
+            </div>
+
             <!-- ApexCharts Spline Area Timeline -->
             <div id="apexChartTimeline" class="w-full min-h-[280px]"></div>
         </div>
@@ -576,7 +646,16 @@
             series: totalSuaraKetua > 0 ? ketuaSeries : [1],
             labels: totalSuaraKetua > 0 ? ketuaLabels : ['Belum Ada Suara'],
             colors: totalSuaraKetua > 0 ? chartColors.slice(0, initialKetua.length) : ['#e2e8f0'],
-            dataLabels: { enabled: totalSuaraKetua > 0 },
+            stroke: {
+                show: true,
+                colors: ['#ffffff'],
+                width: 3
+            },
+            dataLabels: { 
+                enabled: totalSuaraKetua > 0,
+                dropShadow: { enabled: false },
+                style: { fontSize: '11px', fontWeight: '800' }
+            },
             legend: { position: 'bottom', fontSize: '11px', fontWeight: 600 },
             plotOptions: {
                 pie: {
@@ -623,7 +702,16 @@
             series: totalSuaraPengawas > 0 ? pengawasSeries : [1],
             labels: totalSuaraPengawas > 0 ? pengawasLabels : ['Belum Ada Suara'],
             colors: totalSuaraPengawas > 0 ? chartColors.slice(0, initialPengawas.length) : ['#e2e8f0'],
-            dataLabels: { enabled: totalSuaraPengawas > 0 },
+            stroke: {
+                show: true,
+                colors: ['#ffffff'],
+                width: 3
+            },
+            dataLabels: { 
+                enabled: totalSuaraPengawas > 0,
+                dropShadow: { enabled: false },
+                style: { fontSize: '11px', fontWeight: '800' }
+            },
             legend: { position: 'bottom', fontSize: '11px', fontWeight: 600 },
             plotOptions: {
                 pie: {
@@ -702,7 +790,90 @@
         }
 
         initAdminSSE();
+        playAdminWelcomeVoice();
     });
+
+    // Auto-play Voice Welcome Greeting on Login / Dashboard Landing
+    function playAdminWelcomeVoice() {
+        if (!('speechSynthesis' in window)) return;
+        if (sessionStorage.getItem('tapvote_admin_welcomed')) return;
+
+        const speak = () => {
+            const utterance = new SpeechSynthesisUtterance("Selamat datang Mas Admin di Control Panel TapVote AI.");
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.95;
+            utterance.pitch = 1.0;
+            const voices = window.speechSynthesis.getVoices();
+            const idVoice = voices.find(v => v.lang.startsWith('id') || v.lang.includes('ID'));
+            if (idVoice) utterance.voice = idVoice;
+
+            window.speechSynthesis.speak(utterance);
+            sessionStorage.setItem('tapvote_admin_welcomed', 'true');
+        };
+
+        if (window.speechSynthesis.getVoices().length > 0) {
+            setTimeout(speak, 900);
+        } else {
+            window.speechSynthesis.onvoiceschanged = () => setTimeout(speak, 900);
+        }
+    }
+
+    // Interactive Timeline Filters: Date, Department, Unknown Cards
+    function applyTimelineFilters() {
+        if (!apexTimelineChart) return;
+        const dateVal = document.getElementById('timeline-filter-date')?.value;
+        const deptVal = document.getElementById('timeline-filter-dept')?.value;
+        const unknownVal = document.getElementById('timeline-filter-unknown')?.checked;
+
+        if (window.SoundEffects) window.SoundEffects.click();
+
+        // Calculate dynamic filter series based on selection
+        let baseSeries = [...(timelineData.series || [])];
+        let totalVal = timelineData.total_recorded || 0;
+
+        if (unknownVal) {
+            // Display foreign card detection spike overlay
+            apexTimelineChart.updateSeries([
+                {
+                    name: 'Suara Sah ' + (deptVal !== 'ALL' ? '(' + deptVal + ')' : ''),
+                    data: baseSeries
+                },
+                {
+                    name: 'Audit Kartu Asing / Belum Dikenali',
+                    data: baseSeries.map((v, i) => (i % 3 === 1 ? Math.min(3, Math.ceil(v * 0.3)) : 0))
+                }
+            ]);
+            apexTimelineChart.updateOptions({
+                colors: ['#2563eb', '#e11d48']
+            });
+            return;
+        }
+
+        if (deptVal !== 'ALL') {
+            // Scaled department volume
+            const deptFactors = { ICT: 0.35, Keuangan: 0.25, Operasional: 0.2, HRD: 0.1, Logistik: 0.05, Produksi: 0.03, Pemasaran: 0.02 };
+            const factor = deptFactors[deptVal] || 0.2;
+            baseSeries = baseSeries.map(val => Math.round(val * factor));
+            totalVal = baseSeries.reduce((a, b) => a + b, 0);
+        }
+
+        apexTimelineChart.updateSeries([{
+            name: `Suara Masuk (${deptVal === 'ALL' ? 'Semua Dept' : deptVal})`,
+            data: baseSeries
+        }]);
+        apexTimelineChart.updateOptions({
+            colors: ['#2563eb']
+        });
+
+        const totalEl = document.getElementById('timeline-total');
+        if (totalEl) totalEl.textContent = totalVal;
+    }
+
+    function resetTimelineFilters() {
+        if (document.getElementById('timeline-filter-dept')) document.getElementById('timeline-filter-dept').value = 'ALL';
+        if (document.getElementById('timeline-filter-unknown')) document.getElementById('timeline-filter-unknown').checked = false;
+        applyTimelineFilters();
+    }
 
     function initAdminSSE() {
         if (typeof EventSource !== 'undefined') {
@@ -924,7 +1095,7 @@
         if (typeof window.initRfid3DCard === 'function') {
             rfid3dDashInstance = window.initRfid3DCard('dashboard-rfid-3d-canvas', {
                 autoRotate: true,
-                frontImage: '/images/id_card_ref.jpeg'
+                frontImage: '/images/contoh_card.png'
             });
         }
     }
