@@ -18,11 +18,11 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 
 echo ========================================================
-echo   MENGIZINKAN FIREWALL PORT 80 DAN 8000 UNTUK AKSES HP
+echo   MENGIZINKAN FIREWALL PORT 80, 8000, 8080 UNTUK AKSES HP
 echo ========================================================
-powershell -NoProfile -Command "New-NetFirewallRule -DisplayName 'Laragon & PHP LAN Server (80, 8000)' -Direction Inbound -LocalPort 80,8000 -Protocol TCP -Action Allow -Profile Any"
+powershell -NoProfile -Command "New-NetFirewallRule -DisplayName 'Laragon & PHP LAN Server (80, 8000, 8080)' -Direction Inbound -LocalPort 80,8000,8080 -Protocol TCP -Action Allow -Profile Any"
 echo.
-echo Selesai! Firewall Port 80 dan 8000 sudah berhasil dibuka.
-echo Sekarang HP Anda sudah bisa mengakses web ini.
+echo Selesai! Firewall Port 80, 8000, dan 8080 (Laragon Nginx) sudah berhasil dibuka.
+echo Sekarang HP Anda sudah bisa mengakses Laragon langsung!
 echo.
 pause
