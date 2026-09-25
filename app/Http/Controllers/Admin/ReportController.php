@@ -317,24 +317,33 @@ class ReportController extends Controller
      }
 
      /**
-      * Simpan Master Hadiah Doorprize Baru
+      * Simpan Master Hadiah Doorprize Baru (Mendukung Upload Gambar)
       */
      public function storeDoorprize(Request $request)
      {
          $validated = $request->validate([
              'title' => 'required|string|max:255',
+             'description' => 'nullable|string|max:1000',
              'category' => 'required|string|max:100',
              'quantity' => 'required|integer|min:1|max:1000',
              'sponsor' => 'nullable|string|max:255',
              'icon' => 'nullable|string|max:50',
+             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
          ]);
+
+         $imagePath = null;
+         if ($request->hasFile('image')) {
+             $imagePath = $request->file('image')->store('doorprizes', 'public');
+         }
 
          $doorprize = Doorprize::create([
              'title' => trim($validated['title']),
+             'description' => !empty($validated['description']) ? trim($validated['description']) : null,
              'category' => trim($validated['category']),
              'quantity' => (int)$validated['quantity'],
-             'sponsor' => $validated['sponsor'] ? trim($validated['sponsor']) : null,
+             'sponsor' => !empty($validated['sponsor']) ? trim($validated['sponsor']) : null,
              'icon' => $validated['icon'] ?? 'gift',
+             'image' => $imagePath,
          ]);
 
          ActivityLog::log('CREATE_DOORPRIZE', 'DOORPRIZE', "Menambahkan reward doorprize baru: {$doorprize->title} ({$doorprize->quantity} unit)");
@@ -374,6 +383,58 @@ class ReportController extends Controller
          ActivityLog::log('CANCEL_WINNER', 'DOORPRIZE', "Membatalkan pemenang: {$nama} untuk {$hadiah}");
 
          return redirect()->back()->with('success', "Pemenang {$nama} berhasil dibatalkan dari daftar.");
+     }
+
+     /**
+      * Update Status Klaim Pemenang Doorprize (Sudah Diterima, Ditolak, Alasan Lain)
+      */
+     public function updateWinnerStatus(Request $request, $id)
+     {
+         $validated = $request->validate([
+             'status' => 'required|in:pending,accepted,rejected,other',
+             'status_note' => 'nullable|string|max:500',
+         ]);
+
+         $winner = DoorprizeWinner::with(['doorprize', 'pemilih'])->findOrFail($id);
+         $prevStatus = $winner->status;
+         $winner->status = $validated['status'];
+         $winner->status_note = !empty($validated['status_note']) ? trim($validated['status_note']) : null;
+         
+         if ($validated['status'] === 'accepted') {
+             $winner->received_at = now();
+         } elseif ($validated['status'] !== 'accepted') {
+             $winner->received_at = null;
+         }
+         $winner->save();
+
+         $nama = $winner->pemilih?->nama ?? $winner->nik;
+         $statusLabel = match($winner->status) {
+             'accepted' => 'Sudah Diterima',
+             'rejected' => 'Ditolak',
+             'other' => 'Lainnya / Alasan Khusus',
+             default => 'Belum Diambil (Pending)'
+         };
+
+         ActivityLog::log(
+             'DOORPRIZE_CLAIM_STATUS',
+             'DOORPRIZE',
+             "Status hadiah untuk {$nama} diperbarui menjadi [{$statusLabel}]. Catatan: " . ($winner->status_note ?? '-')
+         );
+
+         if ($request->wantsJson()) {
+             return response()->json([
+                 'success' => true,
+                 'message' => "Status klaim hadiah {$nama} berhasil diubah menjadi {$statusLabel}.",
+                 'winner' => [
+                     'id' => $winner->id,
+                     'status' => $winner->status,
+                     'status_note' => $winner->status_note,
+                     'received_at' => $winner->received_at ? $winner->received_at->format('H:i:s d/m/Y') : null,
+                 ]
+             ]);
+         }
+
+         return redirect()->back()->with('success', "Status klaim hadiah {$nama} berhasil diubah menjadi {$statusLabel}.");
      }
 
      /**

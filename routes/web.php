@@ -116,6 +116,7 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
         Route::post('/doorprize/items', [ReportController::class, 'storeDoorprize'])->name('admin.reports.doorprize.store');
         Route::delete('/doorprize/items/{id}', [ReportController::class, 'destroyDoorprize'])->name('admin.reports.doorprize.destroy');
         Route::delete('/doorprize/winners/{id}', [ReportController::class, 'deleteWinner'])->name('admin.reports.doorprize.winner.destroy');
+        Route::match(['POST', 'PATCH'], '/doorprize/winners/{id}/status', [ReportController::class, 'updateWinnerStatus'])->name('admin.reports.doorprize.winner.status');
     });
 
     // Audit Trail Logs Viewer
