@@ -137,4 +137,26 @@ class KandidatKetuaController extends Controller
 
         return redirect()->route('admin.ketua.index')->with('success', "Kandidat {$nama} berhasil dihapus.");
     }
+
+    /**
+     * Drag & Drop Reorder Prioritas Nomor Urut
+     */
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*' => 'required|string',
+        ]);
+
+        foreach ($request->order as $index => $nik) {
+            KandidatKetua::where('nik', $nik)->update(['nomor_urut' => $index + 1]);
+        }
+
+        ActivityLog::log('CANDIDATE_REORDER', 'ADMIN', 'Urutan prioritas nomor urut Calon Ketua berhasil diperbarui via drag-and-drop.');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Prioritas nomor urut Calon Ketua berhasil diperbarui.',
+        ]);
+    }
 }

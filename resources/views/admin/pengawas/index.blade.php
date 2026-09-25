@@ -21,10 +21,10 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
-            <button onclick="window.print()" type="button" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
-                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                <span>Print Roster</span>
-            </button>
+            <a href="{{ route('admin.reports.pengawas.export.pdf') }}" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="Download Official Vector PDF Roster">
+                <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <span>Export PDF Roster</span>
+            </a>
 
             <a href="{{ route('admin.pengawas.create') }}" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
@@ -100,6 +100,7 @@
             <table class="w-full text-left text-xs sm:text-sm" id="candidate-table">
                 <thead>
                     <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none">
+                        <th class="py-3 px-2 text-center w-10" title="Drag & Drop prioritize order">Drag</th>
                         <th class="py-3 px-3 text-center w-16">No.</th>
                         <th class="py-3 px-3 text-center w-24">Photo</th>
                         <th class="py-3 px-3">Candidate Identity</th>
@@ -114,10 +115,15 @@
                             $fotoKandidat = $p->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($p->nama).'&background=059669&color=ffffff&size=400';
                             $pct = $totalPengawasVotes > 0 ? round(($p->perolehan_suara_count / $totalPengawasVotes) * 100, 1) : 0;
                         @endphp
-                        <tr class="hover:bg-slate-50/80 transition candidate-row" data-name="{{ strtolower($p->nama) }}" data-nik="{{ $p->nik }}" data-visi="{{ strtolower($p->visi) }}">
+                        <tr draggable="true" class="hover:bg-slate-50/80 transition candidate-row cursor-grab active:cursor-grabbing group" data-nik="{{ $p->nik }}" data-name="{{ strtolower($p->nama) }}" data-visi="{{ strtolower($p->visi) }}">
+                            <!-- Drag Handle Column -->
+                            <td class="py-3 px-2 text-center text-slate-400 group-hover:text-emerald-600 transition select-none font-bold text-base">
+                                <span title="Drag to reorder ballot priority">⋮⋮</span>
+                            </td>
+
                             <!-- Ballot Number -->
                             <td class="py-3 px-3 text-center">
-                                <span class="w-9 h-9 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center mx-auto shadow-xs">
+                                <span class="w-9 h-9 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center mx-auto shadow-xs candidate-order-badge">
                                     {{ $p->nomor_urut }}
                                 </span>
                             </td>
@@ -273,6 +279,78 @@
 
     function closeCardlessPreview() {
         document.getElementById('cardless-photo-modal').classList.add('hidden');
+    }
+
+    // HTML5 Drag & Drop Table Row Reordering
+    const tbody = document.getElementById('candidate-table-body');
+    let draggedRow = null;
+
+    if (tbody) {
+        tbody.addEventListener('dragstart', (e) => {
+            const row = e.target.closest('tr.candidate-row');
+            if (!row) return;
+            draggedRow = row;
+            e.dataTransfer.effectAllowed = 'move';
+            row.classList.add('opacity-40', 'bg-emerald-50');
+        });
+
+        tbody.addEventListener('dragend', (e) => {
+            const row = e.target.closest('tr.candidate-row');
+            if (row) row.classList.remove('opacity-40', 'bg-emerald-50');
+            draggedRow = null;
+        });
+
+        tbody.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            const targetRow = e.target.closest('tr.candidate-row');
+            if (!targetRow || targetRow === draggedRow) return;
+
+            const rect = targetRow.getBoundingClientRect();
+            const next = (e.clientY - rect.top) / (rect.bottom - rect.top) > 0.5;
+            tbody.insertBefore(draggedRow, next ? targetRow.nextSibling : targetRow);
+        });
+
+        tbody.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            if (!draggedRow) return;
+
+            // Re-index visual badges
+            const rows = Array.from(tbody.querySelectorAll('tr.candidate-row'));
+            const orderPayload = [];
+
+            rows.forEach((r, idx) => {
+                const newNo = idx + 1;
+                const badge = r.querySelector('.candidate-order-badge');
+                if (badge) badge.textContent = newNo;
+                orderPayload.push({
+                    nik: r.getAttribute('data-nik'),
+                    nomor_urut: newNo
+                });
+            });
+
+            // Send reordered list to backend
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const res = await fetch("{{ route('admin.pengawas.reorder') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({ order: orderPayload })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    if (window.SoundEffects) window.SoundEffects.success();
+                    console.log('Nomor urut kandidat pengawas berhasil diperbarui.');
+                }
+            } catch (err) {
+                console.error('Error saving candidate order:', err);
+            }
+        });
     }
 </script>
 @endpush
