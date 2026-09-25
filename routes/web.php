@@ -80,6 +80,9 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
     Route::get('/api/ai-conclusion', [DashboardController::class, 'getAiConclusion'])->name('admin.api.ai-conclusion');
     Route::post('/voting/status', [DashboardController::class, 'updateVotingStatus'])->name('admin.voting.status');
     Route::post('/settings/gemini-key', [DashboardController::class, 'saveGeminiKey'])->name('admin.settings.gemini-key');
+    Route::post('/settings/gemini-test', [DashboardController::class, 'testGeminiKey'])->name('admin.settings.gemini-test');
+    Route::get('/dashboard/export/excel', [DashboardController::class, 'exportRecapExcel'])->name('admin.dashboard.export.excel');
+    Route::get('/dashboard/export/pdf', [DashboardController::class, 'exportRecapPdf'])->name('admin.dashboard.export.pdf');
 
     // CRUD Kandidat Ketua
     Route::resource('ketua', KandidatKetuaController::class, [
