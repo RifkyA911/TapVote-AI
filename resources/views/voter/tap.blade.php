@@ -2,16 +2,17 @@
 
 @section('title', __('Kios Pemilih - Tempelkan Kartu'))
 
-@section('custom_backdrop')
-    <div class="fixed inset-0 pointer-events-none z-0 bg-square-mesh"></div>
-@endsection
-
 @section('content')
 <div class="flex-1 flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-h-screen">
 
-    <!-- Header Instansi & Navigasi -->
-    <header class="flex flex-col sm:flex-row items-center sm:justify-between gap-3 py-3 border-b border-slate-200">
-        <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
+    <!-- Header Instansi & Navigasi dengan Ambient Dot Colors Backdrop -->
+    <header class="relative flex flex-col sm:flex-row items-center sm:justify-between gap-3 py-3 px-4 sm:px-6 rounded-3xl border border-slate-200/80 bg-white/70 backdrop-blur-md shadow-xs overflow-hidden">
+        <!-- Ambient Dot Glows Behind Navbar -->
+        <div class="absolute -top-10 -left-10 w-44 h-44 bg-blue-400/20 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/3 -translate-y-1/2 w-48 h-24 bg-indigo-300/20 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-44 h-44 bg-emerald-400/20 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="relative z-10 flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm shrink-0">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -49,9 +49,14 @@
 
 <div class="flex-1 flex flex-col p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full pb-44 sm:pb-52">
 
-    <!-- Header Identitas Pemilih & Kontrol Aksi (Boomer Friendly Size) -->
-    <header class="p-4 sm:p-5 rounded-3xl bg-white border-2 border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div class="flex items-center space-x-3.5 sm:space-x-4">
+    <!-- Header Identitas Pemilih & Kontrol Aksi (Boomer Friendly Size) dengan Ambient Dot Backdrop -->
+    <header class="relative p-4 sm:p-5 rounded-3xl bg-white/80 backdrop-blur-md border-2 border-slate-200/90 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 overflow-hidden">
+        <!-- Ambient Dot Glows Behind Navbar -->
+        <div class="absolute -top-10 -left-10 w-44 h-44 bg-blue-400/20 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/3 -translate-y-1/2 w-48 h-24 bg-indigo-300/20 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-44 h-44 bg-emerald-400/20 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="relative z-10 flex items-center space-x-3.5 sm:space-x-4">
             <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black text-lg sm:text-xl shadow-sm shrink-0">
                 {{ strtoupper(substr($pemilih->nama, 0, 2)) }}
             </div>
