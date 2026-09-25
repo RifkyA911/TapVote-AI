@@ -354,6 +354,50 @@ class ReportController extends Controller
      }
 
      /**
+      * Update / Edit Master Hadiah Doorprize beserta Foto
+      */
+     public function updateDoorprize(Request $request, $id)
+     {
+         $doorprize = Doorprize::findOrFail($id);
+
+         $validated = $request->validate([
+             'title' => 'required|string|max:255',
+             'description' => 'nullable|string|max:1000',
+             'category' => 'required|string|max:100',
+             'quantity' => 'required|integer|min:1|max:1000',
+             'sponsor' => 'nullable|string|max:255',
+             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
+         ]);
+
+         if ($request->hasFile('image')) {
+             if ($doorprize->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($doorprize->image)) {
+                 \Illuminate\Support\Facades\Storage::disk('public')->delete($doorprize->image);
+             }
+             $doorprize->image = $request->file('image')->store('doorprizes', 'public');
+         }
+
+         $doorprize->title = trim($validated['title']);
+         $doorprize->description = !empty($validated['description']) ? trim($validated['description']) : null;
+         $doorprize->category = trim($validated['category']);
+         $doorprize->quantity = (int)$validated['quantity'];
+         $doorprize->sponsor = !empty($validated['sponsor']) ? trim($validated['sponsor']) : null;
+         $doorprize->save();
+
+         ActivityLog::log('UPDATE_DOORPRIZE', 'DOORPRIZE', "Memperbarui data hadiah doorprize: {$doorprize->title}");
+
+         if ($request->wantsJson()) {
+             return response()->json([
+                 'success' => true,
+                 'doorprize' => $doorprize,
+                 'image_url' => $doorprize->image_url,
+                 'message' => "Hadiah Doorprize {$doorprize->title} berhasil diperbarui!"
+             ]);
+         }
+
+         return redirect()->back()->with('success', "Hadiah Doorprize {$doorprize->title} berhasil diperbarui!");
+     }
+
+     /**
       * Hapus Master Hadiah Doorprize
       */
      public function destroyDoorprize($id)

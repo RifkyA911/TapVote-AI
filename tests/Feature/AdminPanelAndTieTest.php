@@ -294,4 +294,100 @@ class AdminPanelAndTieTest extends TestCase
             ->expectsOutputToContain('Total DPT')
             ->assertExitCode(0);
     }
+
+    public function test_admin_can_update_doorprize_reward_and_replace_image(): void
+    {
+        $this->actingAs($this->admin);
+        \Illuminate\Support\Facades\Storage::fake('public');
+
+        $doorprize = \App\Models\Doorprize::create([
+            'title' => 'Rice Cooker Awal',
+            'category' => 'Elektronik',
+            'quantity' => 2,
+            'sponsor' => 'Sponsor Lama'
+        ]);
+
+        $fakePhoto = \Illuminate\Http\UploadedFile::fake()->image('new_reward.jpg', 600, 600);
+
+        $response = $this->post(route('admin.reports.doorprize.update', $doorprize->id), [
+            'title' => 'Smart Rice Cooker 2L Digital',
+            'category' => 'Peralatan Rumah',
+            'quantity' => 5,
+            'sponsor' => 'Bank Mandiri',
+            'description' => 'Garansi 2 tahun',
+            'image' => $fakePhoto
+        ], ['Accept' => 'application/json']);
+
+        $response->assertStatus(200);
+        $doorprize->refresh();
+        $this->assertEquals('Smart Rice Cooker 2L Digital', $doorprize->title);
+        $this->assertEquals('Peralatan Rumah', $doorprize->category);
+        $this->assertEquals(5, $doorprize->quantity);
+        $this->assertNotNull($doorprize->image);
+        \Illuminate\Support\Facades\Storage::disk('public')->assertExists($doorprize->image);
+    }
+
+    public function test_admin_ketua_and_pengawas_index_render_datatables_and_cardless_modals(): void
+    {
+        $this->actingAs($this->admin);
+
+        KandidatKetua::create([
+            'nik' => '99001',
+            'nama' => 'Budi Santoso',
+            'nomor_urut' => 1,
+            'visi' => 'Inovasi Digital',
+            'misi' => 'Membangun Koperasi',
+        ]);
+
+        KandidatPengawas::create([
+            'nik' => '99002',
+            'nama' => 'Siti Rahma',
+            'nomor_urut' => 1,
+            'visi' => 'Transparansi Penuh',
+            'misi' => 'Pengawasan Akuntabel',
+        ]);
+
+        $resKetua = $this->get(route('admin.ketua.index'));
+        $resKetua->assertStatus(200);
+        $resKetua->assertSee('candidate-table');
+        $resKetua->assertSee('cardless-photo-modal');
+        $resKetua->assertSee('Budi Santoso');
+
+        $resPengawas = $this->get(route('admin.pengawas.index'));
+        $resPengawas->assertStatus(200);
+        $resPengawas->assertSee('candidate-table');
+        $resPengawas->assertSee('cardless-photo-modal');
+        $resPengawas->assertSee('Siti Rahma');
+    }
+
+    public function test_admin_dashboard_renders_three_js_canvas_and_full_width_chart_rows(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->get(route('admin.dashboard'));
+        $response->assertStatus(200);
+        $response->assertSee('dashboard-rfid-3d-canvas');
+        $response->assertSee('Keplek Lanyard 3D');
+        $response->assertSee('apexChartKetua');
+        $response->assertSee('apexChartPengawas');
+        $response->assertSee('apexChartTimeline');
+    }
+
+    public function test_admin_login_renders_neumorphism_ui(): void
+    {
+        $response = $this->get(route('admin.login'));
+        $response->assertStatus(200);
+        $response->assertSee('neumorph-card');
+        $response->assertSee('neumorph-inset');
+        $response->assertSee('neumorph-btn-primary');
+    }
+
+    public function test_welcome_page_has_no_duplicate_clock_or_sse_badge(): void
+    {
+        $response = $this->get(route('home'));
+        $response->assertStatus(200);
+        $response->assertDontSee('id="sse-status-badge"', false);
+        $response->assertDontSee('id="live-clock-wib"', false);
+        $response->assertSee('id="last-updated-text"', false);
+    }
 }

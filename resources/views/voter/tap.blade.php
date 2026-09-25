@@ -8,17 +8,17 @@
     <!-- Header Instansi & Navigasi -->
     <header class="flex flex-col sm:flex-row items-center sm:justify-between gap-3 py-3 border-b border-slate-200">
         <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm shrink-0">
+            <a href="{{ route('home') }}" class="flex items-center space-x-3 group cursor-pointer" title="Kembali ke Beranda Live Count">
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-600 group-hover:bg-blue-700 text-white flex items-center justify-center shadow-sm shrink-0 transition">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
                 </div>
                 <div>
-                    <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">TapVote AI</h1>
-                    <p class="text-xs text-slate-500 font-medium">{{ __('Kios Pemungutan Suara') }}</p>
+                    <h1 class="text-base sm:text-lg font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition">TapVote AI</h1>
+                    <p class="text-xs text-slate-500 font-medium">Digital Voting Terminal • <span class="text-blue-600 font-bold">← Beranda</span></p>
                 </div>
-            </div>
+            </a>
 
             <!-- Language Switcher Pill for Mobile View -->
             <div class="inline-flex sm:hidden rounded-xl border border-slate-200 bg-white p-1 text-xs font-bold shadow-2xs">
@@ -137,10 +137,10 @@
         </div>
     @endif
 
-    <!-- Main Tap Area (Animasi Bouncing Smooth & Ripple Efek Bersih Bebas Stroke Biru) -->
-    <div class="my-auto py-4 sm:py-6 flex flex-col items-center justify-center text-center">
+    <!-- Main Tap Area (Padding atas nyaman & jarak proporsional dengan demo) -->
+    <div class="pt-8 sm:pt-12 pb-2 sm:pb-3 flex flex-col items-center justify-center text-center">
         
-        <div id="tap-kiosk-box" class="w-full max-w-xl bg-transparent p-3 sm:p-8 flex flex-col items-center relative transition-all duration-500 {{ session('error') ? 'animate-distracted-shake' : '' }}">
+        <div id="tap-kiosk-box" class="w-full max-w-xl bg-transparent p-3 sm:p-6 flex flex-col items-center relative transition-all duration-500 {{ session('error') ? 'animate-distracted-shake' : '' }}">
             
             <!-- Sensor Target Box (Bebas stroke biru & background putih) -->
             <div id="sensor-container" onclick="startNfcScan()" class="relative w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center mb-4 sm:mb-6 bg-transparent cursor-pointer" title="Tekan untuk Mengaktifkan Sensor NFC">
@@ -232,8 +232,8 @@
                 @endif
             </p>
 
-            <!-- Mobile Native Web NFC Section (NO MANUAL TEXT INPUT!) -->
-            <div class="w-full max-w-sm mx-auto mt-4 space-y-2.5">
+            <!-- Mobile Native Web NFC Section (HANYA DITAMPILKAN DI HP - HIDE PADA TABLET & PC) -->
+            <div class="w-full max-w-sm mx-auto mt-4 space-y-2.5 block sm:hidden">
                 <!-- Native Web NFC Button (Auto-detected if supported) -->
                 <div id="nfc-support-container" class="hidden">
                     <button 
@@ -288,7 +288,7 @@
     </div>
 
     <!-- Section Simulasi Demo dengan Tombol Hide/Show Toggle -->
-    <div class="mt-4 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
+    <div class="mt-1 sm:mt-2 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-600 uppercase">Demo</span>

@@ -147,6 +147,16 @@
                                         <span>🎯 Pilih</span>
                                     </button>
 
+                                    <button 
+                                        type="button" 
+                                        onclick="openEditRewardModal({{ $d->id }}, '{{ addslashes($d->title) }}', '{{ addslashes($d->category) }}', {{ $d->quantity }}, '{{ addslashes($d->sponsor ?? '') }}', '{{ addslashes($d->description ?? '') }}', '{{ $d->image ? $d->image_url : '' }}')"
+                                        class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 transition cursor-pointer flex items-center space-x-1"
+                                        title="Edit Hadiah & Ganti Foto"
+                                    >
+                                        <span>✏️</span>
+                                        <span>Edit</span>
+                                    </button>
+
                                     <form action="{{ route('admin.reports.doorprize.destroy', $d->id) }}" method="POST" onsubmit="return confirm('Hapus reward {{ $d->title }}?');" class="inline">
                                         @csrf
                                         @method('DELETE')
@@ -473,6 +483,74 @@
     </div>
 </div>
 
+<!-- Modal Edit Master Reward (Ganti Foto, Ubah Data) -->
+<div id="edit-reward-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white border-2 border-slate-200 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+            <div>
+                <h3 class="text-lg font-black text-slate-900">Edit Data & Foto Hadiah</h3>
+                <p class="text-xs text-slate-500">Perbarui spesifikasi, kuota, atau ganti foto hadiah</p>
+            </div>
+            <button onclick="closeEditRewardModal()" type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1 rounded-xl">✕</button>
+        </div>
+
+        <form id="edit-reward-form" method="POST" enctype="multipart/form-data" class="space-y-4">
+            @csrf
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Hadiah / Reward <span class="text-rose-500">*</span></label>
+                <input type="text" name="title" id="edit-reward-title" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none font-bold">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat / Spesifikasi</label>
+                <textarea name="description" id="edit-reward-description" rows="2" class="w-full px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none"></textarea>
+            </div>
+
+            <!-- Pratinjau & Upload Foto Baru -->
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Foto Hadiah</label>
+                <div class="flex items-center space-x-3 mb-2">
+                    <img id="edit-reward-current-img" src="" alt="Pratinjau Hadiah" class="w-16 h-16 rounded-xl object-cover border border-slate-300 shadow-xs hidden">
+                    <span id="edit-reward-no-img" class="text-xs text-slate-400 italic">Belum ada foto terpasang</span>
+                </div>
+                <input type="file" name="image" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200 cursor-pointer">
+                <span class="text-[11px] text-slate-400 block mt-1">Pilih file baru jika ingin mengganti foto (JPG, PNG, WebP maks 4MB)</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Kategori Hadiah</label>
+                    <select name="category" id="edit-reward-category" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none font-semibold">
+                        <option value="Grand Prize">Grand Prize</option>
+                        <option value="Utama">Utama</option>
+                        <option value="Elektronik">Elektronik</option>
+                        <option value="Peralatan Rumah">Peralatan Rumah</option>
+                        <option value="Gadget">Gadget & Smartphone</option>
+                        <option value="Hiburan">Hiburan</option>
+                        <option value="Voucher">Voucher</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Jumlah Unit (Qty) <span class="text-rose-500">*</span></label>
+                    <input type="number" name="quantity" id="edit-reward-quantity" required min="1" max="1000" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none font-mono font-bold">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Sponsor / Donatur</label>
+                <input type="text" name="sponsor" id="edit-reward-sponsor" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none">
+            </div>
+
+            <div class="pt-3 border-t border-slate-200 flex justify-end space-x-2">
+                <button type="button" onclick="closeEditRewardModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer">Batal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black shadow-md cursor-pointer">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Modal Update Status Serah Terima Pemenang (Diterima / Ditolak / Alasan Lain) -->
 <div id="update-winner-status-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
     <div class="bg-white border-2 border-slate-200 rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
@@ -525,6 +603,37 @@
 
     function closeAddRewardModal() {
         document.getElementById('add-reward-modal').classList.add('hidden');
+    }
+
+    function openEditRewardModal(id, title, category, quantity, sponsor, description, imageUrl) {
+        if (window.SoundEffects) window.SoundEffects.modal();
+        const modal = document.getElementById('edit-reward-modal');
+        const form = document.getElementById('edit-reward-form');
+        form.action = "{{ url('admin/reports/doorprize/items') }}/" + id;
+
+        document.getElementById('edit-reward-title').value = title || '';
+        document.getElementById('edit-reward-description').value = description || '';
+        document.getElementById('edit-reward-category').value = category || 'Elektronik';
+        document.getElementById('edit-reward-quantity').value = quantity || 1;
+        document.getElementById('edit-reward-sponsor').value = sponsor || '';
+
+        const imgEl = document.getElementById('edit-reward-current-img');
+        const noImgEl = document.getElementById('edit-reward-no-img');
+        if (imageUrl && imageUrl.trim().length > 0) {
+            imgEl.src = imageUrl;
+            imgEl.classList.remove('hidden');
+            noImgEl.classList.add('hidden');
+        } else {
+            imgEl.src = '';
+            imgEl.classList.add('hidden');
+            noImgEl.classList.remove('hidden');
+        }
+
+        modal.classList.remove('hidden');
+    }
+
+    function closeEditRewardModal() {
+        document.getElementById('edit-reward-modal').classList.add('hidden');
     }
 
     let activeEditWinnerId = null;

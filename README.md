@@ -30,21 +30,30 @@
 - **Interactive Audio Feedback (Web Audio API)**:
   - Zero-latency, browser-synthesized audio effects for card tap, successful vote, errors, candidate selection, and modal transitions.
 
-### 2. Public Live Count & 3D RFID Showcase (`/`)
-- **Interactive 3D Three.js RFID Showcase**:
-  - High-fidelity 3D Mifare card model rendered in Three.js with metallic gold antenna traces, holographic microchip texture, and smooth 360° cursor-driven X/Y rotation and floating physics.
+### 2. Public Live Count (`/`)
 - **Real-Time SSE Streaming**: Live updates broadcast without page refreshes.
-- **Comparative Bar Chart**: Grouped multi-candidate comparative charts powered by Chart.js with tabbed filtering (*All Candidates*, *Chairman Only*, *Supervisors Only*).
+- **Comparative Bar Chart with Candidate Photo Avatars**: Grouped multi-candidate comparative charts powered by Chart.js featuring custom circular candidate portrait avatars, ballot numbers, and short names directly on the x-axis.
 - **Candidate Manifesto & Profile Modals**: Click to inspect Vision (*Visi*), Mission (*Misi*), and background.
-- **Clean Public Header**: High-contrast, spacious layout with instant language switcher (`EN` / `ID`).
+- **Clean Public Header**: High-contrast, spacious layout with single official timestamp and instant language switcher (`EN` / `ID`).
 
 ### 3. Executive Admin Control Panel (`/admin`)
+- **Three.js 3D Keplek & Lanyard Showcase (`/admin/dashboard`)**:
+  - Interactive 3D model replicating the official UBS ID card with authentic badge texture (`id_card_ref.jpeg`), top slot cutout, black clasp, metallic swivel ring, and 3D woven red fabric lanyard ribbon loop.
+  - Interactive 360° rotation on X & Y axes with mouse/touch drag and control buttons.
+- **Full-Width Candidate Charts**:
+  - Restructured into single-row, full-width containers (`w-full`) with ApexCharts Donut on the left and candidate breakdown progress cards on the right for superior readability across mobile, iPad Mini (768px-834px), and PC.
 - **Executive Telemetry Dashboard**:
   - Sleek modern UI designed for tech-savvy administrators with live SSE connection status, dynamic turnout quorum milestone gauges, and real-time candidate comparison cards.
   - **ApexCharts Data Visualizations**: Interactive donut charts for vote distributions and an hourly timeline area chart showing voting flow from 07:00 to 17:00.
   - **Official Vector PDF Export**: Uses `barryvdh/laravel-dompdf` (`/admin/dashboard/export/pdf`) to produce clean, high-resolution A4 election recap certificates with panitia signature spaces.
   - **Excel UTF-8 BOM Recap Export**: Generates `.csv` exports compatible with Microsoft Excel (`/admin/dashboard/export/excel`).
   - **Live Gemini API Test Tool**: Live testing tool with round-trip latency benchmarking and model connectivity verification (`gemini-2.0-flash` & `gemini-1.5-flash`).
+- **Candidate Management DataTables (`/admin/ketua`, `/admin/pengawas`)**:
+  - Replaced legacy card grids with uniform, responsive DataTables matching the DPT roster.
+  - **Cardless Floating Lightbox Preview Modal**: Seamless high-resolution candidate photo viewing without awkward card borders.
+  - Live client-side search across names, NIKs, and vision statements with keyboard shortcut `/`.
+- **Neumorphic Soft UI Admin Login (`/admin/login`)**:
+  - Tactile Neumorphism (Soft UI) design with multi-directional soft dual shadows, recessed inset inputs, and embossed buttons.
 - **Throttled Operational Controls**:
   - Modernized segmented START, PAUSE, and STOP controls with anti-double-click throttling (`800ms`) and background API synchronization.
 - **Dynamic DataTables with RFC HTTP QUERY Method**:

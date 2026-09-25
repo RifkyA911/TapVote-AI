@@ -268,90 +268,202 @@
     <!-- ======================================================== -->
     <!-- REAL-TIME CANDIDATE CHARTS (POWERED BY APEXCHARTS!)      -->
     <!-- ======================================================== -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-
-        <!-- Card Section: Calon Ketua Koperasi (ApexCharts) -->
-        <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-            <div>
-                <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-200">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center justify-center shadow-xs">1</span>
-                        <div>
-                            <h3 class="text-base font-bold text-slate-900">Perolehan Suara: Calon Ketua</h3>
-                            <p class="text-xs text-slate-500">Live tally suara via ApexCharts</p>
-                        </div>
-                    </div>
-                    <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
-                        {{ count($ketuaResults) }} Kandidat
-                    </span>
+    <!-- Row 1: Perolehan Suara Calon Ketua (Full Width Row, Lapang & Responsive) -->
+    <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-5">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div class="flex items-center space-x-3">
+                <span class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center justify-center shadow-xs">1</span>
+                <div>
+                    <h3 class="text-base sm:text-lg font-black text-slate-900">Perolehan Suara: Calon Ketua Koperasi</h3>
+                    <p class="text-xs text-slate-500">Distribusi suara masuk secara komprehensif via ApexCharts Donut & Rekapitulasi</p>
                 </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                {{ count($ketuaResults) }} Kandidat Terdaftar
+            </span>
+        </div>
 
-                <!-- ApexCharts Donut Viewport -->
-                <div id="apexChartKetua" class="w-full flex items-center justify-center min-h-[240px]"></div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <!-- ApexCharts Donut Viewport (Left) -->
+            <div class="md:col-span-5 flex items-center justify-center min-h-[270px]">
+                <div id="apexChartKetua" class="w-full"></div>
+            </div>
 
-                <!-- Progress List -->
-                <div class="space-y-2.5 mt-4" id="admin-ketua-list">
-                    @foreach($ketuaResults as $k)
-                        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/70 flex items-center justify-between gap-3">
+            <!-- Progress & Tally List (Right) -->
+            <div class="md:col-span-7 space-y-3" id="admin-ketua-list">
+                @foreach($ketuaResults as $k)
+                    <div class="p-4 rounded-2xl bg-slate-50 hover:bg-blue-50/40 border border-slate-200/80 transition space-y-2">
+                        <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center space-x-3 min-w-0">
-                                <span class="w-7 h-7 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0">
+                                <span class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
                                     {{ $k['nomor_urut'] }}
                                 </span>
                                 <div class="min-w-0">
-                                    <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate">{{ $k['nama'] }}</h4>
+                                    <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">{{ $k['nama'] }}</h4>
+                                    <span class="text-[11px] text-slate-500 font-mono font-medium">Kandidat Ketua</span>
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
-                                <span class="text-sm font-extrabold text-blue-700 font-mono">{{ $k['suara'] }} Suara</span>
-                                <span class="text-[11px] text-slate-500 block font-bold">({{ $k['persen'] }}%)</span>
+                                <span class="text-sm sm:text-base font-black text-blue-700 font-mono">{{ $k['suara'] }} Suara</span>
+                                <span class="text-xs text-slate-600 block font-bold">({{ $k['persen'] }}%)</span>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-
-        <!-- Card Section: Calon Pengawas Koperasi (ApexCharts) -->
-        <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-            <div>
-                <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-200">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-xs">2</span>
-                        <div>
-                            <h3 class="text-base font-bold text-slate-900">Perolehan Suara: Calon Pengawas</h3>
-                            <p class="text-xs text-slate-500">Live tally suara via ApexCharts</p>
+                        <div class="w-full bg-slate-200/70 h-2 rounded-full overflow-hidden">
+                            <div class="bg-blue-600 h-2 rounded-full transition-all duration-700" style="width: {{ $k['persen'] }}%;"></div>
                         </div>
                     </div>
-                    <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        {{ count($pengawasResults) }} Kandidat
-                    </span>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 2: Perolehan Suara Calon Pengawas (Full Width Row, Lapang & Responsive) -->
+    <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-5">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div class="flex items-center space-x-3">
+                <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-xs">2</span>
+                <div>
+                    <h3 class="text-base sm:text-lg font-black text-slate-900">Perolehan Suara: Calon Pengawas Koperasi</h3>
+                    <p class="text-xs text-slate-500">Distribusi suara masuk secara komprehensif via ApexCharts Donut & Rekapitulasi</p>
                 </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                {{ count($pengawasResults) }} Kandidat Terdaftar
+            </span>
+        </div>
 
-                <!-- ApexCharts Donut Viewport -->
-                <div id="apexChartPengawas" class="w-full flex items-center justify-center min-h-[240px]"></div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <!-- ApexCharts Donut Viewport (Left) -->
+            <div class="md:col-span-5 flex items-center justify-center min-h-[270px]">
+                <div id="apexChartPengawas" class="w-full"></div>
+            </div>
 
-                <!-- Progress List -->
-                <div class="space-y-2.5 mt-4" id="admin-pengawas-list">
-                    @foreach($pengawasResults as $p)
-                        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/70 flex items-center justify-between gap-3">
+            <!-- Progress & Tally List (Right) -->
+            <div class="md:col-span-7 space-y-3" id="admin-pengawas-list">
+                @foreach($pengawasResults as $p)
+                    <div class="p-4 rounded-2xl bg-slate-50 hover:bg-emerald-50/40 border border-slate-200/80 transition space-y-2">
+                        <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center space-x-3 min-w-0">
-                                <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white font-black text-xs flex items-center justify-center shrink-0">
+                                <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
                                     {{ $p['nomor_urut'] }}
                                 </span>
                                 <div class="min-w-0">
-                                    <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate">{{ $p['nama'] }}</h4>
+                                    <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">{{ $p['nama'] }}</h4>
+                                    <span class="text-[11px] text-slate-500 font-mono font-medium">Kandidat Pengawas</span>
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
-                                <span class="text-sm font-extrabold text-emerald-700 font-mono">{{ $p['suara'] }} Suara</span>
-                                <span class="text-[11px] text-slate-500 block font-bold">({{ $p['persen'] }}%)</span>
+                                <span class="text-sm sm:text-base font-black text-emerald-700 font-mono">{{ $p['suara'] }} Suara</span>
+                                <span class="text-xs text-slate-600 block font-bold">({{ $p['persen'] }}%)</span>
                             </div>
                         </div>
-                    @endforeach
-                </div>
+                        <div class="w-full bg-slate-200/70 h-2 rounded-full overflow-hidden">
+                            <div class="bg-emerald-600 h-2 rounded-full transition-all duration-700" style="width: {{ $p['persen'] }}%;"></div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
+    </div>
 
+    <!-- ======================================================== -->
+    <!-- 3D INTERACTIVE RFID SMART CARD & LANYARD (THREE.JS)      -->
+    <!-- Replicated from UBS ID Card & Red Ribbon Lanyard Ref     -->
+    <!-- ======================================================== -->
+    <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white border border-slate-800 shadow-2xl relative overflow-hidden">
+        <!-- Ambient decorative lights -->
+        <div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-blue-600/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-indigo-600/15 blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- Left Column: Specs & Interactive Controls -->
+            <div class="lg:col-span-5 space-y-4 text-left">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-black uppercase tracking-wider">
+                    <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                    <span>Three.js WebGL Interactive 3D Model</span>
+                </div>
+
+                <h3 class="text-xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+                    Kartu RFID Mifare & Keplek Lanyard 3D
+                </h3>
+
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Visualisasi kartu pintar dan keplek identitas resmi pemilih lengkap dengan pita lanyard merah dan penjepit. Putar kartu bebas <strong>360° pada sumbu X & Y</strong> secara interaktif.
+                </p>
+
+                <!-- Feature Specs Badges -->
+                <div class="grid grid-cols-2 gap-2.5 pt-1 text-xs">
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Standard</span>
+                        <strong class="text-white font-mono">ISO/IEC 14443A</strong>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Frequency</span>
+                        <strong class="text-amber-400 font-mono">13.56 MHz HF</strong>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Credential Form</span>
+                        <strong class="text-blue-400 font-mono">Vertical Badge + Ribbon</strong>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Encryption</span>
+                        <strong class="text-emerald-400 font-mono">Crypto-1 / AES</strong>
+                    </div>
+                </div>
+
+                <!-- Interactive 3D Action Buttons -->
+                <div class="flex flex-wrap items-center gap-2 pt-2">
+                    <button 
+                        type="button" 
+                        id="dash-btn-spin"
+                        onclick="toggleDashCardSpin()"
+                        class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition cursor-pointer flex items-center space-x-1.5"
+                    >
+                        <span id="dash-spin-icon">⏸</span>
+                        <span id="dash-spin-text">Jeda Putaran</span>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        onclick="flipDashCard()"
+                        class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition cursor-pointer flex items-center space-x-1.5"
+                    >
+                        <span>🔄 Balik Kartu</span>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        onclick="rotateDashCard360X()"
+                        class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition cursor-pointer flex items-center space-x-1.5"
+                    >
+                        <span>↕ Putar 360° X</span>
+                    </button>
+
+                    <button 
+                        type="button" 
+                        onclick="resetDashCardView()"
+                        class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/15 text-slate-300 font-bold text-xs border border-white/10 transition cursor-pointer"
+                        title="Reset Sudut"
+                    >
+                        ⟲ Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Interactive 3D Canvas Viewport -->
+            <div class="lg:col-span-7 flex flex-col items-center justify-center">
+                <div class="relative w-full max-w-lg aspect-[1.25/1] sm:aspect-[1.35/1] rounded-3xl bg-slate-900/70 border border-white/10 shadow-2xl backdrop-blur-md overflow-hidden flex items-center justify-center group cursor-grab active:cursor-grabbing">
+                    <div id="dashboard-rfid-3d-canvas" class="w-full h-full"></div>
+
+                    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-slate-950/80 border border-white/15 text-[11px] text-slate-300 font-medium pointer-events-none backdrop-blur-xs flex items-center space-x-1.5 shadow-md">
+                        <span>👆</span>
+                        <span>Drag mouse atau geser layar untuk memutar 360°</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- ======================================================== -->
@@ -446,6 +558,7 @@
     const chartColors = ['#2563eb', '#059669', '#d97706', '#7c3aed', '#db2777', '#0891b2', '#ea580c'];
 
     document.addEventListener('DOMContentLoaded', function() {
+        initDashRfid3D();
         if (typeof ApexCharts === 'undefined') return;
 
         // 1. ApexChart Ketua (Donut)
@@ -799,6 +912,51 @@
                 `;
             });
             document.getElementById('ai-insights-container').innerHTML = insightsHtml;
+        }
+    }
+
+    // Three.js 3D Interactive Keplek Showcase Controllers
+    let rfid3dDashInstance = null;
+
+    function initDashRfid3D() {
+        const container = document.getElementById('dashboard-rfid-3d-canvas');
+        if (!container) return;
+        if (typeof window.initRfid3DCard === 'function') {
+            rfid3dDashInstance = window.initRfid3DCard('dashboard-rfid-3d-canvas', {
+                autoRotate: true,
+                frontImage: '/images/id_card_ref.jpeg'
+            });
+        }
+    }
+
+    function toggleDashCardSpin() {
+        if (!rfid3dDashInstance) return;
+        const isSpinning = rfid3dDashInstance.toggleAutoRotate();
+        const icon = document.getElementById('dash-spin-icon');
+        const text = document.getElementById('dash-spin-text');
+        if (icon && text) {
+            icon.innerText = isSpinning ? '⏸' : '▶';
+            text.innerText = isSpinning ? 'Jeda Putaran' : 'Mulai Putar';
+        }
+    }
+
+    function flipDashCard() {
+        if (rfid3dDashInstance) rfid3dDashInstance.flipCard();
+    }
+
+    function rotateDashCard360X() {
+        if (rfid3dDashInstance) rfid3dDashInstance.rotateX360();
+    }
+
+    function resetDashCardView() {
+        if (rfid3dDashInstance) {
+            rfid3dDashInstance.resetAngle();
+            const icon = document.getElementById('dash-spin-icon');
+            const text = document.getElementById('dash-spin-text');
+            if (icon && text) {
+                icon.innerText = '⏸';
+                text.innerText = 'Jeda Putaran';
+            }
         }
     }
 </script>

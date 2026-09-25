@@ -14,17 +14,7 @@
                 </svg>
             </div>
             <div>
-                <div class="flex flex-wrap items-center gap-2">
-                    <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">{{ __('Live Count Cooperative Election') }}</h1>
-                    <span id="sse-status-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                        <span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-600 animate-ping"></span>
-                        <span id="sse-status-text">Live SSE</span>
-                    </span>
-                    <!-- Zona Waktu Resmi WIB Live Clock Badge -->
-                    <span id="live-clock-wib" class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-black bg-slate-100 text-slate-800 border border-slate-300 shadow-2xs">
-                        <span id="wib-clock-text">{{ now()->timezone('Asia/Jakarta')->format('H:i:s') }} WIB</span>
-                    </span>
-                </div>
+                <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">{{ __('Live Count Cooperative Election') }}</h1>
                 <p class="text-xs text-slate-500 font-medium mt-1">
                     {{ __('Pembaruan Terakhir') }} • <span id="last-updated-text" class="font-bold text-slate-800">{{ $metrics['last_updated'] ?? (now()->timezone('Asia/Jakarta')->format('H:i:s') . ' WIB') }}</span>
                 </p>
@@ -114,107 +104,7 @@
         </div>
     </div>
 
-    <!-- ======================================================== -->
-    <!-- 3D INTERACTIVE RFID SMART CARD SHOWCASE (THREE.JS)       -->
-    <!-- Showcase Portofolio & Hardware Credential                -->
-    <!-- ======================================================== -->
-    <div class="mb-12 p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white border border-slate-800 shadow-2xl relative overflow-hidden">
-        <!-- Ambient decorative lights -->
-        <div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-blue-600/15 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-indigo-600/15 blur-3xl pointer-events-none"></div>
 
-        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            <!-- Left Column: Showcase Info & Controls -->
-            <div class="lg:col-span-5 space-y-4 text-left">
-                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-black uppercase tracking-wider">
-                    <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-                    <span>Three.js 3D Asset Showcase</span>
-                </div>
-
-                <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-                    Kartu RFID Mifare Contactless 3D
-                </h2>
-
-                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Visualisasi kartu pintar pemilih berbasis WebGL 3D. Arahkan kursor mouse atau sentuh dan geser layar untuk memutar kartu <strong>360° pada sumbu X & Y</strong> secara interaktif.
-                </p>
-
-                <!-- Feature Specs Badges -->
-                <div class="grid grid-cols-2 gap-2.5 pt-2 text-xs">
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Standard</span>
-                        <strong class="text-white font-mono">ISO/IEC 14443A</strong>
-                    </div>
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Chip Frequency</span>
-                        <strong class="text-amber-400 font-mono">13.56 MHz HF</strong>
-                    </div>
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Enkripsi</span>
-                        <strong class="text-emerald-400 font-mono">Crypto-1 / AES</strong>
-                    </div>
-                    <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
-                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Form Factor</span>
-                        <strong class="text-blue-400 font-mono">ID-1 Dimensions</strong>
-                    </div>
-                </div>
-
-                <!-- Interactive 3D Controls -->
-                <div class="flex flex-wrap items-center gap-2 pt-3">
-                    <button 
-                        type="button" 
-                        id="btn-3d-toggle-spin"
-                        onclick="toggleCardAutoSpin()"
-                        class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition cursor-pointer flex items-center space-x-1.5"
-                    >
-                        <span id="btn-spin-icon">⏸</span>
-                        <span id="btn-spin-text">Jeda Putaran</span>
-                    </button>
-
-                    <button 
-                        type="button" 
-                        onclick="flipCard3D()"
-                        class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition cursor-pointer flex items-center space-x-1.5"
-                    >
-                        <span>🔄 Balik Kartu</span>
-                    </button>
-
-                    <button 
-                        type="button" 
-                        onclick="rotateCard360X()"
-                        class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition cursor-pointer flex items-center space-x-1.5"
-                    >
-                        <span>↕ Putar 360° X</span>
-                    </button>
-
-                    <button 
-                        type="button" 
-                        onclick="resetCardView()"
-                        class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/15 text-slate-300 font-bold text-xs border border-white/10 transition cursor-pointer"
-                        title="Reset Sudut"
-                    >
-                        ⟲ Reset
-                    </button>
-                </div>
-            </div>
-
-            <!-- Right Column: Interactive Three.js 3D Canvas Viewport -->
-            <div class="lg:col-span-7 flex flex-col items-center justify-center">
-                <div class="relative w-full max-w-lg aspect-[1.35/1] sm:aspect-[1.45/1] rounded-3xl bg-slate-900/60 border border-white/10 shadow-2xl backdrop-blur-md overflow-hidden flex items-center justify-center group cursor-grab active:cursor-grabbing">
-                    <!-- Canvas Container -->
-                    <div id="rfid-3d-card-canvas" class="w-full h-full"></div>
-
-                    <!-- Subtle Interaction Badge -->
-                    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-slate-950/80 border border-white/15 text-[11px] text-slate-300 font-medium pointer-events-none backdrop-blur-xs flex items-center space-x-1.5 shadow-md">
-                        <span>👆</span>
-                        <span>Geser kursor atau drag untuk memutar 360°</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
 
     <!-- ======================================================== -->
     <!-- KANDIDAT KETUA KOPERASI SHOWCASE (PALET MERAH)           -->
@@ -441,78 +331,107 @@
     let rawPengawasData = @json($pengawasResults);
     let currentChartMode = 'all'; // 'all', 'ketua', 'pengawas'
     let comparisonChart = null;
-    let rfid3dInstance = null;
+
+    // Preload candidate avatars for instant drawing
+    const preloadedCandidateImages = {};
+    function getCandidateAvatarImg(url) {
+        if (!preloadedCandidateImages[url]) {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.src = url;
+            img.onload = () => {
+                if (comparisonChart) comparisonChart.draw();
+            };
+            preloadedCandidateImages[url] = img;
+        }
+        return preloadedCandidateImages[url];
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
-        initLiveWibClock();
         initComparisonChart();
         initLiveSSE();
-        initRfid3DShowcase();
     });
 
-    // Three.js 3D RFID Showcase Initializer & Handlers
-    function initRfid3DShowcase() {
-        const container = document.getElementById('rfid-3d-card-canvas');
-        if (!container) return;
+    // Custom Chart.js Plugin: Candidate Avatar Portraits on X-Axis
+    const candidateAvatarPlugin = {
+        id: 'candidateAvatars',
+        afterDraw(chart) {
+            const { ctx, scales: { x, y } } = chart;
+            let candidates = [];
+            if (currentChartMode === 'ketua') {
+                candidates = rawKetuaData.map(k => ({ ...k, type: 'ketua' }));
+            } else if (currentChartMode === 'pengawas') {
+                candidates = rawPengawasData.map(p => ({ ...p, type: 'pengawas' }));
+            } else {
+                candidates = [
+                    ...rawKetuaData.map(k => ({ ...k, type: 'ketua' })),
+                    ...rawPengawasData.map(p => ({ ...p, type: 'pengawas' }))
+                ];
+            }
 
-        if (typeof window.initRfid3DCard === 'function') {
-            rfid3dInstance = window.initRfid3DCard('rfid-3d-card-canvas', {
-                autoRotate: true,
-                rotationSpeed: 0.012
+            candidates.forEach((cand, idx) => {
+                const xPos = x.getPixelForTick(idx);
+                if (isNaN(xPos)) return;
+                const yPos = y.bottom + 10;
+                const size = 32;
+
+                const defaultAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(cand.nama) + '&background=' + (cand.type === 'ketua' ? 'dc2626' : '059669') + '&color=ffffff&size=100';
+                const avatarSrc = cand.foto || defaultAvatar;
+                const img = getCandidateAvatarImg(avatarSrc);
+
+                // Circular photo
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(xPos, yPos + size / 2, size / 2, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+                if (img.complete && img.naturalWidth !== 0) {
+                    ctx.drawImage(img, xPos - size / 2, yPos, size, size);
+                } else {
+                    ctx.fillStyle = cand.type === 'ketua' ? '#dc2626' : '#059669';
+                    ctx.fill();
+                }
+                ctx.restore();
+
+                // Ring border around photo
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(xPos, yPos + size / 2, size / 2, 0, Math.PI * 2);
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = cand.type === 'ketua' ? '#dc2626' : '#059669';
+                ctx.stroke();
+                ctx.restore();
+
+                // Mini number badge pill
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(xPos + size / 2 - 2, yPos + 4, 7, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = cand.type === 'ketua' ? '#dc2626' : '#059669';
+                ctx.stroke();
+                ctx.font = 'bold 9px Plus Jakarta Sans, sans-serif';
+                ctx.fillStyle = '#0f172a';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(cand.nomor_urut, xPos + size / 2 - 2, yPos + 4);
+                ctx.restore();
+
+                // Candidate short name
+                ctx.save();
+                ctx.font = 'bold 11px Plus Jakarta Sans, sans-serif';
+                ctx.fillStyle = '#334155';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                const shortName = cand.nama.split(' ')[0];
+                ctx.fillText(shortName, xPos, yPos + size + 6);
+                ctx.restore();
             });
         }
-    }
+    };
 
-    function toggleCardAutoSpin() {
-        if (!rfid3dInstance) return;
-        const isSpinning = rfid3dInstance.toggleAutoRotate();
-        const icon = document.getElementById('btn-spin-icon');
-        const text = document.getElementById('btn-spin-text');
-        if (icon && text) {
-            icon.innerText = isSpinning ? '⏸' : '▶';
-            text.innerText = isSpinning ? 'Jeda Putaran' : 'Mulai Putar';
-        }
-    }
-
-    function flipCard3D() {
-        if (rfid3dInstance) {
-            rfid3dInstance.flipCard();
-        }
-    }
-
-    function rotateCard360X() {
-        if (rfid3dInstance) {
-            rfid3dInstance.rotateX360();
-        }
-    }
-
-    function resetCardView() {
-        if (rfid3dInstance) {
-            rfid3dInstance.resetAngle();
-            const icon = document.getElementById('btn-spin-icon');
-            const text = document.getElementById('btn-spin-text');
-            if (icon && text) {
-                icon.innerText = '⏸';
-                text.innerText = 'Jeda Putaran';
-            }
-        }
-    }
-
-    // 0. Live Clock WIB
-    function initLiveWibClock() {
-        function tick() {
-            const clockEl = document.getElementById('wib-clock-text');
-            if (clockEl) {
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false });
-                clockEl.innerText = timeStr + ' WIB';
-            }
-        }
-        setInterval(tick, 1000);
-        tick();
-    }
-
-    // 1. Inisialisasi Advanced Comparative Bar Chart (Chart.js) dengan UI/UX Modern & Jarak Lapang
+    // 1. Inisialisasi Advanced Comparative Bar Chart (Chart.js) dengan Avatar Foto
     function initComparisonChart() {
         if (typeof Chart === 'undefined') return;
         const ctx = document.getElementById('comparisonChart').getContext('2d');
@@ -525,15 +444,16 @@
                 labels: labels,
                 datasets: datasets
             },
+            plugins: [candidateAvatarPlugin],
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 layout: {
                     padding: {
-                        top: 36, // Jarak lapang & bebas tabrakan dari legend
-                        bottom: 12,
-                        left: 8,
-                        right: 8
+                        top: 36,
+                        bottom: 56, // Extra breathing space for photo avatars
+                        left: 12,
+                        right: 12
                     }
                 },
                 animation: {
@@ -545,7 +465,7 @@
                         position: 'top',
                         align: 'center',
                         labels: {
-                            padding: 28, // Jarak sehat terpisah jauh dari puncak bar chart
+                            padding: 24,
                             font: { family: 'Plus Jakarta Sans', weight: 'bold', size: 13 },
                             usePointStyle: true,
                             pointStyle: 'rectRounded',
@@ -594,7 +514,7 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grace: '25%', // Ruang bernafas 25% agar bar tertinggi tidak menabrak batas atas / legend
+                        grace: '25%',
                         ticks: {
                             stepSize: 1,
                             font: { family: 'Plus Jakarta Sans', weight: 'bold', size: 11 },
@@ -606,8 +526,7 @@
                     },
                     x: {
                         ticks: {
-                            font: { family: 'Plus Jakarta Sans', weight: 'bold', size: 11 },
-                            color: '#1e293b'
+                            display: false // Hide text ticks, rendered as circular photo avatars by candidateAvatarPlugin
                         },
                         grid: {
                             display: false
@@ -621,7 +540,7 @@
     function generateChartData(mode) {
         if (mode === 'ketua') {
             return {
-                labels: rawKetuaData.map(k => [`No. ${k.nomor_urut} Ketua`, k.nama]),
+                labels: rawKetuaData.map(k => k.nama),
                 datasets: [{
                     label: 'Calon Ketua Koperasi',
                     data: rawKetuaData.map(k => k.suara),
@@ -634,7 +553,7 @@
             };
         } else if (mode === 'pengawas') {
             return {
-                labels: rawPengawasData.map(p => [`No. ${p.nomor_urut} Pengawas`, p.nama]),
+                labels: rawPengawasData.map(p => p.nama),
                 datasets: [{
                     label: 'Calon Pengawas Koperasi',
                     data: rawPengawasData.map(p => p.suara),
@@ -646,10 +565,9 @@
                 }]
             };
         } else {
-            // Mode All: Tampilkan setiap kandidat mandiri (Ketua & Pengawas BUKAN 1 pasangan)
             const labels = [];
-            rawKetuaData.forEach(k => labels.push([`No. ${k.nomor_urut} Ketua`, k.nama]));
-            rawPengawasData.forEach(p => labels.push([`No. ${p.nomor_urut} Pengawas`, p.nama]));
+            rawKetuaData.forEach(k => labels.push(k.nama));
+            rawPengawasData.forEach(p => labels.push(p.nama));
 
             const ketuaVotes = rawKetuaData.map(k => k.suara).concat(rawPengawasData.map(() => null));
             const pengawasVotes = rawKetuaData.map(() => null).concat(rawPengawasData.map(p => p.suara));
@@ -707,8 +625,8 @@
             const source = new EventSource("{{ route('live.stream') }}");
 
             source.onopen = function() {
-                badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
-                text.innerText = 'Live SSE';
+                if (badge) badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+                if (text) text.innerText = 'Live SSE';
             };
 
             source.onmessage = function(event) {
@@ -721,8 +639,8 @@
             };
 
             source.onerror = function() {
-                badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300';
-                text.innerText = 'Polling';
+                if (badge) badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300';
+                if (text) text.innerText = 'Polling';
                 source.close();
                 setInterval(pollData, 5000);
             };

@@ -49,44 +49,44 @@
             <div class="text-[11px] uppercase tracking-wider text-slate-400 font-bold px-3 pt-4 pb-1">Master Data</div>
             <a href="{{ route('admin.ketua.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.ketua.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                <span>Calon Ketua</span>
+                <span>Chairman Candidates</span>
             </a>
             <a href="{{ route('admin.pengawas.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.pengawas.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                <span>Calon Pengawas</span>
+                <span>Supervisor Candidates</span>
             </a>
             <a href="{{ route('admin.voters.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.voters.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                <span>Data Pemilih (DPT)</span>
+                <span>Voter Roster (DPT)</span>
             </a>
 
-            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-bold px-3 pt-4 pb-1">Laporan & Rekapitulasi</div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-bold px-3 pt-4 pb-1">Reports & Analytics</div>
             <a href="{{ route('admin.reports.ketua') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.reports.ketua') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                <span>Rekapitulasi Ketua</span>
+                <span>Chairman Recap</span>
             </a>
             <a href="{{ route('admin.reports.pengawas') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.reports.pengawas') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path></svg>
-                <span>Rekapitulasi Pengawas</span>
+                <span>Supervisor Recap</span>
             </a>
             <a href="{{ route('admin.reports.traceback') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.reports.traceback*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                <span>Audit Pilihan Suara</span>
+                <span>Forensic Traceback</span>
             </a>
             <a href="{{ route('admin.reports.doorprize') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.reports.doorprize') ? 'bg-amber-600 text-white shadow-sm' : 'text-amber-700 hover:bg-amber-50' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
-                <span>Undian Doorprize</span>
+                <span>Doorprize Raffle</span>
             </a>
             <a href="{{ route('doorprize.public') }}" target="_blank" class="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-bold text-amber-900 bg-amber-50/80 hover:bg-amber-100/90 border border-amber-200 transition">
                 <span class="flex items-center space-x-2">
                     <span>📺</span>
-                    <span>Panggung Penonton</span>
+                    <span>Audience Stage View</span>
                 </span>
                 <span class="text-[10px] text-amber-600">↗</span>
             </a>
             <a href="{{ route('admin.logs.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.logs.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span>Audit Logs Sistem</span>
+                <span>Audit Trail Logs</span>
             </a>
         </nav>
 
@@ -94,17 +94,17 @@
         <div class="p-4 border-t border-slate-200 space-y-2 bg-slate-50 shrink-0">
             <a href="{{ route('voter.tap') }}" target="_blank" class="w-full flex items-center justify-center space-x-2 py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-bold text-white shadow-xs transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                <span>Buka Kios Pemilih (Tap)</span>
+                <span>Open Voter Kiosk</span>
             </a>
 
             <div class="flex items-center justify-between pt-2">
                 <div class="text-xs text-slate-600 truncate pr-2">
                     <span class="block text-slate-900 font-bold truncate">{{ auth()->user()->name }}</span>
-                    <span class="text-[11px] text-slate-500">Administrator</span>
+                    <span class="text-[11px] text-slate-500">System Admin</span>
                 </div>
                 <form action="{{ route('admin.logout') }}" method="POST">
                     @csrf
-                    <button type="submit" title="Keluar / Logout" class="p-2 rounded-xl bg-rose-50 text-rose-700 hover:bg-rose-600 hover:text-white transition cursor-pointer">
+                    <button type="submit" title="Logout" class="p-2 rounded-xl bg-rose-50 text-rose-700 hover:bg-rose-600 hover:text-white transition cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     </button>
                 </form>
@@ -146,7 +146,7 @@
                         type="button" 
                         id="btn-status-started"
                         onclick="handleVotingStatusAction('STARTED')"
-                        title="Mulai / Lanjutkan Pemungutan Suara"
+                        title="Resume / Start Voting System"
                         class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-700 hover:bg-white' }}"
                     >
                         <span>▶</span>
@@ -156,7 +156,7 @@
                         type="button" 
                         id="btn-status-paused"
                         onclick="handleVotingStatusAction('PAUSED')"
-                        title="Jeda Pemungutan Suara Sementara"
+                        title="Pause Voting System"
                         class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'PAUSED' ? 'bg-amber-500 text-white shadow-xs' : 'text-slate-600 hover:text-amber-700 hover:bg-white' }}"
                     >
                         <span>⏸</span>
@@ -166,7 +166,7 @@
                         type="button" 
                         id="btn-status-stopped"
                         onclick="handleVotingStatusAction('STOPPED')"
-                        title="Tutup Pemilihan Resmi"
+                        title="Officially Stop Voting System"
                         class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STOPPED' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 hover:text-rose-700 hover:bg-white' }}"
                     >
                         <span>⏹</span>
@@ -175,8 +175,14 @@
                 </div>
             </div>
 
-            <!-- Right Header Actions (Cleaned up: Stage & Clock Removed) -->
+            <!-- Right Header Actions (Language Switcher & Live SSE) -->
             <div class="flex items-center space-x-2.5 text-xs text-slate-600">
+                <!-- Language Switcher EN / ID -->
+                <div class="inline-flex items-center rounded-xl bg-slate-100 p-0.5 border border-slate-200 text-xs font-extrabold">
+                    <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-slate-900' }}">EN</a>
+                    <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-slate-900' }}">ID</a>
+                </div>
+
                 <a href="{{ route('home') }}" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-blue-700 font-bold border border-slate-200 transition flex items-center space-x-1.5 shadow-2xs">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                     <span>Live SSE</span>

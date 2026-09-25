@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.0] - 2026-09-26
+
+### Added
+- **Three.js 3D UBS ID Card (Keplek) with Red Lanyard Model (`/admin/dashboard`)**:
+  - Relocated the Three.js 3D interactive model from the public landing page to the Admin Telemetry Dashboard.
+  - Realistic 3D model replicating the official UBS ID card with authentic graphics (`id_card_ref.jpeg`), top slot cutout, black plastic clasp, metallic swivel ring, and 3D woven red fabric lanyard ribbon loop.
+  - Interactive 360° rotation on both X and Y axes via mouse drag, touch drag, and control buttons (Auto-Rotate, Flip, 360° X, and Reset).
+- **Candidate Management Overhaul to DataTables (`/admin/ketua`, `/admin/pengawas`)**:
+  - Converted Chairman and Supervisor candidate roster views from grid cards into uniform, clean DataTables matching the voter roster (DPT).
+  - Integrated a **cardless floating lightbox preview modal** (`#cardless-photo-modal`) for high-resolution candidate photo viewing without awkward card borders.
+  - Live client-side search filtering across candidate names, NIKs, and vision statements with keyboard shortcut `/`.
+- **Neumorphic Soft UI Design on Admin Portal Login (`/admin/login`)**:
+  - Fully redesigned the administrator login screen using genuine Neumorphism (Soft UI) principles.
+  - Multi-directional soft dual shadows, recessed inset input fields with tactile focus states, and embossed raised buttons.
+- **Doorprize Reward Editing & Image Replacement (`/admin/reports/doorprize`)**:
+  - Implemented update endpoint and modal allowing administrators to modify prize details and replace prize photos with automatic cleanup of old disk assets.
+
+### Changed
+- **Dashboard Layout & Candidate Charts**:
+  - Restructured candidate pie/donut charts into full-width, single-row containers (`w-full`), preventing column squishing and ensuring crystal-clear readability on iPad Mini (768px-834px) and mobile phones.
+  - Balanced alignment across lower telemetry cards (Voting Activity Timeline and Official PDF/Excel Recap Report).
+- **Voter Kiosk (`/voter`) Refinements**:
+  - Added top padding to the tap kiosk container and reduced bottom gap before the demo section.
+  - Updated navbar branding with direct link back to `/` and modern "Digital Voting Terminal" branding.
+  - Hidden the Web NFC button and Chrome HTTP guide on tablets and desktop (`block sm:hidden`), showing exclusively on smartphones.
+- **Public Landing Page (`/`) Streamlining**:
+  - Removed duplicate clocks, preserving a single official "Last updated" timestamp.
+  - Removed the pulsing Live SSE badge from the header.
+  - Upgraded the Comparative Bar Chart with a custom Chart.js plugin rendering small circular candidate avatar portraits, ballot number pills, and candidate names directly on the x-axis.
+- **Internationalization (English Default)**:
+  - Enforced English default language across application configuration, admin panel navigation, and views, supported by persistent `EN | ID` language toggling.
+
+---
+
 ## [1.5.0] - 2026-09-25
 
 ### Added
