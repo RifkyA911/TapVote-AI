@@ -214,6 +214,20 @@ npm run mcp:http
 
 ---
 
+## 🛠️ CLI Diagnostic & Management Tools
+
+TapVote AI includes built-in Artisan commands for rapid terminal diagnostics:
+
+```bash
+# Verify system health (DB connection, public/storage junction, Gemini AI key, voting lifecycle)
+php artisan tapvote:health
+
+# Print real-time DPT turnout, participation percentage, and quorum achievement
+php artisan tapvote:recap
+```
+
+---
+
 ## 🧪 Testing
 
 Run automated PHPUnit test suites:
