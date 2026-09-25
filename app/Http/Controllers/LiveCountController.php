@@ -20,22 +20,34 @@ class LiveCountController extends Controller
     }
 
     /**
-     * Server-Sent Events (SSE) Stream untuk Pembaruan Real-Time Tanpa Reload
+     * Server-Sent Events (SSE) Stream untuk Pembaruan Real-Time Tanpa Delay
      */
     public function stream(): StreamedResponse
     {
         return response()->stream(function () {
-            $payload = $this->getMetricsData();
+            // Memberikan instruksi reconnect instan 1000ms ke browser
+            echo "retry: 1000\n\n";
 
-            echo "data: " . json_encode($payload) . "\n\n";
+            $start = time();
+            // Streaming loop aktif selama 25 detik per koneksi dengan interval 1 detik
+            while (time() - $start < 25) {
+                if (connection_aborted()) {
+                    break;
+                }
 
-            if (ob_get_level() > 0) {
-                ob_flush();
+                $payload = $this->getMetricsData();
+                echo "data: " . json_encode($payload) . "\n\n";
+
+                if (ob_get_level() > 0) {
+                    ob_flush();
+                }
+                flush();
+
+                sleep(1);
             }
-            flush();
         }, 200, [
             'Content-Type' => 'text/event-stream',
-            'Cache-Control' => 'no-cache',
+            'Cache-Control' => 'no-cache, no-transform',
             'Connection' => 'keep-alive',
             'X-Accel-Buffering' => 'no',
         ]);
@@ -50,7 +62,7 @@ class LiveCountController extends Controller
     }
 
     /**
-     * Kalkulasi Perolehan Suara & Persentase
+     * Kalkulasi Perolehan Suara & Persentase dengan Proteksi Hasil Seri (Tie-Break)
      */
     public function getMetricsData(): array
     {
@@ -64,10 +76,11 @@ class LiveCountController extends Controller
             ->get();
 
         $totalSuaraKetua = $ketuaList->sum('perolehan_suara_count');
-        $maxSuaraKetua = $ketuaList->max('perolehan_suara_count');
-        $leaderKetua = $totalSuaraKetua > 0 ? $ketuaList->firstWhere('perolehan_suara_count', $maxSuaraKetua) : null;
+        $maxSuaraKetua = $ketuaList->max('perolehan_suara_count') ?? 0;
+        $topKetuaCount = ($totalSuaraKetua > 0 && $maxSuaraKetua > 0) ? $ketuaList->where('perolehan_suara_count', $maxSuaraKetua)->count() : 0;
+        $isKetuaSeri = $topKetuaCount > 1;
 
-        $ketuaResults = $ketuaList->map(function ($k) use ($totalSuaraKetua, $maxSuaraKetua) {
+        $ketuaResults = $ketuaList->map(function ($k) use ($totalSuaraKetua, $maxSuaraKetua, $topKetuaCount) {
             $suara = $k->perolehan_suara_count;
             $persen = $totalSuaraKetua > 0 ? round(($suara / $totalSuaraKetua) * 100, 1) : 0;
             return [
@@ -80,7 +93,8 @@ class LiveCountController extends Controller
                 'deskripsi' => $k->deskripsi,
                 'suara' => $suara,
                 'persen' => $persen,
-                'is_leader' => ($totalSuaraKetua > 0 && $suara === $maxSuaraKetua),
+                'is_leader' => ($totalSuaraKetua > 0 && $topKetuaCount === 1 && $suara === $maxSuaraKetua),
+                'is_tie' => ($totalSuaraKetua > 0 && $topKetuaCount > 1 && $suara === $maxSuaraKetua),
             ];
         });
 
@@ -90,10 +104,11 @@ class LiveCountController extends Controller
             ->get();
 
         $totalSuaraPengawas = $pengawasList->sum('perolehan_suara_count');
-        $maxSuaraPengawas = $pengawasList->max('perolehan_suara_count');
-        $leaderPengawas = $totalSuaraPengawas > 0 ? $pengawasList->firstWhere('perolehan_suara_count', $maxSuaraPengawas) : null;
+        $maxSuaraPengawas = $pengawasList->max('perolehan_suara_count') ?? 0;
+        $topPengawasCount = ($totalSuaraPengawas > 0 && $maxSuaraPengawas > 0) ? $pengawasList->where('perolehan_suara_count', $maxSuaraPengawas)->count() : 0;
+        $isPengawasSeri = $topPengawasCount > 1;
 
-        $pengawasResults = $pengawasList->map(function ($p) use ($totalSuaraPengawas, $maxSuaraPengawas) {
+        $pengawasResults = $pengawasList->map(function ($p) use ($totalSuaraPengawas, $maxSuaraPengawas, $topPengawasCount) {
             $suara = $p->perolehan_suara_count;
             $persen = $totalSuaraPengawas > 0 ? round(($suara / $totalSuaraPengawas) * 100, 1) : 0;
             return [
@@ -106,20 +121,44 @@ class LiveCountController extends Controller
                 'deskripsi' => $p->deskripsi,
                 'suara' => $suara,
                 'persen' => $persen,
-                'is_leader' => ($totalSuaraPengawas > 0 && $suara === $maxSuaraPengawas),
+                'is_leader' => ($totalSuaraPengawas > 0 && $topPengawasCount === 1 && $suara === $maxSuaraPengawas),
+                'is_tie' => ($totalSuaraPengawas > 0 && $topPengawasCount > 1 && $suara === $maxSuaraPengawas),
             ];
         });
+
+        $leaderKetuaName = '';
+        if ($isKetuaSeri) {
+            $leaderKetuaName = 'HASIL SERI (' . $maxSuaraKetua . ' Suara)';
+        } elseif ($totalSuaraKetua > 0 && $topKetuaCount === 1) {
+            $leaderKetua = $ketuaList->firstWhere('perolehan_suara_count', $maxSuaraKetua);
+            $leaderKetuaName = $leaderKetua ? $leaderKetua->nama : '';
+        }
+
+        $leaderPengawasName = '';
+        if ($isPengawasSeri) {
+            $leaderPengawasName = 'HASIL SERI (' . $maxSuaraPengawas . ' Suara)';
+        } elseif ($totalSuaraPengawas > 0 && $topPengawasCount === 1) {
+            $leaderPengawas = $pengawasList->firstWhere('perolehan_suara_count', $maxSuaraPengawas);
+            $leaderPengawasName = $leaderPengawas ? $leaderPengawas->nama : '';
+        }
 
         return [
             'metrics' => [
                 'total_voters' => $totalVoters,
                 'total_voted' => $totalVoted,
+                'total_pemilih' => $totalVoters,
+                'total_suara_masuk' => $totalVoted,
+                'total_belum_memilih' => max(0, $totalVoters - $totalVoted),
+                'partisipasi_persen' => $turnoutPct,
                 'turnout_pct' => $turnoutPct,
                 'total_suara_ketua' => $totalSuaraKetua,
                 'total_suara_pengawas' => $totalSuaraPengawas,
-                'leader_ketua' => $leaderKetua ? $leaderKetua->nama : null,
-                'leader_pengawas' => $leaderPengawas ? $leaderPengawas->nama : null,
-                'last_updated' => now()->format('d M Y H:i:s') . ' WIB',
+                'leader_ketua' => $leaderKetuaName,
+                'leader_pengawas' => $leaderPengawasName,
+                'is_ketua_seri' => $isKetuaSeri,
+                'is_pengawas_seri' => $isPengawasSeri,
+                'last_updated' => now()->timezone('Asia/Jakarta')->format('H:i:s') . ' WIB',
+                'last_updated_full' => now()->timezone('Asia/Jakarta')->format('d M Y, H:i:s') . ' WIB',
             ],
             'ketuaResults' => $ketuaResults,
             'pengawasResults' => $pengawasResults,

@@ -15,12 +15,6 @@
         </div>
 
         <div class="flex items-center space-x-3">
-            <!-- Language Switcher -->
-            <div class="inline-flex rounded-lg border border-slate-200 bg-white p-0.5 text-xs font-bold shadow-2xs">
-                <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 rounded-md transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">EN</a>
-                <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 rounded-md transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
-            </div>
-
             <span id="sse-indicator" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
                 <span class="w-2 h-2 mr-2 rounded-full bg-emerald-600 animate-ping"></span>
                 <span id="sse-status-text">SSE Live Connected</span>
@@ -114,13 +108,62 @@
             </div>
 
             <div class="flex items-center space-x-2">
+                @if(!empty($geminiKey))
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-indigo-100 text-indigo-800 border border-indigo-300">
+                        <span class="w-1.5 h-1.5 mr-1 rounded-full bg-indigo-600 animate-pulse"></span>
+                        Gemini AI Active
+                    </span>
+                @else
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                        Local Heuristic
+                    </span>
+                @endif
+
+                <button type="button" onclick="toggleGeminiDrawer()" class="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold border border-indigo-200 transition flex items-center space-x-1 cursor-pointer">
+                    <span>🔑 API Key</span>
+                </button>
+
                 <span id="ai-quorum-badge" class="px-3 py-1 rounded-full text-xs font-bold {{ str_contains($aiConclusion['quorum_status'], 'Terpenuhi') ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300' }}">
                     {{ $aiConclusion['quorum_status'] }}
                 </span>
-                <button type="button" onclick="refreshAiConclusion()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center space-x-1">
+                <button type="button" onclick="refreshAiConclusion()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center space-x-1 cursor-pointer">
                     <span>↻ Refresh AI</span>
                 </button>
             </div>
+        </div>
+
+        <!-- Gemini API Key Configuration Drawer -->
+        <div id="gemini-key-drawer" class="hidden mb-6 p-5 rounded-2xl bg-indigo-50/80 border-2 border-indigo-200 transition">
+            <form action="{{ route('admin.settings.gemini-key') }}" method="POST" class="space-y-3">
+                @csrf
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <label for="gemini-input" class="text-xs font-black uppercase tracking-wider text-indigo-950 flex items-center space-x-1.5">
+                        <span>Google AI Studio Gemini API Key</span>
+                    </label>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-xs text-indigo-600 hover:text-indigo-800 font-bold underline">
+                        Dapatkan API Key Gratis di Google AI Studio ↗
+                    </a>
+                </div>
+                <div class="flex gap-2">
+                    <input 
+                        type="password" 
+                        id="gemini-input" 
+                        name="gemini_api_key" 
+                        value="{{ $geminiKey }}" 
+                        placeholder="Paste AIzaSy... dari Google AI Studio di sini"
+                        class="flex-1 px-4 py-2.5 rounded-xl border border-indigo-300 bg-white text-xs font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                    <button type="button" onclick="toggleGeminiVisibility()" class="px-3.5 py-2.5 rounded-xl bg-white border border-indigo-300 text-slate-700 text-xs font-bold hover:bg-slate-50 cursor-pointer">
+                        <span id="gemini-eye-icon">👁</span>
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-xs cursor-pointer">
+                        Simpan API Key
+                    </button>
+                </div>
+                <p class="text-[11px] text-slate-500">
+                    Kunci API disimpan secara terenkripsi di database aplikasi. Saat terhubung, analisis pemilu dianalisis langsung oleh model LLM Google Gemini.
+                </p>
+            </form>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -198,7 +241,7 @@
                                 </span>
                                 <div class="min-w-0">
                                     <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate">{{ $k['nama'] }}</h4>
-                                    <span class="text-[11px] text-slate-500 font-medium">Calon No. {{ $k['nomor_urut'] }}</span>
+                                    <span class="text-[11px] text-blue-700 font-mono font-bold">NIK: {{ $k['nik'] }}</span> • <span class="text-[11px] text-slate-500 font-medium">No. {{ $k['nomor_urut'] }}</span>
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
@@ -237,7 +280,7 @@
                                 </span>
                                 <div class="min-w-0">
                                     <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate">{{ $p['nama'] }}</h4>
-                                    <span class="text-[11px] text-slate-500 font-medium">Calon No. {{ $p['nomor_urut'] }}</span>
+                                    <span class="text-[11px] text-emerald-700 font-mono font-bold">NIK: {{ $p['nik'] }}</span> • <span class="text-[11px] text-slate-500 font-medium">No. {{ $p['nomor_urut'] }}</span>
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
@@ -287,11 +330,11 @@
                 @forelse($recentLogs as $log)
                     <div class="py-3 flex items-center justify-between text-xs">
                         <div class="min-w-0 pr-3">
-                            <span class="font-bold text-slate-800 block truncate">{{ $log->keterangan }}</span>
+                            <span class="font-bold text-slate-800 block truncate">{{ $log->description }}</span>
                             <span class="text-[11px] text-slate-400 font-mono">{{ $log->created_at->format('H:i:s d/m/Y') }} • IP: {{ $log->ip_address }}</span>
                         </div>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-bold shrink-0 {{ str_contains($log->aksi, 'FAIL') || str_contains($log->aksi, 'REJECT') ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-700' }}">
-                            {{ $log->aksi }}
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold shrink-0 {{ str_contains($log->action, 'FAIL') || str_contains($log->action, 'REJECT') ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-700' }}">
+                            {{ $log->action }}
                         </span>
                     </div>
                 @empty
@@ -378,6 +421,23 @@
         fetch("{{ route('admin.api.live-results') }}")
             .then(res => res.json())
             .then(data => updateAdminDashboard(data));
+    }
+
+    function toggleGeminiDrawer() {
+        const el = document.getElementById('gemini-key-drawer');
+        el.classList.toggle('hidden');
+    }
+
+    function toggleGeminiVisibility() {
+        const inp = document.getElementById('gemini-input');
+        const ico = document.getElementById('gemini-eye-icon');
+        if (inp.type === 'password') {
+            inp.type = 'text';
+            ico.innerText = '🙈';
+        } else {
+            inp.type = 'password';
+            ico.innerText = '👁';
+        }
     }
 
     function refreshAiConclusion() {

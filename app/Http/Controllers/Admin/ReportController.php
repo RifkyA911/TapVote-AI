@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
     /**
-     * Laporan 1: Siapa Pemenang Ketua Koperasi & Rincian Suara
+     * Laporan 1: Siapa Pemenang Ketua Koperasi & Rincian Suara (Dengan Deteksi Hasil Seri)
      */
     public function pemenangKetua()
     {
@@ -24,7 +24,12 @@ class ReportController extends Controller
             ->get();
 
         $totalSuara = HasilKetua::count();
-        $pemenang = $kandidatList->first();
+        $maxVotes = $kandidatList->max('perolehan_suara_count') ?? 0;
+        $topCandidates = $maxVotes > 0 ? $kandidatList->where('perolehan_suara_count', $maxVotes)->values() : collect();
+        $isSeri = $topCandidates->count() > 1;
+
+        // Pemenang tunggal hanya jika tidak seri dan memiliki suara > 0
+        $pemenang = (!$isSeri && $maxVotes > 0) ? $topCandidates->first() : null;
 
         // Rincian Suara per Departemen
         $deptBreakdown = DB::table('hasil_ketua')
@@ -37,11 +42,11 @@ class ReportController extends Controller
             ->get();
 
         $kandidatKetua = $kandidatList;
-        return view('admin.reports.ketua', compact('kandidatList', 'kandidatKetua', 'totalSuara', 'pemenang', 'deptBreakdown'));
+        return view('admin.reports.ketua', compact('kandidatList', 'kandidatKetua', 'totalSuara', 'pemenang', 'deptBreakdown', 'isSeri', 'topCandidates', 'maxVotes'));
     }
 
     /**
-     * Laporan 2: Siapa Pemenang Pengawas Koperasi & Rincian Suara
+     * Laporan 2: Siapa Pemenang Pengawas Koperasi & Rincian Suara (Dengan Deteksi Hasil Seri)
      */
     public function pemenangPengawas()
     {
@@ -51,7 +56,12 @@ class ReportController extends Controller
             ->get();
 
         $totalSuara = HasilPengawas::count();
-        $pemenang = $kandidatList->first();
+        $maxVotes = $kandidatList->max('perolehan_suara_count') ?? 0;
+        $topCandidates = $maxVotes > 0 ? $kandidatList->where('perolehan_suara_count', $maxVotes)->values() : collect();
+        $isSeri = $topCandidates->count() > 1;
+
+        // Pemenang tunggal hanya jika tidak seri dan memiliki suara > 0
+        $pemenang = (!$isSeri && $maxVotes > 0) ? $topCandidates->first() : null;
 
         // Rincian Suara per Departemen
         $deptBreakdown = DB::table('hasil_pengawas')
@@ -64,7 +74,7 @@ class ReportController extends Controller
             ->get();
 
         $kandidatPengawas = $kandidatList;
-        return view('admin.reports.pengawas', compact('kandidatList', 'kandidatPengawas', 'totalSuara', 'pemenang', 'deptBreakdown'));
+        return view('admin.reports.pengawas', compact('kandidatList', 'kandidatPengawas', 'totalSuara', 'pemenang', 'deptBreakdown', 'isSeri', 'topCandidates', 'maxVotes'));
     }
 
     /**
@@ -103,16 +113,26 @@ class ReportController extends Controller
             ->get();
 
         $totalSuara = HasilKetua::count();
+        $maxVotes = $kandidatList->max('perolehan_suara_count') ?? 0;
+        $topCount = $maxVotes > 0 ? $kandidatList->where('perolehan_suara_count', $maxVotes)->count() : 0;
+        $isSeri = $topCount > 1;
 
         $csv = "\xEF\xBB\xBF"; // UTF-8 BOM for Microsoft Excel
         $csv .= "REKAPITULASI HASIL PEMILIHAN KETUA KOPERASI\n";
         $csv .= "Waktu Unduh," . date('Y-m-d H:i:s') . "\n";
-        $csv .= "Total Suara Masuk," . $totalSuara . "\n\n";
+        $csv .= "Total Suara Masuk," . $totalSuara . "\n";
+        $csv .= "Status Pemilihan," . ($isSeri ? "HASIL SERI / DRAW (Perlu Putaran Kedua / Musyawarah)" : ($totalSuara > 0 ? "Telah Ada Pemenang Terpilih" : "Belum Ada Suara")) . "\n\n";
         $csv .= "Nomor Urut,Nama Calon Ketua,Perolehan Suara,Persentase Suara,Status\n";
 
-        foreach ($kandidatList as $idx => $k) {
+        foreach ($kandidatList as $k) {
             $persen = $totalSuara > 0 ? round(($k->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
-            $status = $idx === 0 && $k->perolehan_suara_count > 0 ? 'Pemenang Unggul' : 'Kandidat';
+            if ($isSeri && $k->perolehan_suara_count === $maxVotes && $maxVotes > 0) {
+                $status = 'HASIL SERI (Suara Terbanyak Seimbang)';
+            } elseif (!$isSeri && $k->perolehan_suara_count === $maxVotes && $maxVotes > 0) {
+                $status = 'Pemenang Unggul Terpilih';
+            } else {
+                $status = 'Kandidat';
+            }
             $csv .= "\"{$k->nomor_urut}\",\"{$k->nama}\",\"{$k->perolehan_suara_count}\",\"{$persen}%\",\"{$status}\"\n";
         }
 
@@ -133,16 +153,26 @@ class ReportController extends Controller
             ->get();
 
         $totalSuara = HasilPengawas::count();
+        $maxVotes = $kandidatList->max('perolehan_suara_count') ?? 0;
+        $topCount = $maxVotes > 0 ? $kandidatList->where('perolehan_suara_count', $maxVotes)->count() : 0;
+        $isSeri = $topCount > 1;
 
         $csv = "\xEF\xBB\xBF"; // UTF-8 BOM for Microsoft Excel
         $csv .= "REKAPITULASI HASIL PEMILIHAN PENGAWAS KOPERASI\n";
         $csv .= "Waktu Unduh," . date('Y-m-d H:i:s') . "\n";
-        $csv .= "Total Suara Masuk," . $totalSuara . "\n\n";
+        $csv .= "Total Suara Masuk," . $totalSuara . "\n";
+        $csv .= "Status Pemilihan," . ($isSeri ? "HASIL SERI / DRAW (Perlu Putaran Kedua / Musyawarah)" : ($totalSuara > 0 ? "Telah Ada Pemenang Terpilih" : "Belum Ada Suara")) . "\n\n";
         $csv .= "Nomor Urut,Nama Calon Pengawas,Perolehan Suara,Persentase Suara,Status\n";
 
-        foreach ($kandidatList as $idx => $k) {
+        foreach ($kandidatList as $k) {
             $persen = $totalSuara > 0 ? round(($k->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
-            $status = $idx === 0 && $k->perolehan_suara_count > 0 ? 'Pemenang Unggul' : 'Kandidat';
+            if ($isSeri && $k->perolehan_suara_count === $maxVotes && $maxVotes > 0) {
+                $status = 'HASIL SERI (Suara Terbanyak Seimbang)';
+            } elseif (!$isSeri && $k->perolehan_suara_count === $maxVotes && $maxVotes > 0) {
+                $status = 'Pemenang Unggul Terpilih';
+            } else {
+                $status = 'Kandidat';
+            }
             $csv .= "\"{$k->nomor_urut}\",\"{$k->nama}\",\"{$k->perolehan_suara_count}\",\"{$persen}%\",\"{$status}\"\n";
         }
 
@@ -181,16 +211,34 @@ class ReportController extends Controller
 
     /**
      * Laporan 4: Siapa Saja yang Berhak Mengikuti Undian (Doorprize)
-     * Ditambah interactive lucky draw spin engine!
+     * Awal render KOSONG (tanpa pemenang default)
+     * Mengundi interaktif minimal 10 detik dengan drum roll & congrats audio
      */
     public function doorprize()
     {
-        $eligibleVoters = Pemilih::where('pilih', 'T')
-            ->orderBy('nama', 'asc')
-            ->get(['nik', 'nama', 'dept', 'voted_at']);
+        $eligibleQuery = Pemilih::where('pilih', 'T')
+            ->orderBy('voted_at', 'desc');
 
-        $totalEligible = $eligibleVoters->count();
+        $totalEligible = $eligibleQuery->count();
 
-        return view('admin.reports.doorprize', compact('eligibleVoters', 'totalEligible'));
+        // Awal render KOSONG sesuai permintaan pengguna
+        $pemenang = null;
+
+        // Data semua pemilih yang sah untuk animasi roulette undian 10 detik di client
+        $eligibleList = Pemilih::where('pilih', 'T')
+            ->select('nik', 'nama', 'dept', 'voted_at')
+            ->get()
+            ->map(function ($p) {
+                return [
+                    'nik' => $p->nik,
+                    'nama' => $p->nama,
+                    'dept' => $p->dept,
+                    'waktu' => $p->voted_at ? $p->voted_at->format('H:i:s d/m/Y') : '-',
+                ];
+            });
+
+        $eligibleVoters = $eligibleQuery->paginate(20);
+
+        return view('admin.reports.doorprize', compact('eligibleVoters', 'totalEligible', 'pemenang', 'eligibleList'));
     }
 }

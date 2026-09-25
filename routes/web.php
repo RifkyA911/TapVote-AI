@@ -74,6 +74,8 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
     Route::get('/stream/results', [DashboardController::class, 'sseStream'])->name('admin.stream.results');
     Route::get('/api/live-results', [DashboardController::class, 'liveResults'])->name('admin.api.live-results');
     Route::get('/api/ai-conclusion', [DashboardController::class, 'getAiConclusion'])->name('admin.api.ai-conclusion');
+    Route::post('/voting/status', [DashboardController::class, 'updateVotingStatus'])->name('admin.voting.status');
+    Route::post('/settings/gemini-key', [DashboardController::class, 'saveGeminiKey'])->name('admin.settings.gemini-key');
 
     // CRUD Kandidat Ketua
     Route::resource('ketua', KandidatKetuaController::class, [

@@ -28,8 +28,42 @@
         </div>
     </div>
 
-    <!-- Winner Showcase Banner -->
-    @if($pemenang && $pemenang->perolehan_suara_count > 0)
+    <!-- TIE / SERI ALERT BANNER -->
+    @if($isSeri)
+        <div class="p-6 sm:p-8 rounded-3xl bg-amber-50 border-2 border-amber-300 shadow-sm relative overflow-hidden">
+            <div class="flex flex-col md:flex-row items-start gap-5">
+                <div class="w-14 h-14 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div class="flex-1">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-200 text-amber-900 border border-amber-300 mb-2">
+                        ⚖️ HASIL SERI / DRAW (Suara Terbanyak Seimbang)
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-black text-slate-900">Belum Ada Pemenang Tunggal Ketua Koperasi</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                        Terdapat <strong>{{ $topCandidates->count() }} kandidat</strong> yang memperoleh perolehan suara tertinggi sama persis, yaitu <strong>{{ $maxVotes }} suara</strong>. Berdasarkan kaidah hukum pemilihan dan AD/ART Koperasi, sistem tidak dapat menentukan pemenang sepihak. Diperlukan musyawarah mufakat atau putaran kedua (run-off).
+                    </p>
+
+                    <!-- Kandidat-Kandidat yang Seri -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
+                        @foreach($topCandidates as $c)
+                            <div class="p-4 rounded-2xl bg-white border border-amber-200 shadow-2xs flex items-center space-x-3.5">
+                                <div class="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 border border-amber-300 shrink-0">
+                                    <img src="{{ $c->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($c->nama).'&background=d97706&color=ffffff&size=200' }}" alt="{{ $c->nama }}" class="w-full h-full object-cover object-top">
+                                </div>
+                                <div class="min-w-0">
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-100 text-amber-800">Nomor {{ $c->nomor_urut }}</span>
+                                    <h4 class="text-sm font-bold text-slate-900 truncate mt-0.5">{{ $c->nama }}</h4>
+                                    <p class="text-xs font-mono font-bold text-amber-700">{{ $c->perolehan_suara_count }} Suara</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Winner Showcase Banner (Hanya jika ada pemenang tunggal sah) -->
+    @elseif($pemenang && $pemenang->perolehan_suara_count > 0)
         @php
             $persenPemenang = $totalSuara > 0 ? round(($pemenang->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
         @endphp
@@ -85,12 +119,14 @@
                         <th class="py-3 px-3">NIK</th>
                         <th class="py-3 px-3 text-right">Perolehan Suara</th>
                         <th class="py-3 px-3 text-right">Persentase</th>
+                        <th class="py-3 px-3 text-center">Status</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     @foreach($kandidatKetua as $k)
                         @php
                             $persen = $totalSuara > 0 ? round(($k->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
+                            $isTop = $maxVotes > 0 && $k->perolehan_suara_count === $maxVotes;
                         @endphp
                         <tr class="hover:bg-slate-50 transition">
                             <td class="py-3 px-3 font-bold text-slate-900">{{ $k->nomor_urut }}</td>
@@ -98,6 +134,19 @@
                             <td class="py-3 px-3 text-slate-500 font-mono">{{ $k->nik }}</td>
                             <td class="py-3 px-3 text-right font-bold text-slate-900">{{ $k->perolehan_suara_count }} Suara</td>
                             <td class="py-3 px-3 text-right font-extrabold text-blue-600">{{ $persen }}%</td>
+                            <td class="py-3 px-3 text-center">
+                                @if($isSeri && $isTop)
+                                    <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
+                                        SERI
+                                    </span>
+                                @elseif(!$isSeri && $isTop)
+                                    <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                        TERPILIH
+                                    </span>
+                                @else
+                                    <span class="text-slate-400 text-xs">-</span>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

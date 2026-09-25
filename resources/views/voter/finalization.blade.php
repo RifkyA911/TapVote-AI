@@ -49,14 +49,32 @@
 
 @push('scripts')
 <script>
-    // Animasi Confetti Ringan
+    // Animasi Gebyar Meriah Confetti
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof window.confetti === 'function') {
-            window.confetti({
-                particleCount: 80,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
+            const end = Date.now() + 5000;
+            const colors = ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#ef4444'];
+
+            (function frame() {
+                window.confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 60,
+                    origin: { x: 0, y: 0.7 },
+                    colors: colors
+                });
+                window.confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 60,
+                    origin: { x: 1, y: 0.7 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
         }
 
         // 5 Detik Countdown & Auto Logout

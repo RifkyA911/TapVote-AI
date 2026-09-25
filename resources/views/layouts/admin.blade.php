@@ -121,20 +121,57 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
 
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    <span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                    Sistem Aktif
-                </span>
-                <span class="text-xs text-slate-500 hidden sm:inline">DB: <strong class="text-slate-800 font-mono">tapvote_ai</strong></span>
+                @php
+                    $adminVotingStatus = \App\Models\AppSetting::get('voting_status', 'STARTED');
+                @endphp
+
+                <!-- Voting System Status Indicator & Controls -->
+                <div class="hidden sm:flex items-center space-x-2">
+                    @if($adminVotingStatus === 'STARTED')
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                            <span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                            Sistem Aktif (STARTED)
+                        </span>
+                    @elseif($adminVotingStatus === 'PAUSED')
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-900 border border-amber-300">
+                            <span class="w-2 h-2 mr-1.5 rounded-full bg-amber-600 animate-ping"></span>
+                            Sistem Di-Jeda (PAUSED)
+                        </span>
+                    @else
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 border border-rose-300">
+                            <span class="w-2 h-2 mr-1.5 rounded-full bg-rose-600"></span>
+                            Sistem Ditutup (STOPPED)
+                        </span>
+                    @endif
+                </div>
+
+                <!-- Control Buttons: START / PAUSE / STOP -->
+                <div class="inline-flex items-center rounded-xl bg-slate-100 p-0.5 border border-slate-200 shadow-2xs">
+                    <form action="{{ route('admin.voting.status') }}" method="POST" class="inline">
+                        @csrf
+                        <input type="hidden" name="status" value="STARTED">
+                        <button type="submit" title="Mulai / Lanjutkan Voting" class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-700 hover:bg-emerald-50' }}">
+                            ▶ START
+                        </button>
+                    </form>
+                    <form action="{{ route('admin.voting.status') }}" method="POST" class="inline" onsubmit="return confirm('Jeda pemungutan suara sementara? Pemilih tidak akan dapat melakukan tap kartu.')">
+                        @csrf
+                        <input type="hidden" name="status" value="PAUSED">
+                        <button type="submit" title="Jeda Voting Sementara" class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer {{ $adminVotingStatus === 'PAUSED' ? 'bg-amber-500 text-white shadow-xs' : 'text-slate-600 hover:text-amber-700 hover:bg-amber-50' }}">
+                            ⏸ PAUSE
+                        </button>
+                    </form>
+                    <form action="{{ route('admin.voting.status') }}" method="POST" class="inline" onsubmit="return confirm('PERINGATAN: Tutup dan akhiri pemungutan suara secara resmi?')">
+                        @csrf
+                        <input type="hidden" name="status" value="STOPPED">
+                        <button type="submit" title="Tutup Pemilihan Resmi" class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer {{ $adminVotingStatus === 'STOPPED' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 hover:text-rose-700 hover:bg-rose-50' }}">
+                            ⏹ STOP
+                        </button>
+                    </form>
+                </div>
             </div>
 
             <div class="flex items-center space-x-3 sm:space-x-4 text-xs text-slate-600">
-                <!-- Language Switcher Pill -->
-                <div class="inline-flex rounded-lg border border-slate-200 bg-white p-0.5 text-xs font-bold shadow-2xs">
-                    <a href="{{ route('lang.switch', 'en') }}" class="px-2 py-1 rounded-md transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">EN</a>
-                    <a href="{{ route('lang.switch', 'id') }}" class="px-2 py-1 rounded-md transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
-                </div>
-
                 <div class="hidden lg:block">
                     <span id="header-clock" class="font-bold text-slate-700"></span>
                 </div>

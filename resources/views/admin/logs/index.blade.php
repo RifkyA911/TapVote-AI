@@ -40,13 +40,13 @@
                     @forelse($logs as $log)
                         <tr class="hover:bg-slate-50 transition">
                             <td class="py-3 px-3 font-mono text-slate-500 text-xs">{{ $log->created_at->format('H:i:s d/m/Y') }}</td>
-                            <td class="py-3 px-3 font-bold text-slate-700">{{ $log->modul }}</td>
+                            <td class="py-3 px-3 font-bold text-slate-700">{{ $log->module }}</td>
                             <td class="py-3 px-3">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold {{ str_contains($log->aksi, 'FAIL') || str_contains($log->aksi, 'REJECT') ? 'bg-rose-100 text-rose-800 border border-rose-200' : (str_contains($log->aksi, 'SUCCESS') ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-700 border border-slate-200') }}">
-                                    {{ $log->aksi }}
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold {{ str_contains($log->action, 'FAIL') || str_contains($log->action, 'REJECT') ? 'bg-rose-100 text-rose-800 border border-rose-200' : (str_contains($log->action, 'SUCCESS') ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-700 border border-slate-200') }}">
+                                    {{ $log->action }}
                                 </span>
                             </td>
-                            <td class="py-3 px-3 text-slate-800 font-medium">{{ $log->keterangan }}</td>
+                            <td class="py-3 px-3 text-slate-800 font-medium">{{ $log->description }}</td>
                             <td class="py-3 px-3 text-right font-mono text-slate-500 text-xs">{{ $log->ip_address }}</td>
                         </tr>
                     @empty

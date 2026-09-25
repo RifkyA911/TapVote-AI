@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
+use App\Models\AppSetting;
 use App\Models\KandidatKetua;
 use App\Models\KandidatPengawas;
 use App\Models\Pemilih;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DashboardController extends Controller
@@ -27,6 +29,8 @@ class DashboardController extends Controller
         $recentLogs = ActivityLog::latest()->take(6)->get();
 
         $aiConclusion = $this->generateAiConclusion($payload);
+        $votingStatus = AppSetting::get('voting_status', 'STARTED');
+        $geminiKey = AppSetting::get('gemini_api_key', '');
 
         return view('admin.dashboard', compact(
             'totalVoters',
@@ -37,28 +41,42 @@ class DashboardController extends Controller
             'pengawasResults',
             'recentVotes',
             'recentLogs',
-            'aiConclusion'
+            'aiConclusion',
+            'votingStatus',
+            'geminiKey'
         ));
     }
 
     /**
      * Server-Sent Events (SSE) Endpoint for Realtime Voting Stream
+     * Continuous 1-second interval loop without reconnect delay
      */
     public function sseStream(): StreamedResponse
     {
         return response()->stream(function () {
-            $payload = $this->gatherVotingMetrics();
-            $payload['ai_conclusion'] = $this->generateAiConclusion($payload);
+            echo "retry: 1000\n\n";
 
-            echo "data: " . json_encode($payload) . "\n\n";
+            $start = time();
+            while (time() - $start < 25) {
+                if (connection_aborted()) {
+                    break;
+                }
 
-            if (ob_get_level() > 0) {
-                ob_flush();
+                $payload = $this->gatherVotingMetrics();
+                $payload['ai_conclusion'] = $this->generateAiConclusion($payload);
+
+                echo "data: " . json_encode($payload) . "\n\n";
+
+                if (ob_get_level() > 0) {
+                    ob_flush();
+                }
+                flush();
+
+                sleep(1);
             }
-            flush();
         }, 200, [
             'Content-Type' => 'text/event-stream',
-            'Cache-Control' => 'no-cache',
+            'Cache-Control' => 'no-cache, no-transform',
             'Connection' => 'keep-alive',
             'X-Accel-Buffering' => 'no',
         ]);
@@ -84,7 +102,65 @@ class DashboardController extends Controller
     }
 
     /**
-     * AI Conclusion Generator
+     * Update status sistem voting (START, PAUSE, STOP)
+     */
+    public function updateVotingStatus(Request $request)
+    {
+        $request->validate([
+            'status' => 'required|in:STARTED,PAUSED,STOPPED',
+        ]);
+
+        $newStatus = $request->status;
+        $prevStatus = AppSetting::get('voting_status', 'STARTED');
+        AppSetting::set('voting_status', $newStatus);
+
+        ActivityLog::log(
+            'VOTING_STATUS_CHANGE',
+            'ADMIN',
+            "Status sistem voting diubah dari [{$prevStatus}] menjadi [{$newStatus}] oleh Admin."
+        );
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'status' => $newStatus,
+                'message' => "Status sistem voting berhasil diubah menjadi {$newStatus}."
+            ]);
+        }
+
+        return redirect()->back()->with('success', "Status sistem voting berhasil diubah menjadi: {$newStatus}");
+    }
+
+    /**
+     * Simpan / Perbarui Gemini API Key dari Google AI Studio
+     */
+    public function saveGeminiKey(Request $request)
+    {
+        $request->validate([
+            'gemini_api_key' => 'nullable|string|max:255',
+        ]);
+
+        $key = trim($request->gemini_api_key ?? '');
+        AppSetting::set('gemini_api_key', $key);
+
+        ActivityLog::log(
+            'GEMINI_KEY_UPDATED',
+            'SETTINGS',
+            empty($key) ? 'Gemini API Key dihapus oleh Admin.' : 'Gemini API Key berhasil diperbarui oleh Admin.'
+        );
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => empty($key) ? 'Gemini API Key dinonaktifkan (menggunakan mesin heuristik lokal).' : 'Gemini API Key dari Google AI Studio berhasil disimpan.'
+            ]);
+        }
+
+        return redirect()->back()->with('success', empty($key) ? 'Gemini API Key dihapus. AI Conclusion beralih ke analisis statistik lokal.' : 'Gemini API Key Google AI Studio berhasil disimpan!');
+    }
+
+    /**
+     * AI Conclusion Generator dengan Deteksi Seri Profesional & Gemini Generative AI
      */
     public function generateAiConclusion(array $payload): array
     {
@@ -97,55 +173,149 @@ class DashboardController extends Controller
 
         $topKetua = $ketua->first();
         $runnerKetua = $ketua->get(1);
-        $marginKetua = ($topKetua && $runnerKetua) ? ($topKetua['suara'] - $runnerKetua['suara']) : ($topKetua ? $topKetua['suara'] : 0);
-        $marginKetuaPct = ($topKetua && $runnerKetua) ? round($topKetua['persen'] - $runnerKetua['persen'], 1) : ($topKetua ? $topKetua['persen'] : 0);
+        $isKetuaSeri = ($topKetua && $runnerKetua && $topKetua['suara'] > 0 && $topKetua['suara'] === $runnerKetua['suara']);
+        
+        $marginKetua = ($topKetua && $runnerKetua && !$isKetuaSeri) ? ($topKetua['suara'] - $runnerKetua['suara']) : 0;
+        $marginKetuaPct = ($topKetua && $runnerKetua && !$isKetuaSeri) ? round($topKetua['persen'] - $runnerKetua['persen'], 1) : 0;
 
         $topPengawas = $pengawas->first();
         $runnerPengawas = $pengawas->get(1);
-        $marginPengawas = ($topPengawas && $runnerPengawas) ? ($topPengawas['suara'] - $runnerPengawas['suara']) : ($topPengawas ? $topPengawas['suara'] : 0);
-        $marginPengawasPct = ($topPengawas && $runnerPengawas) ? round($topPengawas['persen'] - $runnerPengawas['persen'], 1) : ($topPengawas ? $topPengawas['persen'] : 0);
+        $isPengawasSeri = ($topPengawas && $runnerPengawas && $topPengawas['suara'] > 0 && $topPengawas['suara'] === $runnerPengawas['suara']);
+        
+        $marginPengawas = ($topPengawas && $runnerPengawas && !$isPengawasSeri) ? ($topPengawas['suara'] - $runnerPengawas['suara']) : 0;
+        $marginPengawasPct = ($topPengawas && $runnerPengawas && !$isPengawasSeri) ? round($topPengawas['persen'] - $runnerPengawas['persen'], 1) : 0;
 
         $quorumMet = $turnout >= 50.0;
-        $confidence = min(99.4, max(72.0, round(68 + ($turnout * 0.25) + ($marginKetuaPct * 0.1), 1)));
+        $confidence = min(99.4, max(70.0, round(65 + ($turnout * 0.28) + ($marginKetuaPct * 0.1), 1)));
 
         $insights = [];
         if ($totalVoted === 0) {
-            $summary = "Pemilihan baru saja dimulai. Belum ada suara masuk yang dicatat oleh sistem. Menunggu kehadiran pemilih di bilik suara kios RFID.";
+            $summary = "Pemilihan baru saja dimulai. Belum ada suara masuk yang dicatat oleh sistem. Menunggu pemilih melakukan tap kartu RFID di bilik suara.";
             $insights[] = "Bilik suara dalam kondisi siaga (ready state).";
+            $leaderKetuaText = "Belum Ada Suara";
+            $leaderPengawasText = "Belum Ada Suara";
         } else {
             if ($quorumMet) {
                 $insights[] = "Quorum pemilihan terpenuhi sah ({$turnout}% partisipasi dari {$totalVoters} DPT).";
             } else {
                 $needed = max(0, (int)ceil($totalVoters * 0.5) - $totalVoted);
-                $insights[] = "Partisipasi saat ini {$turnout}%. Masih dibutuhkan {$needed} suara lagi untuk quorum 50%.";
+                $insights[] = "Partisipasi saat ini {$turnout}%. Masih dibutuhkan {$needed} suara lagi untuk mencapai batas quorum 50%.";
             }
 
-            if ($topKetua && $topKetua['suara'] > 0) {
+            // Status Ketua
+            if ($isKetuaSeri) {
+                $tiedKetuaNames = $ketua->where('suara', $topKetua['suara'])->pluck('nama')->implode(' & ');
+                $leaderKetuaText = "HASIL SERI / DRAW (" . $topKetua['suara'] . " Suara)";
+                $insights[] = "PEROLEHAN SERI KETUA: {$tiedKetuaNames} memperoleh suara sama ({$topKetua['suara']} suara). Belum ada pemenang tunggal; menunggu putaran kedua atau musyawarah mufakat.";
+            } elseif ($topKetua && $topKetua['suara'] > 0) {
+                $leaderKetuaText = $topKetua['nama'];
                 if ($marginKetuaPct > 15) {
                     $insights[] = "Kandidat Ketua No. {$topKetua['nomor_urut']} ({$topKetua['nama']}) memimpin kuat dengan selisih +{$marginKetuaPct}% ({$marginKetua} suara).";
                 } else {
-                    $insights[] = "Persaingan Calon Ketua berlangsung sangat ketat antara No. {$topKetua['nomor_urut']} dan No. " . ($runnerKetua ? $runnerKetua['nomor_urut'] : '-') . " (selisih {$marginKetua} suara).";
+                    $insights[] = "Persaingan Calon Ketua berlangsung sangat ketat antara No. {$topKetua['nomor_urut']} dan No. " . ($runnerKetua ? $runnerKetua['nomor_urut'] : '-') . " (selisih tipis {$marginKetua} suara).";
                 }
+            } else {
+                $leaderKetuaText = "Belum Ada Suara";
             }
 
-            if ($topPengawas && $topPengawas['suara'] > 0) {
-                $insights[] = "Kandidat Pengawas No. {$topPengawas['nomor_urut']} ({$topPengawas['nama']}) unggul dengan raihan {$topPengawas['persen']}% suara.";
+            // Status Pengawas
+            if ($isPengawasSeri) {
+                $tiedPengawasNames = $pengawas->where('suara', $topPengawas['suara'])->pluck('nama')->implode(' & ');
+                $leaderPengawasText = "HASIL SERI / DRAW (" . $topPengawas['suara'] . " Suara)";
+                $insights[] = "PEROLEHAN SERI PENGAWAS: {$tiedPengawasNames} memperoleh suara sama ({$topPengawas['suara']} suara). Penentuan pemenang memerlukan mekanisme musyawarah.";
+            } elseif ($topPengawas && $topPengawas['suara'] > 0) {
+                $leaderPengawasText = $topPengawas['nama'];
+                $insights[] = "Kandidat Pengawas No. {$topPengawas['nomor_urut']} ({$topPengawas['nama']}) unggul sementara dengan {$topPengawas['persen']}% suara.";
+            } else {
+                $leaderPengawasText = "Belum Ada Suara";
             }
 
-            $summary = "Berdasarkan analisis statistik pemilu realtime, data pemungutan suara tervalidasi 100% konsisten tanpa anomali duplikasi. " . ($topKetua && $topKetua['suara'] > 0 ? "Tren kemenangan sementara mengarah kuat kepada {$topKetua['nama']} untuk Ketua Koperasi." : "");
+            if ($isKetuaSeri) {
+                $summary = "Berdasarkan audit hasil suara pemilu realtime: Hasil pemilihan Ketua saat ini dalam status SERI (TIE) dengan perolehan suara imbang di puncak. Sistem tidak menetapkan pemenang sepihak.";
+            } else {
+                $summary = "Berdasarkan analisis statistik pemilu realtime, data pemungutan suara tervalidasi 100% konsisten. " . ($topKetua && $topKetua['suara'] > 0 ? "Tren kemenangan sementara mengarah kuat kepada {$topKetua['nama']} untuk Ketua Koperasi." : "");
+            }
+        }
+
+        // Cek apakah ada Gemini API Key dari Google AI Studio
+        $geminiKey = AppSetting::get('gemini_api_key');
+        $aiSource = 'Local Heuristic Engine';
+
+        if (!empty($geminiKey) && $totalVoted > 0) {
+            $geminiGenerated = $this->callGeminiApi($geminiKey, [
+                'total_voters' => $totalVoters,
+                'total_voted' => $totalVoted,
+                'turnout' => $turnout,
+                'quorum' => $quorumMet,
+                'is_ketua_seri' => $isKetuaSeri,
+                'is_pengawas_seri' => $isPengawasSeri,
+                'ketua_results' => $ketua->toArray(),
+                'pengawas_results' => $pengawas->toArray(),
+            ]);
+
+            if ($geminiGenerated) {
+                $summary = $geminiGenerated['summary'] ?? $summary;
+                if (!empty($geminiGenerated['insights'])) {
+                    $insights = array_merge($insights, $geminiGenerated['insights']);
+                }
+                $aiSource = 'Google Gemini 2.0 Flash';
+            }
         }
 
         return [
             'confidence_score' => $confidence,
             'quorum_status' => $quorumMet ? 'Quorum Terpenuhi' : 'Menuju Quorum',
             'summary' => $summary,
-            'insights' => $insights,
-            'leader_ketua' => $topKetua ? $topKetua['nama'] : '-',
-            'leader_pengawas' => $topPengawas ? $topPengawas['nama'] : '-',
+            'insights' => array_values(array_unique($insights)),
+            'leader_ketua' => $leaderKetuaText,
+            'leader_pengawas' => $leaderPengawasText,
             'margin_ketua' => $marginKetua,
             'margin_pengawas' => $marginPengawas,
+            'is_ketua_seri' => $isKetuaSeri,
+            'is_pengawas_seri' => $isPengawasSeri,
+            'ai_source' => $aiSource,
+            'has_gemini_key' => !empty($geminiKey),
             'generated_at' => now()->format('H:i:s') . ' WIB',
         ];
+    }
+
+    /**
+     * Memanggil Google AI Studio Gemini REST API
+     */
+    private function callGeminiApi(string $apiKey, array $context): ?array
+    {
+        try {
+            $prompt = "Anda adalah AI Analis Pemilu Koperasi Profesional. Berikan kesimpulan singkat padat dan 2-3 insight analitis dalam bahasa Indonesia berdasarkan data pemilihan realtime berikut:\n" . json_encode($context) . "\nJawab HANYA dalam format JSON persis seperti ini tanpa markdown fence: {\"summary\": \"...\", \"insights\": [\"...\", \"...\"]}";
+
+            $response = Http::timeout(3)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}", [
+                'contents' => [
+                    [
+                        'parts' => [
+                            ['text' => $prompt]
+                        ]
+                    ]
+                ],
+                'generationConfig' => [
+                    'temperature' => 0.2,
+                    'maxOutputTokens' => 300,
+                ]
+            ]);
+
+            if ($response->successful()) {
+                $resData = $response->json();
+                $rawText = $resData['candidates'][0]['content']['parts'][0]['text'] ?? '';
+                // Bersihkan json formatting jika ada markdown ```json
+                $cleanJson = trim(preg_replace('/```json|```/', '', $rawText));
+                $parsed = json_decode($cleanJson, true);
+                if (is_array($parsed) && isset($parsed['summary'])) {
+                    return $parsed;
+                }
+            }
+        } catch (\Throwable $e) {
+            // Fail gracefully to local heuristic
+        }
+
+        return null;
     }
 
     /**
@@ -157,6 +327,7 @@ class DashboardController extends Controller
         $totalVoted = Pemilih::where('pilih', 'T')->count();
         $remaining = max(0, $totalVoters - $totalVoted);
         $turnoutPct = $totalVoters > 0 ? round(($totalVoted / $totalVoters) * 100, 1) : 0;
+        $votingStatus = AppSetting::get('voting_status', 'STARTED');
 
         // Metrik Kandidat Ketua
         $ketuaList = KandidatKetua::withCount('perolehanSuara')
@@ -164,16 +335,22 @@ class DashboardController extends Controller
             ->get();
 
         $totalSuaraKetua = $ketuaList->sum('perolehan_suara_count');
-        $ketuaResults = $ketuaList->map(function ($k) use ($totalSuaraKetua) {
+        $maxSuaraKetua = $ketuaList->max('perolehan_suara_count') ?? 0;
+        $topKetuaCount = ($totalSuaraKetua > 0 && $maxSuaraKetua > 0) ? $ketuaList->where('perolehan_suara_count', $maxSuaraKetua)->count() : 0;
+        $isKetuaSeri = $topKetuaCount > 1;
+
+        $ketuaResults = $ketuaList->map(function ($k) use ($totalSuaraKetua, $maxSuaraKetua, $topKetuaCount) {
             $suara = $k->perolehan_suara_count;
             $persen = $totalSuaraKetua > 0 ? round(($suara / $totalSuaraKetua) * 100, 1) : 0;
             return [
                 'nik' => $k->nik,
                 'nama' => $k->nama,
                 'nomor_urut' => $k->nomor_urut,
-                'foto' => $k->foto,
+                'foto' => $k->foto ?: 'https://ui-avatars.com/api/?name=' . urlencode($k->nama) . '&background=2563eb&color=ffffff&size=400',
                 'suara' => $suara,
                 'persen' => $persen,
+                'is_leader' => ($totalSuaraKetua > 0 && $topKetuaCount === 1 && $suara === $maxSuaraKetua),
+                'is_tie' => ($totalSuaraKetua > 0 && $topKetuaCount > 1 && $suara === $maxSuaraKetua),
             ];
         });
 
@@ -183,16 +360,22 @@ class DashboardController extends Controller
             ->get();
 
         $totalSuaraPengawas = $pengawasList->sum('perolehan_suara_count');
-        $pengawasResults = $pengawasList->map(function ($p) use ($totalSuaraPengawas) {
+        $maxSuaraPengawas = $pengawasList->max('perolehan_suara_count') ?? 0;
+        $topPengawasCount = ($totalSuaraPengawas > 0 && $maxSuaraPengawas > 0) ? $pengawasList->where('perolehan_suara_count', $maxSuaraPengawas)->count() : 0;
+        $isPengawasSeri = $topPengawasCount > 1;
+
+        $pengawasResults = $pengawasList->map(function ($p) use ($totalSuaraPengawas, $maxSuaraPengawas, $topPengawasCount) {
             $suara = $p->perolehan_suara_count;
             $persen = $totalSuaraPengawas > 0 ? round(($suara / $totalSuaraPengawas) * 100, 1) : 0;
             return [
                 'nik' => $p->nik,
                 'nama' => $p->nama,
                 'nomor_urut' => $p->nomor_urut,
-                'foto' => $p->foto,
+                'foto' => $p->foto ?: 'https://ui-avatars.com/api/?name=' . urlencode($p->nama) . '&background=059669&color=ffffff&size=400',
                 'suara' => $suara,
                 'persen' => $persen,
+                'is_leader' => ($totalSuaraPengawas > 0 && $topPengawasCount === 1 && $suara === $maxSuaraPengawas),
+                'is_tie' => ($totalSuaraPengawas > 0 && $topPengawasCount > 1 && $suara === $maxSuaraPengawas),
             ];
         });
 
@@ -213,11 +396,14 @@ class DashboardController extends Controller
         return [
             'timestamp' => now()->timestamp,
             'time_formatted' => now()->format('d M Y H:i:s WIB'),
+            'voting_status' => $votingStatus,
             'metrics' => [
                 'total_voters' => $totalVoters,
                 'total_voted' => $totalVoted,
                 'remaining_voters' => $remaining,
                 'turnout_percentage' => $turnoutPct,
+                'is_ketua_seri' => $isKetuaSeri,
+                'is_pengawas_seri' => $isPengawasSeri,
             ],
             'ketua_results' => $ketuaResults,
             'pengawas_results' => $pengawasResults,

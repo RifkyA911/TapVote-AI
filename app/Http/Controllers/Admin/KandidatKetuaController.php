@@ -34,14 +34,16 @@ class KandidatKetuaController extends Controller
             'visi' => 'required|string',
             'misi' => 'required|string',
             'deskripsi' => 'nullable|string',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:10240',
+            'foto_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:10240',
             'foto_url' => 'nullable|url',
         ]);
 
+        $fotoFile = $request->file('foto') ?? $request->file('foto_file');
         $fotoPath = null;
-        if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('candidates/ketua', 'public');
-            $fotoPath = '/storage/' . $fotoPath;
+        if ($fotoFile && $fotoFile->isValid()) {
+            $path = $fotoFile->store('kandidat_ketua', 'public');
+            $fotoPath = '/storage/' . $path;
         } elseif (!empty($request->foto_url)) {
             $fotoPath = $request->foto_url;
         }
@@ -77,15 +79,27 @@ class KandidatKetuaController extends Controller
             'visi' => 'required|string',
             'misi' => 'required|string',
             'deskripsi' => 'nullable|string',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:10240',
+            'foto_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:10240',
             'foto_url' => 'nullable|url',
         ]);
 
+        $fotoFile = $request->file('foto') ?? $request->file('foto_file');
         $fotoPath = $kandidat->foto;
-        if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store('candidates/ketua', 'public');
+
+        if ($fotoFile && $fotoFile->isValid()) {
+            // Hapus file lama dari storage jika sebelumnya tersimpan lokal
+            if ($kandidat->foto && str_starts_with($kandidat->foto, '/storage/')) {
+                $oldStoragePath = str_replace('/storage/', '', $kandidat->foto);
+                Storage::disk('public')->delete($oldStoragePath);
+            }
+            $path = $fotoFile->store('kandidat_ketua', 'public');
             $fotoPath = '/storage/' . $path;
-        } elseif (!empty($request->foto_url)) {
+        } elseif ($request->filled('foto_url')) {
+            if ($kandidat->foto && str_starts_with($kandidat->foto, '/storage/')) {
+                $oldStoragePath = str_replace('/storage/', '', $kandidat->foto);
+                Storage::disk('public')->delete($oldStoragePath);
+            }
             $fotoPath = $request->foto_url;
         }
 
@@ -109,6 +123,11 @@ class KandidatKetuaController extends Controller
 
         if ($kandidat->perolehanSuara()->exists()) {
             return back()->with('error', "Kandidat {$kandidat->nama} tidak dapat dihapus karena sudah memiliki perolehan suara. Harap reset suara terlebih dahulu jika ingin menghapus.");
+        }
+
+        if ($kandidat->foto && str_starts_with($kandidat->foto, '/storage/')) {
+            $oldStoragePath = str_replace('/storage/', '', $kandidat->foto);
+            Storage::disk('public')->delete($oldStoragePath);
         }
 
         $nama = $kandidat->nama;

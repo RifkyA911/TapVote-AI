@@ -10,58 +10,66 @@
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Kelola data resmi, visi, misi, dan nomor urut calon Ketua Koperasi.</p>
         </div>
 
-        <a href="{{ route('admin.ketua.create') }}" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-2 self-start sm:self-auto">
+        <a href="{{ route('admin.ketua.create') }}" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-2 self-start sm:self-auto cursor-pointer">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             <span>Tambah Calon Ketua</span>
         </a>
     </div>
 
-    <!-- Candidate Cards Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Candidate Cards Grid (Serasi dengan Format Rasio 3.5:5 & Badge Putih Kios Suara) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         @forelse($kandidat as $k)
-            <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between">
+            @php
+                $fotoKandidat = $k->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($k->nama).'&background=2563eb&color=ffffff&size=400';
+            @endphp
+            <div class="rounded-3xl bg-white border-2 border-slate-200 hover:border-blue-400 overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-lg">
-                            {{ str_pad($k->nomor_urut, 2, '0', STR_PAD_LEFT) }}
-                        </span>
-                        <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                            {{ $k->perolehan_suara_count }} Suara
-                        </span>
-                    </div>
-
-                    <div class="w-full h-48 rounded-2xl overflow-hidden bg-slate-100 mb-4 border border-slate-200">
+                    <!-- Foto Card: Rasio 3.5:5 Full-Bleed Sesuai Permintaan -->
+                    <div class="relative w-full aspect-[3.5/5] max-h-[380px] bg-slate-900 overflow-hidden">
                         <img 
-                            src="{{ $k->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($k->nama).'&background=2563eb&color=ffffff&size=400' }}" 
+                            src="{{ $fotoKandidat }}" 
                             alt="{{ $k->nama }}" 
-                            class="w-full h-full object-cover object-top"
+                            class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500 ease-out"
                         >
+                        <!-- Gradient Overlay Tipis -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20 pointer-events-none"></div>
+
+                        <!-- Badge Nomor Urut Absolute Kiri Atas: Background Putih, Font Hitam Kontras -->
+                        <div class="absolute top-3.5 left-3.5 z-10">
+                            <div class="w-13 h-13 sm:w-15 sm:h-15 rounded-2xl bg-white text-slate-950 border-2 border-slate-300 shadow-xl flex items-center justify-center text-2xl sm:text-3xl font-black ring-4 ring-black/15">
+                                {{ $k->nomor_urut }}
+                            </div>
+                        </div>
+
+                        <!-- Perolehan Suara Pill Kanan Atas -->
+                        <div class="absolute top-3.5 right-3.5 z-10">
+                            <span class="px-3.5 py-1.5 rounded-xl text-xs font-black bg-white/95 backdrop-blur-xs text-slate-900 shadow-md border border-slate-200">
+                                {{ $k->perolehan_suara_count }} Suara
+                            </span>
+                        </div>
                     </div>
 
-                    <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-1">{{ $k->nama }}</h3>
-                    <p class="text-xs text-blue-700 font-mono mb-3">NIK: {{ $k->nik }}</p>
-
-                    <div class="space-y-2 text-xs text-slate-600">
-                        <div>
-                            <strong class="text-slate-800 block">Visi:</strong>
-                            <p class="line-clamp-2 text-xs">{{ $k->visi }}</p>
-                        </div>
-                        <div>
-                            <strong class="text-slate-800 block">Misi:</strong>
-                            <p class="line-clamp-2 text-xs">{{ $k->misi }}</p>
+                    <!-- Identitas Calon: Font Elegan, Besar & Kontras -->
+                    <div class="p-5 pb-3">
+                        <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-snug">{{ $k->nama }}</h3>
+                        <div class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-xs sm:text-sm font-mono font-bold text-blue-800 mt-1.5">
+                            <span>NIK:</span>
+                            <span>{{ $k->nik }}</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <a href="{{ route('admin.ketua.edit', $k->nik) }}" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
-                        Edit Data
+                <!-- Footer Action Buttons -->
+                <div class="p-5 pt-0 flex items-center gap-3">
+                    <a href="{{ route('admin.ketua.edit', $k->nik) }}" class="flex-1 py-3 px-4 rounded-2xl bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-800 text-xs sm:text-sm font-bold border border-slate-200 transition text-center flex items-center justify-center space-x-1.5 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        <span>Edit Data Calon</span>
                     </a>
 
                     <form action="{{ route('admin.ketua.destroy', $k->nik) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kandidat {{ $k->nama }}?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="p-2 rounded-xl text-rose-600 hover:bg-rose-50 transition" title="Hapus Calon">
+                        <button type="submit" class="p-3 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition cursor-pointer" title="Hapus Calon">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     </form>

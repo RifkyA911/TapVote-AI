@@ -13,17 +13,17 @@
     --color-brand-700: #1e40af;
 }
 
-/* 1. Calm, Relaxed Boomer-Friendly Radar Wave (Slow 4.5s) */
+/* 1. Calm, Visible Boomer-Friendly Radar Wave (Bold Stroke & Clear Glow) */
 @keyframes radarWave {
     0% {
         transform: scale(0.95);
-        opacity: 0.55;
+        opacity: 0.85;
     }
     50% {
-        opacity: 0.28;
+        opacity: 0.45;
     }
     100% {
-        transform: scale(2.4);
+        transform: scale(1.6);
         opacity: 0;
     }
 }
@@ -31,17 +31,19 @@
 .radar-ring {
     position: absolute;
     border-radius: 9999px;
-    border: 2px solid rgba(37, 99, 235, 0.35);
+    border: 2px solid rgba(148, 163, 184, 0.4);
+    box-shadow: 0 0 16px rgba(148, 163, 184, 0.15);
+    background: transparent;
     pointer-events: none;
-    animation: radarWave 4.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+    animation: radarWave 4.0s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
 }
 
 .radar-ring:nth-child(2) {
-    animation-delay: 1.5s;
+    animation-delay: 1.3s;
 }
 
 .radar-ring:nth-child(3) {
-    animation-delay: 3.0s;
+    animation-delay: 2.6s;
 }
 
 /* 2. Gentle Floating Card Animation (Slow 4.0s) */
@@ -56,6 +58,20 @@
 
 .animate-smooth-bounce {
     animation: smoothBounce 4.0s ease-in-out infinite;
+}
+
+/* 2.5. Gentle Button Bounce (Subtle 2.5s) */
+@keyframes buttonBounce {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+.animate-button-bounce {
+    animation: buttonBounce 2.5s ease-in-out infinite;
 }
 
 /* 3. Fluid Nova Green Success Ripple (Slow 3.2s) */
@@ -99,6 +115,34 @@
         opacity: 0;
         border-color: rgba(239, 68, 68, 0);
     }
+}
+
+/* 4.5. Warning Amber/Yellow Ripple (Untuk Pemilih yang Sudah Pernah Memilih) */
+@keyframes warningRipple {
+    0% {
+        transform: scale(0.9);
+        opacity: 0.85;
+        border-color: rgba(245, 158, 11, 0.85);
+    }
+    50% {
+        transform: scale(1.8);
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+        border-color: rgba(245, 158, 11, 0);
+    }
+}
+
+.warning-ring {
+    position: absolute;
+    border-radius: 9999px;
+    border: 3.5px solid rgba(245, 158, 11, 0.85);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
+    background: transparent;
+    pointer-events: none;
+    animation: warningRipple 3.0s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
 @keyframes distractedShake {
