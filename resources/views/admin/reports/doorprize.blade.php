@@ -47,141 +47,220 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- 1. MASTER REWARDS DATATABLE (REPLACED FROM CARDS GRID)   -->
+    <!-- 1. MASTER REWARDS DATATABLE                               -->
     <!-- ======================================================== -->
-    <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
-            <div>
-                <h3 class="text-base font-extrabold text-slate-900">1. Master Pilihan Hadiah Doorprize</h3>
-                <p class="text-xs text-slate-500">Daftar inventaris hadiah. Klik tombol <strong>🎯 Jadikan Target Undian</strong> untuk memilih reward yang diundi di mesin.</p>
+    <div class="space-y-4">
+        <!-- Quick Stats Cards for Rewards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+                <div>
+                    <span class="text-xs text-slate-500 font-semibold">Total Item Hadiah</span>
+                    <strong class="block text-2xl font-black text-slate-900 font-mono">{{ count($doorprizes) }}</strong>
+                </div>
+                <span class="p-2.5 rounded-xl bg-amber-50 text-amber-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4m-14 0v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
+                </span>
             </div>
-            <div class="inline-flex items-center space-x-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200">
-                    Total Hadiah: <strong>{{ count($doorprizes) }}</strong> Item
+
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+                <div>
+                    <span class="text-xs text-emerald-700 font-semibold">Total Unit Tersedia</span>
+                    <strong class="block text-2xl font-black text-emerald-600 font-mono">{{ $doorprizes->sum('quantity') }} Unit</strong>
+                </div>
+                <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                </span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+                <div>
+                    <span class="text-xs text-blue-700 font-semibold">Sisa Kuota Belum Diundi</span>
+                    <strong class="block text-2xl font-black text-blue-600 font-mono">{{ $doorprizes->sum('remaining_slots') }} Unit</strong>
+                </div>
+                <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </span>
             </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-            <div class="relative flex-1">
-                <input 
-                    type="text" 
-                    id="doorprize-search" 
-                    placeholder="Cari nama hadiah atau sponsor..." 
-                    oninput="filterDoorprizeTable()"
-                    class="w-full pl-9 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:border-amber-400 outline-none"
-                >
-                <svg class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <!-- Foldable Interactive Query Toolbar for Rewards -->
+        <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
+            <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100" onclick="toggleRewardsFold()">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">Filter & Master Hadiah Search</h4>
+                        <p class="text-[11px] text-slate-400">Cari reward berdasarkan nama hadiah, kategori, atau sponsor</p>
+                    </div>
+                </div>
+                <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
+                    <span id="rewards-fold-icon" class="text-xs font-mono font-bold block transform transition-transform duration-200">▲</span>
+                </button>
             </div>
-            <select id="doorprize-category-filter" onchange="filterDoorprizeTable()" class="h-9 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 focus:bg-white focus:border-amber-400 outline-none cursor-pointer">
-                <option value="">Semua Kategori</option>
-                <option value="Elektronik">Elektronik</option>
-                <option value="Peralatan Rumah">Peralatan Rumah</option>
-                <option value="Gadget">Gadget & Smartphone</option>
-                <option value="Voucher">Voucher</option>
-                <option value="Lainnya">Lainnya</option>
-            </select>
+
+            <div id="rewards-filter-body" class="space-y-3.5 transition-all duration-300">
+                <div class="flex items-center gap-3">
+                    <div class="relative flex-1">
+                        <input 
+                            type="text" 
+                            id="doorprize-search" 
+                            placeholder="Cari nama hadiah atau sponsor (Tekan '/' untuk fokus)..." 
+                            oninput="filterDoorprizeTable()"
+                            class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none transition font-medium"
+                        >
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <button type="button" onclick="clearDoorprizeSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="Hapus Pencarian">✕</button>
+                    </div>
+                    <div class="hidden md:flex items-center shrink-0">
+                        <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
+                            /
+                        </kbd>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <div class="col-span-1 sm:col-span-2">
+                        <select id="doorprize-category-filter" onchange="filterDoorprizeTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-amber-500 outline-none cursor-pointer">
+                            <option value="">Semua Kategori Hadiah</option>
+                            <option value="Grand Prize">Grand Prize</option>
+                            <option value="Utama">Utama</option>
+                            <option value="Elektronik">Elektronik</option>
+                            <option value="Peralatan Rumah">Peralatan Rumah</option>
+                            <option value="Gadget">Gadget & Smartphone</option>
+                            <option value="Voucher">Voucher</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="col-span-1">
+                        <button 
+                            type="button" 
+                            onclick="filterDoorprizeTable()" 
+                            class="w-full h-11 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 text-xs font-black shadow-xs transition flex items-center justify-center space-x-1.5 cursor-pointer"
+                        >
+                            <span>⚡</span>
+                            <span>Apply</span>
+                        </button>
+                    </div>
+
+                    <div class="col-span-1">
+                        <button 
+                            type="button" 
+                            onclick="resetDoorprizeFilters()" 
+                            class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
+                        >
+                            <span>↺</span>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-slate-200">
-            <table class="w-full text-left text-xs sm:text-sm datatable" id="doorprizes-datatable">
-                <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold uppercase text-[10px] tracking-wider">
-                        <th class="py-3 px-3">Foto / Ikon</th>
-                        <th class="py-3 px-3">Nama Hadiah & Deskripsi</th>
-                        <th class="py-3 px-3">Kategori</th>
-                        <th class="py-3 px-3">Total Qty</th>
-                        <th class="py-3 px-3">Sisa Kuota</th>
-                        <th class="py-3 px-3">Sponsor</th>
-                        <th class="py-3 px-3 text-right">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 font-medium">
-                    @forelse($doorprizes as $d)
-                        <tr id="prize-row-{{ $d->id }}" class="hover:bg-amber-50/40 transition {{ $loop->first ? 'bg-amber-50/70 font-semibold' : '' }}">
-                            <td class="py-2.5 px-3">
-                                @if($d->image)
-                                    <img src="{{ $d->image_url }}" alt="{{ $d->title }}" class="w-12 h-12 rounded-xl object-cover border border-slate-300 shadow-xs">
-                                @else
-                                    <div class="w-12 h-12 rounded-xl bg-amber-100 border border-amber-300 text-amber-800 flex items-center justify-center text-2xl shadow-xs">
-                                        @if(str_contains(strtolower($d->title), 'sepeda')) 🚲
-                                        @elseif(str_contains(strtolower($d->title), 'tv')) 📺
-                                        @elseif(str_contains(strtolower($d->title), 'kulkas') || str_contains(strtolower($d->title), 'mesin')) 🧺
-                                        @elseif(str_contains(strtolower($d->title), 'voucher')) 🎫
-                                        @elseif(str_contains(strtolower($d->title), 'hp') || str_contains(strtolower($d->title), 'smartphone')) 📱
-                                        @else 🎁
-                                        @endif
-                                    </div>
-                                @endif
-                            </td>
-                            <td class="py-2.5 px-3">
-                                <strong class="text-slate-900 block text-sm">{{ $d->title }}</strong>
-                                @if($d->description)
-                                    <span class="text-xs text-slate-500 block line-clamp-1">{{ $d->description }}</span>
-                                @endif
-                            </td>
-                            <td class="py-2.5 px-3">
-                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
-                                    {{ $d->category }}
-                                </span>
-                            </td>
-                            <td class="py-2.5 px-3 font-mono font-bold text-slate-700">
-                                {{ $d->quantity }} Unit
-                            </td>
-                            <td class="py-2.5 px-3">
-                                <span id="prize-remaining-{{ $d->id }}" class="px-2.5 py-1 rounded-full text-xs font-mono font-bold {{ $d->remaining_slots > 0 ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-rose-100 text-rose-900 border border-rose-300' }}">
-                                    {{ $d->remaining_slots }} / {{ $d->quantity }}
-                                </span>
-                            </td>
-                            <td class="py-2.5 px-3 text-slate-600">
-                                {{ $d->sponsor ?: '-' }}
-                            </td>
-                            <td class="py-2.5 px-3 text-right">
-                                <div class="inline-flex items-center space-x-1.5">
-                                    <button 
-                                        type="button" 
-                                        onclick="selectPrize({{ $d->id }}, '{{ addslashes($d->title) }}', '{{ $d->category }}', {{ $d->remaining_slots }})"
-                                        class="px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-xs border border-amber-300 transition cursor-pointer flex items-center space-x-1"
-                                        title="Pilih reward ini untuk diundi pada mesin di bawah"
-                                    >
-                                        <span>🎯</span>
-                                        <span>Pilih</span>
-                                    </button>
-
-                                    <button 
-                                        type="button" 
-                                        onclick="openEditRewardModal({{ $d->id }}, '{{ addslashes($d->title) }}', '{{ addslashes($d->category) }}', {{ $d->quantity }}, '{{ addslashes($d->sponsor ?? '') }}', '{{ addslashes($d->description ?? '') }}', '{{ $d->image ? $d->image_url : '' }}')"
-                                        class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 transition cursor-pointer flex items-center space-x-1"
-                                        title="Edit Hadiah & Ganti Foto"
-                                    >
-                                        <span>✏️</span>
-                                        <span>Edit</span>
-                                    </button>
-
-                                    <form action="{{ route('admin.reports.doorprize.destroy', $d->id) }}" method="POST" onsubmit="return confirm('Hapus reward {{ $d->title }}?');" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="p-1.5 rounded-xl text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition" title="Hapus Hadiah">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        <!-- Master Rewards Table Container -->
+        <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm" id="doorprizes-datatable">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
+                            <th class="py-3.5 px-4">Foto / Ikon</th>
+                            <th class="py-3.5 px-4">Nama Hadiah & Deskripsi</th>
+                            <th class="py-3.5 px-4">Kategori</th>
+                            <th class="py-3.5 px-4">Total Qty</th>
+                            <th class="py-3.5 px-4">Sisa Kuota</th>
+                            <th class="py-3.5 px-4">Sponsor</th>
+                            <th class="py-3.5 px-4 text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 font-medium">
+                        @forelse($doorprizes as $d)
+                            <tr id="prize-row-{{ $d->id }}" class="hover:bg-amber-50/40 transition border-b border-slate-100 {{ $loop->first ? 'bg-amber-50/70 font-semibold' : '' }}">
+                                <td class="py-3 px-4">
+                                    @if($d->image)
+                                        <img src="{{ $d->image_url }}" alt="{{ $d->title }}" class="w-12 h-12 rounded-xl object-cover border border-slate-300 shadow-xs">
+                                    @else
+                                        <div class="w-12 h-12 rounded-xl bg-amber-100 border border-amber-300 text-amber-800 flex items-center justify-center text-2xl shadow-xs">
+                                            @if(str_contains(strtolower($d->title), 'sepeda')) 🚲
+                                            @elseif(str_contains(strtolower($d->title), 'tv')) 📺
+                                            @elseif(str_contains(strtolower($d->title), 'kulkas') || str_contains(strtolower($d->title), 'mesin')) 🧺
+                                            @elseif(str_contains(strtolower($d->title), 'voucher')) 🎫
+                                            @elseif(str_contains(strtolower($d->title), 'hp') || str_contains(strtolower($d->title), 'smartphone')) 📱
+                                            @else 🎁
+                                            @endif
+                                        </div>
+                                    @endif
+                                </td>
+                                <td class="py-3 px-4">
+                                    <strong class="text-slate-900 block text-sm font-extrabold">{{ $d->title }}</strong>
+                                    @if($d->description)
+                                        <span class="text-xs text-slate-500 block line-clamp-1 mt-0.5">{{ $d->description }}</span>
+                                    @endif
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
+                                        {{ $d->category }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 font-mono font-bold text-slate-700">
+                                    {{ $d->quantity }} Unit
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span id="prize-remaining-{{ $d->id }}" class="px-2.5 py-1 rounded-full text-xs font-mono font-bold {{ $d->remaining_slots > 0 ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-rose-100 text-rose-900 border border-rose-300' }}">
+                                        {{ $d->remaining_slots }} / {{ $d->quantity }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4 text-slate-600">
+                                    {{ $d->sponsor ?: '-' }}
+                                </td>
+                                <td class="py-3 px-4 text-right">
+                                    <div class="inline-flex items-center space-x-1.5">
+                                        <button 
+                                            type="button" 
+                                            onclick="selectPrize({{ $d->id }}, '{{ addslashes($d->title) }}', '{{ $d->category }}', {{ $d->remaining_slots }})"
+                                            class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 transition cursor-pointer flex items-center space-x-1"
+                                            title="Pilih reward ini untuk diundi pada mesin di bawah"
+                                        >
+                                            <span>🎯</span>
+                                            <span>Pilih</span>
                                         </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="py-6 text-center text-slate-400">Belum ada master hadiah doorprize. Klik <strong>+ Tambah Hadiah Baru</strong> di atas.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+
+                                        <button 
+                                            type="button" 
+                                            onclick="openEditRewardModal({{ $d->id }}, '{{ addslashes($d->title) }}', '{{ addslashes($d->category) }}', {{ $d->quantity }}, '{{ addslashes($d->sponsor ?? '') }}', '{{ addslashes($d->description ?? '') }}', '{{ $d->image ? $d->image_url : '' }}')"
+                                            class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 transition cursor-pointer flex items-center space-x-1"
+                                            title="Edit Hadiah & Ganti Foto"
+                                        >
+                                            <span>✏️</span>
+                                            <span>Edit</span>
+                                        </button>
+
+                                        <form action="{{ route('admin.reports.doorprize.destroy', $d->id) }}" method="POST" onsubmit="return confirm('Hapus reward {{ $d->title }}?');" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="p-1.5 rounded-xl text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition" title="Hapus Hadiah">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="py-8 text-center text-slate-400">Belum ada master hadiah doorprize. Klik <strong>+ Tambah Hadiah Baru</strong> di atas.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <!-- ======================================================== -->
-    <!-- 2. ANIMATED DIGITAL LOTTERY STAGE (LIGHT THEME MATCHING)  -->
+    <!-- 2. ANIMATED DIGITAL LOTTERY STAGE (NO STARS / NO CLIPPING)-->
     <!-- ======================================================== -->
-    <div id="undi-section" class="scroll-mt-24 p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-amber-50/90 via-white to-yellow-50/70 text-slate-900 border-2 border-amber-300 shadow-xl relative overflow-hidden text-center">
+    <div id="undi-section" class="scroll-mt-24 p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-amber-50/90 via-white to-yellow-50/70 text-slate-900 border-2 border-amber-300 shadow-xl relative overflow-visible text-center">
         <!-- Ambient decorative accents -->
         <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-amber-400/20 blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-yellow-400/20 blur-3xl pointer-events-none"></div>
@@ -197,7 +276,6 @@
 
             <!-- STATE 1: INITIAL READY STATE -->
             <div id="doorprize-stage-initial" class="{{ $totalEligible > 0 ? '' : 'hidden' }} space-y-4">
-                <!-- Sleek Digital Roulette Indicator -->
                 <div class="w-28 h-28 sm:w-32 sm:h-32 mx-auto relative flex items-center justify-center">
                     <svg class="w-full h-full text-amber-500 drop-shadow-[0_4px_16px_rgba(245,158,11,0.3)]" viewBox="0 0 100 100" fill="none">
                         <circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 4" class="animate-spin" style="animation-duration: 25s;" />
@@ -231,10 +309,9 @@
                 </div>
             </div>
 
-            <!-- STATE 2: ANIMATED SVG SPINNING STATE (CLEAN DIGITAL ROULETTE - NO STARS / NO BOX CLIPPING) -->
+            <!-- STATE 2: ANIMATED DIGITAL GYROSCOPE SPINNER (NO STARS / NO CLIPPING) -->
             <div id="doorprize-stage-spinning" class="hidden space-y-6">
-                <!-- Clean High-Tech Digital Glowing Gyroscope Spinner -->
-                <div class="relative w-32 h-32 sm:w-36 sm:h-36 mx-auto flex items-center justify-center">
+                <div class="relative w-36 h-36 mx-auto flex items-center justify-center overflow-visible">
                     <svg class="w-full h-full text-amber-500 drop-shadow-[0_0_24px_rgba(245,158,11,0.6)]" viewBox="0 0 100 100" fill="none">
                         <circle cx="50" cy="50" r="45" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" stroke-dasharray="25 15" class="animate-spin" style="animation-duration: 0.5s;" />
                         <circle cx="50" cy="50" r="35" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="18 18" class="animate-spin" style="animation-duration: 0.75s; animation-direction: reverse;" />
@@ -250,7 +327,7 @@
                 </div>
 
                 <!-- Digital Reel Card in Light Theme -->
-                <div class="p-6 rounded-3xl bg-white/95 border-2 border-amber-400 shadow-xl min-h-[140px] flex flex-col justify-center items-center">
+                <div class="p-6 rounded-3xl bg-white border-2 border-amber-400 shadow-xl min-h-[140px] flex flex-col justify-center items-center">
                     <span class="text-[11px] font-extrabold text-amber-700 uppercase tracking-widest block mb-1">Mencari Nama Pemenang...</span>
                     <h4 id="slot-name" class="text-2xl sm:text-3xl font-black text-slate-950 transition-all">Memutar Data...</h4>
                     <p id="slot-dept" class="text-sm font-bold text-amber-900 mt-1 font-mono">Bagian: -</p>
@@ -306,133 +383,192 @@
     <!-- ======================================================== -->
     <!-- 3. LOG PEMENANG DOORPRIZE & STATUS KLAIM HADIAH          -->
     <!-- ======================================================== -->
-    <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
+    <div class="space-y-4">
+        <!-- Top Header for Winners Table with Actions -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h3 class="text-base font-extrabold text-slate-900">3. Log Pemenang & Status Klaim Doorprize</h3>
+                <div class="flex items-center space-x-2 mb-1">
+                    <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-amber-100 text-amber-800 border border-amber-200">
+                        Winners Ledger
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                        Total Pemenang: {{ count($winners) }}
+                    </span>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-black text-slate-900">3. Log Pemenang & Status Klaim Doorprize</h3>
                 <p class="text-xs text-slate-500">Pencatatan resmi pemenang undian, status serah terima (Diterima / Ditolak), dan alasan.</p>
             </div>
-            <div class="flex items-center space-x-2">
-                <a href="{{ route('admin.reports.doorprize.export.excel') }}" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-xs transition flex items-center space-x-1 cursor-pointer" title="Download Excel Doorprize Report">
-                    <span>📊</span>
-                    <span>Excel</span>
+
+            <div class="flex items-center gap-2">
+                <a href="{{ route('admin.reports.doorprize.export.excel') }}" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Export Excel</span>
                 </a>
-                <a href="{{ route('admin.reports.doorprize.export.pdf') }}" class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-xs transition flex items-center space-x-1 cursor-pointer" title="Download PDF Doorprize Report">
-                    <span>📄</span>
-                    <span>PDF</span>
+                <a href="{{ route('admin.reports.doorprize.export.pdf') }}" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
+                    <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span>Export PDF</span>
                 </a>
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 self-start sm:self-auto">
-                    Total Pemenang: <strong id="log-count">{{ count($winners) }}</strong>
-                </span>
             </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-            <div class="relative flex-1">
-                <input 
-                    type="text" 
-                    id="winner-search" 
-                    placeholder="Cari pemenang, NIK, atau hadiah..." 
-                    oninput="filterWinnerTable()"
-                    class="w-full pl-9 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:border-amber-400 outline-none"
-                >
-                <svg class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <!-- Foldable Interactive Query Toolbar for Winners -->
+        <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
+            <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100" onclick="toggleWinnersFold()">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">Filter & Pemenang Search</h4>
+                        <p class="text-[11px] text-slate-400">Cari pemenang berdasarkan nama, NIK, hadiah, atau status serah terima</p>
+                    </div>
+                </div>
+                <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
+                    <span id="winners-fold-icon" class="text-xs font-mono font-bold block transform transition-transform duration-200">▲</span>
+                </button>
             </div>
-            <select id="winner-status-filter" onchange="filterWinnerTable()" class="h-9 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 focus:bg-white focus:border-amber-400 outline-none cursor-pointer">
-                <option value="">Semua Status Klaim</option>
-                <option value="Sudah Diterima">Sudah Diterima (accepted)</option>
-                <option value="Ditolak">Ditolak (rejected)</option>
-                <option value="Belum Diambil">Belum Diambil (pending)</option>
-                <option value="Alasan Lain">Alasan Lain (other)</option>
-            </select>
+
+            <div id="winners-filter-body" class="space-y-3.5 transition-all duration-300">
+                <div class="flex items-center gap-3">
+                    <div class="relative flex-1">
+                        <input 
+                            type="text" 
+                            id="winner-search" 
+                            placeholder="Cari pemenang, NIK, atau hadiah..." 
+                            oninput="filterWinnerTable()"
+                            class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
+                        >
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <button type="button" onclick="clearWinnerSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="Hapus Pencarian">✕</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <div class="col-span-1 sm:col-span-2">
+                        <select id="winner-status-filter" onchange="filterWinnerTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                            <option value="">Semua Status Klaim</option>
+                            <option value="Sudah Diterima">Sudah Diterima (accepted)</option>
+                            <option value="Ditolak">Ditolak (rejected)</option>
+                            <option value="Belum Diambil">Belum Diambil (pending)</option>
+                            <option value="Lainnya">Lainnya (other)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-span-1">
+                        <button 
+                            type="button" 
+                            onclick="filterWinnerTable()" 
+                            class="w-full h-11 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-black shadow-xs transition flex items-center justify-center space-x-1.5 cursor-pointer"
+                        >
+                            <span>⚡</span>
+                            <span>Apply</span>
+                        </button>
+                    </div>
+
+                    <div class="col-span-1">
+                        <button 
+                            type="button" 
+                            onclick="resetWinnerFilters()" 
+                            class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
+                        >
+                            <span>↺</span>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-slate-200">
-            <table class="w-full text-left text-xs sm:text-sm datatable" id="winners-datatable">
-                <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold uppercase text-[10px] tracking-wider">
-                        <th class="py-3 px-3">Waktu Undian</th>
-                        <th class="py-3 px-3">Hadiah (Reward)</th>
-                        <th class="py-3 px-3">Nama Pemenang</th>
-                        <th class="py-3 px-3">NIK</th>
-                        <th class="py-3 px-3">Departemen</th>
-                        <th class="py-3 px-3">Status Klaim Hadiah</th>
-                        <th class="py-3 px-3">Catatan / Alasan</th>
-                        <th class="py-3 px-3 text-right">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="winners-table-body" class="divide-y divide-slate-100 font-medium">
-                    @forelse($winners as $w)
-                        <tr id="winner-row-{{ $w->id }}" class="hover:bg-slate-50/80 transition">
-                            <td class="py-3 px-3 font-mono text-slate-500 text-xs">{{ $w->won_at->format('H:i:s d/m/Y') }}</td>
-                            <td class="py-3 px-3 font-bold text-amber-900">
-                                <span class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 inline-flex items-center space-x-1.5">
-                                    <span>🎁</span>
-                                    <span>{{ $w->doorprize?->title ?? 'Hadiah Dihapus' }}</span>
-                                </span>
-                            </td>
-                            <td class="py-3 px-3 font-black text-slate-900">{{ $w->pemilih?->nama ?? '-' }}</td>
-                            <td class="py-3 px-3 font-mono text-blue-700 font-bold">{{ $w->nik }}</td>
-                            <td class="py-3 px-3 text-slate-600">{{ $w->pemilih?->dept ?? '-' }}</td>
-                            <td class="py-3 px-3">
-                                @if($w->status === 'accepted')
-                                    <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
-                                        <span>✓</span>
-                                        <span>Sudah Diterima</span>
+        <!-- Winners Table Container -->
+        <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm" id="winners-datatable">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
+                            <th class="py-3.5 px-4">Waktu Undian</th>
+                            <th class="py-3.5 px-4">Hadiah (Reward)</th>
+                            <th class="py-3.5 px-4">Nama Pemenang</th>
+                            <th class="py-3.5 px-4">NIK</th>
+                            <th class="py-3.5 px-4">Departemen</th>
+                            <th class="py-3.5 px-4">Status Klaim Hadiah</th>
+                            <th class="py-3.5 px-4">Catatan / Alasan</th>
+                            <th class="py-3.5 px-4 text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="winners-table-body" class="divide-y divide-slate-100 font-medium">
+                        @forelse($winners as $w)
+                            <tr id="winner-row-{{ $w->id }}" class="hover:bg-slate-50/75 transition border-b border-slate-100">
+                                <td class="py-3 px-4 font-mono text-slate-500 text-xs">{{ $w->won_at->format('H:i:s d/m/Y') }}</td>
+                                <td class="py-3 px-4 font-bold text-amber-900">
+                                    <span class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 inline-flex items-center space-x-1.5">
+                                        <span>🎁</span>
+                                        <span>{{ $w->doorprize?->title ?? 'Hadiah Dihapus' }}</span>
                                     </span>
-                                    @if($w->received_at)
-                                        <span class="block text-[10px] text-slate-400 font-mono mt-0.5">{{ $w->received_at->format('d/m/Y H:i') }}</span>
+                                </td>
+                                <td class="py-3 px-4 font-black text-slate-900">{{ $w->pemilih?->nama ?? '-' }}</td>
+                                <td class="py-3 px-4 font-mono text-blue-700 font-bold">{{ $w->nik }}</td>
+                                <td class="py-3 px-4 text-slate-600">{{ $w->pemilih?->dept ?? '-' }}</td>
+                                <td class="py-3 px-4">
+                                    @if($w->status === 'accepted')
+                                        <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                            <span>✓</span>
+                                            <span>Sudah Diterima</span>
+                                        </span>
+                                        @if($w->received_at)
+                                            <span class="block text-[10px] text-slate-400 font-mono mt-0.5">{{ $w->received_at->format('d/m/Y H:i') }}</span>
+                                        @endif
+                                    @elseif($w->status === 'rejected')
+                                        <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-rose-100 text-rose-800 border border-rose-300">
+                                            <span>✕</span>
+                                            <span>Ditolak</span>
+                                        </span>
+                                    @elseif($w->status === 'other')
+                                        <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-slate-100 text-slate-800 border border-slate-300">
+                                            <span>ℹ</span>
+                                            <span>Lainnya</span>
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300">
+                                            <span>⏳</span>
+                                            <span>Belum Diambil</span>
+                                        </span>
                                     @endif
-                                @elseif($w->status === 'rejected')
-                                    <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-rose-100 text-rose-800 border border-rose-300">
-                                        <span>✕</span>
-                                        <span>Ditolak</span>
-                                    </span>
-                                @elseif($w->status === 'other')
-                                    <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-slate-100 text-slate-800 border border-slate-300">
-                                        <span>ℹ</span>
-                                        <span>Lainnya</span>
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300">
-                                        <span>⏳</span>
-                                        <span>Belum Diambil</span>
-                                    </span>
-                                @endif
-                            </td>
-                            <td class="py-3 px-3 text-slate-600 text-xs max-w-xs truncate" title="{{ $w->status_note }}">
-                                {{ $w->status_note ?: '-' }}
-                            </td>
-                            <td class="py-3 px-3 text-right">
-                                <div class="inline-flex items-center space-x-1.5">
-                                    <button 
-                                        type="button" 
-                                        onclick="openUpdateStatusModal({{ $w->id }}, '{{ $w->status }}', '{{ addslashes($w->status_note ?? '') }}', '{{ addslashes($w->pemilih?->nama ?? $w->nik) }}', '{{ addslashes($w->doorprize?->title ?? '') }}')"
-                                        class="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold transition cursor-pointer"
-                                        title="Ubah Status Serah Terima Hadiah"
-                                    >
-                                        Ubah Status
-                                    </button>
-
-                                    <form action="{{ route('admin.reports.doorprize.winner.destroy', $w->id) }}" method="POST" onsubmit="return confirm('Batalkan kemenangan {{ $w->pemilih?->nama }}? Kuota hadiah akan dikembalikan.')" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="p-1.5 rounded-xl text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition" title="Batalkan Kemenangan">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </td>
+                                <td class="py-3 px-4 text-slate-600 text-xs max-w-xs truncate" title="{{ $w->status_note }}">
+                                    {{ $w->status_note ?: '-' }}
+                                </td>
+                                <td class="py-3 px-4 text-right">
+                                    <div class="inline-flex items-center space-x-1.5">
+                                        <button 
+                                            type="button" 
+                                            onclick="openUpdateStatusModal({{ $w->id }}, '{{ $w->status }}', '{{ addslashes($w->status_note ?? '') }}', '{{ addslashes($w->pemilih?->nama ?? $w->nik) }}', '{{ addslashes($w->doorprize?->title ?? '') }}')"
+                                            class="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold transition cursor-pointer"
+                                            title="Ubah Status Serah Terima Hadiah"
+                                        >
+                                            Ubah Status
                                         </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr id="empty-winners-row">
-                            <td colspan="8" class="py-6 text-center text-slate-400">Belum ada pemenang yang diundi.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+
+                                        <form action="{{ route('admin.reports.doorprize.winner.destroy', $w->id) }}" method="POST" onsubmit="return confirm('Batalkan kemenangan {{ $w->pemilih?->nama }}? Kuota hadiah akan dikembalikan.')" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="p-1.5 rounded-xl text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition" title="Batalkan Kemenangan">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr id="empty-winners-row">
+                                <td colspan="8" class="py-8 text-center text-slate-400 font-medium">Belum ada pemenang yang diundi.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
 
 </div>
 
@@ -908,6 +1044,64 @@
         document.getElementById('doorprize-stage-initial').classList.remove('hidden');
     }
 
+    function toggleRewardsFold() {
+        const body = document.getElementById('rewards-filter-body');
+        const icon = document.getElementById('rewards-fold-icon');
+        if (body.classList.contains('hidden')) {
+            body.classList.remove('hidden');
+            icon.style.transform = 'rotate(0deg)';
+        } else {
+            body.classList.add('hidden');
+            icon.style.transform = 'rotate(180deg)';
+        }
+    }
+
+    function clearDoorprizeSearch() {
+        const input = document.getElementById('doorprize-search');
+        if (input) {
+            input.value = '';
+            filterDoorprizeTable();
+            input.focus();
+        }
+    }
+
+    function resetDoorprizeFilters() {
+        const input = document.getElementById('doorprize-search');
+        const cat = document.getElementById('doorprize-category-filter');
+        if (input) input.value = '';
+        if (cat) cat.value = '';
+        filterDoorprizeTable();
+    }
+
+    function toggleWinnersFold() {
+        const body = document.getElementById('winners-filter-body');
+        const icon = document.getElementById('winners-fold-icon');
+        if (body.classList.contains('hidden')) {
+            body.classList.remove('hidden');
+            icon.style.transform = 'rotate(0deg)';
+        } else {
+            body.classList.add('hidden');
+            icon.style.transform = 'rotate(180deg)';
+        }
+    }
+
+    function clearWinnerSearch() {
+        const input = document.getElementById('winner-search');
+        if (input) {
+            input.value = '';
+            filterWinnerTable();
+            input.focus();
+        }
+    }
+
+    function resetWinnerFilters() {
+        const input = document.getElementById('winner-search');
+        const status = document.getElementById('winner-status-filter');
+        if (input) input.value = '';
+        if (status) status.value = '';
+        filterWinnerTable();
+    }
+
     function filterDoorprizeTable() {
         const query = (document.getElementById('doorprize-search')?.value || '').toLowerCase().trim();
         const cat = (document.getElementById('doorprize-category-filter')?.value || '').toLowerCase().trim();
@@ -939,6 +1133,14 @@
             r.style.display = (matchesQuery && matchesStatus) ? '' : 'none';
         });
     }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+            const input = document.getElementById('doorprize-search') || document.getElementById('winner-search');
+            if (input) input.focus();
+        }
+    });
 </script>
 @endpush
 @endsection

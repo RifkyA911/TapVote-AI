@@ -36,7 +36,16 @@ class LogController extends Controller
         $modules = ActivityLog::distinct()->pluck('module')->sort();
         $actions = ActivityLog::distinct()->pluck('action')->sort();
 
-        return view('admin.logs.index', compact('logs', 'modules', 'actions', 'module', 'action', 'search'));
+        $totalLogs = ActivityLog::count();
+        $securityEvents = ActivityLog::where('action', 'like', '%FAIL%')
+            ->orWhere('action', 'like', '%REJECT%')
+            ->orWhere('action', 'like', '%UNKNOWN%')
+            ->count();
+        $successEvents = ActivityLog::where('action', 'like', '%SUCCESS%')
+            ->orWhere('action', 'like', '%VOTE%')
+            ->count();
+
+        return view('admin.logs.index', compact('logs', 'modules', 'actions', 'module', 'action', 'search', 'totalLogs', 'securityEvents', 'successEvents'));
     }
 
     /**

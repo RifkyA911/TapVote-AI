@@ -43,6 +43,56 @@ class AiReasoningService
     }
 
     /**
+     * Test Google Gemini API connection & measure latency
+     */
+    public function testConnection(?string $apiKey = null): array
+    {
+        $key = $apiKey ?: AppSetting::get('gemini_api_key');
+        if (empty($key)) {
+            return [
+                'success' => false,
+                'message' => 'API Key belum diisi atau dikonfigurasi.',
+                'latency_ms' => 0
+            ];
+        }
+
+        $start = microtime(true);
+        try {
+            $response = Http::timeout(8)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$key}", [
+                'contents' => [
+                    ['parts' => [['text' => 'Ping. Respond with OK only.']]]
+                ],
+                'generationConfig' => ['maxOutputTokens' => 5]
+            ]);
+
+            $latency = round((microtime(true) - $start) * 1000);
+
+            if ($response->successful()) {
+                return [
+                    'success' => true,
+                    'message' => 'Koneksi ke Google Gemini AI berhasil! Latensi: ' . $latency . 'ms',
+                    'latency_ms' => $latency,
+                    'model' => 'gemini-2.0-flash'
+                ];
+            }
+
+            $err = $response->json()['error']['message'] ?? ('HTTP ' . $response->status());
+            return [
+                'success' => false,
+                'message' => 'Google Gemini menolak koneksi: ' . $err,
+                'latency_ms' => $latency
+            ];
+        } catch (\Throwable $e) {
+            $latency = round((microtime(true) - $start) * 1000);
+            return [
+                'success' => false,
+                'message' => 'Gagal menghubungi server Gemini: ' . $e->getMessage(),
+                'latency_ms' => $latency
+            ];
+        }
+    }
+
+    /**
      * Call Gemini API for Telemetry Reasoning
      */
     protected function callGeminiForTelemetry(string $apiKey, array $data): ?array

@@ -86,6 +86,7 @@ class ReportController extends Controller
     public function traceback(Request $request)
     {
         $search = $request->query('search');
+        $dept = $request->query('dept');
 
         $query = Pemilih::where('pilih', 'T')
             ->with(['hasilKetua.kandidatKetua', 'hasilPengawas.kandidatPengawas']);
@@ -98,11 +99,16 @@ class ReportController extends Controller
             });
         }
 
+        if ($dept) {
+            $query->where('dept', $dept);
+        }
+
         $records = $query->orderBy('voted_at', 'desc')->get();
         $voters = $records;
         $totalVoted = Pemilih::where('pilih', 'T')->count();
+        $departments = Pemilih::distinct()->pluck('dept')->filter()->sort()->values();
 
-        return view('admin.reports.traceback', compact('records', 'voters', 'totalVoted', 'search'));
+        return view('admin.reports.traceback', compact('records', 'voters', 'totalVoted', 'search', 'dept', 'departments'));
     }
 
     /**
