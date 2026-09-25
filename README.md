@@ -30,19 +30,32 @@
 - **Clean Public Header**: High-contrast, spacious layout with instant language switcher (`EN` / `ID`).
 
 ### 3. Admin Control Panel (`/admin`)
-- **AI Election Conclusion & Analytical Insights**:
-  - Real-time quorum verification ($50\%$ threshold).
-  - Margin of victory calculations and winner projections.
-  - Statistical confidence score indicator (e.g. `98.4% Confidence`).
-  - Commission recommendations with on-demand refresh.
-- **DataTables Integration**:
-  - Live client-side instant search, column sorting, pagination, and per-page entries selector (`10, 25, 50, 100 entries`).
+- **Executive Telemetry Dashboard**: High-contrast, sleek executive UI designed for young, tech-savvy administrators with live SSE connection status, dynamic turnout quorum milestone gauges, and real-time candidate comparison cards.
+- **On-Demand Google Gemini 2.0 Flash AI Intelligence**:
+  - Lazy-loaded AI analysis: does not auto-consume quota on page load or SSE loops.
+  - Generates comprehensive election conclusions, margin stability metrics, and strategic bullet recommendations using Google Gemini 2.0 Flash / 1.5 Flash REST APIs, with local statistical heuristics fallback.
+  - Built-in Gemini API Key configuration drawer.
+- **Dynamic DataTables with RFC HTTP QUERY Method**:
+  - Native implementation of the safe HTTP `QUERY` method (`draft-ietf-httpbis-safe-method-w-body`) with client-side query body (`/admin/voters/query`).
+  - Interactive toolbar with keyboard shortcut (`/` to focus), voting status filter, department filter, configurable entries per page (10, 25, 50, 100), and bidirectional column sorting.
 - **Excel & PDF Rekapitulasi Exports**:
-  - Instant Excel (`.csv` with UTF-8 BOM encoding for Microsoft Excel) for DPT Voters, Rekapitulasi Ketua, Rekapitulasi Pengawas, and Forensic Traceback.
-  - Dedicated "Cetak / Export PDF" buttons on all report tables.
-- **Responsive Collapsible Sidebar**: Matches navbar height (`64px`) and collapses into an off-canvas drawer on mobile and tablet devices.
+  - Instant Excel (`.csv` with UTF-8 BOM encoding for Microsoft Excel) for DPT Voters, Chairman Rekapitulasi, Supervisory Board Rekapitulasi, and Forensic Traceback.
+  - Dedicated "Cetak / Export PDF" buttons across all tabular reports.
+- **Mobile & iPad Mini Responsive Layout**:
+  - Off-canvas drawer navigation for viewports up to 1024px width, providing maximum workspace for tables and charts on tablets and phones.
 
-### 4. Model Context Protocol (MCP) Server
+### 4. Doorprize System & Public Audience Stage (`/doorprize`)
+- **Master Reward Catalog (`doorprizes`)**: Manage reward items, quantities, categories, and sponsors.
+- **Automated Winner Audit Logging (`doorprize_winners`)**: Records winning voters with timestamps, ensuring fair allocation and inventory tracking.
+- **No-Countdown High-FPS Animated SVG Lottery Machine**:
+  - Replaced numerical countdowns with a vibrant animated SVG slot reel and tumbler.
+  - Synthetic Web Audio ticker sounds and smooth cubic-bezier deceleration into the winner reveal.
+- **Standalone Cinema Stage View (`/doorprize`)**:
+  - Dedicated big-screen projector display without admin controls.
+  - Large-format typography legible across event venues, keyboard shortcuts (`Space` to roll, `F` for fullscreen), and bottom winner ticker marquee.
+  - One-click shortcut button available directly in the Admin Panel header and navigation.
+
+### 5. Model Context Protocol (MCP) Server
 - Integrated MCP server (`mcp/server.js`) compliant with standard MCP JSON-RPC protocol.
 - Connect **Claude Desktop**, **Cursor**, **Antigravity**, or remote LLMs to query live voter turnout, candidate profiles, AI conclusions, and verify voter card validity.
 - Supports both **Stdio** and **HTTP/SSE** transport (`--http 3100`).

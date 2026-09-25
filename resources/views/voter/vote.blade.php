@@ -962,25 +962,27 @@
         const gebyarModal = document.getElementById('gebyar-modal');
         gebyarModal.classList.remove('hidden');
 
-        // Meriah Confetti Cannons Loop Selama 5 Detik
+        // Subtle Confetti Cannons: Ringan di pinggir layar agar tidak menutupi kartu & teks
         if (typeof window.confetti === 'function') {
-            const end = Date.now() + 5000;
-            const colors = ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#ef4444'];
+            const end = Date.now() + 3000;
+            const colors = ['#2563eb', '#10b981', '#f59e0b', '#8b5cf6'];
 
             (function frame() {
                 window.confetti({
-                    particleCount: 5,
+                    particleCount: 2,
                     angle: 60,
-                    spread: 60,
-                    origin: { x: 0, y: 0.7 },
-                    colors: colors
+                    spread: 45,
+                    origin: { x: 0, y: 0.8 },
+                    colors: colors,
+                    zIndex: 90
                 });
                 window.confetti({
-                    particleCount: 5,
+                    particleCount: 2,
                     angle: 120,
-                    spread: 60,
-                    origin: { x: 1, y: 0.7 },
-                    colors: colors
+                    spread: 45,
+                    origin: { x: 1, y: 0.8 },
+                    colors: colors,
+                    zIndex: 90
                 });
 
                 if (Date.now() < end) {

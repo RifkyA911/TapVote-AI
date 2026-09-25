@@ -15,11 +15,11 @@
 </head>
 <body class="min-h-full bg-slate-100 text-slate-800 font-sans antialiased flex flex-col md:flex-row relative overflow-x-hidden">
 
-    <!-- Mobile / Tablet Sidebar Backdrop Overlay -->
-    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-30 hidden md:hidden transition-opacity duration-300"></div>
+    <!-- Mobile & iPad Mini Sidebar Backdrop Overlay -->
+    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-30 hidden lg:hidden transition-opacity duration-300"></div>
 
-    <!-- Sidebar Navigation -->
-    <aside id="admin-sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg md:shadow-none h-full">
+    <!-- Sidebar Navigation (Responsive: Off-canvas drawer on Mobile & iPad Mini, static on Desktop) -->
+    <aside id="admin-sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none h-full">
         <!-- Sidebar Brand Header (Height 64px / h-16 matched exactly with Top App Bar) -->
         <div class="h-16 px-5 flex items-center justify-between border-b border-slate-200 shrink-0">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3">
@@ -32,8 +32,8 @@
                 </div>
             </a>
 
-            <!-- Close Sidebar Button on Mobile/Tablet -->
-            <button onclick="toggleSidebar()" type="button" class="md:hidden p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 cursor-pointer">
+            <!-- Close Sidebar Button on Mobile/iPad Mini -->
+            <button onclick="toggleSidebar()" type="button" class="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 cursor-pointer">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
@@ -76,6 +76,13 @@
             <a href="{{ route('admin.reports.doorprize') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.reports.doorprize') ? 'bg-amber-600 text-white shadow-sm' : 'text-amber-700 hover:bg-amber-50' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
                 <span>Undian Doorprize</span>
+            </a>
+            <a href="{{ route('doorprize.public') }}" target="_blank" class="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-bold text-amber-900 bg-amber-50/80 hover:bg-amber-100/90 border border-amber-200 transition">
+                <span class="flex items-center space-x-2">
+                    <span>📺</span>
+                    <span>Panggung Penonton</span>
+                </span>
+                <span class="text-[10px] text-amber-600">↗</span>
             </a>
             <a href="{{ route('admin.logs.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.logs.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -176,6 +183,10 @@
                     <span id="header-clock" class="font-bold text-slate-700"></span>
                 </div>
 
+                <a href="{{ route('doorprize.public') }}" target="_blank" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold border border-amber-200 transition flex items-center space-x-1.5 shadow-2xs">
+                    <span>🎪 Stage</span>
+                </a>
+
                 <a href="{{ route('home') }}" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-blue-700 font-bold border border-slate-200 transition flex items-center space-x-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                     <span class="hidden sm:inline">Live SSE</span>
@@ -208,8 +219,8 @@
             const sidebar = document.getElementById('admin-sidebar');
             const backdrop = document.getElementById('sidebar-backdrop');
             
-            if (window.innerWidth < 768) {
-                // Mobile / Tablet Drawer Toggle
+            if (window.innerWidth < 1024) {
+                // Mobile & iPad Mini Drawer Toggle
                 if (sidebar.classList.contains('-translate-x-full')) {
                     sidebar.classList.remove('-translate-x-full');
                     backdrop.classList.remove('hidden');
@@ -219,7 +230,7 @@
                 }
             } else {
                 // Desktop toggle collapse
-                sidebar.classList.toggle('md:hidden');
+                sidebar.classList.toggle('lg:hidden');
             }
         }
 

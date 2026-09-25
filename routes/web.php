@@ -65,6 +65,10 @@ Route::prefix('admin')->group(function () {
 });
 
 
+// Public Audience Stage: Doorprize Big-Screen Presentation
+Route::get('/doorprize', [ReportController::class, 'publicDoorprize'])->name('doorprize.public');
+Route::get('/doorprize/data', [ReportController::class, 'publicDoorprizeData'])->name('doorprize.data');
+
 // ==========================================
 // ADMIN CONTROL PANEL (role.admin middleware)
 // ==========================================
@@ -87,8 +91,9 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
         'as' => 'admin',
     ])->parameters(['pengawas' => 'nik']);
 
-    // CRUD Voters & Import Excel/CSV
+    // CRUD Voters & Query DPT
     Route::get('/voters', [AdminVoterController::class, 'index'])->name('admin.voters.index');
+    Route::match(['GET', 'POST', 'QUERY'], '/voters/query', [AdminVoterController::class, 'queryVoters'])->name('admin.voters.query');
     Route::get('/voters/export', [AdminVoterController::class, 'export'])->name('admin.voters.export');
     Route::post('/voters', [AdminVoterController::class, 'store'])->name('admin.voters.store');
     Route::post('/voters/import', [AdminVoterController::class, 'import'])->name('admin.voters.import');
@@ -104,7 +109,13 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
         Route::get('/pengawas/export', [ReportController::class, 'exportPengawas'])->name('admin.reports.pengawas.export');
         Route::get('/traceback', [ReportController::class, 'traceback'])->name('admin.reports.traceback');
         Route::get('/traceback/export', [ReportController::class, 'exportTraceback'])->name('admin.reports.traceback.export');
+        
+        // Doorprize Modul & Master Rewards
         Route::get('/doorprize', [ReportController::class, 'doorprize'])->name('admin.reports.doorprize');
+        Route::post('/doorprize/draw', [ReportController::class, 'drawWinner'])->name('admin.reports.doorprize.draw');
+        Route::post('/doorprize/items', [ReportController::class, 'storeDoorprize'])->name('admin.reports.doorprize.store');
+        Route::delete('/doorprize/items/{id}', [ReportController::class, 'destroyDoorprize'])->name('admin.reports.doorprize.destroy');
+        Route::delete('/doorprize/winners/{id}', [ReportController::class, 'deleteWinner'])->name('admin.reports.doorprize.winner.destroy');
     });
 
     // Audit Trail Logs Viewer

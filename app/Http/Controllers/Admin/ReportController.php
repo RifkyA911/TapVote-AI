@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
+use App\Models\Doorprize;
+use App\Models\DoorprizeWinner;
 use App\Models\HasilKetua;
 use App\Models\HasilPengawas;
 use App\Models\KandidatKetua;
@@ -213,32 +216,221 @@ class ReportController extends Controller
      * Laporan 4: Siapa Saja yang Berhak Mengikuti Undian (Doorprize)
      * Awal render KOSONG (tanpa pemenang default)
      * Mengundi interaktif minimal 10 detik dengan drum roll & congrats audio
+    /**
+     * Laporan 4: Modul Undian Doorprize Anggota & Master Reward
      */
-    public function doorprize()
-    {
-        $eligibleQuery = Pemilih::where('pilih', 'T')
-            ->orderBy('voted_at', 'desc');
+     public function doorprize()
+     {
+         $eligibleQuery = Pemilih::where('pilih', 'T')
+             ->orderBy('voted_at', 'desc');
 
-        $totalEligible = $eligibleQuery->count();
+         $totalEligible = $eligibleQuery->count();
 
-        // Awal render KOSONG sesuai permintaan pengguna
-        $pemenang = null;
+         // Master Hadiah Doorprize
+         $doorprizes = Doorprize::withCount('winners')->orderBy('id', 'asc')->get();
 
-        // Data semua pemilih yang sah untuk animasi roulette undian 10 detik di client
-        $eligibleList = Pemilih::where('pilih', 'T')
-            ->select('nik', 'nama', 'dept', 'voted_at')
-            ->get()
-            ->map(function ($p) {
-                return [
-                    'nik' => $p->nik,
-                    'nama' => $p->nama,
-                    'dept' => $p->dept,
-                    'waktu' => $p->voted_at ? $p->voted_at->format('H:i:s d/m/Y') : '-',
-                ];
-            });
+         // Log Pemenang yang sudah tercatat
+         $winners = DoorprizeWinner::with(['doorprize', 'pemilih'])
+             ->orderBy('won_at', 'desc')
+             ->get();
 
-        $eligibleVoters = $eligibleQuery->paginate(20);
+         // Pool pemilih untuk client-side rapid name animation
+         $eligibleList = Pemilih::where('pilih', 'T')
+             ->select('nik', 'nama', 'dept')
+             ->get()
+             ->map(function ($p) {
+                 return [
+                     'nik' => $p->nik,
+                     'nama' => $p->nama,
+                     'dept' => $p->dept,
+                 ];
+             });
 
-        return view('admin.reports.doorprize', compact('eligibleVoters', 'totalEligible', 'pemenang', 'eligibleList'));
-    }
+         $eligibleVoters = $eligibleQuery->paginate(15);
+
+         return view('admin.reports.doorprize', compact('eligibleVoters', 'totalEligible', 'doorprizes', 'winners', 'eligibleList'));
+     }
+
+     /**
+      * Eksekusi Pengundian Hadiah (Simpan ke Log Doorprize Winners)
+      */
+     public function drawWinner(Request $request)
+     {
+         $request->validate([
+             'doorprize_id' => 'required|exists:doorprizes,id',
+         ]);
+
+         $doorprize = Doorprize::withCount('winners')->findOrFail($request->doorprize_id);
+
+         if ($doorprize->remaining_slots <= 0) {
+             return response()->json([
+                 'success' => false,
+                 'message' => "Kuota hadiah [{$doorprize->title}] sudah habis!",
+             ], 422);
+         }
+
+         // Exclude anggota yang sudah memenangkan hadiah ini
+         $existingWinners = DoorprizeWinner::where('doorprize_id', $doorprize->id)->pluck('nik');
+
+         $winnerVoter = Pemilih::where('pilih', 'T')
+             ->whereNotIn('nik', $existingWinners)
+             ->inRandomOrder()
+             ->first();
+
+         if (!$winnerVoter) {
+             return response()->json([
+                 'success' => false,
+                 'message' => "Tidak ada anggota sah yang tersisa untuk memenangkan hadiah ini.",
+             ], 422);
+         }
+
+         // Simpan log pemenang resmi
+         $winner = DoorprizeWinner::create([
+             'doorprize_id' => $doorprize->id,
+             'nik' => $winnerVoter->nik,
+             'won_at' => now(),
+         ]);
+
+         ActivityLog::log(
+             'DOORPRIZE_WINNER',
+             'DOORPRIZE',
+             "Anggota {$winnerVoter->nama} (NIK: {$winnerVoter->nik}, Dept: {$winnerVoter->dept}) memenangkan Doorprize: {$doorprize->title}"
+         );
+
+         return response()->json([
+             'success' => true,
+             'winner' => [
+                 'id' => $winner->id,
+                 'nik' => $winnerVoter->nik,
+                 'nama' => $winnerVoter->nama,
+                 'dept' => $winnerVoter->dept,
+                 'won_at' => $winner->won_at->format('H:i:s d/m/Y'),
+             ],
+             'doorprize' => [
+                 'id' => $doorprize->id,
+                 'title' => $doorprize->title,
+                 'category' => $doorprize->category,
+                 'remaining_slots' => $doorprize->remaining_slots - 1,
+             ],
+             'message' => "Selamat kepada {$winnerVoter->nama} telah memenangkan {$doorprize->title}!"
+         ]);
+     }
+
+     /**
+      * Simpan Master Hadiah Doorprize Baru
+      */
+     public function storeDoorprize(Request $request)
+     {
+         $validated = $request->validate([
+             'title' => 'required|string|max:255',
+             'category' => 'required|string|max:100',
+             'quantity' => 'required|integer|min:1|max:1000',
+             'sponsor' => 'nullable|string|max:255',
+             'icon' => 'nullable|string|max:50',
+         ]);
+
+         $doorprize = Doorprize::create([
+             'title' => trim($validated['title']),
+             'category' => trim($validated['category']),
+             'quantity' => (int)$validated['quantity'],
+             'sponsor' => $validated['sponsor'] ? trim($validated['sponsor']) : null,
+             'icon' => $validated['icon'] ?? 'gift',
+         ]);
+
+         ActivityLog::log('CREATE_DOORPRIZE', 'DOORPRIZE', "Menambahkan reward doorprize baru: {$doorprize->title} ({$doorprize->quantity} unit)");
+
+         if ($request->wantsJson()) {
+             return response()->json(['success' => true, 'doorprize' => $doorprize]);
+         }
+
+         return redirect()->back()->with('success', "Hadiah Doorprize {$doorprize->title} berhasil ditambahkan!");
+     }
+
+     /**
+      * Hapus Master Hadiah Doorprize
+      */
+     public function destroyDoorprize($id)
+     {
+         $doorprize = Doorprize::findOrFail($id);
+         $title = $doorprize->title;
+         $doorprize->delete();
+
+         ActivityLog::log('DELETE_DOORPRIZE', 'DOORPRIZE', "Menghapus master doorprize: {$title}");
+
+         return redirect()->back()->with('success', "Master hadiah {$title} berhasil dihapus.");
+     }
+
+     /**
+      * Hapus / Batalkan Log Pemenang Doorprize
+      */
+     public function deleteWinner($id)
+     {
+         $winner = DoorprizeWinner::with(['doorprize', 'pemilih'])->findOrFail($id);
+         $nama = $winner->pemilih?->nama ?? $winner->nik;
+         $hadiah = $winner->doorprize?->title ?? 'Hadiah';
+
+         $winner->delete();
+
+         ActivityLog::log('CANCEL_WINNER', 'DOORPRIZE', "Membatalkan pemenang: {$nama} untuk {$hadiah}");
+
+         return redirect()->back()->with('success', "Pemenang {$nama} berhasil dibatalkan dari daftar.");
+     }
+
+     /**
+      * Halaman Khusus Panggung Penonton (Stage View Fullscreen untuk Proyektor)
+      */
+     public function publicDoorprize()
+     {
+         $doorprizes = Doorprize::withCount('winners')->orderBy('id', 'asc')->get();
+         $totalEligible = Pemilih::where('pilih', 'T')->count();
+         $winners = DoorprizeWinner::with(['doorprize', 'pemilih'])->latest('won_at')->get();
+
+         $eligibleList = Pemilih::where('pilih', 'T')
+             ->select('nik', 'nama', 'dept')
+             ->get()
+             ->map(function ($p) {
+                 return [
+                     'nik' => $p->nik,
+                     'nama' => $p->nama,
+                     'dept' => $p->dept,
+                 ];
+             });
+
+         return view('doorprize_public', compact('doorprizes', 'totalEligible', 'winners', 'eligibleList'));
+     }
+
+     /**
+      * API Data Sinkronisasi Panggung Penonton
+      */
+     public function publicDoorprizeData()
+     {
+         $doorprizes = Doorprize::withCount('winners')->orderBy('id', 'asc')->get()->map(function ($d) {
+             return [
+                 'id' => $d->id,
+                 'title' => $d->title,
+                 'category' => $d->category,
+                 'quantity' => $d->quantity,
+                 'remaining_slots' => $d->remaining_slots,
+                 'icon' => $d->icon,
+                 'sponsor' => $d->sponsor,
+             ];
+         });
+
+         $winners = DoorprizeWinner::with(['doorprize', 'pemilih'])->latest('won_at')->get()->map(function ($w) {
+             return [
+                 'id' => $w->id,
+                 'hadiah' => $w->doorprize?->title ?? '-',
+                 'nama' => $w->pemilih?->nama ?? '-',
+                 'dept' => $w->pemilih?->dept ?? '-',
+                 'nik' => $w->nik,
+                 'won_at' => $w->won_at ? $w->won_at->format('H:i:s d/m/Y') : '-',
+             ];
+         });
+
+         return response()->json([
+             'total_eligible' => Pemilih::where('pilih', 'T')->count(),
+             'doorprizes' => $doorprizes,
+             'winners' => $winners,
+         ]);
+     }
 }

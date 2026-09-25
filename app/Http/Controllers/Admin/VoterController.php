@@ -234,4 +234,70 @@ class VoterController extends Controller
 
         return redirect()->route('admin.voters.index')->with('success', 'Seluruh hasil perolehan suara berhasil di-reset. Status pemilih kembali siap memilih.');
     }
+
+    /**
+     * Endpoint Pencarian & Query DPT Dinamis (Mendukung HTTP Method 'QUERY' & 'POST/GET')
+     * Implementasi RFC Draft Safe HTTP Method with body
+     */
+    public function queryVoters(Request $request)
+    {
+        $query = Pemilih::query();
+
+        $search = $request->input('search') ?? $request->input('query') ?? $request->query('search');
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nik', 'like', "%{$search}%")
+                  ->orWhere('nama', 'like', "%{$search}%")
+                  ->orWhere('rfid', 'like', "%{$search}%")
+                  ->orWhere('dept', 'like', "%{$search}%");
+            });
+        }
+
+        $dept = $request->input('dept') ?? $request->query('dept');
+        if (!empty($dept)) {
+            $query->where('dept', $dept);
+        }
+
+        $status = $request->input('status') ?? $request->query('status');
+        if (!empty($status) && in_array($status, ['T', 'F'])) {
+            $query->where('pilih', $status);
+        }
+
+        $sort = in_array($request->input('sort'), ['nik', 'nama', 'dept', 'pilih', 'voted_at']) ? $request->input('sort') : 'nama';
+        $dir = strtolower($request->input('dir', 'asc')) === 'desc' ? 'desc' : 'asc';
+        $query->orderBy($sort, $dir);
+
+        $perPage = max(5, min(100, (int)($request->input('per_page') ?? $request->query('per_page') ?? 10)));
+        $paginator = $query->paginate($perPage);
+
+        return response()->json([
+            'success' => true,
+            'protocol' => 'RFC-QUERY-SAFE-METHOD',
+            'http_method' => $request->getMethod(),
+            'data' => collect($paginator->items())->map(function ($v) {
+                return [
+                    'nik' => $v->nik,
+                    'nama' => $v->nama,
+                    'dept' => $v->dept,
+                    'rfid' => $v->rfid,
+                    'pilih' => $v->pilih,
+                    'voted_at' => $v->voted_at ? $v->voted_at->format('H:i:s d/m/Y') : '-',
+                    'delete_url' => route('admin.voters.destroy', $v->nik),
+                ];
+            }),
+            'pagination' => [
+                'total' => $paginator->total(),
+                'per_page' => $paginator->perPage(),
+                'current_page' => $paginator->currentPage(),
+                'last_page' => $paginator->lastPage(),
+                'from' => $paginator->firstItem() ?? 0,
+                'to' => $paginator->lastItem() ?? 0,
+            ],
+            'stats' => [
+                'total' => Pemilih::count(),
+                'voted' => Pemilih::where('pilih', 'T')->count(),
+                'not_voted' => Pemilih::where('pilih', 'F')->count(),
+            ]
+        ]);
+    }
 }

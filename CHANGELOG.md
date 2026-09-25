@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.0] - 2026-09-25
+
+### Added
+- **Doorprize Master Data, Winner Audit Logging, & Cinema Stage View**:
+  - Implemented full database, backend, and frontend refactor for the Doorprize system:
+    - Master reward catalog table (`doorprizes`) with item titles, quantities, categories, sponsors, and icon markers.
+    - Official winner audit table (`doorprize_winners`) tracking winning member NIK, timestamp, department, and reward association.
+    - Automated inventory decrements and quota validation preventing duplicate reward allocations.
+  - **No-Countdown SVG Digital Slot Animation**:
+    - Completely eliminated the numeric countdown timer.
+    - Replaced with a high-fps, dynamic animated SVG digital slot reel and cylinder tumbler featuring glowing neon accents, synthetic Web Audio ticker sound effects, and smooth deceleration easing into the winner reveal.
+  - **Dedicated Big-Screen Audience Stage View (`/doorprize`)**:
+    - Projector-optimized standalone presentation page without admin sidebar or controls.
+    - Large-format typography legible from long distances on venue screens.
+    - Fullscreen toggle (`F`), keyboard-triggered draw (`Spacebar`), and bottom scrolling marquee ticker showing previously drawn winners.
+  - Quick-access shortcut buttons added to the Admin header and sidebar navigation (`🎪 Panggung Doorprize`).
+- **Dynamic Voter Table with RFC HTTP QUERY Method**:
+  - Registered route supporting the new HTTP `QUERY` method (`draft-ietf-httpbis-safe-method-w-body`) alongside `POST`/`GET` at `/admin/voters/query`.
+  - Upgraded table UI with a unified toolbar, search bar with keyboard focus (`/`), status & department filters, interactive column sorting (NIK, Name, Department, Status, Timestamp), and pagination.
+  - Client-side fetch utilizing native `QUERY` method with request body and protocol status indicator (`HTTP Method: QUERY (RFC Safe)`).
+- **On-Demand Gemini AI Election Intelligence**:
+  - Lazy-loaded AI Conclusion: does NOT auto-execute on initial page load or SSE stream intervals, conserving quota and eliminating latency.
+  - High-impact "⚡ Analisis dengan Gemini AI" trigger invoking real Google Gemini REST APIs (`gemini-2.0-flash` with fallback to `gemini-1.5-flash`), paired with local statistical heuristic resilience.
+  - Integrated Gemini API Key management drawer on the dashboard.
+- **Executive Admin Dashboard Theme (20-30s Demographic)**:
+  - Overhauled `/admin/dashboard` with sleek executive dark/indigo telemetry cards, glassmorphic borders, and dynamic turnout quorum milestone gauges.
+  - Mobile & iPad Mini layout optimization: updated responsive off-canvas drawer navigation up to 1024px viewport width (`< 1024px`).
+
+### Fixed
+- **Candidate Photo Upload & Storage on Windows**:
+  - Replaced problematic relative symlinks with a Windows Directory Junction (`mklink /J public\storage storage\app\public`), ensuring candidate photos load with 100% reliability.
+- **Gentle Celebration Fireworks (`/vote`)**:
+  - Reduced confetti particle intensity and adjusted z-index layer behind modal cards to prevent obscuring candidate information.
+
+---
+
 ## [1.3.0] - 2026-09-24
 
 ### Added

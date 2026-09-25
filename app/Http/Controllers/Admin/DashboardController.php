@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $recentVotes = $payload['recent_votes'];
         $recentLogs = ActivityLog::latest()->take(6)->get();
 
-        $aiConclusion = $this->generateAiConclusion($payload);
+        $aiConclusion = null; // Lazy-loaded on explicit user click
         $votingStatus = AppSetting::get('voting_status', 'STARTED');
         $geminiKey = AppSetting::get('gemini_api_key', '');
 
@@ -63,7 +63,8 @@ class DashboardController extends Controller
                 }
 
                 $payload = $this->gatherVotingMetrics();
-                $payload['ai_conclusion'] = $this->generateAiConclusion($payload);
+                // Note: AI conclusion is NOT computed every second here to avoid latency and quota exhaustion.
+                // It is fetched on demand via /admin/api/ai-conclusion.
 
                 echo "data: " . json_encode($payload) . "\n\n";
 
@@ -88,7 +89,6 @@ class DashboardController extends Controller
     public function liveResults()
     {
         $payload = $this->gatherVotingMetrics();
-        $payload['ai_conclusion'] = $this->generateAiConclusion($payload);
         return response()->json($payload);
     }
 
@@ -258,7 +258,7 @@ class DashboardController extends Controller
                 if (!empty($geminiGenerated['insights'])) {
                     $insights = array_merge($insights, $geminiGenerated['insights']);
                 }
-                $aiSource = 'Google Gemini 2.0 Flash';
+                $aiSource = $geminiGenerated['model_name'] ?? 'Google Gemini 2.0 Flash';
             }
         }
 
@@ -280,39 +280,43 @@ class DashboardController extends Controller
     }
 
     /**
-     * Memanggil Google AI Studio Gemini REST API
+     * Memanggil Google AI Studio Gemini REST API (Gemini 2.0 Flash & 1.5 Flash Fallback)
      */
     private function callGeminiApi(string $apiKey, array $context): ?array
     {
-        try {
-            $prompt = "Anda adalah AI Analis Pemilu Koperasi Profesional. Berikan kesimpulan singkat padat dan 2-3 insight analitis dalam bahasa Indonesia berdasarkan data pemilihan realtime berikut:\n" . json_encode($context) . "\nJawab HANYA dalam format JSON persis seperti ini tanpa markdown fence: {\"summary\": \"...\", \"insights\": [\"...\", \"...\"]}";
+        $models = ['gemini-2.0-flash', 'gemini-1.5-flash'];
+        $prompt = "Anda adalah AI Analis Pemilu Koperasi Profesional. Berikan analisis pemilu real-time, kesimpulan ringkas berbobot, dan 2-4 poin insight strategis dalam Bahasa Indonesia berdasarkan data pemilihan berikut:\n" . json_encode($context, JSON_PRETTY_PRINT) . "\n\nPENTING: Kembalikan HANYA format JSON valid tanpa tanda markdown (tanpa ```json ... ```): {\"summary\": \"...\", \"insights\": [\"...\", \"...\"]}";
 
-            $response = Http::timeout(3)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}", [
-                'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => $prompt]
+        foreach ($models as $model) {
+            try {
+                $response = Http::timeout(8)->post("https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}", [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                ['text' => $prompt]
+                            ]
                         ]
+                    ],
+                    'generationConfig' => [
+                        'temperature' => 0.2,
+                        'maxOutputTokens' => 600,
                     ]
-                ],
-                'generationConfig' => [
-                    'temperature' => 0.2,
-                    'maxOutputTokens' => 300,
-                ]
-            ]);
+                ]);
 
-            if ($response->successful()) {
-                $resData = $response->json();
-                $rawText = $resData['candidates'][0]['content']['parts'][0]['text'] ?? '';
-                // Bersihkan json formatting jika ada markdown ```json
-                $cleanJson = trim(preg_replace('/```json|```/', '', $rawText));
-                $parsed = json_decode($cleanJson, true);
-                if (is_array($parsed) && isset($parsed['summary'])) {
-                    return $parsed;
+                if ($response->successful()) {
+                    $resData = $response->json();
+                    $rawText = $resData['candidates'][0]['content']['parts'][0]['text'] ?? '';
+                    $cleanJson = trim(preg_replace('/```(?:json)?|```/', '', $rawText));
+                    $parsed = json_decode($cleanJson, true);
+                    if (is_array($parsed) && !empty($parsed['summary'])) {
+                        $parsed['model_name'] = $model === 'gemini-2.0-flash' ? 'Google Gemini 2.0 Flash' : 'Google Gemini 1.5 Flash';
+                        return $parsed;
+                    }
                 }
+            } catch (\Throwable $e) {
+                // Try next model if timeout or network issue
+                continue;
             }
-        } catch (\Throwable $e) {
-            // Fail gracefully to local heuristic
         }
 
         return null;
