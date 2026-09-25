@@ -206,4 +206,76 @@ class AdminPanelAndTieTest extends TestCase
         $this->assertArrayHasKey('latency_ms', $response->json());
         $this->assertStringContainsString('PONG', $response->json('reply'));
     }
+
+    public function test_admin_can_reject_doorprize_winner_with_custom_reason(): void
+    {
+        $this->actingAs($this->admin);
+
+        $doorprize = \App\Models\Doorprize::create([
+            'title' => 'Smart Watch Pro',
+            'category' => 'Gadget',
+            'quantity' => 1
+        ]);
+
+        $pemilih = Pemilih::create([
+            'nik' => '881122',
+            'rfid' => 'RF881122',
+            'nama' => 'Peserta Gugur',
+            'dept' => 'Finance',
+            'pilih' => 'T'
+        ]);
+
+        $winner = \App\Models\DoorprizeWinner::create([
+            'doorprize_id' => $doorprize->id,
+            'nik' => $pemilih->nik,
+            'won_at' => now(),
+            'status' => 'pending'
+        ]);
+
+        $response = $this->post(route('admin.reports.doorprize.winner.status', $winner->id), [
+            'status' => 'rejected',
+            'status_note' => 'Peserta tidak hadir saat dipanggil 3 kali'
+        ], ['Accept' => 'application/json']);
+
+        $response->assertStatus(200);
+        $winner->refresh();
+        $this->assertEquals('rejected', $winner->status);
+        $this->assertNull($winner->received_at);
+        $this->assertEquals('Peserta tidak hadir saat dipanggil 3 kali', $winner->status_note);
+    }
+
+    public function test_recap_excel_contains_utf8_bom_and_proper_data(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->get(route('admin.dashboard.export.excel'));
+        $response->assertStatus(200);
+        
+        $content = $response->getContent();
+        // Check for UTF-8 BOM
+        $this->assertStringStartsWith("\xEF\xBB\xBF", $content);
+        $this->assertStringContainsString('REKAPITULASI RESMI HASIL PEMILIHAN', $content);
+    }
+
+    public function test_admin_can_query_voters_using_query_http_method(): void
+    {
+        $this->actingAs($this->admin);
+
+        Pemilih::create([
+            'nik' => '554433',
+            'rfid' => 'RF554433',
+            'nama' => 'Query Tester',
+            'dept' => 'Engineering',
+            'pilih' => 'F'
+        ]);
+
+        $response = $this->call('QUERY', route('admin.voters.query'), [
+            'search' => 'Query Tester',
+            'per_page' => 10
+        ], [], [], ['HTTP_ACCEPT' => 'application/json']);
+
+        $response->assertStatus(200);
+        $this->assertArrayHasKey('data', $response->json());
+        $this->assertEquals('Query Tester', $response->json('data.0.nama'));
+    }
 }
