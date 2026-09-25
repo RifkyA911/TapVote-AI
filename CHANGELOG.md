@@ -34,6 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Redesigned search and filter toolbars on DPT Voter Query and Doorprize tables with responsive grid layouts (`grid-cols-2 md:grid-cols-5`), unified control heights, and high-contrast typography.
 - **Candidate Privacy on Ballot Booth (`/vote`)**:
   - Removed candidate personal NIK numbers from public voting cards.
+- **CLI Diagnostic & Inspection Tooling**:
+  - Added `php artisan tapvote:health` for real-time verification of database connectivity, directory junction symlinks, Gemini AI key configuration, and voting lifecycle status.
+  - Added `php artisan tapvote:recap` for terminal summary of DPT turnout and quorum achievement.
 
 ---
 
