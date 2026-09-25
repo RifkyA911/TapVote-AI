@@ -221,10 +221,9 @@ class ReportController extends Controller
      */
      public function doorprize()
      {
-         $eligibleQuery = Pemilih::where('pilih', 'T')
-             ->orderBy('voted_at', 'desc');
-
-         $totalEligible = $eligibleQuery->count();
+         $eligibleQuery = Pemilih::where('pilih', 'T')->orderBy('voted_at', 'desc');
+         $eligibleVoters = (clone $eligibleQuery)->paginate(15);
+         $totalEligible = Pemilih::where('pilih', 'T')->count();
 
          // Master Hadiah Doorprize
          $doorprizes = Doorprize::withCount('winners')->orderBy('id', 'asc')->get();
@@ -246,9 +245,8 @@ class ReportController extends Controller
                  ];
              });
 
-         $eligibleVoters = $eligibleQuery->paginate(15);
-
-         return view('admin.reports.doorprize', compact('eligibleVoters', 'totalEligible', 'doorprizes', 'winners', 'eligibleList'));
+         $pemenang = null;
+         return view('admin.reports.doorprize', compact('eligibleVoters', 'totalEligible', 'doorprizes', 'winners', 'eligibleList', 'pemenang'));
      }
 
      /**
