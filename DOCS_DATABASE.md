@@ -256,3 +256,35 @@ FROM pemilih
 WHERE pilih = 'T'
 ORDER BY nama ASC;
 ```
+
+#### 3.5. Skema & Pencatatan Pemenang Undian Hadiah (Doorprize Claim Tracking)
+```sql
+-- Tabel Master Hadiah Doorprize
+CREATE TABLE IF NOT EXISTS `doorprizes` (
+    `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `title` VARCHAR(255) NOT NULL,
+    `category` VARCHAR(100) NOT NULL DEFAULT 'Elektronik',
+    `quantity` INT UNSIGNED NOT NULL DEFAULT 1,
+    `sponsor` VARCHAR(255) NULL,
+    `icon` VARCHAR(50) NULL,
+    `image` VARCHAR(255) NULL,
+    `description` TEXT NULL,
+    `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabel Log Pemenang & Status Klaim
+CREATE TABLE IF NOT EXISTS `doorprize_winners` (
+    `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `doorprize_id` BIGINT UNSIGNED NOT NULL,
+    `nik` VARCHAR(50) NOT NULL,
+    `won_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `status` ENUM('pending', 'accepted', 'rejected', 'other') NOT NULL DEFAULT 'pending',
+    `status_note` VARCHAR(255) NULL,
+    `received_at` TIMESTAMP NULL,
+    `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`doorprize_id`) REFERENCES `doorprizes`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`nik`) REFERENCES `pemilih`(`nik`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
