@@ -213,12 +213,111 @@ class ReportController extends Controller
     }
 
     /**
-     * Laporan 4: Siapa Saja yang Berhak Mengikuti Undian (Doorprize)
-     * Awal render KOSONG (tanpa pemenang default)
-     * Mengundi interaktif minimal 10 detik dengan drum roll & congrats audio
-    /**
-     * Laporan 4: Modul Undian Doorprize Anggota & Master Reward
+     * Export Rekapitulasi Ketua Resmi ke PDF (DomPDF)
      */
+    public function exportKetuaPdf()
+    {
+        $kandidatList = KandidatKetua::withCount('perolehanSuara')
+            ->orderBy('perolehan_suara_count', 'desc')
+            ->orderBy('nomor_urut', 'asc')
+            ->get();
+
+        $totalSuara = HasilKetua::count();
+        $maxVotes = $kandidatList->max('perolehan_suara_count') ?? 0;
+        $topCount = $maxVotes > 0 ? $kandidatList->where('perolehan_suara_count', $maxVotes)->count() : 0;
+        $isSeri = $topCount > 1;
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.reports.pdf_ketua', compact('kandidatList', 'totalSuara', 'maxVotes', 'isSeri'));
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->download('berita_acara_ketua_' . date('Ymd_His') . '.pdf');
+    }
+
+    /**
+     * Export Rekapitulasi Pengawas Resmi ke PDF (DomPDF)
+     */
+    public function exportPengawasPdf()
+    {
+        $kandidatList = KandidatPengawas::withCount('perolehanSuara')
+            ->orderBy('perolehan_suara_count', 'desc')
+            ->orderBy('nomor_urut', 'asc')
+            ->get();
+
+        $totalSuara = HasilPengawas::count();
+        $maxVotes = $kandidatList->max('perolehan_suara_count') ?? 0;
+        $topCount = $maxVotes > 0 ? $kandidatList->where('perolehan_suara_count', $maxVotes)->count() : 0;
+        $isSeri = $topCount > 1;
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.reports.pdf_pengawas', compact('kandidatList', 'totalSuara', 'maxVotes', 'isSeri'));
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->download('berita_acara_pengawas_' . date('Ymd_His') . '.pdf');
+    }
+
+    /**
+     * Export Forensic Traceback ke PDF (DomPDF)
+     */
+    public function exportTracebackPdf()
+    {
+        $records = Pemilih::where('pilih', 'T')
+            ->with(['hasilKetua.kandidatKetua', 'hasilPengawas.kandidatPengawas'])
+            ->orderBy('voted_at', 'desc')
+            ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.reports.pdf_traceback', compact('records'));
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->download('audit_traceback_suara_' . date('Ymd_His') . '.pdf');
+    }
+
+    /**
+     * Export Rekap Pemenang & Master Doorprize ke PDF (DomPDF)
+     */
+    public function exportDoorprizePdf()
+    {
+        $totalEligible = Pemilih::where('pilih', 'T')->count();
+        $doorprizes = Doorprize::withCount('winners')->orderBy('id', 'asc')->get();
+        $winners = DoorprizeWinner::with(['doorprize', 'pemilih'])
+            ->orderBy('won_at', 'desc')
+            ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.reports.pdf_doorprize', compact('totalEligible', 'doorprizes', 'winners'));
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->download('rekap_doorprize_' . date('Ymd_His') . '.pdf');
+    }
+
+    /**
+     * Export Rekap Pemenang & Hadiah Doorprize ke Excel / CSV
+     */
+    public function exportDoorprizeExcel()
+    {
+        $winners = DoorprizeWinner::with(['doorprize', 'pemilih'])
+            ->orderBy('won_at', 'desc')
+            ->get();
+
+        $csv = "\xEF\xBB\xBF";
+        $csv .= "REKAPITULASI PEMENANG UNDIAN DOORPRIZE - TAPVOTE AI\n";
+        $csv .= "Tanggal Unduh," . date('Y-m-d H:i:s') . "\n";
+        $csv .= "Total Pemenang Tercatat," . $winners->count() . "\n\n";
+        $csv .= "No,Nama Hadiah,NIK Pemenang,Nama Pemenang,Departemen,Status Klaim,Waktu Menang\n";
+
+        foreach ($winners as $index => $w) {
+            $hadiah = $w->doorprize?->title ?? '-';
+            $nik = $w->pemilih_nik;
+            $nama = $w->pemilih?->nama ?? '-';
+            $dept = $w->pemilih?->dept ?? '-';
+            $status = $w->claim_status;
+            $waktu = $w->won_at ? $w->won_at->format('Y-m-d H:i:s') : '-';
+
+            $csv .= ($index + 1) . ",\"{$hadiah}\",\"{$nik}\",\"{$nama}\",\"{$dept}\",\"{$status}\",\"{$waktu}\"\n";
+        }
+
+        return response($csv, 200, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="rekap_doorprize_' . date('Ymd_His') . '.csv"',
+        ]);
+    }
      public function doorprize()
      {
          $eligibleQuery = Pemilih::where('pilih', 'T')->orderBy('voted_at', 'desc');
