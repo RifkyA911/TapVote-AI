@@ -33,13 +33,20 @@
 | `/admin/pengawas/{nik}` | DELETE | `web`, `auth`, `role:admin` | Admin | Hapus kandidat pengawas |
 | `/admin/voters` | GET | `web`, `auth`, `role:admin` | Admin | List data pemilih, status pilih, dan filter |
 | `/admin/voters` | POST | `web`, `auth`, `role:admin` | Admin | Tambah pemilih tunggal manual |
+| `/admin/voters/query` | GET, POST, QUERY | `web`, `auth`, `role:admin` | Admin | Dynamic safe HTTP QUERY query DPT pemilih |
 | `/admin/voters/import` | POST | `web`, `auth`, `role:admin` | Admin | Import pemilih via file Excel / CSV |
 | `/admin/voters/{nik}` | DELETE | `web`, `auth`, `role:admin` | Admin | Hapus data pemilih |
 | `/admin/voters/reset-votes`| POST | `web`, `auth`, `role:admin` | Admin | Reset seluruh hasil suara (keperluan gladi/demo) |
 | `/admin/reports/ketua` | GET | `web`, `auth`, `role:admin` | Admin | Laporan Pemenang Ketua Koperasi & breakdown |
 | `/admin/reports/pengawas` | GET | `web`, `auth`, `role:admin` | Admin | Laporan Pemenang Pengawas Koperasi & breakdown |
 | `/admin/reports/traceback`| GET | `web`, `auth`, `role:admin` | Admin | Trace back pilihan anggota (audit trail saksi) |
-| `/admin/reports/doorprize`| GET | `web`, `auth`, `role:admin` | Admin | Daftar pemilih yang berhak ikut undian + Wheel Spin |
+| `/admin/reports/doorprize`| GET | `web`, `auth`, `role:admin` | Admin | Master reward & log undian doorprize anggota |
+| `/admin/reports/doorprize/winners/{id}/status` | POST, PATCH | `web`, `auth`, `role:admin` | Admin | Update status serah terima klaim hadiah |
+| `/admin/settings/gemini-test` | POST | `web`, `auth`, `role:admin` | Admin | Uji konektivitas dan latensi Google Gemini AI Key |
+| `/admin/dashboard/export/excel` | GET | `web`, `auth`, `role:admin` | Admin | Ekspor rekapitulasi resmi format Excel (UTF-8 BOM) |
+| `/admin/dashboard/export/pdf` | GET | `web`, `auth`, `role:admin` | Admin | Unduh sertifikat rekapitulasi resmi format PDF DomPDF |
+| `/doorprize` | GET | `web` | Public | Panggung penonton layar proyektor khusus undian |
+| `/doorprize/data` | GET | `web` | Public | JSON data reward & eligible pool untuk panggung |
 | `/admin/logs` | GET | `web`, `auth`, `role:admin` | Admin | Audit Trail Log Viewer (semua aktivitas CRUD) |
 
 ---
