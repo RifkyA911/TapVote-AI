@@ -54,32 +54,38 @@ sequenceDiagram
 ### 3. Panduan Penggunaan Peran Administrator (Admin Role)
 
 #### 3.1. Live Dashboard Realtime SSE (`/admin/dashboard`)
-- Menampilkan grafik interaktif Chart.js dan persentase suara pemilih.
+- Menampilkan grafik interaktif **ApexCharts** (donut chart perolehan suara ketua & pengawas) dan grafik timeline area pergerakan suara per jam.
 - Terhubung secara otomatis ke endpoint **Server-Sent Events (SSE)** `/admin/stream/results` dengan auto-reconnect dan fallback polling.
-- Menampilkan live feed suara masuk terbaru dan log aktivitas terkini.
+- **Ekspor Dokumen Rekapitulasi**: Tombol "Unduh Rekap PDF (A4)" yang menghasilkan sertifikat PDF resmi dan tombol "Unduh Rekap Excel (CSV UTF-8 BOM)".
+- **Uji Koneksi Gemini AI**: Uji latensi (ms) API key Google Gemini secara live.
+- **Kontrol Sistem Voting**: Tombol START, PAUSE, dan STOP voting di navbar dengan proteksi throttling anti-double click.
 
 #### 3.2. Manajemen Kandidat Ketua & Pengawas (`/admin/ketua` & `/admin/pengawas`)
 - Tambah, edit, dan hapus kandidat.
 - Form mencakup: Nomor Urut, NIK, Nama Lengkap & Gelar, Upload Foto, serta **Visi** dan **Misi** (tipe MySQL `TEXT`).
+- Upload foto kandidat otomatis tersimpan di storage publik yang dapat diakses langsung.
 
-#### 3.3. Data Pemilih & Import Bulk (`/admin/voters`)
-- Melihat status partisipasi anggota: `Pilih = T` (Sudah Memilih) dan `Pilih = F` (Belum Memilih).
-- **Import Bulk**: Klik tombol "Import Excel / CSV", pilih file dengan kolom `nik,nama,dept,rfid`. Disediakan tombol "Download Template CSV" sebagai panduan.
-- **Reset Suara**: Tombol khusus untuk panitia guna mengosongkan seluruh suara hasil pemilihan dan mengembalikan status semua anggota ke 'F' (sangat berguna untuk gladi resik dan demo lomba).
+#### 3.3. Data Pemilih & Dynamic HTTP QUERY (`/admin/voters`)
+- Toolbar pencarian dan filter responsif optimal untuk iPad Mini, ponsel, dan PC.
+- Menggunakan metode HTTP `QUERY` (RFC draft) dengan live sorting dan pagination interaktif.
+- **Import Bulk**: Klik tombol "Import CSV", pilih file dengan kolom `nik,nama,dept,rfid`.
+- **Reset Suara**: Mengosongkan seluruh suara hasil pemilihan dan mengembalikan status ke 'F'.
 
 #### 3.4. Laporan Eksekutif (`/admin/reports/*`)
 1. **Pemenang Ketua Koperasi (`/admin/reports/ketua`)**:
    - Menampilkan pemenang suara terbanyak, persentase, dan rincian suara per departemen.
-   - Tombol "Cetak Dokumen Laporan".
+   - Tombol "Export Excel" dan "Cetak Dokumen Laporan".
 2. **Pemenang Pengawas Koperasi (`/admin/reports/pengawas`)**:
    - Menampilkan pemenang suara terbanyak, persentase, dan rincian suara per departemen.
-   - Tombol "Cetak Dokumen Laporan".
+   - Tombol "Export Excel" dan "Cetak Dokumen Laporan".
 3. **Trace Back Pilihan Anggota (`/admin/reports/traceback`)**:
    - Audit trail untuk saksi & panitia guna merekonsiliasi pilihan individu anggota (NIK, Nama, Dept, Pilihan Ketua, Pilihan Pengawas, Waktu Vote).
    - Tombol "Export Audit CSV" dan "Cetak Rekap".
-4. **Undian Doorprize (`/admin/reports/doorprize`)**:
-   - Menampilkan daftar anggota yang berhak mengikuti undian (pemilih dengan status `pilih = 'T'`).
-   - Dilengkapi **Mesin Pengundian Doorprize Digital (Spin Slot)** interaktif dengan animasi acak nama, efek perlambatan, dan perayaan confetti untuk menetapkan pemenang doorprize di panggung RAT!
+4. **Undian Doorprize & Status Klaim Hadiah (`/admin/reports/doorprize`)**:
+   - Tabel master hadiah dengan upload foto reward dan sisa kuota inventaris.
+   - Mesin pengundian interaktif dengan silinder digital animated SVG tanpa hitung mundur angka.
+   - Pencatatan log pemenang dengan status klaim: *Sudah Diterima (accepted)*, *Ditolak (rejected)*, *Belum Diambil (pending)*, atau *Alasan Lain (other)*.
+   - Tombol shortcut panggung layar proyektor penonton (`/doorprize`).
 
 #### 3.5. Audit Activity Logs (`/admin/logs`)
 - Memonitor seluruh jejak audit transaksi (LOGIN, VOTE, INSERT, UPDATE, DELETE, RESET, IMPORT) beserta IP address, user identifier, dan waktu kejadian.
