@@ -5,7 +5,52 @@
 @section('content')
     <div class="flex-1 flex flex-col p-3.5 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full min-w-0 box-border overflow-x-hidden">
 
-        <!-- Top Navigation & Live Header (Row 1 Header Text at Top, Row 2 Components) -->
+        <!-- ======================================================== -->
+        <!-- TOP HERO ACTION: TAP RFID VOTING BOOTH (3X LARGER, TOUCH-FIRST) -->
+        <!-- ======================================================== -->
+        <div class="mb-6 sm:mb-8">
+            <a href="{{ route('voter.tap') }}"
+                class="group relative w-full p-6 sm:p-8 md:p-9 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 hover:from-blue-700 hover:to-indigo-900 text-white shadow-xl shadow-blue-600/30 hover:shadow-2xl transition-all duration-300 flex flex-col sm:flex-row items-center justify-between gap-6 cursor-pointer overflow-hidden border-2 border-blue-400/50 hover:scale-[1.01] active:scale-[0.99]">
+                <!-- Ambient Glow Shimmer Elements -->
+                <div class="absolute -right-12 -top-12 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700"></div>
+                <div class="absolute -left-12 -bottom-12 w-56 h-56 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Left: Huge RFID Reader Icon + Main Text -->
+                <div class="flex items-center space-x-5 sm:space-x-7 min-w-0 z-10 w-full sm:w-auto">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-3xl bg-white/15 border-2 border-white/40 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 group-hover:rotate-2 transition-transform duration-300">
+                        <svg class="w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
+                            <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
+                            <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
+                            <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
+                        </svg>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center space-x-2.5 mb-1.5">
+                            <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 ring-4 ring-emerald-400/40 animate-pulse"></span>
+                            <span class="text-xs sm:text-sm font-black uppercase tracking-widest text-blue-200">{{ __('Touchscreen Voting Terminal') }}</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight group-hover:text-blue-100 transition-colors">
+                            {{ __('Tap RFID Card to Vote') }}
+                        </h2>
+                        <p class="text-sm sm:text-base md:text-lg font-bold text-blue-100/90 mt-1">
+                            {{ __('Tap your registered RFID Member Card to unlock the digital ballot booth') }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right: Massive Call-To-Action Button -->
+                <div class="shrink-0 z-10 w-full sm:w-auto flex justify-center">
+                    <div class="w-full sm:w-auto px-8 py-4 sm:px-10 sm:py-5 rounded-2xl bg-white text-blue-700 font-black text-lg sm:text-2xl shadow-xl flex items-center justify-center space-x-3 group-hover:bg-blue-50 group-hover:shadow-2xl transition-all">
+                        <span>{{ __('Open Booth') }}</span>
+                        <svg class="w-7 h-7 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Top Navigation & Live Header (Row 1 Header Text at Top, Row 2 Controls & Large Language Switcher) -->
         <header class="pb-6 mb-6 border-b border-slate-200 space-y-4">
             <!-- Row 1: Header Text (Brand Logo + Title + Subtitle + Live SSE Badge at Top Full Width) -->
             <div class="flex items-center space-x-3.5 min-w-0">
@@ -34,46 +79,38 @@
                 </div>
             </div>
 
-            <!-- Row 2: Action Components Row (Controls on Left, Language Switcher & Tap RFID Button on Right) -->
+            <!-- Row 2: Action Controls Row (Expand/Collapse on Left, Large EN/ID Language Switcher on Right) -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
                 <!-- Left: Section Expand/Collapse Controls -->
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2.5">
                     <button type="button" onclick="expandAllSections()"
-                        class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-black shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-200 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-2 cursor-pointer">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
                         </svg>
                         <span>{{ __('Expand All') }}</span>
                     </button>
                     <button type="button" onclick="collapseAllSections()"
-                        class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-black shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                        class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-200 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-2 cursor-pointer">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
                         </svg>
                         <span>{{ __('Collapse All') }}</span>
                     </button>
                 </div>
 
-                <!-- Right: Language Switcher + Tap RFID Card to Vote Button -->
-                <div class="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
-                    <div
-                        class="inline-flex rounded-xl border border-slate-200 bg-white p-1 text-xs font-bold shadow-2xs shrink-0">
+                <!-- Right: Large EN / ID Language Switcher Buttons (Boomer-Readable) -->
+                <div class="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto justify-end">
+                    <div class="inline-flex rounded-2xl border-2 border-slate-300 bg-white p-1.5 shadow-xs shrink-0">
                         <a href="{{ route('lang.switch', 'en') }}"
-                            class="px-2.5 py-1 rounded-md transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">EN</a>
+                            class="px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl transition text-sm sm:text-base font-black {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-100' }}">
+                            EN
+                        </a>
                         <a href="{{ route('lang.switch', 'id') }}"
-                            class="px-2.5 py-1 rounded-md transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
+                            class="px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl transition text-sm sm:text-base font-black {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-100' }}">
+                            ID
+                        </a>
                     </div>
-
-                    <a href="{{ route('voter.tap') }}"
-                        class="flex-1 sm:flex-none justify-center px-4 py-2.5 sm:px-6 sm:py-3 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-black text-xs sm:text-sm md:text-base shadow-md shadow-blue-600/30 hover:shadow-lg transition-all flex items-center space-x-2.5 cursor-pointer min-w-0">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            stroke-width="2.2">
-                            <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
-                            <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
-                            <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
-                        </svg>
-                        <span class="tracking-wide truncate">{{ __('Tap RFID Card to Vote') }}</span>
-                    </a>
                 </div>
             </div>
         </header>
@@ -201,32 +238,34 @@
                         <!-- Candidates Row (2 Wide Equal Columns with Spacious Padding) -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- Chairman Leader -->
-                            <div
-                                class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 shadow-xs flex items-center space-x-4">
+                            <div onclick="previewLeader('ketua')"
+                                class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 hover:border-red-400 hover:shadow-md transition-all flex items-center space-x-4 cursor-pointer group/leader"
+                                title="{{ __('Click to preview leader candidate') }}">
                                 <span
-                                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-red-100 text-red-800 border-2 border-red-300 shrink-0">
+                                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-red-100 text-red-800 border-2 border-red-300 shrink-0 group-hover/leader:bg-red-600 group-hover/leader:text-white transition-colors">
                                     {{ __('Chairman') }}
                                 </span>
                                 <div class="min-w-0 flex-1">
                                     <span
                                         class="text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
                                     <strong id="leader-ketua-text"
-                                        class="text-base sm:text-xl font-black text-slate-950 block truncate">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                                        class="text-base sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-red-700 transition-colors">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                                 </div>
                             </div>
 
                             <!-- Supervisor Leader -->
-                            <div
-                                class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 shadow-xs flex items-center space-x-4">
+                            <div onclick="previewLeader('pengawas')"
+                                class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 hover:border-emerald-400 hover:shadow-md transition-all flex items-center space-x-4 cursor-pointer group/leader"
+                                title="{{ __('Click to preview leader candidate') }}">
                                 <span
-                                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border-2 border-emerald-300 shrink-0">
+                                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border-2 border-emerald-300 shrink-0 group-hover/leader:bg-emerald-600 group-hover/leader:text-white transition-colors">
                                     {{ __('Supervisor') }}
                                 </span>
                                 <div class="min-w-0 flex-1">
                                     <span
                                         class="text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
                                     <strong id="leader-pengawas-text"
-                                        class="text-base sm:text-xl font-black text-slate-950 block truncate">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                                        class="text-base sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-emerald-700 transition-colors">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -468,12 +507,22 @@
                         <div
                             class="rounded-3xl bg-white border-2 border-slate-200 hover:border-red-400 overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
                             <div>
-                                <!-- Foto Card: Responsive & Sharp -->
-                                <div class="relative w-full h-[260px] sm:h-[300px] max-h-[300px] bg-slate-900 overflow-hidden">
+                                <!-- Foto Card: Responsive & Sharp (Clickable Headless Card Preview) -->
+                                <div class="relative w-full h-[260px] sm:h-[300px] max-h-[300px] bg-slate-900 overflow-hidden cursor-pointer group/photo"
+                                    onclick="openCandidateModal('ketua', '{{ addslashes($ketua['nama']) }}', '{{ $ketua['nomor_urut'] }}', `{{ addslashes($ketua['visi']) }}`, `{{ addslashes($ketua['misi']) }}`, `{{ addslashes($ketua['deskripsi']) }}`, '{{ $ketua['foto'] }}', '{{ $ketua['suara'] }}', '{{ $ketua['persen'] }}%')"
+                                    title="{{ __('Click to preview candidate profile') }}">
                                     <img src="{{ $ketua['foto'] }}" alt="{{ $ketua['nama'] }}"
-                                        class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500 ease-out">
+                                        class="w-full h-full object-cover object-top group-hover/photo:scale-105 transition-transform duration-500 ease-out">
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20 pointer-events-none">
+                                    </div>
+
+                                    <!-- Hover Preview Overlay Badge -->
+                                    <div class="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/photo:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                        <span class="px-4 py-2 rounded-2xl bg-white/95 text-slate-950 text-xs sm:text-sm font-black shadow-xl backdrop-blur-xs flex items-center space-x-2">
+                                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                            <span>{{ __('Preview Profile') }}</span>
+                                        </span>
                                     </div>
 
                                     <!-- Badge Nomor Urut Absolute di Kiri Atas -->
@@ -495,7 +544,8 @@
 
                                 <!-- Identitas Calon -->
                                 <div class="p-5 pb-3">
-                                    <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-snug">
+                                    <h3 onclick="openCandidateModal('ketua', '{{ addslashes($ketua['nama']) }}', '{{ $ketua['nomor_urut'] }}', `{{ addslashes($ketua['visi']) }}`, `{{ addslashes($ketua['misi']) }}`, `{{ addslashes($ketua['deskripsi']) }}`, '{{ $ketua['foto'] }}', '{{ $ketua['suara'] }}', '{{ $ketua['persen'] }}%')"
+                                        class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-snug cursor-pointer hover:text-red-600 transition-colors">
                                         {{ $ketua['nama'] }}</h3>
                                     <div
                                         class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-xs sm:text-sm font-mono font-bold text-red-800 mt-1.5">
@@ -582,12 +632,22 @@
                         <div
                             class="rounded-3xl bg-white border-2 border-slate-200 hover:border-emerald-400 overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
                             <div>
-                                <!-- Foto Card: Responsive & Sharp -->
-                                <div class="relative w-full h-[260px] sm:h-[300px] max-h-[300px] bg-slate-900 overflow-hidden">
+                                <!-- Foto Card: Responsive & Sharp (Clickable Headless Card Preview) -->
+                                <div class="relative w-full h-[260px] sm:h-[300px] max-h-[300px] bg-slate-900 overflow-hidden cursor-pointer group/photo"
+                                    onclick="openCandidateModal('pengawas', '{{ addslashes($pengawas['nama']) }}', '{{ $pengawas['nomor_urut'] }}', `{{ addslashes($pengawas['visi']) }}`, `{{ addslashes($pengawas['misi']) }}`, `{{ addslashes($pengawas['deskripsi']) }}`, '{{ $pengawas['foto'] }}', '{{ $pengawas['suara'] }}', '{{ $pengawas['persen'] }}%')"
+                                    title="{{ __('Click to preview candidate profile') }}">
                                     <img src="{{ $pengawas['foto'] }}" alt="{{ $pengawas['nama'] }}"
-                                        class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500 ease-out">
+                                        class="w-full h-full object-cover object-top group-hover/photo:scale-105 transition-transform duration-500 ease-out">
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20 pointer-events-none">
+                                    </div>
+
+                                    <!-- Hover Preview Overlay Badge -->
+                                    <div class="absolute inset-0 bg-slate-950/30 opacity-0 group-hover/photo:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                        <span class="px-4 py-2 rounded-2xl bg-white/95 text-slate-950 text-xs sm:text-sm font-black shadow-xl backdrop-blur-xs flex items-center space-x-2">
+                                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                            <span>{{ __('Preview Profile') }}</span>
+                                        </span>
                                     </div>
 
                                     <!-- Badge Nomor Urut Absolute di Kiri Atas -->
@@ -609,7 +669,8 @@
 
                                 <!-- Identitas Calon -->
                                 <div class="p-5 pb-3">
-                                    <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-snug">
+                                    <h3 onclick="openCandidateModal('pengawas', '{{ addslashes($pengawas['nama']) }}', '{{ $pengawas['nomor_urut'] }}', `{{ addslashes($pengawas['visi']) }}`, `{{ addslashes($pengawas['misi']) }}`, `{{ addslashes($pengawas['deskripsi']) }}`, '{{ $pengawas['foto'] }}', '{{ $pengawas['suara'] }}', '{{ $pengawas['persen'] }}%')"
+                                        class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-snug cursor-pointer hover:text-emerald-600 transition-colors">
                                         {{ $pengawas['nama'] }}</h3>
                                     <div
                                         class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-xs sm:text-sm font-mono font-bold text-emerald-800 mt-1.5">
@@ -656,76 +717,112 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- MODAL DETAIL LENGKAP KANDIDAT & VISI MISI (BOOMER FRIENDLY) -->
+    <!-- HEADLESS CARD PREVIEW MODAL (CANDIDATE VISUAL & DETAILS) -->
     <!-- ======================================================== -->
     <div id="candidate-detail-modal"
-        class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5"
+        onclick="if (event.target === this) closeCandidateModal()">
         <div
-            class="boomer-modal-dialog bg-white border-2 border-slate-200 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[88vh] overflow-y-auto">
+            class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl overflow-hidden relative max-h-[92vh] flex flex-col border border-slate-200">
+            <!-- Floating Close Button on Top Right -->
             <button onclick="closeCandidateModal()"
-                class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-black transition cursor-pointer">✕</button>
+                class="absolute top-4 right-4 z-30 w-11 h-11 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white backdrop-blur-md flex items-center justify-center text-lg font-black transition cursor-pointer shadow-lg hover:scale-105 active:scale-95"
+                title="{{ __('Close') }}">✕</button>
 
-            <div
-                class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-5 border-b-2 border-slate-100">
-                <div class="flex items-center space-x-4">
-                    <img id="detail-modal-foto" src="" alt="Foto"
-                        class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover object-top border-2 border-slate-300 shadow-md shrink-0">
-                    <div>
-                        <div class="flex items-center space-x-2">
+            <!-- Headless Hero Header (Full-Bleed Visual Showcase) -->
+            <div class="relative bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-6 sm:p-8 text-white overflow-hidden shrink-0">
+                <!-- Ambient Glow Elements -->
+                <div class="absolute -top-12 -right-12 w-48 h-48 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-6 text-center sm:text-left">
+                    <!-- Large Photo with Number Badge -->
+                    <div class="relative shrink-0">
+                        <img id="detail-modal-foto" src="" alt="Foto Kandidat"
+                            class="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl object-cover object-top border-4 border-white/90 shadow-2xl ring-4 ring-white/10">
+                        <span id="detail-modal-no"
+                            class="absolute -bottom-2.5 -right-2.5 px-3 py-1 rounded-2xl bg-white text-slate-950 text-xs sm:text-sm font-black shadow-lg border-2 border-slate-200">
+                            No. 01
+                        </span>
+                    </div>
+
+                    <!-- Candidate Identification -->
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center justify-center sm:justify-start space-x-2 mb-2">
                             <span id="detail-modal-badge"
-                                class="px-2.5 py-0.5 rounded-md text-xs font-black bg-blue-100 text-blue-800 uppercase">{{ __('Candidate') }}</span>
-                            <span id="detail-modal-no" class="text-sm font-extrabold text-slate-600">No. 01</span>
+                                class="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-red-600 text-white shadow-sm">
+                                {{ __('Candidate') }}
+                            </span>
+                            <span class="text-xs font-bold text-slate-300">
+                                • {{ __('Verified Candidate') }}
+                            </span>
                         </div>
-                        <h3 id="detail-modal-nama" class="text-xl sm:text-2xl font-black text-slate-900 mt-1">-</h3>
-                        <span id="detail-modal-tally" class="text-sm font-bold text-blue-700 block mt-0.5">0
-                            {{ __('Votes') }} (0%)</span>
+
+                        <h3 id="detail-modal-nama"
+                            class="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+                            -
+                        </h3>
+
+                        <!-- Tally & Audio TTS Action Row -->
+                        <div class="flex items-center justify-center sm:justify-start space-x-2.5 mt-3.5 flex-wrap gap-y-2">
+                            <span id="detail-modal-tally"
+                                class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-black bg-white/15 text-white border border-white/20 backdrop-blur-xs shadow-xs">
+                                0 {{ __('Votes') }} (0%)
+                            </span>
+
+                            <!-- Text-to-Speech (TTS) Voice Button -->
+                            <button id="btn-modal-tts" onclick="toggleModalTTS()" type="button"
+                                class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-extrabold text-xs transition cursor-pointer shadow-md">
+                                <svg id="tts-icon-speaker" class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                                </svg>
+                                <span id="tts-btn-label">{{ __('Listen to Audio (TTS)') }}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Text-to-Speech (TTS) Voice Button -->
-                <button id="btn-modal-tts" onclick="toggleModalTTS()" type="button"
-                    class="inline-flex items-center justify-center space-x-2 px-4 py-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-800 font-extrabold text-xs sm:text-sm border-2 border-blue-200 shadow-xs transition cursor-pointer self-start sm:self-auto">
-                    <svg id="tts-icon-speaker" class="w-5 h-5 text-blue-600 shrink-0" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
-                    </svg>
-                    <span id="tts-btn-label">{{ __('Listen to Audio (TTS)') }}</span>
-                </button>
             </div>
 
-            <div class="space-y-5">
+            <!-- Headless Card Body (Scrollable Details) -->
+            <div class="p-6 sm:p-8 space-y-5 overflow-y-auto max-h-[52vh]">
                 <!-- Profil Singkat / Track Record -->
-                <div>
-                    <h4 class="text-xs sm:text-sm uppercase font-black tracking-wider text-slate-600 mb-2">
-                        {{ __('Background / Brief Profile:') }}</h4>
+                <div class="p-5 rounded-2xl bg-slate-50 border-2 border-slate-200">
+                    <h4 class="text-xs uppercase font-black tracking-wider text-slate-500 mb-2">
+                        {{ __('Background / Brief Profile:') }}
+                    </h4>
                     <p id="detail-modal-deskripsi"
-                        class="p-4 sm:p-5 rounded-2xl bg-slate-50 border-2 border-slate-200 text-slate-800 text-base sm:text-lg leading-relaxed font-semibold">
+                        class="text-slate-800 text-base sm:text-lg leading-relaxed font-semibold">
                     </p>
                 </div>
 
                 <!-- Visi -->
-                <div>
-                    <h4 class="text-xs sm:text-sm uppercase font-black tracking-wider text-slate-600 mb-2">
-                        {{ __('Vision') }}:</h4>
+                <div class="p-5 rounded-2xl bg-blue-50/70 border-2 border-blue-200/80">
+                    <h4 class="text-xs uppercase font-black tracking-wider text-blue-900 mb-2">
+                        {{ __('Vision') }}:
+                    </h4>
                     <div id="detail-modal-visi"
-                        class="p-4 sm:p-5 rounded-2xl bg-slate-50 border-2 border-slate-200 text-slate-800 text-base sm:text-lg leading-relaxed whitespace-pre-line font-semibold">
+                        class="text-slate-800 text-base sm:text-lg leading-relaxed whitespace-pre-line font-semibold">
                     </div>
                 </div>
 
                 <!-- Misi -->
-                <div>
-                    <h4 class="text-xs sm:text-sm uppercase font-black tracking-wider text-slate-600 mb-2">
-                        {{ __('Mission') }}:</h4>
+                <div class="p-5 rounded-2xl bg-emerald-50/70 border-2 border-emerald-200/80">
+                    <h4 class="text-xs uppercase font-black tracking-wider text-emerald-950 mb-2">
+                        {{ __('Mission') }}:
+                    </h4>
                     <div id="detail-modal-misi"
-                        class="p-4 sm:p-5 rounded-2xl bg-slate-50 border-2 border-slate-200 text-slate-800 text-base sm:text-lg leading-relaxed whitespace-pre-line font-semibold">
+                        class="text-slate-800 text-base sm:text-lg leading-relaxed whitespace-pre-line font-semibold">
                     </div>
                 </div>
             </div>
 
-            <div class="mt-8 pt-4 border-t-2 border-slate-100 flex justify-end">
+            <!-- Headless Card Footer -->
+            <div class="p-4 px-6 sm:px-8 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
+                <span class="text-xs font-bold text-slate-500 hidden sm:inline-block">
+                    {{ __('Tap anywhere outside or press ESC to close') }}
+                </span>
                 <button onclick="closeCandidateModal()"
-                    class="px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-900 font-extrabold text-sm sm:text-base transition cursor-pointer">
+                    class="w-full sm:w-auto px-7 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm transition cursor-pointer">
                     {{ __('Close') }}
                 </button>
             </div>
@@ -1264,10 +1361,25 @@
             let activeModalCandidate = null;
             let isSpeaking = false;
 
+            function previewLeader(type) {
+                if (type === 'ketua') {
+                    const leader = rawKetuaData.find(k => k.is_leader) || rawKetuaData[0];
+                    if (leader) {
+                        openCandidateModal('ketua', leader.nama, leader.nomor_urut, leader.visi, leader.misi, leader.deskripsi, leader.foto, leader.suara, leader.persen + '%');
+                    }
+                } else if (type === 'pengawas') {
+                    const leader = rawPengawasData.find(p => p.is_leader) || rawPengawasData[0];
+                    if (leader) {
+                        openCandidateModal('pengawas', leader.nama, leader.nomor_urut, leader.visi, leader.misi, leader.deskripsi, leader.foto, leader.suara, leader.persen + '%');
+                    }
+                }
+            }
+
             function openCandidateModal(kategoriType, nama, nomor, visi, misi, deskripsi, foto, suara, persen) {
                 if (window.SoundEffects) window.SoundEffects.modal();
 
-                const localizedKategori = (kategoriType === 'ketua' || kategoriType.includes('Ketua') || kategoriType.includes('Chairman'))
+                const isKetua = (kategoriType === 'ketua' || String(kategoriType).toLowerCase().includes('ketua') || String(kategoriType).toLowerCase().includes('chairman'));
+                const localizedKategori = isKetua
                     ? '{{ __('Category 1: Cooperative Chairman') }}'
                     : '{{ __('Category 2: Supervisory Board') }}';
 
@@ -1278,9 +1390,9 @@
                 document.getElementById('detail-modal-nama').innerText = nama;
                 document.getElementById('detail-modal-no').innerText = 'No. ' + nomor;
                 document.getElementById('detail-modal-badge').innerText = localizedKategori;
-                document.getElementById('detail-modal-badge').className = (kategoriType === 'ketua' || kategoriType.includes('Ketua') || kategoriType.includes('Chairman'))
-                    ? 'px-2.5 py-0.5 rounded-md text-xs font-black bg-red-100 text-red-800 uppercase'
-                    : 'px-2.5 py-0.5 rounded-md text-xs font-black bg-emerald-100 text-emerald-800 uppercase';
+                document.getElementById('detail-modal-badge').className = isKetua
+                    ? 'px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-red-600 text-white shadow-sm'
+                    : 'px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-emerald-600 text-white shadow-sm';
                 document.getElementById('detail-modal-tally').innerText = `${suara} {{ __('Votes') }} (${persen})`;
 
                 document.getElementById('detail-modal-deskripsi').innerText = deskripsi || '{{ __('Official registered candidate.') }}';
@@ -1288,13 +1400,25 @@
                 document.getElementById('detail-modal-misi').innerText = misi || '-';
 
                 document.getElementById('candidate-detail-modal').classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
             }
 
             function closeCandidateModal() {
                 if (window.SoundEffects) window.SoundEffects.click();
                 stopTTS();
                 document.getElementById('candidate-detail-modal').classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
             }
+
+            // Keyboard shortcut: Escape to close modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('candidate-detail-modal');
+                    if (modal && !modal.classList.contains('hidden')) {
+                        closeCandidateModal();
+                    }
+                }
+            });
 
             function toggleModalTTS() {
                 if (!('speechSynthesis' in window)) {
