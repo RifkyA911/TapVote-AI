@@ -129,19 +129,33 @@ class LiveCountController extends Controller
         });
 
         $leaderKetuaName = '';
+        $leaderKetuaFoto = '';
         if ($isKetuaSeri) {
             $leaderKetuaName = 'HASIL SERI (' . $maxSuaraKetua . ' Suara)';
+            $topKetua = $ketuaList->firstWhere('perolehan_suara_count', $maxSuaraKetua);
+            $leaderKetuaFoto = $topKetua ? ($topKetua->foto ?: 'https://ui-avatars.com/api/?name=' . urlencode($topKetua->nama) . '&background=2563eb&color=ffffff&size=400') : '';
         } elseif ($totalSuaraKetua > 0 && $topKetuaCount === 1) {
             $leaderKetua = $ketuaList->firstWhere('perolehan_suara_count', $maxSuaraKetua);
             $leaderKetuaName = $leaderKetua ? $leaderKetua->nama : '';
+            $leaderKetuaFoto = $leaderKetua ? ($leaderKetua->foto ?: 'https://ui-avatars.com/api/?name=' . urlencode($leaderKetua->nama) . '&background=2563eb&color=ffffff&size=400') : '';
+        } elseif ($ketuaList->isNotEmpty()) {
+            $firstKetua = $ketuaList->first();
+            $leaderKetuaFoto = $firstKetua->foto ?: 'https://ui-avatars.com/api/?name=' . urlencode($firstKetua->nama) . '&background=2563eb&color=ffffff&size=400';
         }
 
         $leaderPengawasName = '';
+        $leaderPengawasFoto = '';
         if ($isPengawasSeri) {
             $leaderPengawasName = 'HASIL SERI (' . $maxSuaraPengawas . ' Suara)';
+            $topPengawas = $pengawasList->firstWhere('perolehan_suara_count', $maxSuaraPengawas);
+            $leaderPengawasFoto = $topPengawas ? ($topPengawas->foto ?: 'https://ui-avatars.com/api/?name=' . urlencode($topPengawas->nama) . '&background=059669&color=ffffff&size=400') : '';
         } elseif ($totalSuaraPengawas > 0 && $topPengawasCount === 1) {
             $leaderPengawas = $pengawasList->firstWhere('perolehan_suara_count', $maxSuaraPengawas);
             $leaderPengawasName = $leaderPengawas ? $leaderPengawas->nama : '';
+            $leaderPengawasFoto = $leaderPengawas ? ($leaderPengawas->foto ?: 'https://ui-avatars.com/api/?name=' . urlencode($leaderPengawas->nama) . '&background=059669&color=ffffff&size=400') : '';
+        } elseif ($pengawasList->isNotEmpty()) {
+            $firstPengawas = $pengawasList->first();
+            $leaderPengawasFoto = $firstPengawas->foto ?: 'https://ui-avatars.com/api/?name=' . urlencode($firstPengawas->nama) . '&background=059669&color=ffffff&size=400';
         }
 
         $votingDeadline = AppSetting::get('voting_deadline', '');
@@ -165,7 +179,9 @@ class LiveCountController extends Controller
                 'total_suara_ketua' => $totalSuaraKetua,
                 'total_suara_pengawas' => $totalSuaraPengawas,
                 'leader_ketua' => $leaderKetuaName,
+                'leader_ketua_foto' => $leaderKetuaFoto,
                 'leader_pengawas' => $leaderPengawasName,
+                'leader_pengawas_foto' => $leaderPengawasFoto,
                 'is_ketua_seri' => $isKetuaSeri,
                 'is_pengawas_seri' => $isPengawasSeri,
                 'voting_deadline' => $votingDeadline,

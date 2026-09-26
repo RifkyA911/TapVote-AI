@@ -5,6 +5,7 @@ import { DataTable } from 'simple-datatables';
 import * as THREE from 'three';
 import { initRfid3DCard } from './rfid3d';
 import { initHero3DFluid } from './fluid3d';
+import { initHero3DCard } from './card3d';
 
 window.Chart = Chart;
 window.ApexCharts = ApexCharts;
@@ -13,6 +14,7 @@ window.DataTable = DataTable;
 window.THREE = THREE;
 window.initRfid3DCard = initRfid3DCard;
 window.initHero3DFluid = initHero3DFluid;
+window.initHero3DCard = initHero3DCard;
 
 window.initDataTables = function() {
     document.querySelectorAll('.datatable').forEach(table => {

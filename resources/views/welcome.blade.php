@@ -138,16 +138,16 @@
                 </div>
             </div>
 
-            <!-- Right: Satisfying 3D Fluid Liquid Asset Container (Three.js WebGL) -->
+            <!-- Right: Interactive 3D Rectangular ID Card Pass (Three.js WebGL) -->
             <div class="shrink-0 flex items-center relative z-10 pl-2">
-                <div id="hero-fluid-3d-wrapper"
-                    class="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-2xl sm:rounded-3xl bg-white/10 backdrop-blur-md border border-white/25 shadow-inner flex items-center justify-center relative overflow-hidden group-hover:border-cyan-300/60 group-hover:scale-105 group-hover:shadow-cyan-500/30 group-hover:shadow-lg transition-all duration-300">
+                <div id="hero-card-3d-wrapper"
+                    class="w-24 h-32 sm:w-28 sm:h-36 md:w-32 md:h-40 rounded-2xl sm:rounded-3xl bg-white/10 backdrop-blur-md border border-white/25 shadow-inner flex items-center justify-center relative overflow-hidden group-hover:border-cyan-300/60 group-hover:scale-105 group-hover:shadow-cyan-500/30 group-hover:shadow-lg transition-all duration-300">
                     <!-- Three.js Canvas mounts here -->
-                    <div id="hero-fluid-3d-canvas" class="w-full h-full flex items-center justify-center pointer-events-none"></div>
+                    <div id="hero-card-3d-canvas" class="w-full h-full flex items-center justify-center pointer-events-none"></div>
 
                     <!-- Subtle Enter Indicator Tag -->
-                    <div class="absolute bottom-1 sm:bottom-1.5 px-2 py-0.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/25 text-[9px] sm:text-[11px] font-black tracking-wider uppercase text-cyan-200 pointer-events-none flex items-center gap-1 shadow-sm">
-                        <span>{{ __('Enter') }}</span>
+                    <div class="absolute bottom-1 sm:bottom-1.5 px-2.5 py-0.5 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/25 text-[9px] sm:text-[11px] font-black tracking-wider uppercase text-cyan-200 pointer-events-none flex items-center gap-1 shadow-sm">
+                        <span>{{ __('Tap Card') }}</span>
                         <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3 text-cyan-300 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
                         </svg>
@@ -276,37 +276,63 @@
                             </span>
                         </div>
 
-                        <!-- Candidates Row (2 Wide Equal Columns with Spacious Padding) -->
-                        <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+                        <!-- Candidates Row (2 Wide Equal Rows with Photo at End) -->
+                        <div class="grid grid-cols-1 gap-4">
                             <!-- Chairman Leader -->
                             <div onclick="previewLeader('ketua')"
-                                class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 hover:border-red-400 hover:shadow-md transition-all flex items-center space-x-4 cursor-pointer group/leader"
+                                class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 hover:border-red-400 hover:shadow-md transition-all flex items-center justify-between gap-4 cursor-pointer group/leader"
                                 title="{{ __('Click to preview leader candidate') }}">
-                                <span
-                                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-red-100 text-red-800 border-2 border-red-300 shrink-0 group-hover/leader:bg-red-600 group-hover/leader:text-white transition-colors">
-                                    {{ __('Chairman') }}
-                                </span>
-                                <div class="min-w-0 flex-1">
+                                <div class="flex items-center space-x-3.5 sm:space-x-4 min-w-0">
                                     <span
-                                        class="text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
-                                    <strong id="leader-ketua-text"
-                                        class="text-base sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-red-700 transition-colors">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                                        class="px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-red-100 text-red-800 border-2 border-red-300 shrink-0 group-hover/leader:bg-red-600 group-hover/leader:text-white transition-colors">
+                                        {{ __('Chairman') }}
+                                    </span>
+                                    <div class="min-w-0 flex-1">
+                                        <span
+                                            class="text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
+                                        <strong id="leader-ketua-text"
+                                            class="text-base sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-red-700 transition-colors">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                                    </div>
+                                </div>
+                                <div class="shrink-0 flex items-center space-x-2">
+                                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-slate-200 group-hover/leader:border-red-400 group-hover/leader:scale-105 shadow-xs transition-all bg-slate-100 flex items-center justify-center">
+                                        <img id="leader-ketua-img" 
+                                            src="{{ $metrics['leader_ketua_foto'] ?? 'https://ui-avatars.com/api/?name=Chairman&background=ef4444&color=ffffff&size=200' }}" 
+                                            alt="Leader Chairman" 
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="hidden sm:flex items-center text-xs font-bold text-slate-400 group-hover/leader:text-red-600 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Supervisor Leader -->
                             <div onclick="previewLeader('pengawas')"
-                                class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 hover:border-emerald-400 hover:shadow-md transition-all flex items-center space-x-4 cursor-pointer group/leader"
+                                class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 hover:border-emerald-400 hover:shadow-md transition-all flex items-center justify-between gap-4 cursor-pointer group/leader"
                                 title="{{ __('Click to preview leader candidate') }}">
-                                <span
-                                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border-2 border-emerald-300 shrink-0 group-hover/leader:bg-emerald-600 group-hover/leader:text-white transition-colors">
-                                    {{ __('Supervisor') }}
-                                </span>
-                                <div class="min-w-0 flex-1">
+                                <div class="flex items-center space-x-3.5 sm:space-x-4 min-w-0">
                                     <span
-                                        class="text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
-                                    <strong id="leader-pengawas-text"
-                                        class="text-base sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-emerald-700 transition-colors">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                                        class="px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border-2 border-emerald-300 shrink-0 group-hover/leader:bg-emerald-600 group-hover/leader:text-white transition-colors">
+                                        {{ __('Supervisor') }}
+                                    </span>
+                                    <div class="min-w-0 flex-1">
+                                        <span
+                                            class="text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
+                                        <strong id="leader-pengawas-text"
+                                            class="text-base sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-emerald-700 transition-colors">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                                    </div>
+                                </div>
+                                <div class="shrink-0 flex items-center space-x-2">
+                                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-slate-200 group-hover/leader:border-emerald-400 group-hover/leader:scale-105 shadow-xs transition-all bg-slate-100 flex items-center justify-center">
+                                        <img id="leader-pengawas-img" 
+                                            src="{{ $metrics['leader_pengawas_foto'] ?? 'https://ui-avatars.com/api/?name=Supervisor&background=10b981&color=ffffff&size=200' }}" 
+                                            alt="Leader Supervisor" 
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="hidden sm:flex items-center text-xs font-bold text-slate-400 group-hover/leader:text-emerald-600 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1236,8 +1262,16 @@
                 if (data.metrics.leader_ketua) {
                     document.getElementById('leader-ketua-text').innerText = data.metrics.leader_ketua;
                 }
+                if (data.metrics.leader_ketua_foto) {
+                    const elKetuaImg = document.getElementById('leader-ketua-img');
+                    if (elKetuaImg) elKetuaImg.src = data.metrics.leader_ketua_foto;
+                }
                 if (data.metrics.leader_pengawas) {
                     document.getElementById('leader-pengawas-text').innerText = data.metrics.leader_pengawas;
+                }
+                if (data.metrics.leader_pengawas_foto) {
+                    const elPengawasImg = document.getElementById('leader-pengawas-img');
+                    if (elPengawasImg) elPengawasImg.src = data.metrics.leader_pengawas_foto;
                 }
 
                 document.getElementById('total-ketua-votes').innerText = data.metrics.total_suara_ketua;
@@ -1535,19 +1569,19 @@
                 }
             }
 
-            // Hero 3D Fluid Liquid Satisfying Orb (Three.js WebGL)
-            let heroFluidInstance = null;
-            function startHeroFluid3D() {
-                if (typeof window.initHero3DFluid === 'function') {
-                    heroFluidInstance = window.initHero3DFluid('hero-fluid-3d-canvas');
+            // Hero Interactive 3D Rectangular ID Card Pass (Three.js WebGL)
+            let heroCard3DInstance = null;
+            function startHero3DCard() {
+                if (typeof window.initHero3DCard === 'function') {
+                    heroCard3DInstance = window.initHero3DCard('hero-card-3d-canvas');
                 } else {
-                    setTimeout(startHeroFluid3D, 60);
+                    setTimeout(startHero3DCard, 60);
                 }
             }
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', startHeroFluid3D);
+                document.addEventListener('DOMContentLoaded', startHero3DCard);
             } else {
-                startHeroFluid3D();
+                startHero3DCard();
             }
         </script>
     @endpush
