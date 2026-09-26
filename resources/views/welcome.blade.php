@@ -76,29 +76,6 @@
         </div>
     </div>
 
-    <!-- ======================================================== -->
-    <!-- 2. SATISFYING BOOMER CLICK TRANSITION OVERLAY            -->
-    <!-- ======================================================== -->
-    <div id="boomer-transition-overlay"
-        class="fixed inset-0 z-50 hidden flex-col items-center justify-center bg-slate-950/85 backdrop-blur-xl text-white opacity-0 transition-opacity duration-300">
-        <!-- Expanding Radial Glow Shockwave -->
-        <div class="absolute w-96 h-96 bg-gradient-to-tr from-cyan-500/40 via-blue-600/40 to-purple-600/40 rounded-full blur-3xl animate-ping" style="animation-duration: 2s;"></div>
-
-        <div class="relative z-10 flex flex-col items-center text-center px-6 max-w-lg">
-            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-tr from-emerald-500 to-cyan-500 p-1 shadow-2xl shadow-cyan-500/40 mb-5 flex items-center justify-center scale-110 transition-transform">
-                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-            </div>
-            <h3 class="text-2xl sm:text-3xl font-black text-white tracking-tight mb-2">
-                {{ __('Preparing Digital Voting Booth...') }}
-            </h3>
-            <p class="text-sm sm:text-base font-bold text-cyan-200">
-                {{ __('Welcome to Cooperative General Election') }}
-            </p>
-        </div>
-    </div>
-
     <div class="flex-1 flex flex-col p-3.5 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full min-w-0 box-border overflow-x-hidden">
 
         <!-- Top Navigation & Live Header (Row 1 Header Text at Top, Row 2 Controls & Large Language Switcher) -->
@@ -1678,59 +1655,55 @@
 
             // 2. GSAP Entrance "Sundul" (Spring Bumps) & Staggered Section Reveals
             function triggerEntranceSundul() {
-                if (!window.gsap) return;
+                if (!window.gsap) {
+                    setupScrollSundul();
+                    return;
+                }
 
                 // Header spring entrance
-                window.gsap.from('#main-header', {
-                    y: -35,
-                    opacity: 0,
-                    duration: 0.75,
-                    ease: 'back.out(1.6)'
-                });
+                window.gsap.fromTo('#main-header',
+                    { y: -35, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.75, ease: 'back.out(1.6)', clearProps: 'transform,opacity' }
+                );
 
                 // Voting Hero Card "sundul" (elastic spring up)
-                window.gsap.from('#voting-hero-card', {
-                    y: 55,
-                    scale: 0.94,
-                    opacity: 0,
-                    duration: 0.9,
-                    delay: 0.15,
-                    ease: 'back.out(1.7)'
-                });
+                window.gsap.fromTo('#voting-hero-card',
+                    { y: 55, scale: 0.94, opacity: 0 },
+                    { y: 0, scale: 1.0, opacity: 1, duration: 0.9, delay: 0.12, ease: 'back.out(1.7)', clearProps: 'transform,opacity' }
+                );
 
                 // Overview section spring
-                window.gsap.from('#sec-overview', {
-                    y: 60,
-                    opacity: 0,
-                    duration: 0.85,
-                    delay: 0.28,
-                    ease: 'back.out(1.4)'
-                });
+                window.gsap.fromTo('#sec-overview',
+                    { y: 60, scale: 0.98, opacity: 0 },
+                    { y: 0, scale: 1.0, opacity: 1, duration: 0.85, delay: 0.24, ease: 'back.out(1.5)', clearProps: 'transform,opacity' }
+                );
 
                 setupScrollSundul();
             }
 
-            // 3. Anchor Section Hit & Scroll "Sundul" Animations
+            // 3. Anchor Section Hit & Scroll "Sundul" Animations (For all actual sections)
             function setupScrollSundul() {
-                if (!('IntersectionObserver' in window) || !window.gsap) return;
+                if (!('IntersectionObserver' in window)) return;
 
-                const sections = document.querySelectorAll('#sec-guide, #sec-comparison, #sec-conclusion');
+                const sections = document.querySelectorAll('#sec-overview, #sec-chart, #sec-guide, #sec-ketua, #sec-pengawas');
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting && !entry.target.dataset.sundulAnimated) {
                             entry.target.dataset.sundulAnimated = 'true';
-                            window.gsap.fromTo(entry.target, 
-                                { y: 40, opacity: 0.25 }, 
-                                { y: 0, opacity: 1, duration: 0.75, ease: 'back.out(1.5)' }
-                            );
+                            if (window.gsap) {
+                                window.gsap.fromTo(entry.target, 
+                                    { y: 48, scale: 0.98, opacity: 0.35 }, 
+                                    { y: 0, scale: 1.0, opacity: 1, duration: 0.7, ease: 'back.out(1.7)', clearProps: 'transform,opacity' }
+                                );
+                            }
                         }
                     });
-                }, { threshold: 0.12 });
+                }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
                 sections.forEach(sec => observer.observe(sec));
             }
 
-            // 4. Satisfying Smooth Boomer Click Transition ("Bikin Lega & Impressed")
+            // 4. Card Swipe-Out on Click (No Overlay, Snappy & Satisfying)
             let isNavigatingToBooth = false;
             window.handleVotingHeroClick = function(e) {
                 e.preventDefault();
@@ -1739,45 +1712,49 @@
 
                 const targetUrl = document.getElementById('voting-hero-card').getAttribute('href');
 
-                // A. Play opulent harmonic chime sound
-                if (window.SoundEffects && typeof window.SoundEffects.success === 'function') {
-                    window.SoundEffects.success();
+                // A. Play tactile click / scan sound
+                if (window.SoundEffects && typeof window.SoundEffects.click === 'function') {
+                    window.SoundEffects.click();
                 }
 
-                // B. Confetti celebration particles
+                // B. Confetti particles burst
                 if (typeof window.confetti === 'function') {
                     window.confetti({
-                        particleCount: 50,
-                        spread: 75,
+                        particleCount: 45,
+                        spread: 60,
                         origin: { y: 0.6 }
                     });
                 }
 
-                // C. 3D Card 360-spin & forward zoom warp
-                if (heroCard3DInstance && typeof heroCard3DInstance.triggerSatisfyingClickAnimation === 'function') {
-                    heroCard3DInstance.triggerSatisfyingClickAnimation();
+                // C. Trigger 3D card physical swipe out acceleration
+                if (heroCard3DInstance && typeof heroCard3DInstance.triggerSwipeOut === 'function') {
+                    heroCard3DInstance.triggerSwipeOut();
                 }
 
-                // D. Show soothing boomer transition overlay
-                const transitionOverlay = document.getElementById('boomer-transition-overlay');
-                if (transitionOverlay) {
-                    transitionOverlay.classList.remove('hidden');
-                    transitionOverlay.classList.add('flex');
-                    if (window.gsap) {
-                        window.gsap.to(transitionOverlay, {
-                            opacity: 1,
-                            duration: 0.45,
-                            ease: 'power2.out'
-                        });
-                    } else {
-                        transitionOverlay.style.opacity = '1';
+                // D. Swipe-out animation on the card element itself
+                if (window.gsap) {
+                    window.gsap.to('#voting-hero-card', {
+                        x: '115%',
+                        opacity: 0,
+                        rotate: 3,
+                        scale: 0.96,
+                        duration: 0.45,
+                        ease: 'power3.in',
+                        onComplete: () => {
+                            window.location.href = targetUrl;
+                        }
+                    });
+                } else {
+                    const card = document.getElementById('voting-hero-card');
+                    if (card) {
+                        card.style.transition = 'transform 0.45s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.45s ease';
+                        card.style.transform = 'translateX(115%) rotate(3deg) scale(0.96)';
+                        card.style.opacity = '0';
                     }
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 450);
                 }
-
-                // E. Smooth redirect to voting kiosk after satisfying animation
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 750);
             };
 
             // Initialize 3D Card & Loading Overlay on Load

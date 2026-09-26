@@ -3,11 +3,11 @@ import * as THREE from 'three';
 /**
  * TapVote AI - Exact 3D Replica of UBS GOLD ID Card (From ubs card.png)
  * Features:
- * - 1:1 Aspect ratio (768 x 1024 = 3:4) matching ubs card.png
- * - Pure spotless white PVC back surface ("dengan back warna putih kartunya")
- * - Highly responsive 3D tilt tracking cursor movement across the hero card
- * - Specular sheen and satisfying spring physics
- * - Public triggerSatisfyingClickAnimation() for smooth, comforting page transition
+ * - Rounded Square / Rounded Rectangle geometry matching physical PVC card corners
+ * - Exact 3:4 aspect ratio (width: 1.95, height: 2.60) matching 768x1024 PNG dimensions
+ * - Spotless pure white PVC back surface ("dengan back warna putih kartunya")
+ * - Interactive cursor-driven 3D tilt with elastic spring damping
+ * - triggerSwipeOut() for rapid, fluid card departure
  */
 export function initHero3DCard(containerId, options = {}) {
     const container = document.getElementById(containerId);
@@ -23,7 +23,7 @@ export function initHero3DCard(containerId, options = {}) {
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
     camera.position.set(0, 0, 4.8);
 
-    // 2. WebGL Renderer
+    // 2. WebGL Renderer with Alpha & Antialias
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
@@ -32,7 +32,7 @@ export function initHero3DCard(containerId, options = {}) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.18;
     container.appendChild(renderer.domElement);
 
     // 3. Card Textures:
@@ -45,7 +45,6 @@ export function initHero3DCard(containerId, options = {}) {
         },
         undefined,
         () => {
-            // Fallback texture if file cannot load
             const fallback = createUbsFallbackTexture();
             frontMesh.material.map = fallback;
             frontMesh.material.needsUpdate = true;
@@ -53,30 +52,32 @@ export function initHero3DCard(containerId, options = {}) {
     );
     frontTexture.colorSpace = THREE.SRGBColorSpace;
 
-    // Back: Pure spotless white PVC texture as instructed ("dengan back warna putih kartunya")
+    // Back: Pure spotless white PVC texture ("dengan back warna putih kartunya")
     const backTexture = createPureWhiteBackTexture();
     backTexture.colorSpace = THREE.SRGBColorSpace;
 
-    // 4. Card Mesh Geometry (Exact 3:4 aspect ratio matching 768x1024)
+    // 4. Card Mesh Assembly with Physical Rounded Corners (Rounded Square)
     const cardGroup = new THREE.Group();
     scene.add(cardGroup);
 
+    // Exact Dimensions (3:4 ratio matching 768x1024)
     const cardW = 1.95;
     const cardH = 2.60;
-    const cardThickness = 0.04;
+    const cardCornerRadius = 0.18; // Physical rounded corners matching credit/ID card
+    const cardThickness = 0.042;
 
-    // Core PVC Body (Crisp Pure White Edge)
-    const coreGeom = new THREE.BoxGeometry(cardW, cardH, cardThickness);
+    // A. Core PVC Body with Extruded Rounded Edges
+    const coreGeom = createRoundedCoreGeometry(cardW, cardH, cardCornerRadius, cardThickness);
     const coreMat = new THREE.MeshStandardMaterial({
         color: 0xffffff,
         metalness: 0.05,
-        roughness: 0.28,
+        roughness: 0.3,
     });
     const coreMesh = new THREE.Mesh(coreGeom, coreMat);
     cardGroup.add(coreMesh);
 
-    // Front Face (UBS Gold ID Card artwork)
-    const frontGeom = new THREE.PlaneGeometry(cardW, cardH);
+    // B. Front Face Plate (Rounded Square Geometry with UV-mapped UBS Gold card)
+    const frontGeom = createRoundedPlaneGeometry(cardW, cardH, cardCornerRadius);
     const frontMat = new THREE.MeshPhysicalMaterial({
         map: frontTexture,
         metalness: 0.12,
@@ -89,8 +90,8 @@ export function initHero3DCard(containerId, options = {}) {
     frontMesh.position.z = cardThickness / 2 + 0.002;
     cardGroup.add(frontMesh);
 
-    // Back Face (Pure Plain White PVC as requested: "dengan back warna putih kartunya")
-    const backGeom = new THREE.PlaneGeometry(cardW, cardH);
+    // C. Back Face Plate (Rounded Square Pure Spotless White PVC)
+    const backGeom = createRoundedPlaneGeometry(cardW, cardH, cardCornerRadius);
     const backMat = new THREE.MeshPhysicalMaterial({
         map: backTexture,
         color: 0xffffff,
@@ -116,14 +117,14 @@ export function initHero3DCard(containerId, options = {}) {
     goldRim.position.set(1.8, 2.2, 2.8);
     scene.add(goldRim);
 
-    // Cyan / blue fill light matching the hero card aesthetic
+    // Cyan / blue fill light matching hero card aesthetic
     const cyanFill = new THREE.PointLight(0x38bdf8, 2.5, 10);
     cyanFill.position.set(-2.0, -1.8, 2.5);
     scene.add(cyanFill);
 
     // 6. Interactive Cursor Tracking (Directly Driven by Cursor Movement)
     let isHovered = false;
-    let isClickAnimating = false;
+    let isSwipingOut = false;
     let targetRotX = 0.05;
     let targetRotY = -0.12;
     let currentRotX = 0.05;
@@ -136,7 +137,7 @@ export function initHero3DCard(containerId, options = {}) {
     const parentCard = container.closest('a') || container;
 
     function onMouseMove(e) {
-        if (isClickAnimating) return;
+        if (isSwipingOut) return;
         isHovered = true;
         const rect = parentCard.getBoundingClientRect();
         const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -149,14 +150,14 @@ export function initHero3DCard(containerId, options = {}) {
     }
 
     function onMouseEnter() {
-        if (isClickAnimating) return;
+        if (isSwipingOut) return;
         isHovered = true;
         targetPosZ = 0.32;
         targetScale = 1.06;
     }
 
     function onMouseLeave() {
-        if (isClickAnimating) return;
+        if (isSwipingOut) return;
         isHovered = false;
         targetRotX = 0.05;
         targetRotY = -0.12;
@@ -169,7 +170,7 @@ export function initHero3DCard(containerId, options = {}) {
     parentCard.addEventListener('mouseleave', onMouseLeave);
 
     parentCard.addEventListener('touchmove', (e) => {
-        if (isClickAnimating) return;
+        if (isSwipingOut) return;
         if (e.touches && e.touches[0]) {
             const touch = e.touches[0];
             const rect = parentCard.getBoundingClientRect();
@@ -180,7 +181,7 @@ export function initHero3DCard(containerId, options = {}) {
         }
     }, { passive: true });
 
-    // 7. Render Loop with Elastic Spring Lerp
+    // 7. Render Loop with Elastic Spring Physics
     const clock = new THREE.Clock();
     let animId = null;
 
@@ -188,7 +189,7 @@ export function initHero3DCard(containerId, options = {}) {
         animId = requestAnimationFrame(animate);
         const elapsedTime = clock.getElapsedTime();
 
-        if (!isClickAnimating) {
+        if (!isSwipingOut) {
             let idleFloatY = 0;
             let idleFloatRot = 0;
             if (!isHovered) {
@@ -207,7 +208,7 @@ export function initHero3DCard(containerId, options = {}) {
             cardGroup.position.z = currentPosZ;
             cardGroup.scale.set(currentScale, currentScale, currentScale);
 
-            // Shimmering specular highlights
+            // Shimmering light
             goldRim.position.x = 1.5 + Math.sin(elapsedTime * 1.5) * 0.8;
             goldRim.position.y = 1.8 + Math.cos(elapsedTime * 1.2) * 0.6;
         }
@@ -231,30 +232,24 @@ export function initHero3DCard(containerId, options = {}) {
 
     window.addEventListener('resize', handleResize);
 
-    // 9. Satisfying Smooth Boomer Click Animation
-    function triggerSatisfyingClickAnimation(onComplete) {
-        isClickAnimating = true;
+    // 9. Satisfying Swipe Out Animation on Click
+    function triggerSwipeOut(onComplete) {
+        isSwipingOut = true;
         const startTime = performance.now();
-        const duration = 750; // 750ms ultra-smooth boomer pop
-
-        const startRotX = cardGroup.rotation.x;
+        const duration = 450; // Snappy 450ms swipe out
+        const startX = cardGroup.position.x;
         const startRotY = cardGroup.rotation.y;
-        const startScale = cardGroup.scale.x;
-        const startZ = cardGroup.position.z;
+        const startRotZ = cardGroup.rotation.z;
 
         function step(now) {
             const progress = Math.min(1, (now - startTime) / duration);
-            // Smooth easeOutCubic
-            const t = 1 - Math.pow(1 - progress, 3);
+            const t = Math.pow(progress, 2.5); // Fast acceleration curve
 
-            cardGroup.rotation.y = startRotY + t * Math.PI * 2; // Full majestic 360 spin
-            cardGroup.rotation.x = startRotX * (1 - t);
-            cardGroup.position.z = startZ + t * 1.5; // Zoom toward camera
-            const s = startScale + t * 0.35;
+            cardGroup.position.x = startX + t * 4.8; // Swipe out rapidly to the right
+            cardGroup.rotation.y = startRotY + t * 0.8;
+            cardGroup.rotation.z = startRotZ - t * 0.35;
+            const s = Math.max(0.1, 1 - t * 0.4);
             cardGroup.scale.set(s, s, s);
-
-            goldRim.intensity = 2.8 + t * 4.0; // Glowing light surge
-            cyanFill.intensity = 2.5 + t * 3.5;
 
             if (progress < 1) {
                 requestAnimationFrame(step);
@@ -267,7 +262,7 @@ export function initHero3DCard(containerId, options = {}) {
     }
 
     return {
-        triggerSatisfyingClickAnimation,
+        triggerSwipeOut,
         destroy: () => {
             if (animId) cancelAnimationFrame(animId);
             window.removeEventListener('resize', handleResize);
@@ -287,7 +282,76 @@ export function initHero3DCard(containerId, options = {}) {
 }
 
 /**
- * Pure Plain White PVC Back Texture as instructed: "dengan back warna putih kartunya"
+ * Creates 2D Plane Geometry with Smooth Rounded Corners and Normalized UVs [0, 1]
+ */
+function createRoundedPlaneGeometry(width, height, radius) {
+    const shape = new THREE.Shape();
+    const x = -width / 2;
+    const y = -height / 2;
+    const w = width;
+    const h = height;
+    const r = Math.min(radius, w / 2, h / 2);
+
+    shape.moveTo(x + r, y);
+    shape.lineTo(x + w - r, y);
+    shape.quadraticCurveTo(x + w, y, x + w, y + r);
+    shape.lineTo(x + w, y + h - r);
+    shape.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    shape.lineTo(x + r, y + h);
+    shape.quadraticCurveTo(x, y + h, x, y + h - r);
+    shape.lineTo(x, y + r);
+    shape.quadraticCurveTo(x, y, x + r, y);
+
+    const geom = new THREE.ShapeGeometry(shape, 32);
+
+    // Compute accurate UV coordinates from [0, 0] to [1, 1]
+    const pos = geom.attributes.position;
+    const uvs = new Float32Array(pos.count * 2);
+    for (let i = 0; i < pos.count; i++) {
+        uvs[i * 2] = (pos.getX(i) + w / 2) / w;
+        uvs[i * 2 + 1] = (pos.getY(i) + h / 2) / h;
+    }
+    geom.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+    geom.computeVertexNormals();
+    return geom;
+}
+
+/**
+ * Creates Extruded 3D Core Body with Smooth Rounded Corners and Bevel
+ */
+function createRoundedCoreGeometry(width, height, radius, depth) {
+    const shape = new THREE.Shape();
+    const x = -width / 2;
+    const y = -height / 2;
+    const w = width;
+    const h = height;
+    const r = Math.min(radius, w / 2, h / 2);
+
+    shape.moveTo(x + r, y);
+    shape.lineTo(x + w - r, y);
+    shape.quadraticCurveTo(x + w, y, x + w, y + r);
+    shape.lineTo(x + w, y + h - r);
+    shape.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    shape.lineTo(x + r, y + h);
+    shape.quadraticCurveTo(x, y + h, x, y + h - r);
+    shape.lineTo(x, y + r);
+    shape.quadraticCurveTo(x, y, x + r, y);
+
+    const geom = new THREE.ExtrudeGeometry(shape, {
+        depth: depth,
+        bevelEnabled: true,
+        bevelSegments: 3,
+        bevelSize: 0.006,
+        bevelThickness: 0.006,
+        steps: 1
+    });
+    geom.center();
+    geom.computeVertexNormals();
+    return geom;
+}
+
+/**
+ * Pure Spotless White PVC Back Texture as instructed: "dengan back warna putih kartunya"
  */
 function createPureWhiteBackTexture() {
     const canvas = document.createElement('canvas');
@@ -311,18 +375,15 @@ function createUbsFallbackTexture() {
     canvas.height = 1024;
     const ctx = canvas.getContext('2d');
 
-    // Deep blue background
     ctx.fillStyle = '#08254b';
     ctx.fillRect(0, 0, 768, 1024);
 
-    // Subtle dark blue curves
     ctx.fillStyle = '#0d3263';
     ctx.beginPath();
     ctx.moveTo(768, 200);
     ctx.bezierCurveTo(400, 300, 300, 600, 768, 700);
     ctx.fill();
 
-    // Gold UBS Emblem
     ctx.fillStyle = '#d4af37';
     ctx.font = 'bold 44px sans-serif';
     ctx.textAlign = 'center';
@@ -330,7 +391,6 @@ function createUbsFallbackTexture() {
     ctx.font = '22px sans-serif';
     ctx.fillText('Trust In Gold', 384, 215);
 
-    // Black name plate
     ctx.fillStyle = '#000000';
     ctx.fillRect(400, 580, 368, 140);
     ctx.fillStyle = '#ffffff';
@@ -338,7 +398,6 @@ function createUbsFallbackTexture() {
     ctx.textAlign = 'center';
     ctx.fillText('BUDI', 580, 670);
 
-    // Barcode at bottom
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(150, 810, 468, 120);
     ctx.fillStyle = '#000000';
