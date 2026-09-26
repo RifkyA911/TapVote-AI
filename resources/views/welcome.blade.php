@@ -5,51 +5,6 @@
 @section('content')
     <div class="flex-1 flex flex-col p-3.5 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full min-w-0 box-border overflow-x-hidden">
 
-        <!-- ======================================================== -->
-        <!-- TOP HERO ACTION: TAP RFID VOTING BOOTH (3X LARGER, TOUCH-FIRST) -->
-        <!-- ======================================================== -->
-        <div class="mb-6 sm:mb-8">
-            <a href="{{ route('voter.tap') }}"
-                class="group relative w-full p-6 sm:p-8 md:p-9 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 hover:from-blue-700 hover:to-indigo-900 text-white shadow-xl shadow-blue-600/30 hover:shadow-2xl transition-all duration-300 flex flex-col sm:flex-row items-center justify-between gap-6 cursor-pointer overflow-hidden border-2 border-blue-400/50 hover:scale-[1.01] active:scale-[0.99]">
-                <!-- Ambient Glow Shimmer Elements -->
-                <div class="absolute -right-12 -top-12 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700"></div>
-                <div class="absolute -left-12 -bottom-12 w-56 h-56 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none"></div>
-
-                <!-- Left: Huge RFID Reader Icon + Main Text -->
-                <div class="flex items-center space-x-5 sm:space-x-7 min-w-0 z-10 w-full sm:w-auto">
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-3xl bg-white/15 border-2 border-white/40 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 group-hover:rotate-2 transition-transform duration-300">
-                        <svg class="w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
-                            <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
-                            <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
-                            <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
-                        </svg>
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <div class="flex items-center space-x-2.5 mb-1.5">
-                            <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 ring-4 ring-emerald-400/40 animate-pulse"></span>
-                            <span class="text-xs sm:text-sm font-black uppercase tracking-widest text-blue-200">{{ __('Touchscreen Voting Terminal') }}</span>
-                        </div>
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight group-hover:text-blue-100 transition-colors">
-                            {{ __('Tap RFID Card to Vote') }}
-                        </h2>
-                        <p class="text-sm sm:text-base md:text-lg font-bold text-blue-100/90 mt-1">
-                            {{ __('Tap your registered RFID Member Card to unlock the digital ballot booth') }}
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Right: Massive Call-To-Action Button -->
-                <div class="shrink-0 z-10 w-full sm:w-auto flex justify-center">
-                    <div class="w-full sm:w-auto px-8 py-4 sm:px-10 sm:py-5 rounded-2xl bg-white text-blue-700 font-black text-lg sm:text-2xl shadow-xl flex items-center justify-center space-x-3 group-hover:bg-blue-50 group-hover:shadow-2xl transition-all">
-                        <span>{{ __('Open Booth') }}</span>
-                        <svg class="w-7 h-7 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                        </svg>
-                    </div>
-                </div>
-            </a>
-        </div>
-
         <!-- Top Navigation & Live Header (Row 1 Header Text at Top, Row 2 Controls & Large Language Switcher) -->
         <header class="pb-6 mb-6 border-b border-slate-200 space-y-4">
             <!-- Row 1: Header Text (Brand Logo + Title + Subtitle + Live SSE Badge at Top Full Width) -->
@@ -114,6 +69,32 @@
                 </div>
             </div>
         </header>
+
+        <!-- ======================================================== -->
+        <!-- ACTION CARD: ENTER VOTING BOOTH (1 FULL CLICKABLE ROW)   -->
+        <!-- ======================================================== -->
+        <a href="{{ route('voter.tap') }}"
+            class="group w-full p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white shadow-lg shadow-blue-600/25 hover:shadow-xl transition-all duration-200 flex items-center justify-between gap-4 cursor-pointer mb-8 border-2 border-blue-400/40 hover:scale-[1.008] active:scale-[0.995]">
+            <div class="flex items-center space-x-4 sm:space-x-5 min-w-0">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/20 border-2 border-white/30 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 transition-transform">
+                    <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
+                        <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
+                        <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
+                        <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
+                    </svg>
+                </div>
+                <div class="min-w-0">
+                    <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-blue-200 block">{{ __('Digital Voting Booth') }}</span>
+                    <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight leading-tight">
+                        {{ __('Mulai Memilih (Sentuh Disini / Tap Kartu)') }}
+                    </h2>
+                </div>
+            </div>
+            <div class="shrink-0 flex items-center space-x-2 text-white font-black text-sm sm:text-base bg-white/20 group-hover:bg-white/30 px-5 py-2.5 rounded-2xl transition">
+                <span>{{ __('Masuk') }}</span>
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+            </div>
+        </a>
 
         <!-- ======================================================== -->
         <!-- SECTION 1: EXECUTIVE OVERVIEW & KEY INDICATORS (FOLDABLE)-->

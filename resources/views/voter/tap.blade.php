@@ -243,30 +243,56 @@
                 @endif
             </p>
 
-            <!-- Mobile Native Web NFC Section (HANYA DITAMPILKAN DI HP - HIDE PADA TABLET & PC) -->
+            <!-- Mobile Mode Switcher: NFC vs Scanner (Clean Segmented Toggle, No Phone Icon) -->
             <div class="w-full max-w-sm mx-auto mt-4 space-y-2.5 block sm:hidden">
-                <!-- Native Web NFC Button (Auto-detected if supported) -->
+                <!-- Segmented Toggle -->
+                <div class="inline-flex rounded-2xl bg-slate-100 p-1 border border-slate-200 w-full shadow-inner gap-1">
+                    <button 
+                        type="button" 
+                        id="toggle-mode-nfc"
+                        onclick="setTapMode('nfc')" 
+                        class="flex-1 py-2 px-3 rounded-xl font-black text-xs transition cursor-pointer text-center bg-white text-blue-700 shadow-xs"
+                    >
+                        {{ __('Sensor NFC') }}
+                    </button>
+                    <button 
+                        type="button" 
+                        id="toggle-mode-scanner"
+                        onclick="setTapMode('scanner')" 
+                        class="flex-1 py-2 px-3 rounded-xl font-black text-xs transition cursor-pointer text-center text-slate-600 hover:text-slate-900"
+                    >
+                        {{ __('Scanner') }}
+                    </button>
+                </div>
+
+                <!-- NFC Action Container -->
                 <div id="nfc-support-container" class="hidden">
                     <button 
                         type="button" 
                         id="btn-start-nfc"
                         onclick="startNfcScan()" 
-                        class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-extrabold text-xs sm:text-sm shadow-md transition flex items-center justify-center space-x-2 cursor-pointer"
+                        class="w-full py-3 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-black text-xs shadow-md transition flex items-center justify-center space-x-2 cursor-pointer"
                     >
-                        <span class="text-xl">📱</span>
-                        <span id="nfc-btn-label">Aktifkan Sensor NFC HP (Tempel di Punggung HP)</span>
+                        <span id="nfc-btn-label">{{ __('Mulai Sensor NFC') }}</span>
                     </button>
                 </div>
 
-                <!-- HTTP LAN Notice on Mobile Chrome (if NDEFReader is blocked due to non-HTTPS origin) -->
+                <!-- Scanner Mode Notice -->
+                <div id="scanner-info-container" class="hidden">
+                    <div class="p-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-center">
+                        <span class="text-xs font-bold text-slate-700">{{ __('Dekatkan kartu ke scanner USB / kamera') }}</span>
+                    </div>
+                </div>
+
+                <!-- HTTP LAN Notice on Mobile Chrome -->
                 <div id="nfc-http-notice" class="hidden">
                     <div class="p-3 rounded-2xl bg-amber-50 border border-amber-300 text-left space-y-2">
                         <div class="flex items-start space-x-2">
                             <span class="text-amber-600 text-base">⚠️</span>
                             <div>
-                                <h4 class="text-xs font-black text-amber-950">Sensor NFC HP Membutuhkan Izin Chrome</h4>
+                                <h4 class="text-xs font-black text-amber-950">{{ __('Sensor NFC Membutuhkan Izin Chrome') }}</h4>
                                 <p class="text-[11px] text-amber-800 leading-relaxed mt-0.5">
-                                    Google Chrome di HP membatasi Web NFC jika web diakses via IP LAN (<code class="bg-amber-100 px-1 py-0.5 rounded font-mono text-[10px]" id="current-lan-origin">http://...</code>).
+                                    {{ __('Akses via IP LAN memerlukan izin origin:') }} <code class="bg-amber-100 px-1 py-0.5 rounded font-mono text-[10px]" id="current-lan-origin">http://...</code>
                                 </p>
                             </div>
                         </div>
@@ -275,7 +301,7 @@
                             onclick="openNfcGuideModal()" 
                             class="w-full py-2 px-3 rounded-xl bg-amber-200 hover:bg-amber-300 text-amber-950 font-black text-xs transition cursor-pointer flex items-center justify-center space-x-1.5"
                         >
-                            <span>📖 Lihat Cara Aktifkan NFC di Chrome HP (10 Detik)</span>
+                            <span>{{ __('Panduan Izin NFC Chrome (10 Detik)') }}</span>
                         </button>
                     </div>
                 </div>
@@ -503,6 +529,38 @@
         }
     }
 
+    let currentTapMode = 'nfc';
+
+    function setTapMode(mode) {
+        currentTapMode = mode;
+        const btnNfc = document.getElementById('toggle-mode-nfc');
+        const btnScanner = document.getElementById('toggle-mode-scanner');
+        const nfcContainer = document.getElementById('nfc-support-container');
+        const scannerContainer = document.getElementById('scanner-info-container');
+
+        if (mode === 'nfc') {
+            if (btnNfc) {
+                btnNfc.className = 'flex-1 py-2 px-3 rounded-xl font-black text-xs transition cursor-pointer text-center bg-white text-blue-700 shadow-xs';
+            }
+            if (btnScanner) {
+                btnScanner.className = 'flex-1 py-2 px-3 rounded-xl font-black text-xs transition cursor-pointer text-center text-slate-600 hover:text-slate-900';
+            }
+            if (nfcContainer) nfcContainer.classList.remove('hidden');
+            if (scannerContainer) scannerContainer.classList.add('hidden');
+            startNfcScan();
+        } else {
+            if (btnScanner) {
+                btnScanner.className = 'flex-1 py-2 px-3 rounded-xl font-black text-xs transition cursor-pointer text-center bg-white text-blue-700 shadow-xs';
+            }
+            if (btnNfc) {
+                btnNfc.className = 'flex-1 py-2 px-3 rounded-xl font-black text-xs transition cursor-pointer text-center text-slate-600 hover:text-slate-900';
+            }
+            if (nfcContainer) nfcContainer.classList.add('hidden');
+            if (scannerContainer) scannerContainer.classList.remove('hidden');
+            keepFocus();
+        }
+    }
+
     async function startNfcScan() {
         if (!('NDEFReader' in window)) {
             openNfcGuideModal();
@@ -510,7 +568,7 @@
         }
 
         const btnLabel = document.getElementById('nfc-btn-label');
-        if (btnLabel) btnLabel.innerText = '🟢 Sensor NFC HP Aktif! Tempelkan Kartu di Punggung HP';
+        if (btnLabel) btnLabel.innerText = '🟢 ' + "{{ __('Sensor NFC Aktif! Tempelkan Kartu') }}";
 
         try {
             if (!nfcReaderInstance) {
@@ -518,9 +576,9 @@
             }
             await nfcReaderInstance.scan();
             
-            tapTitle.innerText = "Sensor NFC HP Aktif!";
+            tapTitle.innerText = "{{ __('Sensor NFC Aktif!') }}";
             tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-emerald-100 border-2 border-emerald-400 text-emerald-950 text-sm sm:text-base font-black shadow-md animate-pulse";
-            tapStatusText.innerText = "Tempelkan kartu ke punggung HP Anda...";
+            tapStatusText.innerText = "{{ __('Tempelkan kartu ke NFC HP Anda...') }}";
 
             nfcReaderInstance.onreading = (event) => {
                 const serial = event.serialNumber;
@@ -540,12 +598,12 @@
             };
 
             nfcReaderInstance.onreadingerror = () => {
-                triggerUnknownCardTest('NFC_READ_ERROR');
+                showDangerError("{{ __('Gagal membaca sensor NFC kartu.') }}");
             };
         } catch (err) {
             console.error('NFC error:', err);
             alert('Sensor NFC belum dapat membaca: ' + err.message + '\nPastikan izin NFC diizinkan pada browser.');
-            if (btnLabel) btnLabel.innerText = 'Aktifkan Sensor NFC HP (Tempel di Punggung HP)';
+            if (btnLabel) btnLabel.innerText = "{{ __('Aktifkan Sensor NFC') }}";
         }
     }
 
@@ -599,44 +657,80 @@
 
     // Map status pemilih demo untuk deteksi instan client-side
     const demoVoterMap = @json($demoVoterMap ?? []);
+    let isVerifyingCard = false;
 
-    // 2. Transisi Ripple Nova Green Saat Sukses Membaca Kartu
+    // 2. Verifikasi Kartu ke Database Terlebih Dahulu Sebelum Menampilkan Riak Animasi
     function triggerCardTap(rfid) {
-        if (!rfid) return;
+        if (!rfid || isVerifyingCard) return;
+        isVerifyingCard = true;
 
-        const cleanKey = rfid.trim().toLowerCase();
-        // Cek jika pemilih demo sudah pernah memilih
-        if (demoVoterMap[cleanKey] && demoVoterMap[cleanKey].pilih === 'T') {
-            showAlreadyVotedWarning(demoVoterMap[cleanKey].nama, demoVoterMap[cleanKey].voted_at);
-            return;
-        }
+        const cleanRfid = rfid.trim();
 
-        // Mainkan melodi welcome sound effect 3 detik saat tap login berhasil
-        if (window.SoundEffects) {
-            if (typeof window.SoundEffects.welcome === 'function') {
-                window.SoundEffects.welcome();
+        // Tampilkan indikator memverifikasi ke database
+        tapTitle.innerText = "{{ __('Memverifikasi Kartu...') }}";
+        tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-blue-100 border-2 border-blue-400 text-blue-950 text-sm sm:text-base font-black shadow-md animate-pulse";
+        tapStatusText.innerText = "{{ __('Mengecek data pemilih di server...') }}";
+
+        fetch("{{ route('voter.tap.process') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ rfid: cleanRfid })
+        })
+        .then(async response => {
+            const data = await response.json().catch(() => ({ status: 'danger', message: '{{ __('Respon server tidak valid.') }}' }));
+
+            if (response.ok && data.status === 'success') {
+                // VERIFIKASI DB SUKSES: Tampilkan Riak Nova Green
+                if (window.SoundEffects) {
+                    if (typeof window.SoundEffects.welcome === 'function') {
+                        window.SoundEffects.welcome();
+                    } else {
+                        window.SoundEffects.tap();
+                    }
+                }
+
+                normalRings.classList.add('hidden');
+                dangerRings.classList.add('hidden');
+                warningRings.classList.add('hidden');
+                novaRings.classList.remove('hidden');
+
+                const badgeImg = document.getElementById('card-badge-img');
+                if (badgeImg) {
+                    badgeImg.classList.add('scale-105', 'drop-shadow-2xl');
+                }
+
+                tapTitle.innerText = "{{ __('Kartu Terbaca Sah!') }}";
+                tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-emerald-100 border-2 border-emerald-400 text-emerald-950 text-sm sm:text-base font-black shadow-md";
+                tapStatusText.innerText = (data.voter_name ? data.voter_name + ' • ' : '') + "{{ __('Akses Diterima! Masuk ke Bilik Suara...') }}";
+
+                setTimeout(() => {
+                    document.body.classList.add('transition-opacity', 'duration-500', 'opacity-0');
+                }, 1400);
+
+                setTimeout(() => {
+                    window.location.href = data.redirect || "{{ route('voter.vote') }}";
+                }, 1800);
+
+            } else if (data.status === 'warning') {
+                // VERIFIKASI DB PERINGATAN: Sudah pernah memilih (Riak Amber/Kuning)
+                isVerifyingCard = false;
+                showAlreadyVotedWarning(data.voter_name || 'Anggota', data.voted_time || '');
             } else {
-                window.SoundEffects.tap();
+                // VERIFIKASI DB GAGAL: Kartu tidak dikenal atau ditolak (Riak Merah/Danger)
+                isVerifyingCard = false;
+                showDangerError(data.message || "{{ __('Keplek belum bisa mengikuti voting.') }}");
             }
-        }
-
-        // Aktifkan Nova Green Rings di latar belakang
-        normalRings.classList.add('hidden');
-        dangerRings.classList.add('hidden');
-        warningRings.classList.add('hidden');
-        novaRings.classList.remove('hidden');
-
-        // Transformasi Card Graphic menjadi Hijau Sukses
-        const badgeImg = document.getElementById('card-badge-img');
-        if (badgeImg) {
-            badgeImg.classList.add('scale-105', 'drop-shadow-2xl');
-        }
-
-        tapTitle.innerText = "{{ __('Kartu Terbaca Sah!') }}";
-        tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-emerald-100 border-2 border-emerald-400 text-emerald-950 text-sm sm:text-base font-black shadow-md";
-        tapStatusText.innerText = "{{ __('Akses Diterima • Masuk ke Bilik Suara...') }}";
-
-        // Transisi halus antar halaman: Biarkan audio selesai berbunyi, lalu fadeout smooth
+        })
+        .catch(err => {
+            console.error('Tap verification error:', err);
+            isVerifyingCard = false;
+            showDangerError("{{ __('Terjadi kendala koneksi saat verifikasi kartu.') }}");
+        });
+    }
         setTimeout(() => {
             document.body.classList.add('transition-opacity', 'duration-500', 'opacity-0');
         }, 1800);

@@ -52,19 +52,28 @@ class VoterController extends Controller
     {
         $status = AppSetting::get('voting_status', 'STARTED');
         if ($status === 'PAUSED') {
-            return redirect()->route('voter.tap')
-                ->with('error', 'Sistem pemungutan suara sedang DI-JEDA (PAUSED) oleh Panitia Pemilihan. Silakan menunggu beberapa saat.');
+            $msg = 'Sistem pemungutan suara sedang DI-JEDA (PAUSED) oleh Panitia Pemilihan. Silakan menunggu beberapa saat.';
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['status' => 'danger', 'message' => $msg], 403);
+            }
+            return redirect()->route('voter.tap')->with('error', $msg);
         }
         if ($status === 'STOPPED') {
-            return redirect()->route('voter.tap')
-                ->with('error', 'Sistem pemungutan suara telah RESMI DITUTUP (STOPPED) oleh Panitia Pemilihan.');
+            $msg = 'Sistem pemungutan suara telah RESMI DITUTUP (STOPPED) oleh Panitia Pemilihan.';
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['status' => 'danger', 'message' => $msg], 403);
+            }
+            return redirect()->route('voter.tap')->with('error', $msg);
         }
 
         $votingDeadline = AppSetting::get('voting_deadline', '');
         if (!empty($votingDeadline) && strtotime($votingDeadline)) {
             if (now()->greaterThan(\Carbon\Carbon::parse($votingDeadline))) {
-                return redirect()->route('voter.tap')
-                    ->with('error', 'Batas waktu pemungutan suara (deadline) telah berakhir pada ' . \Carbon\Carbon::parse($votingDeadline)->isoFormat('D MMMM Y, HH:mm') . ' WIB.');
+                $msg = 'Batas waktu pemungutan suara (deadline) telah berakhir pada ' . \Carbon\Carbon::parse($votingDeadline)->isoFormat('D MMMM Y, HH:mm') . ' WIB.';
+                if ($request->expectsJson() || $request->ajax()) {
+                    return response()->json(['status' => 'danger', 'message' => $msg], 403);
+                }
+                return redirect()->route('voter.tap')->with('error', $msg);
             }
         }
 
@@ -133,8 +142,12 @@ class VoterController extends Controller
 
         if (!$pemilih) {
             ActivityLog::log('TAP_FAILED', 'VOTING', "Percobaan tap kartu tidak dikenal: [{$search}]");
+            $msg = "Keplek belum bisa mengikuti voting.";
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['status' => 'danger', 'message' => $msg], 404);
+            }
             return redirect()->route('voter.tap')
-                ->with('error', "Keplek belum bisa mengikuti voting.");
+                ->with('error', $msg);
         }
 
         if ($pemilih->sudahMemilih()) {
@@ -143,8 +156,18 @@ class VoterController extends Controller
                 ? $pemilih->voted_at->timezone('Asia/Jakarta')->format('d M Y, H:i') . ' WIB' 
                 : 'sesi sebelumnya';
 
+            $msg = "Hak suara untuk Anggota [{$pemilih->nik} - {$pemilih->nama}] telah digunakan pada {$waktuFormatted}.";
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'status' => 'warning',
+                    'message' => $msg,
+                    'voter_name' => $pemilih->nama,
+                    'voted_time' => $waktuFormatted,
+                ], 400);
+            }
+
             return redirect()->route('voter.tap')
-                ->with('error', "Hak suara untuk Anggota [{$pemilih->nik} - {$pemilih->nama}] telah digunakan pada {$waktuFormatted}.")
+                ->with('error', $msg)
                 ->with('already_voted', true)
                 ->with('voter_name', $pemilih->nama)
                 ->with('voted_time', $waktuFormatted);
@@ -154,6 +177,15 @@ class VoterController extends Controller
         session(['voter_nik' => $pemilih->nik]);
 
         ActivityLog::log('TAP_SUCCESS', 'VOTING', "Anggota {$pemilih->nama} (NIK: {$pemilih->nik}) berhasil tap ID Card dan masuk bilik suara.");
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Kartu Terbaca Sah!',
+                'voter_name' => $pemilih->nama,
+                'redirect' => route('voter.vote'),
+            ]);
+        }
 
         return redirect()->route('voter.vote');
     }
