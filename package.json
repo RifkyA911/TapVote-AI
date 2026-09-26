@@ -26,6 +26,7 @@
         "apexcharts": "^7.6.0",
         "canvas-confetti": "^1.9.4",
         "chart.js": "^4.5.1",
+        "gsap": "^3.15.0",
         "simple-datatables": "^10.3.0",
         "three": "^0.186.1"
     }

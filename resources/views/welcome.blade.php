@@ -38,10 +38,71 @@
 @endpush
 
 @section('content')
+    <!-- ======================================================== -->
+    <!-- 1. FULLSCREEN INITIAL FLUID WELCOMING LOADING OVERLAY (2s) -->
+    <!-- ======================================================== -->
+    <div id="welcome-loading-overlay"
+        class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 text-white overflow-hidden transition-all duration-700">
+        <!-- Ambient Animated Glow Spheres -->
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl"></div>
+
+        <!-- Central Loading Container -->
+        <div class="relative z-10 flex flex-col items-center text-center px-6 max-w-md">
+            <!-- Pulsing Gradient Spinner Ring -->
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-tr from-purple-600 via-blue-600 to-cyan-400 p-1 shadow-2xl shadow-cyan-500/30 mb-6 flex items-center justify-center animate-spin" style="animation-duration: 5s;">
+                <div class="w-full h-full bg-slate-950 rounded-[20px] flex items-center justify-center">
+                    <svg class="w-9 h-9 sm:w-11 sm:h-11 text-cyan-300 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
+                        <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
+                        <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
+                        <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
+                    </svg>
+                </div>
+            </div>
+
+            <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white mb-1.5 drop-shadow-sm">
+                TapVote <span class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">AI</span>
+            </h2>
+            <p class="text-xs sm:text-sm font-bold text-slate-400 mb-6 uppercase tracking-wider">
+                {{ __('Authenticating Electoral Live Stream...') }}
+            </p>
+
+            <!-- Fluid 2-Second Progress Bar -->
+            <div class="w-64 sm:w-80 bg-slate-900/90 rounded-full h-2.5 overflow-hidden border border-slate-700/80 p-0.5 shadow-inner">
+                <div id="welcome-loading-bar" class="h-full bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 rounded-full w-0 transition-all duration-[2000ms] ease-out"></div>
+            </div>
+            <span id="welcome-loading-status" class="text-[11px] font-mono text-cyan-300/90 mt-2.5 font-black tracking-widest uppercase">System Initialization • 100%</span>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 2. SATISFYING BOOMER CLICK TRANSITION OVERLAY            -->
+    <!-- ======================================================== -->
+    <div id="boomer-transition-overlay"
+        class="fixed inset-0 z-50 hidden flex-col items-center justify-center bg-slate-950/85 backdrop-blur-xl text-white opacity-0 transition-opacity duration-300">
+        <!-- Expanding Radial Glow Shockwave -->
+        <div class="absolute w-96 h-96 bg-gradient-to-tr from-cyan-500/40 via-blue-600/40 to-purple-600/40 rounded-full blur-3xl animate-ping" style="animation-duration: 2s;"></div>
+
+        <div class="relative z-10 flex flex-col items-center text-center px-6 max-w-lg">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-tr from-emerald-500 to-cyan-500 p-1 shadow-2xl shadow-cyan-500/40 mb-5 flex items-center justify-center scale-110 transition-transform">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-black text-white tracking-tight mb-2">
+                {{ __('Preparing Digital Voting Booth...') }}
+            </h3>
+            <p class="text-sm sm:text-base font-bold text-cyan-200">
+                {{ __('Welcome to Cooperative General Election') }}
+            </p>
+        </div>
+    </div>
+
     <div class="flex-1 flex flex-col p-3.5 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full min-w-0 box-border overflow-x-hidden">
 
         <!-- Top Navigation & Live Header (Row 1 Header Text at Top, Row 2 Controls & Large Language Switcher) -->
-        <header class="pb-6 mb-6 border-b border-slate-200 space-y-4">
+        <header id="main-header" class="pb-6 mb-6 border-b border-slate-200 space-y-4">
             <!-- Row 1: Header Text (Brand Logo + Title + Subtitle + Live SSE Badge at Top Full Width) -->
             <div class="flex items-center space-x-3.5 min-w-0">
                 <div
@@ -109,7 +170,7 @@
         <!-- ACTION CARD: ENTER VOTING BOOTH (1 FULL CLICKABLE ROW)   -->
         <!-- Fluid 3D Three.js Asset + Purple/Blue/Cyan Blend Card    -->
         <!-- ======================================================== -->
-        <a href="{{ route('voter.tap') }}" id="voting-hero-card"
+        <a href="{{ route('voter.tap') }}" id="voting-hero-card" onclick="handleVotingHeroClick(event)"
             class="voting-hero-card group w-full p-5 sm:p-6 lg:p-7 rounded-3xl text-white shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-between gap-4 cursor-pointer mb-8 border-2 border-white/25 hover:border-white/40 hover:scale-[1.008] active:scale-[0.995] relative overflow-hidden">
             
             <!-- Soft Ambient Glow Orbs -->
@@ -144,14 +205,6 @@
                     class="w-24 h-32 sm:w-28 sm:h-36 md:w-32 md:h-40 rounded-2xl sm:rounded-3xl bg-white/10 backdrop-blur-md border border-white/25 shadow-inner flex items-center justify-center relative overflow-hidden group-hover:border-cyan-300/60 group-hover:scale-105 group-hover:shadow-cyan-500/30 group-hover:shadow-lg transition-all duration-300">
                     <!-- Three.js Canvas mounts here -->
                     <div id="hero-card-3d-canvas" class="w-full h-full flex items-center justify-center pointer-events-none"></div>
-
-                    <!-- Subtle Enter Indicator Tag -->
-                    <div class="absolute bottom-1 sm:bottom-1.5 px-2.5 py-0.5 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/25 text-[9px] sm:text-[11px] font-black tracking-wider uppercase text-cyan-200 pointer-events-none flex items-center gap-1 shadow-sm">
-                        <span>{{ __('Tap Card') }}</span>
-                        <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3 text-cyan-300 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
-                        </svg>
-                    </div>
                 </div>
             </div>
         </a>
@@ -1395,6 +1448,9 @@
                 const isHidden = content.classList.contains('hidden');
                 if (isHidden) {
                     content.classList.remove('hidden');
+                    if (window.gsap) {
+                        window.gsap.fromTo(content, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.5)' });
+                    }
                     if (chevron) chevron.classList.remove('rotate-180');
                     if (stateBadge) stateBadge.innerText = '{{ __('Fold Section') }}';
                     if (secId === 'sec-chart' && comparisonChart) {
@@ -1578,10 +1634,161 @@
                     setTimeout(startHero3DCard, 60);
                 }
             }
+
+            // 1. Initial Render Fluid Welcoming Loading Overlay (2 Seconds)
+            function runInitialLoadingOverlay() {
+                const overlay = document.getElementById('welcome-loading-overlay');
+                const bar = document.getElementById('welcome-loading-bar');
+                if (!overlay || !bar) {
+                    triggerEntranceSundul();
+                    return;
+                }
+
+                // Trigger smooth 2-second progress bar fill
+                requestAnimationFrame(() => {
+                    bar.style.width = '100%';
+                });
+
+                // Exactly 2.0 seconds later, play welcoming audio & fluidly reveal page
+                setTimeout(() => {
+                    if (window.SoundEffects && typeof window.SoundEffects.welcome === 'function') {
+                        window.SoundEffects.welcome();
+                    }
+
+                    if (window.gsap) {
+                        window.gsap.to(overlay, {
+                            yPercent: -100,
+                            duration: 0.85,
+                            ease: 'power4.inOut',
+                            onComplete: () => {
+                                overlay.style.display = 'none';
+                                triggerEntranceSundul();
+                            }
+                        });
+                    } else {
+                        overlay.style.opacity = '0';
+                        overlay.style.transform = 'translateY(-100%)';
+                        setTimeout(() => {
+                            overlay.style.display = 'none';
+                            triggerEntranceSundul();
+                        }, 800);
+                    }
+                }, 2000);
+            }
+
+            // 2. GSAP Entrance "Sundul" (Spring Bumps) & Staggered Section Reveals
+            function triggerEntranceSundul() {
+                if (!window.gsap) return;
+
+                // Header spring entrance
+                window.gsap.from('#main-header', {
+                    y: -35,
+                    opacity: 0,
+                    duration: 0.75,
+                    ease: 'back.out(1.6)'
+                });
+
+                // Voting Hero Card "sundul" (elastic spring up)
+                window.gsap.from('#voting-hero-card', {
+                    y: 55,
+                    scale: 0.94,
+                    opacity: 0,
+                    duration: 0.9,
+                    delay: 0.15,
+                    ease: 'back.out(1.7)'
+                });
+
+                // Overview section spring
+                window.gsap.from('#sec-overview', {
+                    y: 60,
+                    opacity: 0,
+                    duration: 0.85,
+                    delay: 0.28,
+                    ease: 'back.out(1.4)'
+                });
+
+                setupScrollSundul();
+            }
+
+            // 3. Anchor Section Hit & Scroll "Sundul" Animations
+            function setupScrollSundul() {
+                if (!('IntersectionObserver' in window) || !window.gsap) return;
+
+                const sections = document.querySelectorAll('#sec-guide, #sec-comparison, #sec-conclusion');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !entry.target.dataset.sundulAnimated) {
+                            entry.target.dataset.sundulAnimated = 'true';
+                            window.gsap.fromTo(entry.target, 
+                                { y: 40, opacity: 0.25 }, 
+                                { y: 0, opacity: 1, duration: 0.75, ease: 'back.out(1.5)' }
+                            );
+                        }
+                    });
+                }, { threshold: 0.12 });
+
+                sections.forEach(sec => observer.observe(sec));
+            }
+
+            // 4. Satisfying Smooth Boomer Click Transition ("Bikin Lega & Impressed")
+            let isNavigatingToBooth = false;
+            window.handleVotingHeroClick = function(e) {
+                e.preventDefault();
+                if (isNavigatingToBooth) return;
+                isNavigatingToBooth = true;
+
+                const targetUrl = document.getElementById('voting-hero-card').getAttribute('href');
+
+                // A. Play opulent harmonic chime sound
+                if (window.SoundEffects && typeof window.SoundEffects.success === 'function') {
+                    window.SoundEffects.success();
+                }
+
+                // B. Confetti celebration particles
+                if (typeof window.confetti === 'function') {
+                    window.confetti({
+                        particleCount: 50,
+                        spread: 75,
+                        origin: { y: 0.6 }
+                    });
+                }
+
+                // C. 3D Card 360-spin & forward zoom warp
+                if (heroCard3DInstance && typeof heroCard3DInstance.triggerSatisfyingClickAnimation === 'function') {
+                    heroCard3DInstance.triggerSatisfyingClickAnimation();
+                }
+
+                // D. Show soothing boomer transition overlay
+                const transitionOverlay = document.getElementById('boomer-transition-overlay');
+                if (transitionOverlay) {
+                    transitionOverlay.classList.remove('hidden');
+                    transitionOverlay.classList.add('flex');
+                    if (window.gsap) {
+                        window.gsap.to(transitionOverlay, {
+                            opacity: 1,
+                            duration: 0.45,
+                            ease: 'power2.out'
+                        });
+                    } else {
+                        transitionOverlay.style.opacity = '1';
+                    }
+                }
+
+                // E. Smooth redirect to voting kiosk after satisfying animation
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 750);
+            };
+
+            // Initialize 3D Card & Loading Overlay on Load
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', startHero3DCard);
+                document.addEventListener('DOMContentLoaded', () => {
+                    startHero3DCard();
+                    runInitialLoadingOverlay();
+                });
             } else {
                 startHero3DCard();
+                runInitialLoadingOverlay();
             }
         </script>
     @endpush
