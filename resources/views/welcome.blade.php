@@ -29,71 +29,105 @@
                 <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 rounded-md transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
             </div>
 
-            <a href="{{ route('voter.tap') }}" class="flex-1 sm:flex-none justify-center px-4 py-2.5 sm:px-5 sm:py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm shadow-md transition flex items-center space-x-2">
-                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 004 11m0 0a8 8 0 00.99 7.132"></path></svg>
-                <span>{{ __('Open Voting Terminal (Tap Card)') }}</span>
+            <a href="{{ route('voter.tap') }}" class="flex-1 sm:flex-none justify-center px-6 py-3 sm:px-7 sm:py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-black text-sm sm:text-base shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 transition-all transform hover:-translate-y-0.5 flex items-center space-x-3 cursor-pointer">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
+                    <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
+                    <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
+                    <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
+                </svg>
+                <span class="tracking-wide">{{ __('Tap RFID Card to Vote') }}</span>
             </a>
         </div>
     </header>
 
-    <!-- Executive Public Election Overview Banner -->
-    <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs mb-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-center">
+    <!-- Executive Public Election Overview Banner (Boomer-friendly, Large Typography) -->
+    <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm mb-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-stretch">
             
             <!-- Turnout Percentage & Progress -->
-            <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">{{ __('Voter Participation Rate') }}</span>
-                <div class="flex items-baseline space-x-2">
-                    <span id="stat-turnout-pct" class="text-3xl sm:text-4xl font-black text-blue-600">{{ $metrics['turnout_pct'] }}%</span>
-                    <span class="text-xs text-slate-500 font-semibold">(<span id="stat-total-voted">{{ $metrics['total_voted'] }}</span> / <span id="stat-total-voters">{{ $metrics['total_voters'] }}</span> {{ __('Votes') }})</span>
+            <div class="flex flex-col justify-between">
+                <span class="text-sm sm:text-base font-extrabold uppercase tracking-wider text-slate-600 block mb-2">{{ __('Voter Participation Rate') }}</span>
+                <div class="flex items-baseline space-x-2 my-auto">
+                    <span id="stat-turnout-pct" class="text-4xl sm:text-5xl font-black text-blue-600 font-mono tracking-tight">{{ $metrics['turnout_pct'] }}%</span>
                 </div>
-                <div class="w-full bg-slate-100 rounded-full h-2.5 mt-2.5 overflow-hidden">
-                    <div id="stat-turnout-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-700 ease-out" style="width: {{ $metrics['turnout_pct'] }}%;"></div>
+                <div class="mt-2">
+                    <span class="text-sm sm:text-base text-slate-700 font-bold block mb-2">
+                        <span id="stat-total-voted" class="text-blue-700">{{ $metrics['total_voted'] }}</span> / <span id="stat-total-voters">{{ $metrics['total_voters'] }}</span> {{ __('Votes') }}
+                    </span>
+                    <div class="w-full bg-slate-100 rounded-full h-3.5 overflow-hidden">
+                        <div id="stat-turnout-bar" class="bg-gradient-to-r from-blue-600 to-indigo-600 h-3.5 rounded-full transition-all duration-700 ease-out" style="width: {{ $metrics['turnout_pct'] }}%;"></div>
+                    </div>
                 </div>
             </div>
 
             <!-- Election Status & Security -->
-            <div class="border-t sm:border-t-0 sm:border-l border-slate-200 pt-4 sm:pt-0 sm:pl-6">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">{{ __('Election Status') }}</span>
-                <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-lg font-bold text-slate-800">{{ __('Active & Verified') }}</span>
+            <div class="border-t sm:border-t-0 sm:border-l border-slate-200 pt-5 sm:pt-0 sm:pl-6 lg:pl-8 flex flex-col justify-between">
+                <span class="text-sm sm:text-base font-extrabold uppercase tracking-wider text-slate-600 block mb-2">{{ __('Election Status') }}</span>
+                <div class="flex items-center space-x-3 my-auto py-2">
+                    <span class="w-4 h-4 rounded-full bg-emerald-500 shadow-md shadow-emerald-500/50 animate-pulse shrink-0"></span>
+                    <span class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Active & Verified') }}</span>
                 </div>
-                <p class="text-xs text-slate-500 mt-1 font-medium">Bilik Suara Siap Digunakan • Aman & Terverifikasi</p>
+                <p class="text-xs sm:text-sm text-slate-600 font-bold mt-2">
+                    ✓ {{ __('Bilik Suara Siap Digunakan • Aman & Terverifikasi') }}
+                </p>
             </div>
 
-            <!-- Frontrunners Spotlight -->
-            <div class="border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-6">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">{{ __('Frontrunners Spotlight') }}</span>
-                <div class="space-y-1">
-                    <div class="text-xs text-slate-700 flex items-center justify-between">
-                        <span class="font-medium">{{ __('Chairman:') }}</span>
-                        <strong id="leader-ketua-text" class="text-red-700 truncate max-w-[170px]">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+            <!-- Frontrunners Spotlight (Redesigned & Premium Leaderboard) -->
+            <div class="border-t lg:border-t-0 lg:border-l border-slate-200 pt-5 lg:pt-0 lg:pl-6 lg:pl-8 flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm sm:text-base font-extrabold uppercase tracking-wider text-slate-700 flex items-center space-x-1.5">
+                        <span>🏆</span>
+                        <span>{{ __('Leading Frontrunners') }}</span>
+                    </span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-100 text-amber-900 border border-amber-300">Live Top</span>
+                </div>
+                <div class="space-y-2.5 my-auto">
+                    <!-- Chairman Leader Capsule -->
+                    <div class="p-2.5 sm:p-3 rounded-2xl bg-rose-50/90 border border-rose-200/80 flex items-center justify-between shadow-2xs">
+                        <div class="flex items-center space-x-2.5 min-w-0 pr-2">
+                            <span class="w-6 h-6 rounded-lg bg-red-600 text-white font-black text-xs flex items-center justify-center shrink-0">1</span>
+                            <div class="min-w-0">
+                                <span class="text-[10px] font-black uppercase text-red-700 block tracking-wider leading-none mb-0.5">{{ __('Chairman') }}</span>
+                                <strong id="leader-ketua-text" class="text-sm sm:text-base font-black text-slate-900 truncate block">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-red-600 text-white shadow-2xs shrink-0">Unggul</span>
                     </div>
-                    <div class="text-xs text-slate-700 flex items-center justify-between">
-                        <span class="font-medium">{{ __('Supervisors:') }}</span>
-                        <strong id="leader-pengawas-text" class="text-emerald-700 truncate max-w-[170px]">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+
+                    <!-- Supervisor Leader Capsule -->
+                    <div class="p-2.5 sm:p-3 rounded-2xl bg-emerald-50/90 border border-emerald-200/80 flex items-center justify-between shadow-2xs">
+                        <div class="flex items-center space-x-2.5 min-w-0 pr-2">
+                            <span class="w-6 h-6 rounded-lg bg-emerald-600 text-white font-black text-xs flex items-center justify-center shrink-0">2</span>
+                            <div class="min-w-0">
+                                <span class="text-[10px] font-black uppercase text-emerald-800 block tracking-wider leading-none mb-0.5">{{ __('Supervisor') }}</span>
+                                <strong id="leader-pengawas-text" class="text-sm sm:text-base font-black text-slate-900 truncate block">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-emerald-600 text-white shadow-2xs shrink-0">Unggul</span>
                     </div>
                 </div>
             </div>
 
             <!-- Voting Deadline Countdown -->
-            <div id="deadline-container" class="border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-6 {{ empty($metrics['voting_deadline']) ? 'hidden' : '' }}">
-                <div class="flex items-center justify-between mb-1">
-                    <span class="text-xs font-bold uppercase tracking-wider text-rose-600 block">⏰ Batas Waktu Vote</span>
-                    <span id="deadline-status-pill" class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-rose-50 text-rose-700 border border-rose-200">Countdown</span>
+            <div id="deadline-container" class="border-t lg:border-t-0 lg:border-l border-slate-200 pt-5 lg:pt-0 lg:pl-6 lg:pl-8 flex flex-col justify-between {{ empty($metrics['voting_deadline']) ? 'hidden' : '' }}">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm sm:text-base font-extrabold uppercase tracking-wider text-rose-700 flex items-center space-x-1.5">
+                        <span>⏰</span>
+                        <span>Batas Waktu Vote</span>
+                    </span>
+                    <span id="deadline-status-pill" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-rose-100 text-rose-800 border border-rose-300">Countdown</span>
                 </div>
-                <div class="flex items-center space-x-1 font-mono text-base sm:text-lg font-black text-slate-900" id="deadline-countdown-timer">
-                    <span id="deadline-days" class="bg-slate-100 px-1.5 py-0.5 rounded-md">00d</span>
+                <div class="flex items-center space-x-1.5 font-mono text-xl sm:text-2xl font-black text-slate-900 my-auto py-1" id="deadline-countdown-timer">
+                    <span id="deadline-days" class="bg-slate-100 border border-slate-200 px-2 py-1 rounded-xl">00d</span>
                     <span>:</span>
-                    <span id="deadline-hours" class="bg-slate-100 px-1.5 py-0.5 rounded-md">00h</span>
+                    <span id="deadline-hours" class="bg-slate-100 border border-slate-200 px-2 py-1 rounded-xl">00h</span>
                     <span>:</span>
-                    <span id="deadline-mins" class="bg-slate-100 px-1.5 py-0.5 rounded-md">00m</span>
+                    <span id="deadline-mins" class="bg-slate-100 border border-slate-200 px-2 py-1 rounded-xl">00m</span>
                     <span>:</span>
-                    <span id="deadline-secs" class="bg-slate-100 px-1.5 py-0.5 rounded-md text-rose-600">00s</span>
+                    <span id="deadline-secs" class="bg-slate-100 border border-slate-200 px-2 py-1 rounded-xl text-rose-600">00s</span>
                 </div>
-                <p id="deadline-info-text" class="text-[11px] text-slate-500 mt-1 font-medium truncate">
-                    Batas: <strong id="deadline-formatted-text" class="text-slate-800">{{ $metrics['deadline_formatted'] ?? '-' }}</strong>
+                <p id="deadline-info-text" class="text-xs sm:text-sm text-slate-600 mt-2 font-bold truncate">
+                    Batas: <strong id="deadline-formatted-text" class="text-slate-900 font-extrabold">{{ $metrics['deadline_formatted'] ?? '-' }}</strong>
                 </p>
             </div>
 
@@ -103,102 +137,127 @@
     <!-- ======================================================== -->
     <!-- ADVANCED COMPARATIVE BAR CHART SECTION                   -->
     <!-- ======================================================== -->
-    <div class="mb-10 p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-4 border-b border-slate-200 gap-3">
+    <div class="mb-10 p-6 sm:p-8 rounded-3xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-5 mb-5 border-b border-slate-200 gap-4">
             <div>
-                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">{{ __('Comparative Bar Chart of All Candidates') }}</h2>
-                <p class="text-xs text-slate-500 font-medium">Distribusi perolehan suara & persentase pemilihan Ketua & Pengawas Koperasi</p>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">{{ __('Comparative Bar Chart of All Candidates') }}</h2>
+                <p class="text-sm sm:text-base text-slate-600 font-semibold mt-1">{{ __('Real-time vote count distribution and percentage for Chairman and Supervisory Board') }}</p>
             </div>
 
-            <!-- Filter Tabs for Chart Comparison -->
-            <div class="inline-flex overflow-x-auto max-w-full rounded-xl bg-slate-100 p-1 text-xs font-bold self-start sm:self-auto shadow-2xs">
-                <button type="button" onclick="switchChartMode('all')" id="btn-chart-all" class="px-3 sm:px-3.5 py-1.5 rounded-lg bg-white text-slate-900 shadow-2xs transition cursor-pointer whitespace-nowrap">{{ __('All Candidates') }}</button>
-                <button type="button" onclick="switchChartMode('ketua')" id="btn-chart-ketua" class="px-3 sm:px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer whitespace-nowrap"><span class="sm:hidden">{{ __('Ketua') }}</span><span class="hidden sm:inline">{{ __('Chairman Candidates') }}</span></button>
-                <button type="button" onclick="switchChartMode('pengawas')" id="btn-chart-pengawas" class="px-3 sm:px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer whitespace-nowrap"><span class="sm:hidden">{{ __('Pengawas') }}</span><span class="hidden sm:inline">{{ __('Supervisor Candidates') }}</span></button>
+            <!-- Filter Tabs for Chart Comparison (Larger Text, Boomer-Friendly) -->
+            <div class="inline-flex overflow-x-auto max-w-full rounded-2xl bg-slate-100 p-1.5 text-sm sm:text-base font-extrabold self-start sm:self-auto shadow-inner">
+                <button type="button" onclick="switchChartMode('all')" id="btn-chart-all" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white text-slate-900 shadow-sm transition cursor-pointer whitespace-nowrap font-black">{{ __('All Candidates') }}</button>
+                <button type="button" onclick="switchChartMode('ketua')" id="btn-chart-ketua" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer whitespace-nowrap font-extrabold">{{ __('Chairman Candidates') }}</button>
+                <button type="button" onclick="switchChartMode('pengawas')" id="btn-chart-pengawas" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer whitespace-nowrap font-extrabold">{{ __('Supervisor Candidates') }}</button>
             </div>
         </div>
 
-        <!-- Comparative Bar Chart Container (Lapang & Berjarak Sehat dari Legend) -->
-        <div class="relative w-full max-w-5xl mx-auto h-72 sm:h-84 md:h-96 px-2 sm:px-4 pt-2 pb-4">
+        <!-- Comparative Bar Chart Container (Enlarged, Minimalist Glass, Generous Height) -->
+        <div class="relative w-full max-w-6xl mx-auto h-[420px] sm:h-[480px] md:h-[520px] px-2 sm:px-4 pt-3 pb-6">
             <canvas id="comparisonChart"></canvas>
         </div>
     </div>
 
     <!-- ======================================================== -->
     <!-- ELECTION CATEGORIES & PROCEDURAL GUIDE                   -->
-    <!-- (Simple, Clean, Easy to understand for all ages)         -->
+    <!-- (Full Width 1-Column, Boomer-Friendly, Simple, Bilingual)-->
     <!-- ======================================================== -->
-    <div class="mb-10 p-6 sm:p-7 rounded-3xl bg-slate-50 border border-slate-200">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 mb-5 border-b border-slate-200">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <div class="mb-10 p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-200">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 mb-6 border-b border-slate-200">
+            <div class="flex items-center space-x-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black shadow-sm shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <div>
-                    <h3 class="text-base sm:text-lg font-black text-slate-900">{{ __('Panduan & Kategori Pemilihan') }}</h3>
-                    <p class="text-xs text-slate-500 font-medium">{{ __('Ringkasan peran kepengurusan koperasi dan ketentuan pemberian suara sah') }}</p>
+                    <h3 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">{{ __('Voting Guide & Leadership Roles') }}</h3>
+                    <p class="text-sm sm:text-base text-slate-600 font-semibold mt-0.5">{{ __('Simple voting instructions and summary of cooperative leadership roles') }}</p>
                 </div>
             </div>
-            <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white text-slate-700 border border-slate-200 shadow-2xs self-start md:self-auto">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span>{{ __('Asas Luber Jurdil & Terverifikasi') }}</span>
+            <span class="inline-flex items-center space-x-2 px-4 py-2 rounded-2xl text-xs sm:text-sm font-extrabold bg-white text-slate-800 border border-slate-200 shadow-2xs self-start md:self-auto">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>{{ __('Direct, Free & Confidential') }}</span>
             </span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            <!-- Card 1: Ketua Koperasi -->
-            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-2.5">
-                        <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase bg-red-50 text-red-700 border border-red-200">Kategori 1</span>
-                        <span class="text-xs font-bold text-slate-400">1 Suara Sah</span>
+        <!-- Single Column Full Width Stacked Cards -->
+        <div class="grid grid-cols-1 gap-4 sm:gap-5">
+            <!-- Row 1: How to Vote (Tata Cara Memilih - 3 Langkah Mudah) -->
+            <div class="p-5 sm:p-7 rounded-2xl bg-white border border-blue-200/80 shadow-2xs">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-4 border-b border-slate-100">
+                    <div class="flex items-center space-x-2.5">
+                        <span class="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200">
+                            {{ __('Procedures') }}
+                        </span>
+                        <h4 class="text-base sm:text-xl font-black text-slate-900">{{ __('How to Vote in 3 Easy Steps') }}</h4>
                     </div>
-                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 mb-1.5">{{ __('Ketua Koperasi') }}</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">
-                        {{ __('Pemimpin eksekutif yang bertugas menyusun visi strategis, mengelola operasional usaha, dan mengayomi kesejahteraan seluruh anggota koperasi.') }}
-                    </p>
+                    <span class="text-xs sm:text-sm font-bold text-blue-700">1 {{ __('Anggota') }} = 1 {{ __('Suara Sah') }}</span>
                 </div>
-                <div class="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-red-700">
-                    <span>{{ count($ketuaResults) }} {{ __('Kandidat Terdaftar') }}</span>
-                    <span>Wajib Memilih 1</span>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start space-x-3.5">
+                        <div class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shrink-0">1</div>
+                        <div>
+                            <strong class="text-sm sm:text-base font-black text-slate-900 block mb-1">{{ __('1. Tap Member RFID Card') }}</strong>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">{{ __('Scan your member card at the voting booth terminal to activate ballot.') }}</p>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start space-x-3.5">
+                        <div class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shrink-0">2</div>
+                        <div>
+                            <strong class="text-sm sm:text-base font-black text-slate-900 block mb-1">{{ __('2. Select Candidates') }}</strong>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">{{ __('Touch the photo of 1 Chairman candidate and 1 Supervisory candidate.') }}</p>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start space-x-3.5">
+                        <div class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shrink-0">3</div>
+                        <div>
+                            <strong class="text-sm sm:text-base font-black text-slate-900 block mb-1">{{ __('3. Submit Vote') }}</strong>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">{{ __('Review your selections and tap the Submit Vote button to complete.') }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Card 2: Pengawas Koperasi -->
-            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-2.5">
-                        <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase bg-emerald-50 text-emerald-800 border border-emerald-200">Kategori 2</span>
-                        <span class="text-xs font-bold text-slate-400">1 Suara Sah</span>
+            <!-- Row 2: Category 1 - Ketua Koperasi (Chairman) -->
+            <div class="p-5 sm:p-7 rounded-2xl bg-white border border-rose-200/80 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex-1">
+                    <div class="flex items-center space-x-2.5 mb-2">
+                        <span class="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200">
+                            {{ __('Category 1') }}
+                        </span>
+                        <h4 class="text-base sm:text-xl font-black text-slate-900">{{ __('Category 1: Cooperative Chairman') }}</h4>
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-red-100 text-red-800 border border-red-200">
+                            {{ __('1 Vote Required') }}
+                        </span>
                     </div>
-                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 mb-1.5">{{ __('Badan Pengawas') }}</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">
-                        {{ __('Badan independen yang bertanggung jawab melakukan audit kepatuhan, pengawasan laporan keuangan, serta tata kelola organisasi koperasi.') }}
+                    <p class="text-sm sm:text-base text-slate-700 font-medium leading-relaxed max-w-4xl">
+                        {{ __('Chief executive leader responsible for setting strategic vision, managing business operations, and advancing the welfare of all cooperative members.') }}
                     </p>
                 </div>
-                <div class="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-emerald-800">
-                    <span>{{ count($pengawasResults) }} {{ __('Kandidat Terdaftar') }}</span>
-                    <span>Wajib Memilih 1</span>
+                <div class="flex items-center md:flex-col md:items-end justify-between border-t md:border-t-0 md:border-l border-slate-100 pt-3 md:pt-0 md:pl-6 shrink-0">
+                    <span class="text-base sm:text-lg font-black text-red-700 font-mono">{{ count($ketuaResults) }} {{ __('Registered Candidates') }}</span>
+                    <span class="text-xs text-slate-500 font-bold uppercase">{{ __('Wajib Memilih 1 Calon') }}</span>
                 </div>
             </div>
 
-            <!-- Card 3: Prosedur Voting (Boomer-friendly) -->
-            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-2.5">
-                        <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase bg-blue-50 text-blue-700 border border-blue-200">Cara Memilih</span>
-                        <span class="text-xs font-bold text-slate-500">Kartu Anggota</span>
+            <!-- Row 3: Category 2 - Badan Pengawas (Supervisory Board) -->
+            <div class="p-5 sm:p-7 rounded-2xl bg-white border border-emerald-200/80 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex-1">
+                    <div class="flex items-center space-x-2.5 mb-2">
+                        <span class="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                            {{ __('Category 2') }}
+                        </span>
+                        <h4 class="text-base sm:text-xl font-black text-slate-900">{{ __('Category 2: Supervisory Board') }}</h4>
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-emerald-100 text-emerald-800 border border-emerald-200">
+                            {{ __('1 Vote Required') }}
+                        </span>
                     </div>
-                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 mb-1.5">{{ __('Tata Cara Memilih') }}</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">
-                        {{ __('1. Tempelkan kartu anggota Anda pada alat pemindai di bilik suara.') }}<br>
-                        {{ __('2. Sentuh foto calon Ketua dan calon Pengawas pilihan Anda.') }}<br>
-                        {{ __('3. Periksa kembali pilihan Anda, lalu sentuh tombol Kirim Suara.') }}
+                    <p class="text-sm sm:text-base text-slate-700 font-medium leading-relaxed max-w-4xl">
+                        {{ __('Independent oversight committee responsible for financial audits, regulatory compliance, and organizational governance.') }}
                     </p>
                 </div>
-                <div class="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-700">
-                    <span>{{ __('Aman & Rahasia') }}</span>
-                    <span>1 Anggota 1 Suara</span>
+                <div class="flex items-center md:flex-col md:items-end justify-between border-t md:border-t-0 md:border-l border-slate-100 pt-3 md:pt-0 md:pl-6 shrink-0">
+                    <span class="text-base sm:text-lg font-black text-emerald-800 font-mono">{{ count($pengawasResults) }} {{ __('Registered Candidates') }}</span>
+                    <span class="text-xs text-slate-500 font-bold uppercase">{{ __('Wajib Memilih 1 Calon') }}</span>
                 </div>
             </div>
         </div>
@@ -518,14 +577,27 @@
                 ctx.fillText(cand.nomor_urut, xPos + size / 2 - 2, yPos + 4);
                 ctx.restore();
 
-                // Candidate short name
+                // Candidate full name (horizontal, non-tilted, clean multi-line wrapping if needed)
                 ctx.save();
-                ctx.font = 'bold 11px Plus Jakarta Sans, sans-serif';
-                ctx.fillStyle = '#334155';
+                ctx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
+                ctx.fillStyle = '#0f172a';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'top';
-                const shortName = cand.nama.split(' ')[0];
-                ctx.fillText(shortName, xPos, yPos + size + 6);
+
+                const fullName = cand.nama || '';
+                const words = fullName.split(' ');
+                if (words.length > 2) {
+                    const mid = Math.ceil(words.length / 2);
+                    const line1 = words.slice(0, mid).join(' ');
+                    const line2 = words.slice(mid).join(' ');
+                    ctx.fillText(line1, xPos, yPos + size + 7);
+                    ctx.fillText(line2, xPos, yPos + size + 21);
+                } else if (fullName.length > 14 && words.length === 2) {
+                    ctx.fillText(words[0], xPos, yPos + size + 7);
+                    ctx.fillText(words[1], xPos, yPos + size + 21);
+                } else {
+                    ctx.fillText(fullName, xPos, yPos + size + 7);
+                }
                 ctx.restore();
             });
         }
@@ -551,9 +623,9 @@
                 layout: {
                     padding: {
                         top: 36,
-                        bottom: 56, // Extra breathing space for photo avatars
-                        left: 12,
-                        right: 12
+                        bottom: 84, // Extra breathing space for full candidate names & avatars
+                        left: 14,
+                        right: 14
                     }
                 },
                 animation: {
@@ -566,11 +638,11 @@
                         align: 'center',
                         labels: {
                             padding: 24,
-                            font: { family: 'Plus Jakarta Sans', weight: 'bold', size: 13 },
+                            font: { family: 'Plus Jakarta Sans', weight: 'bold', size: 14 },
                             usePointStyle: true,
-                            pointStyle: 'rectRounded',
-                            boxWidth: 14,
-                            boxHeight: 14
+                            pointStyle: 'rect',
+                            boxWidth: 16,
+                            boxHeight: 16
                         }
                     },
                     tooltip: {
@@ -625,8 +697,8 @@
                         }
                     },
                     x: {
-                        barPercentage: 0.6,
-                        categoryPercentage: 0.6,
+                        barPercentage: 0.65,
+                        categoryPercentage: 0.65,
                         ticks: {
                             display: false // Hide text ticks, rendered as circular photo avatars by candidateAvatarPlugin
                         },
@@ -644,30 +716,28 @@
             return {
                 labels: rawKetuaData.map(k => k.nama),
                 datasets: [{
-                    label: 'Calon Ketua Koperasi',
+                    label: '{{ __('Category 1: Cooperative Chairman') }}',
                     data: rawKetuaData.map(k => k.suara),
-                    backgroundColor: 'rgba(220, 38, 38, 0.85)',
-                    hoverBackgroundColor: '#dc2626',
-                    borderColor: '#b91c1c',
-                    borderWidth: 2,
-                    borderRadius: 8,
-                    barThickness: 22,
-                    maxBarThickness: 30,
+                    backgroundColor: 'rgba(239, 68, 68, 0.85)',
+                    hoverBackgroundColor: 'rgba(220, 38, 38, 0.95)',
+                    borderWidth: 0,
+                    borderRadius: 0,
+                    barThickness: 32,
+                    maxBarThickness: 44,
                 }]
             };
         } else if (mode === 'pengawas') {
             return {
                 labels: rawPengawasData.map(p => p.nama),
                 datasets: [{
-                    label: 'Calon Pengawas Koperasi',
+                    label: '{{ __('Category 2: Supervisory Board') }}',
                     data: rawPengawasData.map(p => p.suara),
-                    backgroundColor: 'rgba(5, 150, 105, 0.85)',
-                    hoverBackgroundColor: '#059669',
-                    borderColor: '#047857',
-                    borderWidth: 2,
-                    borderRadius: 8,
-                    barThickness: 22,
-                    maxBarThickness: 30,
+                    backgroundColor: 'rgba(16, 185, 129, 0.85)',
+                    hoverBackgroundColor: 'rgba(5, 150, 105, 0.95)',
+                    borderWidth: 0,
+                    borderRadius: 0,
+                    barThickness: 32,
+                    maxBarThickness: 44,
                 }]
             };
         } else {
@@ -682,27 +752,25 @@
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Calon Ketua Koperasi',
+                        label: '{{ __('Category 1: Cooperative Chairman') }}',
                         data: ketuaVotes,
-                        backgroundColor: 'rgba(220, 38, 38, 0.85)',
-                        hoverBackgroundColor: '#dc2626',
-                        borderColor: '#b91c1c',
-                        borderWidth: 2,
-                        borderRadius: 8,
-                        barThickness: 22,
-                        maxBarThickness: 30,
+                        backgroundColor: 'rgba(239, 68, 68, 0.85)',
+                        hoverBackgroundColor: 'rgba(220, 38, 38, 0.95)',
+                        borderWidth: 0,
+                        borderRadius: 0,
+                        barThickness: 32,
+                        maxBarThickness: 44,
                         grouped: false,
                     },
                     {
-                        label: 'Calon Pengawas Koperasi',
+                        label: '{{ __('Category 2: Supervisory Board') }}',
                         data: pengawasVotes,
-                        backgroundColor: 'rgba(5, 150, 105, 0.85)',
-                        hoverBackgroundColor: '#059669',
-                        borderColor: '#047857',
-                        borderWidth: 2,
-                        borderRadius: 8,
-                        barThickness: 22,
-                        maxBarThickness: 30,
+                        backgroundColor: 'rgba(16, 185, 129, 0.85)',
+                        hoverBackgroundColor: 'rgba(5, 150, 105, 0.95)',
+                        borderWidth: 0,
+                        borderRadius: 0,
+                        barThickness: 32,
+                        maxBarThickness: 44,
                         grouped: false,
                     }
                 ]
@@ -714,9 +782,12 @@
         if (window.SoundEffects) window.SoundEffects.click();
         currentChartMode = mode;
 
-        document.getElementById('btn-chart-all').className = mode === 'all' ? 'px-3.5 py-1.5 rounded-lg bg-white text-slate-900 shadow-2xs transition cursor-pointer' : 'px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer';
-        document.getElementById('btn-chart-ketua').className = mode === 'ketua' ? 'px-3.5 py-1.5 rounded-lg bg-white text-slate-900 shadow-2xs transition cursor-pointer' : 'px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer';
-        document.getElementById('btn-chart-pengawas').className = mode === 'pengawas' ? 'px-3.5 py-1.5 rounded-lg bg-white text-slate-900 shadow-2xs transition cursor-pointer' : 'px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer';
+        const activeClass = 'px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white text-slate-900 shadow-sm transition cursor-pointer whitespace-nowrap font-black';
+        const inactiveClass = 'px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer whitespace-nowrap font-extrabold';
+
+        document.getElementById('btn-chart-all').className = mode === 'all' ? activeClass : inactiveClass;
+        document.getElementById('btn-chart-ketua').className = mode === 'ketua' ? activeClass : inactiveClass;
+        document.getElementById('btn-chart-pengawas').className = mode === 'pengawas' ? activeClass : inactiveClass;
 
         if (comparisonChart) {
             const { labels, datasets } = generateChartData(mode);
