@@ -4,6 +4,7 @@ import confetti from 'canvas-confetti';
 import { DataTable } from 'simple-datatables';
 import * as THREE from 'three';
 import { initRfid3DCard } from './rfid3d';
+import { initHero3DFluid } from './fluid3d';
 
 window.Chart = Chart;
 window.ApexCharts = ApexCharts;
@@ -11,6 +12,7 @@ window.confetti = confetti;
 window.DataTable = DataTable;
 window.THREE = THREE;
 window.initRfid3DCard = initRfid3DCard;
+window.initHero3DFluid = initHero3DFluid;
 
 window.initDataTables = function() {
     document.querySelectorAll('.datatable').forEach(table => {

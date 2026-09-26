@@ -2,6 +2,41 @@
 
 @section('title', __('Live Count Cooperative Election'))
 
+@push('styles')
+    <style>
+        @keyframes fluidGradientSlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .voting-hero-card {
+            background: linear-gradient(130deg, 
+                #581c87 0%, 
+                #7c3aed 18%, 
+                #4338ca 36%, 
+                #1d4ed8 54%, 
+                #0284c7 72%, 
+                #06b6d4 88%, 
+                #6b21a8 100%
+            );
+            background-size: 320% 320%;
+            animation: fluidGradientSlow 20s ease-in-out infinite;
+            box-shadow: 0 16px 36px -6px rgba(67, 56, 202, 0.4), 0 0 24px 0 rgba(6, 182, 212, 0.2);
+        }
+
+        .voting-hero-card:hover {
+            box-shadow: 0 22px 48px -6px rgba(124, 58, 237, 0.5), 0 0 36px 4px rgba(6, 182, 212, 0.35);
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="flex-1 flex flex-col p-3.5 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full min-w-0 box-border overflow-x-hidden">
 
@@ -72,27 +107,52 @@
 
         <!-- ======================================================== -->
         <!-- ACTION CARD: ENTER VOTING BOOTH (1 FULL CLICKABLE ROW)   -->
+        <!-- Fluid 3D Three.js Asset + Purple/Blue/Cyan Blend Card    -->
         <!-- ======================================================== -->
-        <a href="{{ route('voter.tap') }}"
-            class="group w-full p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white shadow-lg shadow-blue-600/25 hover:shadow-xl transition-all duration-200 flex items-center justify-between gap-4 cursor-pointer mb-8 border-2 border-blue-400/40 hover:scale-[1.008] active:scale-[0.995]">
-            <div class="flex items-center space-x-4 sm:space-x-5 min-w-0">
-                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/20 border-2 border-white/30 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 transition-transform">
-                    <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
+        <a href="{{ route('voter.tap') }}" id="voting-hero-card"
+            class="voting-hero-card group w-full p-5 sm:p-6 lg:p-7 rounded-3xl text-white shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-between gap-4 cursor-pointer mb-8 border-2 border-white/25 hover:border-white/40 hover:scale-[1.008] active:scale-[0.995] relative overflow-hidden">
+            
+            <!-- Soft Ambient Glow Orbs -->
+            <div class="absolute -right-20 -top-20 w-72 h-72 bg-cyan-400/25 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-20 -bottom-20 w-72 h-72 bg-purple-600/30 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Left: Icon & English/Bilingual Title -->
+            <div class="flex items-center space-x-3.5 sm:space-x-5 min-w-0 relative z-10">
+                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 group-hover:bg-white/20 transition-all duration-300">
+                    <svg class="w-7 h-7 sm:w-9 sm:h-9 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
                         <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
                         <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
                         <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
                     </svg>
                 </div>
                 <div class="min-w-0">
-                    <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-blue-200 block">{{ __('Digital Voting Booth') }}</span>
-                    <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight leading-tight">
-                        {{ __('Mulai Memilih (Sentuh Disini / Tap Kartu)') }}
+                    <div class="flex items-center gap-2 mb-0.5">
+                        <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-cyan-200 block drop-shadow-xs">{{ __('Digital Voting Booth') }}</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black bg-cyan-400/25 border border-cyan-300/40 text-cyan-100 uppercase tracking-widest hidden sm:inline-flex">
+                            {{ __('Ready') }}
+                        </span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight drop-shadow-sm">
+                        {{ __('Start Voting (Tap Card / Touch Here)') }}
                     </h2>
                 </div>
             </div>
-            <div class="shrink-0 flex items-center space-x-2 text-white font-black text-sm sm:text-base bg-white/20 group-hover:bg-white/30 px-5 py-2.5 rounded-2xl transition">
-                <span>{{ __('Masuk') }}</span>
-                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+
+            <!-- Right: Satisfying 3D Fluid Liquid Asset Container (Three.js WebGL) -->
+            <div class="shrink-0 flex items-center relative z-10 pl-2">
+                <div id="hero-fluid-3d-wrapper"
+                    class="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-2xl sm:rounded-3xl bg-white/10 backdrop-blur-md border border-white/25 shadow-inner flex items-center justify-center relative overflow-hidden group-hover:border-cyan-300/60 group-hover:scale-105 group-hover:shadow-cyan-500/30 group-hover:shadow-lg transition-all duration-300">
+                    <!-- Three.js Canvas mounts here -->
+                    <div id="hero-fluid-3d-canvas" class="w-full h-full flex items-center justify-center pointer-events-none"></div>
+
+                    <!-- Subtle Enter Indicator Tag -->
+                    <div class="absolute bottom-1 sm:bottom-1.5 px-2 py-0.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/25 text-[9px] sm:text-[11px] font-black tracking-wider uppercase text-cyan-200 pointer-events-none flex items-center gap-1 shadow-sm">
+                        <span>{{ __('Enter') }}</span>
+                        <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3 text-cyan-300 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                        </svg>
+                    </div>
+                </div>
             </div>
         </a>
 
@@ -217,7 +277,7 @@
                         </div>
 
                         <!-- Candidates Row (2 Wide Equal Columns with Spacious Padding) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
                             <!-- Chairman Leader -->
                             <div onclick="previewLeader('ketua')"
                                 class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 hover:border-red-400 hover:shadow-md transition-all flex items-center space-x-4 cursor-pointer group/leader"
@@ -1473,6 +1533,21 @@
                     btn.className = 'inline-flex items-center justify-center space-x-2 px-4 py-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-800 font-extrabold text-xs sm:text-sm border-2 border-blue-200 shadow-xs transition cursor-pointer self-start sm:self-auto';
                     label.innerText = '{{ __('Listen to Audio (TTS)') }}';
                 }
+            }
+
+            // Hero 3D Fluid Liquid Satisfying Orb (Three.js WebGL)
+            let heroFluidInstance = null;
+            function startHeroFluid3D() {
+                if (typeof window.initHero3DFluid === 'function') {
+                    heroFluidInstance = window.initHero3DFluid('hero-fluid-3d-canvas');
+                } else {
+                    setTimeout(startHeroFluid3D, 60);
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', startHeroFluid3D);
+            } else {
+                startHeroFluid3D();
             }
         </script>
     @endpush
