@@ -5,80 +5,70 @@
 @section('content')
 <div class="flex-1 flex flex-col p-3.5 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full min-w-0 box-border overflow-x-hidden">
 
-    <!-- Top Navigation & Live Header (Responsive Tablet/Mobile Friendly) -->
-    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b border-slate-200">
-        <!-- Brand / System Title -->
+    <!-- Top Navigation & Live Header (Row 1 Header Text at Top, Row 2 Components) -->
+    <header class="pb-6 mb-6 border-b border-slate-200 space-y-4">
+        <!-- Row 1: Header Text (Brand Logo + Title + Subtitle + Live SSE Badge at Top Full Width) -->
         <div class="flex items-center space-x-3.5 min-w-0">
             <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-xs shrink-0">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                 </svg>
             </div>
-            <div class="min-w-0">
+            <div class="min-w-0 flex-1">
                 <div class="flex items-center space-x-2.5 flex-wrap gap-y-1">
-                    <h1 class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight truncate">{{ __('Live Count Cooperative Election') }}</h1>
-                    <!-- Live SSE Status Badge -->
+                    <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">{{ __('Live Count Cooperative Election') }}</h1>
                     <span id="sse-status-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 shrink-0">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1.5"></span>
                         <span id="sse-status-text">Live SSE</span>
                     </span>
                 </div>
-                <p class="text-xs text-slate-500 font-medium mt-0.5 truncate">
+                <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
                     {{ __('Last Updated') }} • <span id="last-updated-text" class="font-bold text-slate-800">{{ $metrics['last_updated'] ?? (now()->timezone('Asia/Jakarta')->format('H:i:s') . ' WIB') }}</span>
                 </p>
             </div>
         </div>
 
-        <!-- Quick Access Buttons: Language Switcher + Tap RFID Card to Vote -->
-        <div class="flex items-center gap-2.5 sm:gap-3 w-full md:w-auto shrink-0">
-            <!-- Language Switcher Pill -->
-            <div class="inline-flex rounded-xl border border-slate-200 bg-white p-1 text-xs font-bold shadow-2xs shrink-0">
-                <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 rounded-md transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">EN</a>
-                <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 rounded-md transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
+        <!-- Row 2: Action Components Row (Controls on Left, Language Switcher & Tap RFID Button on Right) -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+            <!-- Left: Section Expand/Collapse Controls -->
+            <div class="flex items-center space-x-2">
+                <button type="button" onclick="expandAllSections()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-black shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <span>{{ __('Expand All') }}</span>
+                </button>
+                <button type="button" onclick="collapseAllSections()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-black shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                    <span>{{ __('Collapse All') }}</span>
+                </button>
             </div>
 
-            <!-- Terminal Tap Button (Mobile friendly, responsive, no horizontal scroll) -->
-            <a href="{{ route('voter.tap') }}" class="flex-1 md:flex-none justify-center px-4 py-2.5 sm:px-6 sm:py-3 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-black text-xs sm:text-sm md:text-base shadow-md shadow-blue-600/30 hover:shadow-lg hover:shadow-blue-600/40 transition-all flex items-center space-x-2.5 cursor-pointer min-w-0">
-                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
-                    <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
-                    <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
-                    <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
-                </svg>
-                <span class="tracking-wide truncate">{{ __('Tap RFID Card to Vote') }}</span>
-            </a>
+            <!-- Right: Language Switcher + Tap RFID Card to Vote Button -->
+            <div class="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+                <div class="inline-flex rounded-xl border border-slate-200 bg-white p-1 text-xs font-bold shadow-2xs shrink-0">
+                    <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 rounded-md transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">EN</a>
+                    <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 rounded-md transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
+                </div>
+
+                <a href="{{ route('voter.tap') }}" class="flex-1 sm:flex-none justify-center px-4 py-2.5 sm:px-6 sm:py-3 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-black text-xs sm:text-sm md:text-base shadow-md shadow-blue-600/30 hover:shadow-lg transition-all flex items-center space-x-2.5 cursor-pointer min-w-0">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
+                        <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
+                        <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
+                        <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
+                    </svg>
+                    <span class="tracking-wide truncate">{{ __('Tap RFID Card to Vote') }}</span>
+                </a>
+            </div>
         </div>
     </header>
-
-    <!-- Global Section Folding Controls Toolbar -->
-    <div class="flex items-center justify-between gap-3 mb-6 pb-2">
-        <div class="flex items-center space-x-2 text-xs text-slate-500 font-bold uppercase tracking-wider min-w-0">
-            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
-            </svg>
-            <span class="truncate">{{ __('Live Count Cooperative Election') }}</span>
-        </div>
-        <div class="flex items-center space-x-2 shrink-0">
-            <button type="button" onclick="expandAllSections()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-extrabold shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                <span>{{ __('Expand All') }}</span>
-            </button>
-            <button type="button" onclick="collapseAllSections()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-extrabold shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
-                <span>{{ __('Collapse All') }}</span>
-            </button>
-        </div>
-    </div>
 
     <!-- ======================================================== -->
     <!-- SECTION 1: EXECUTIVE OVERVIEW & KEY INDICATORS (FOLDABLE)-->
     <!-- ======================================================== -->
     <div id="sec-overview" class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
-        <!-- Section Foldable Header -->
+        <!-- Section Foldable Header (Minimalist Dot Color) -->
         <div class="flex items-center justify-between gap-3 pb-4 border-b border-slate-100 cursor-pointer select-none group" onclick="toggleSection('sec-overview')">
             <div class="flex items-center space-x-3 min-w-0">
-                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 flex items-center justify-center font-black shrink-0">
-                    📊
-                </div>
+                <span class="w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100 shrink-0"></span>
                 <div class="min-w-0">
                     <h2 class="text-base sm:text-xl font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition-colors truncate">
                         {{ __('Executive Overview & Metrics') }}
@@ -100,10 +90,10 @@
             </div>
         </div>
 
-        <!-- Section Content -->
+        <!-- Section Content (4 Harmonious, Balanced Overview Cards) -->
         <div id="sec-overview-content" class="pt-6">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-stretch">
-                <!-- Turnout Percentage & Progress -->
+                <!-- Card 1: Turnout Percentage & Progress -->
                 <div class="flex flex-col justify-between">
                     <span class="text-sm sm:text-base font-extrabold uppercase tracking-wider text-slate-600 block mb-2">{{ __('Voter Participation Rate') }}</span>
                     <div class="flex items-baseline space-x-2 my-auto">
@@ -119,7 +109,7 @@
                     </div>
                 </div>
 
-                <!-- Election Status & Security -->
+                <!-- Card 2: Election Status & Security -->
                 <div class="border-t sm:border-t-0 sm:border-l border-slate-200 pt-5 sm:pt-0 sm:pl-6 lg:pl-8 flex flex-col justify-between">
                     <span class="text-sm sm:text-base font-extrabold uppercase tracking-wider text-slate-600 block mb-2">{{ __('Election Status') }}</span>
                     <div class="flex items-center space-x-3 my-auto py-2">
@@ -131,43 +121,36 @@
                     </p>
                 </div>
 
-                <!-- Frontrunners Spotlight (Redesigned & Premium Leaderboard) -->
+                <!-- Card 3: Leading Frontrunners (Redesigned, Clean Symmetry, No Layout Distortion) -->
                 <div class="border-t lg:border-t-0 lg:border-l border-slate-200 pt-5 lg:pt-0 lg:pl-6 lg:pl-8 flex flex-col justify-between">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm sm:text-base font-extrabold uppercase tracking-wider text-slate-700 flex items-center space-x-1.5">
-                            <span>🏆</span>
-                            <span>{{ __('Leading Frontrunners') }}</span>
-                        </span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-100 text-amber-900 border border-amber-300">Live Top</span>
+                        <span class="text-sm sm:text-base font-extrabold uppercase tracking-wider text-slate-600 block">{{ __('Leading Frontrunners') }}</span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 ring-4 ring-amber-100 animate-pulse"></span>
                     </div>
-                    <div class="space-y-2.5 my-auto">
-                        <!-- Chairman Leader Capsule -->
-                        <div class="p-2.5 sm:p-3 rounded-2xl bg-rose-50/90 border border-rose-200/80 flex items-center justify-between shadow-2xs">
-                            <div class="flex items-center space-x-2.5 min-w-0 pr-2">
-                                <span class="w-6 h-6 rounded-lg bg-red-600 text-white font-black text-xs flex items-center justify-center shrink-0">1</span>
-                                <div class="min-w-0">
-                                    <span class="text-[10px] font-black uppercase text-red-700 block tracking-wider leading-none mb-0.5">{{ __('Chairman') }}</span>
-                                    <strong id="leader-ketua-text" class="text-sm sm:text-base font-black text-slate-900 truncate block">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
-                                </div>
+                    <div class="space-y-2.5 my-auto py-1">
+                        <!-- Chairman Leader -->
+                        <div class="flex items-center justify-between py-1 border-b border-slate-100">
+                            <div class="flex items-center space-x-2 min-w-0 pr-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-600 shrink-0"></span>
+                                <span class="text-xs font-bold text-slate-500 uppercase shrink-0">{{ __('Chairman') }}:</span>
+                                <strong id="leader-ketua-text" class="text-sm sm:text-base font-black text-slate-900 truncate">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                             </div>
-                            <span class="px-2 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-red-600 text-white shadow-2xs shrink-0">{{ __('Leading') }}</span>
                         </div>
-
-                        <!-- Supervisor Leader Capsule -->
-                        <div class="p-2.5 sm:p-3 rounded-2xl bg-emerald-50/90 border border-emerald-200/80 flex items-center justify-between shadow-2xs">
-                            <div class="flex items-center space-x-2.5 min-w-0 pr-2">
-                                <span class="w-6 h-6 rounded-lg bg-emerald-600 text-white font-black text-xs flex items-center justify-center shrink-0">2</span>
-                                <div class="min-w-0">
-                                    <span class="text-[10px] font-black uppercase text-emerald-800 block tracking-wider leading-none mb-0.5">{{ __('Supervisor') }}</span>
-                                    <strong id="leader-pengawas-text" class="text-sm sm:text-base font-black text-slate-900 truncate block">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
-                                </div>
+                        <!-- Supervisor Leader -->
+                        <div class="flex items-center justify-between py-1">
+                            <div class="flex items-center space-x-2 min-w-0 pr-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0"></span>
+                                <span class="text-xs font-bold text-slate-500 uppercase shrink-0">{{ __('Supervisor') }}:</span>
+                                <strong id="leader-pengawas-text" class="text-sm sm:text-base font-black text-slate-900 truncate">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                             </div>
-                            <span class="px-2 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-emerald-600 text-white shadow-2xs shrink-0">{{ __('Leading') }}</span>
                         </div>
                     </div>
+                    <p class="text-xs sm:text-sm text-slate-600 font-bold mt-2">
+                        ✓ {{ __('Highest live verified tally') }}
+                    </p>
                 </div>
 
-                <!-- Voting Deadline Countdown -->
+                <!-- Card 4: Voting Deadline Countdown -->
                 <div id="deadline-container" class="border-t lg:border-t-0 lg:border-l border-slate-200 pt-5 lg:pt-0 lg:pl-6 lg:pl-8 flex flex-col justify-between {{ empty($metrics['voting_deadline']) ? 'hidden' : '' }}">
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-sm sm:text-base font-extrabold uppercase tracking-wider text-rose-700 flex items-center space-x-1.5">
@@ -197,13 +180,11 @@
     <!-- SECTION 2: ADVANCED COMPARATIVE BAR CHART (FOLDABLE)     -->
     <!-- ======================================================== -->
     <div id="sec-chart" class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
-        <!-- Section Foldable Header -->
+        <!-- Section Foldable Header (Minimalist Dot Color) -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
             <div class="flex items-center justify-between sm:justify-start space-x-3 min-w-0 cursor-pointer select-none group flex-1" onclick="toggleSection('sec-chart')">
                 <div class="flex items-center space-x-3 min-w-0">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center justify-center font-black shrink-0">
-                        📈
-                    </div>
+                    <span class="w-3.5 h-3.5 rounded-full bg-indigo-600 ring-4 ring-indigo-100 shrink-0"></span>
                     <div class="min-w-0">
                         <h2 class="text-base sm:text-xl font-black text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors truncate">
                             {{ __('Comparative Bar Chart of All Candidates') }}
@@ -242,21 +223,19 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- SECTION 3: ELECTION CATEGORIES & PROCEDURAL GUIDE (FOLDABLE)-->
+    <!-- SECTION 3: PROCEDURAL VOTING GUIDE (3 QUICK FULL-WIDTH ROWS) -->
     <!-- ======================================================== -->
     <div id="sec-guide" class="p-5 sm:p-7 rounded-3xl bg-slate-50 border border-slate-200 mb-8 transition-all">
-        <!-- Section Foldable Header -->
+        <!-- Section Foldable Header (Minimalist Dot Color) -->
         <div class="flex items-center justify-between gap-3 pb-4 border-b border-slate-200 cursor-pointer select-none group" onclick="toggleSection('sec-guide')">
             <div class="flex items-center space-x-3 min-w-0">
-                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black shadow-xs shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
+                <span class="w-3.5 h-3.5 rounded-full bg-amber-500 ring-4 ring-amber-100 shrink-0"></span>
                 <div class="min-w-0">
-                    <h2 class="text-base sm:text-xl font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition-colors truncate">
-                        {{ __('Voting Guide & Leadership Roles') }}
+                    <h2 class="text-base sm:text-xl font-black text-slate-900 tracking-tight group-hover:text-amber-600 transition-colors truncate">
+                        {{ __('Voting Guide (3 Quick Steps)') }}
                     </h2>
                     <p class="text-xs text-slate-500 font-semibold truncate hidden sm:block">
-                        {{ __('Simple voting instructions and summary of cooperative leadership roles') }}
+                        {{ __('Simple 3-step procedural guide to cast your vote at the voting booth') }}
                     </p>
                 </div>
             </div>
@@ -272,86 +251,51 @@
             </div>
         </div>
 
-        <!-- Section Content -->
+        <!-- Section Content (3 Full-Width Row Cards, Short & Punchy < 40 words) -->
         <div id="sec-guide-content" class="pt-6">
-            <div class="grid grid-cols-1 gap-4 sm:gap-5">
-                <!-- Row 1: How to Vote (3 Easy Steps) -->
-                <div class="p-5 sm:p-7 rounded-2xl bg-white border border-blue-200/80 shadow-2xs">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-4 border-b border-slate-100">
-                        <div class="flex items-center space-x-2.5">
-                            <span class="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200">
-                                {{ __('Procedures') }}
-                            </span>
-                            <h4 class="text-base sm:text-xl font-black text-slate-900">{{ __('How to Vote in 3 Easy Steps') }}</h4>
-                        </div>
-                        <span class="text-xs sm:text-sm font-bold text-blue-700">{{ __('1 Member = 1 Valid Vote') }}</span>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start space-x-3.5">
-                            <div class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shrink-0">1</div>
-                            <div>
-                                <strong class="text-sm sm:text-base font-black text-slate-900 block mb-1">{{ __('1. Tap Member RFID Card') }}</strong>
-                                <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">{{ __('Scan your member card at the voting booth terminal to activate ballot.') }}</p>
-                            </div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start space-x-3.5">
-                            <div class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shrink-0">2</div>
-                            <div>
-                                <strong class="text-sm sm:text-base font-black text-slate-900 block mb-1">{{ __('2. Select Candidates') }}</strong>
-                                <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">{{ __('Touch the photo of 1 Chairman candidate and 1 Supervisory candidate.') }}</p>
-                            </div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start space-x-3.5">
-                            <div class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shrink-0">3</div>
-                            <div>
-                                <strong class="text-sm sm:text-base font-black text-slate-900 block mb-1">{{ __('3. Submit Vote') }}</strong>
-                                <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">{{ __('Review your selections and tap the Submit Vote button to complete.') }}</p>
-                            </div>
+            <div class="grid grid-cols-1 gap-4">
+                <!-- Card 1: Step 01 -->
+                <div class="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-start sm:items-center space-x-4 min-w-0">
+                        <span class="px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 shrink-0">
+                            {{ __('Step 01') }}
+                        </span>
+                        <div class="min-w-0">
+                            <h4 class="text-base sm:text-lg font-black text-slate-900">{{ __('Tap RFID Member Card') }}</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium mt-0.5 leading-relaxed">
+                                {{ __('Scan your registered cooperative RFID card on the voting booth reader to authenticate your identity and open the digital ballot.') }}
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Row 2: Category 1 - Cooperative Chairman -->
-                <div class="p-5 sm:p-7 rounded-2xl bg-white border border-rose-200/80 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div class="flex-1">
-                        <div class="flex items-center space-x-2.5 mb-2 flex-wrap gap-y-1">
-                            <span class="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200">
-                                {{ __('Category 1') }}
-                            </span>
-                            <h4 class="text-base sm:text-xl font-black text-slate-900">{{ __('Category 1: Cooperative Chairman') }}</h4>
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-red-100 text-red-800 border border-red-200">
-                                {{ __('1 Vote Required') }}
-                            </span>
+                <!-- Card 2: Step 02 -->
+                <div class="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-start sm:items-center space-x-4 min-w-0">
+                        <span class="px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200 shrink-0">
+                            {{ __('Step 02') }}
+                        </span>
+                        <div class="min-w-0">
+                            <h4 class="text-base sm:text-lg font-black text-slate-900">{{ __('Select Your Candidates') }}</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium mt-0.5 leading-relaxed">
+                                {{ __('Touch candidate photo on the screen to choose 1 Chairman and 1 Supervisory Board candidate of your choice.') }}
+                            </p>
                         </div>
-                        <p class="text-sm sm:text-base text-slate-700 font-medium leading-relaxed max-w-4xl">
-                            {{ __('Chief executive leader responsible for setting strategic vision, managing business operations, and advancing the welfare of all cooperative members.') }}
-                        </p>
-                    </div>
-                    <div class="flex items-center md:flex-col md:items-end justify-between border-t md:border-t-0 md:border-l border-slate-100 pt-3 md:pt-0 md:pl-6 shrink-0">
-                        <span class="text-base sm:text-lg font-black text-red-700 font-mono">{{ count($ketuaResults) }} {{ __('Registered Candidates') }}</span>
-                        <span class="text-xs text-slate-500 font-bold uppercase">{{ __('1 Vote Required') }}</span>
                     </div>
                 </div>
 
-                <!-- Row 3: Category 2 - Supervisory Board -->
-                <div class="p-5 sm:p-7 rounded-2xl bg-white border border-emerald-200/80 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div class="flex-1">
-                        <div class="flex items-center space-x-2.5 mb-2 flex-wrap gap-y-1">
-                            <span class="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
-                                {{ __('Category 2') }}
-                            </span>
-                            <h4 class="text-base sm:text-xl font-black text-slate-900">{{ __('Category 2: Supervisory Board') }}</h4>
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                {{ __('1 Vote Required') }}
-                            </span>
+                <!-- Card 3: Step 03 -->
+                <div class="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-start sm:items-center space-x-4 min-w-0">
+                        <span class="px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+                            {{ __('Step 03') }}
+                        </span>
+                        <div class="min-w-0">
+                            <h4 class="text-base sm:text-lg font-black text-slate-900">{{ __('Submit & Complete Vote') }}</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium mt-0.5 leading-relaxed">
+                                {{ __('Review your selected candidates on the confirmation screen and tap Submit Vote to securely record your ballot in the system.') }}
+                            </p>
                         </div>
-                        <p class="text-sm sm:text-base text-slate-700 font-medium leading-relaxed max-w-4xl">
-                            {{ __('Independent oversight committee responsible for financial audits, regulatory compliance, and organizational governance.') }}
-                        </p>
-                    </div>
-                    <div class="flex items-center md:flex-col md:items-end justify-between border-t md:border-t-0 md:border-l border-slate-100 pt-3 md:pt-0 md:pl-6 shrink-0">
-                        <span class="text-base sm:text-lg font-black text-emerald-800 font-mono">{{ count($pengawasResults) }} {{ __('Registered Candidates') }}</span>
-                        <span class="text-xs text-slate-500 font-bold uppercase">{{ __('1 Vote Required') }}</span>
                     </div>
                 </div>
             </div>
@@ -362,10 +306,10 @@
     <!-- SECTION 4: KANDIDAT KETUA KOPERASI SHOWCASE (FOLDABLE)   -->
     <!-- ======================================================== -->
     <section id="sec-ketua" class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
-        <!-- Section Foldable Header -->
+        <!-- Section Foldable Header (Minimalist Dot Color) -->
         <div class="flex items-center justify-between gap-3 pb-4 border-b border-slate-200 cursor-pointer select-none group" onclick="toggleSection('sec-ketua')">
             <div class="flex items-center space-x-3 min-w-0">
-                <span class="w-9 h-9 rounded-xl bg-red-600 text-white font-extrabold flex items-center justify-center text-sm shadow-xs shrink-0">1</span>
+                <span class="w-3.5 h-3.5 rounded-full bg-red-600 ring-4 ring-red-100 shrink-0"></span>
                 <div class="min-w-0">
                     <h3 class="text-base sm:text-xl font-black text-slate-900 tracking-tight group-hover:text-red-600 transition-colors truncate">
                         {{ __('Chairman Election Comparison') }}
@@ -459,10 +403,10 @@
     <!-- SECTION 5: KANDIDAT PENGAWAS KOPERASI SHOWCASE (FOLDABLE) -->
     <!-- ======================================================== -->
     <section id="sec-pengawas" class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
-        <!-- Section Foldable Header -->
+        <!-- Section Foldable Header (Minimalist Dot Color) -->
         <div class="flex items-center justify-between gap-3 pb-4 border-b border-slate-200 cursor-pointer select-none group" onclick="toggleSection('sec-pengawas')">
             <div class="flex items-center space-x-3 min-w-0">
-                <span class="w-9 h-9 rounded-xl bg-emerald-600 text-white font-extrabold flex items-center justify-center text-sm shadow-xs shrink-0">2</span>
+                <span class="w-3.5 h-3.5 rounded-full bg-emerald-600 ring-4 ring-emerald-100 shrink-0"></span>
                 <div class="min-w-0">
                     <h3 class="text-base sm:text-xl font-black text-slate-900 tracking-tight group-hover:text-emerald-600 transition-colors truncate">
                         {{ __('Supervisory Board Comparison') }}
