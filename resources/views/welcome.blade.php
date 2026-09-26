@@ -90,86 +90,106 @@
             </div>
         </div>
 
-        <!-- Section Content (Huge, High-Contrast, Boomer-Friendly Executive Cards) -->
+        <!-- Section Content (Dedicated Full-Width Row Cards, Boomer-Readable, No Empty Grid Gaps) -->
         <div id="sec-overview-content" class="pt-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-                <!-- Card 1: Voter Participation Rate -->
-                <div class="p-6 sm:p-7 rounded-3xl bg-blue-50/70 border-2 border-blue-200/90 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <span class="text-sm sm:text-base font-black uppercase tracking-wider text-blue-900 block mb-2">{{ __('Voter Participation Rate') }}</span>
-                        <div class="flex items-baseline space-x-2 my-2">
-                            <span id="stat-turnout-pct" class="text-5xl sm:text-6xl font-black text-blue-700 font-mono tracking-tight">{{ $metrics['turnout_pct'] }}%</span>
+            <div class="flex flex-col space-y-4">
+                <!-- Row 1: Voter Participation Rate & Turnout Progress -->
+                <div class="p-6 sm:p-7 rounded-3xl bg-blue-50/80 border-2 border-blue-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-7 min-w-0">
+                        <span id="stat-turnout-pct" class="text-5xl sm:text-6xl lg:text-7xl font-black text-blue-700 font-mono tracking-tight shrink-0">{{ $metrics['turnout_pct'] }}%</span>
+                        <div class="min-w-0">
+                            <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-blue-900 block">{{ __('Voter Participation Rate') }}</span>
+                            <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">{{ __('Total Verified Turnout') }}</h3>
+                            <p class="text-sm sm:text-base font-bold text-slate-700 mt-1">
+                                <span id="stat-total-voted" class="text-blue-700 font-black text-lg sm:text-xl">{{ $metrics['total_voted'] }}</span> {{ __('of') }} <span id="stat-total-voters" class="text-slate-950 font-black text-lg sm:text-xl">{{ $metrics['total_voters'] }}</span> {{ __('Votes Cast') }}
+                            </p>
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <div class="w-full bg-blue-200/80 rounded-full h-4 overflow-hidden mb-2.5">
-                            <div id="stat-turnout-bar" class="bg-blue-600 h-4 rounded-full transition-all duration-700 ease-out" style="width: {{ $metrics['turnout_pct'] }}%;"></div>
+                    <div class="w-full md:w-80 lg:w-96 shrink-0">
+                        <div class="flex justify-between text-xs sm:text-sm font-black text-blue-950 mb-2">
+                            <span>{{ __('Live Progress') }}</span>
+                            <span class="text-blue-700 font-bold">✓ {{ __('Realtime Audited') }}</span>
                         </div>
-                        <span class="text-base sm:text-lg font-black text-slate-800 block">
-                            <span id="stat-total-voted" class="text-blue-700 text-xl sm:text-2xl font-black">{{ $metrics['total_voted'] }}</span> / <span id="stat-total-voters" class="text-slate-900 text-xl sm:text-2xl font-black">{{ $metrics['total_voters'] }}</span> {{ __('Votes') }}
+                        <div class="w-full bg-blue-200/90 rounded-full h-5 overflow-hidden p-0.5 border border-blue-300">
+                            <div id="stat-turnout-bar" class="bg-blue-600 h-4 rounded-full transition-all duration-700 ease-out shadow-xs" style="width: {{ $metrics['turnout_pct'] }}%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2: Election Status & Live Verification -->
+                <div class="p-6 sm:p-7 rounded-3xl bg-emerald-50/80 border-2 border-emerald-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                    <div class="flex items-center space-x-5 min-w-0">
+                        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-emerald-100 border-2 border-emerald-300 flex items-center justify-center shrink-0">
+                            <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-emerald-500 ring-8 ring-emerald-200 animate-pulse"></span>
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-emerald-900 block">{{ __('Election Status') }}</span>
+                            <h3 class="text-2xl sm:text-3xl font-black text-emerald-950 tracking-tight mt-1">{{ __('Active & Verified') }}</h3>
+                            <p class="text-sm sm:text-base font-bold text-emerald-800 mt-1">✓ {{ __('Voting Booth Ready • Secure Digital Ballot Transmission Active') }}</p>
+                        </div>
+                    </div>
+                    <div class="shrink-0 flex items-center">
+                        <span class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black bg-emerald-600 text-white shadow-xs tracking-wider uppercase flex items-center space-x-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
+                            <span>{{ __('LIVE VOTING OPEN') }}</span>
                         </span>
                     </div>
                 </div>
 
-                <!-- Card 2: Election Status & Security -->
-                <div class="p-6 sm:p-7 rounded-3xl bg-emerald-50/70 border-2 border-emerald-200/90 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <span class="text-sm sm:text-base font-black uppercase tracking-wider text-emerald-950 block mb-2">{{ __('Election Status') }}</span>
-                        <div class="flex items-center space-x-3.5 my-3">
-                            <span class="w-5 h-5 rounded-full bg-emerald-500 ring-8 ring-emerald-200 animate-pulse shrink-0"></span>
-                            <span class="text-2xl sm:text-3xl font-black text-emerald-950 tracking-tight leading-tight">{{ __('Active & Verified') }}</span>
+                <!-- Row 3: Leading Frontrunners -->
+                <div class="p-6 sm:p-7 rounded-3xl bg-amber-50/80 border-2 border-amber-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div class="flex items-start sm:items-center space-x-4 min-w-0">
+                        <span class="w-4 h-4 rounded-full bg-amber-500 ring-6 ring-amber-200 animate-pulse shrink-0 mt-1 sm:mt-0"></span>
+                        <div class="min-w-0">
+                            <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-950 block">{{ __('Leading Frontrunners') }}</span>
+                            <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-1">{{ __('Current Vote Leaders') }}</h3>
+                            <p class="text-xs sm:text-sm font-bold text-amber-900 mt-0.5">{{ __('Top candidates with the highest verified vote counts') }}</p>
                         </div>
                     </div>
-                    <p class="text-base sm:text-lg font-black text-emerald-800 mt-4 leading-snug">
-                        ✓ {{ __('Voting Booth Ready • Secure & Verified') }}
-                    </p>
-                </div>
-
-                <!-- Card 3: Leading Frontrunners (Huge, Boomer-Readable Text) -->
-                <div class="p-6 sm:p-7 rounded-3xl bg-amber-50/70 border-2 border-amber-200/90 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm sm:text-base font-black uppercase tracking-wider text-amber-950 block">{{ __('Leading Frontrunners') }}</span>
-                            <span class="w-3 h-3 rounded-full bg-amber-500 ring-4 ring-amber-200 animate-pulse"></span>
-                        </div>
-                        <div class="space-y-3 my-2">
-                            <!-- Chairman Leader -->
-                            <div class="pb-2 border-b border-amber-200/70">
-                                <span class="text-xs font-black uppercase tracking-wider text-red-700 block mb-0.5">{{ __('Chairman') }}</span>
-                                <strong id="leader-ketua-text" class="text-lg sm:text-xl font-black text-slate-950 block truncate">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full lg:w-auto shrink-0">
+                        <!-- Chairman Leader -->
+                        <div class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 shadow-xs flex items-center space-x-4 min-w-[270px]">
+                            <span class="px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-red-100 text-red-800 border-2 border-red-300 shrink-0">{{ __('Chairman') }}</span>
+                            <div class="min-w-0">
+                                <span class="text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
+                                <strong id="leader-ketua-text" class="text-base sm:text-lg font-black text-slate-950 block truncate">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                             </div>
-                            <!-- Supervisor Leader -->
-                            <div>
-                                <span class="text-xs font-black uppercase tracking-wider text-emerald-800 block mb-0.5">{{ __('Supervisor') }}</span>
-                                <strong id="leader-pengawas-text" class="text-lg sm:text-xl font-black text-slate-950 block truncate">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                        </div>
+                        <!-- Supervisor Leader -->
+                        <div class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 shadow-xs flex items-center space-x-4 min-w-[270px]">
+                            <span class="px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border-2 border-emerald-300 shrink-0">{{ __('Supervisor') }}</span>
+                            <div class="min-w-0">
+                                <span class="text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
+                                <strong id="leader-pengawas-text" class="text-base sm:text-lg font-black text-slate-950 block truncate">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                             </div>
                         </div>
                     </div>
-                    <p class="text-sm sm:text-base font-bold text-amber-900 mt-4 leading-snug">
-                        ✓ {{ __('Highest live verified tally') }}
-                    </p>
                 </div>
 
-                <!-- Card 4: Voting Deadline Countdown -->
-                <div id="deadline-container" class="p-6 sm:p-7 rounded-3xl bg-rose-50/70 border-2 border-rose-200/90 shadow-sm flex flex-col justify-between {{ empty($metrics['voting_deadline']) ? 'hidden' : '' }}">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm sm:text-base font-black uppercase tracking-wider text-rose-950">{{ __('Voting Deadline') }}</span>
-                            <span id="deadline-status-pill" class="px-3 py-1 rounded-full text-xs font-black uppercase bg-rose-200 text-rose-900 border border-rose-300">{{ __('Countdown') }}</span>
-                        </div>
-                        <div class="flex flex-wrap sm:flex-nowrap items-center space-x-1.5 font-mono text-2xl sm:text-3xl font-black text-slate-950 my-3" id="deadline-countdown-timer">
-                            <span id="deadline-days" class="bg-white border-2 border-rose-200 px-2.5 py-1.5 rounded-2xl shadow-xs">00d</span>
-                            <span>:</span>
-                            <span id="deadline-hours" class="bg-white border-2 border-rose-200 px-2.5 py-1.5 rounded-2xl shadow-xs">00h</span>
-                            <span>:</span>
-                            <span id="deadline-mins" class="bg-white border-2 border-rose-200 px-2.5 py-1.5 rounded-2xl shadow-xs">00m</span>
-                            <span>:</span>
-                            <span id="deadline-secs" class="bg-white border-2 border-rose-200 px-2.5 py-1.5 rounded-2xl text-rose-600 shadow-xs">00s</span>
+                <!-- Row 4: Voting Deadline Countdown (Hidden if not configured, leaves zero gaps!) -->
+                <div id="deadline-container" class="p-6 sm:p-7 rounded-3xl bg-rose-50/80 border-2 border-rose-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 {{ empty($metrics['voting_deadline']) ? 'hidden' : '' }}">
+                    <div class="flex items-start sm:items-center space-x-4 min-w-0">
+                        <span class="w-4 h-4 rounded-full bg-rose-500 ring-6 ring-rose-200 animate-pulse shrink-0 mt-1 sm:mt-0"></span>
+                        <div class="min-w-0">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-rose-950 block">{{ __('Voting Deadline') }}</span>
+                                <span id="deadline-status-pill" class="px-3 py-0.5 rounded-full text-xs font-black uppercase bg-rose-200 text-rose-900 border border-rose-300">{{ __('Countdown Active') }}</span>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-1">{{ __('Election Time Remaining') }}</h3>
+                            <p id="deadline-info-text" class="text-sm sm:text-base text-slate-700 mt-1 font-bold">
+                                {{ __('Official Deadline:') }} <strong id="deadline-formatted-text" class="text-slate-950 font-black">{{ $metrics['deadline_formatted'] ?? '-' }}</strong>
+                            </p>
                         </div>
                     </div>
-                    <p id="deadline-info-text" class="text-xs sm:text-sm text-slate-700 mt-4 font-bold truncate">
-                        {{ __('Deadline:') }} <strong id="deadline-formatted-text" class="text-slate-950 font-black">{{ $metrics['deadline_formatted'] ?? '-' }}</strong>
-                    </p>
+                    <div class="flex items-center space-x-1.5 font-mono text-2xl sm:text-3xl font-black text-slate-950 shrink-0" id="deadline-countdown-timer">
+                        <span id="deadline-days" class="bg-white border-2 border-rose-300 px-3 py-2 rounded-2xl shadow-xs">00d</span>
+                        <span class="text-rose-400 font-bold">:</span>
+                        <span id="deadline-hours" class="bg-white border-2 border-rose-300 px-3 py-2 rounded-2xl shadow-xs">00h</span>
+                        <span class="text-rose-400 font-bold">:</span>
+                        <span id="deadline-mins" class="bg-white border-2 border-rose-300 px-3 py-2 rounded-2xl shadow-xs">00m</span>
+                        <span class="text-rose-400 font-bold">:</span>
+                        <span id="deadline-secs" class="bg-white border-2 border-rose-300 px-3 py-2 rounded-2xl text-rose-600 shadow-xs">00s</span>
+                    </div>
                 </div>
             </div>
         </div>
