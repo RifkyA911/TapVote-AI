@@ -137,6 +137,17 @@
         </div>
     @endif
 
+    @if(!empty($votingDeadline))
+        <div class="mt-3 flex items-center justify-center">
+            <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-slate-900/5 border border-slate-200 text-xs font-semibold text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                <span>Batas Waktu Vote:</span>
+                <span class="font-mono font-bold text-slate-900" id="tap-deadline-timer">--:--:--</span>
+                <span class="text-slate-400">({{ $deadlineFormatted }})</span>
+            </div>
+        </div>
+    @endif
+
     <!-- Main Tap Area (Padding atas nyaman & jarak proporsional dengan demo) -->
     <div class="pt-5 sm:pt-7 pb-1 sm:pb-2 flex flex-col items-center justify-center text-center">
         
@@ -874,6 +885,25 @@
         const guideModal = document.getElementById('guide-modal');
         if (e.target === guideModal) closeGuideModal();
     });
+
+    @if(!empty($deadlineTimestamp))
+    const tapDeadline = {{ $deadlineTimestamp }};
+    function updateTapDeadline() {
+        const diff = tapDeadline - Math.floor(Date.now() / 1000);
+        const timerEl = document.getElementById('tap-deadline-timer');
+        if (!timerEl) return;
+        if (diff <= 0) {
+            timerEl.innerText = 'Waktu Berakhir';
+            return;
+        }
+        const h = Math.floor(diff / 3600);
+        const m = Math.floor((diff % 3600) / 60);
+        const s = diff % 60;
+        timerEl.innerText = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+    setInterval(updateTapDeadline, 1000);
+    updateTapDeadline();
+    @endif
 </script>
 @endpush
 @endsection

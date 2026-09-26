@@ -20,6 +20,15 @@ class VoterController extends Controller
     public function showTapPage()
     {
         $votingStatus = AppSetting::get('voting_status', 'STARTED');
+        $votingDeadline = AppSetting::get('voting_deadline', '');
+        $deadlineFormatted = '';
+        $deadlineTimestamp = null;
+        if (!empty($votingDeadline) && strtotime($votingDeadline)) {
+            $deadlineCarbon = \Carbon\Carbon::parse($votingDeadline);
+            $deadlineFormatted = $deadlineCarbon->locale('id')->isoFormat('dddd, D MMMM Y - HH:mm') . ' WIB';
+            $deadlineTimestamp = $deadlineCarbon->timestamp;
+        }
+
         // Sample data pemilih untuk section Demo Simulation
         $demoVoters = Pemilih::orderBy('nik', 'asc')->get();
 
@@ -33,7 +42,7 @@ class VoterController extends Controller
             ];
         }
 
-        return view('voter.tap', compact('demoVoters', 'votingStatus', 'demoVoterMap'));
+        return view('voter.tap', compact('demoVoters', 'votingStatus', 'demoVoterMap', 'votingDeadline', 'deadlineFormatted', 'deadlineTimestamp'));
     }
 
     /**
@@ -49,6 +58,14 @@ class VoterController extends Controller
         if ($status === 'STOPPED') {
             return redirect()->route('voter.tap')
                 ->with('error', 'Sistem pemungutan suara telah RESMI DITUTUP (STOPPED) oleh Panitia Pemilihan.');
+        }
+
+        $votingDeadline = AppSetting::get('voting_deadline', '');
+        if (!empty($votingDeadline) && strtotime($votingDeadline)) {
+            if (now()->greaterThan(\Carbon\Carbon::parse($votingDeadline))) {
+                return redirect()->route('voter.tap')
+                    ->with('error', 'Batas waktu pemungutan suara (deadline) telah berakhir pada ' . \Carbon\Carbon::parse($votingDeadline)->isoFormat('D MMMM Y, HH:mm') . ' WIB.');
+            }
         }
 
         $request->validate([

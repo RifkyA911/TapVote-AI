@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\KandidatPengawasController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\VoteFlowController;
 use App\Http\Controllers\Admin\VoterController as AdminVoterController;
 use App\Http\Controllers\LiveCountController;
 use App\Http\Controllers\VoterController;
@@ -58,9 +59,9 @@ Route::get('/finalization', [VoterController::class, 'showFinalization'])->name(
 
 
 // ==========================================
-// ADMIN AUTHENTICATION
+// ADMIN AUTHENTICATION (Protected by admin.ip)
 // ==========================================
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['admin.ip'])->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
     Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
@@ -72,9 +73,9 @@ Route::get('/doorprize', [ReportController::class, 'publicDoorprize'])->name('do
 Route::get('/doorprize/data', [ReportController::class, 'publicDoorprizeData'])->name('doorprize.data');
 
 // ==========================================
-// ADMIN CONTROL PANEL (role.admin middleware)
+// ADMIN CONTROL PANEL (admin.ip, auth, role.admin)
 // ==========================================
-Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
+Route::prefix('admin')->middleware(['admin.ip', 'auth', 'role.admin'])->group(function () {
     // Dashboard & Live Realtime SSE
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/stream/results', [DashboardController::class, 'sseStream'])->name('admin.stream.results');
@@ -89,6 +90,13 @@ Route::prefix('admin')->middleware(['auth', 'role.admin'])->group(function () {
     // Mata Langit - Deep Telemetry Analytics
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('admin.analytics');
     Route::get('/analytics/ai-analysis', [AnalyticsController::class, 'getAiAnalysis'])->name('admin.analytics.ai');
+    Route::get('/analytics/export-pdf', [AnalyticsController::class, 'exportPdf'])->name('admin.analytics.export.pdf');
+
+    // Vote Flow - Electoral Flow & Broker Summary Intelligence
+    Route::get('/vote-flow', [VoteFlowController::class, 'index'])->name('admin.vote-flow');
+    Route::get('/vote-flow/data', [VoteFlowController::class, 'flowData'])->name('admin.vote-flow.data');
+    Route::get('/vote-flow/ai-summary', [VoteFlowController::class, 'aiSummary'])->name('admin.vote-flow.ai');
+    Route::get('/vote-flow/export-pdf', [VoteFlowController::class, 'exportPdf'])->name('admin.vote-flow.export.pdf');
 
     // System Settings Panel
     Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings');

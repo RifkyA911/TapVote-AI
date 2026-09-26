@@ -37,6 +37,59 @@
         </div>
     </div>
 
+    <!-- Filter & PDF Export Bar -->
+    <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <form method="GET" action="{{ route('admin.analytics') }}" class="flex flex-wrap items-center gap-3 flex-1">
+            <!-- Filter Dept -->
+            <div class="flex items-center space-x-1.5 text-xs">
+                <span class="font-bold text-slate-600">Departemen:</span>
+                <select name="dept" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Semua Departemen</option>
+                    @foreach($allDepartments as $deptName)
+                        <option value="{{ $deptName }}" {{ $selectedDept === $deptName ? 'selected' : '' }}>{{ $deptName }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Filter Date -->
+            <div class="flex items-center space-x-1.5 text-xs">
+                <span class="font-bold text-slate-600">Tanggal:</span>
+                <select name="date" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Semua Tanggal</option>
+                    <option value="today" {{ $selectedDate === 'today' ? 'selected' : '' }}>Hari Ini</option>
+                </select>
+            </div>
+
+            <!-- Filter Shift -->
+            <div class="flex items-center space-x-1.5 text-xs">
+                <span class="font-bold text-slate-600">Waktu:</span>
+                <select name="shift" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Semua Jam (24H)</option>
+                    <option value="morning" {{ $selectedShift === 'morning' ? 'selected' : '' }}>Pagi (06:00 - 12:00)</option>
+                    <option value="afternoon" {{ $selectedShift === 'afternoon' ? 'selected' : '' }}>Siang (12:00 - 18:00)</option>
+                    <option value="night" {{ $selectedShift === 'night' ? 'selected' : '' }}>Malam (18:00 - 24:00)</option>
+                </select>
+            </div>
+
+            <!-- Buttons -->
+            <button type="submit" class="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1 cursor-pointer">
+                <span>🔍 Terapkan Filter</span>
+            </button>
+            @if($selectedDept || $selectedDate || $selectedShift)
+                <a href="{{ route('admin.analytics') }}" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs transition cursor-pointer">
+                    ✕ Reset
+                </a>
+            @endif
+        </form>
+
+        <div class="flex items-center gap-2">
+            <a href="{{ route('admin.analytics.export.pdf', request()->query()) }}" target="_blank" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-md shadow-rose-600/20 transition flex items-center space-x-1.5 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Unduh Laporan Telemetri (PDF)</span>
+            </a>
+        </div>
+    </div>
+
     <!-- 4 High-Altitude KPI Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         <!-- Metric 1: Quorum & Turnout -->
@@ -145,36 +198,130 @@
         </div>
     </div>
 
-    <!-- Charts Row: 24-Hour Velocity & Department Breakdown -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-        <!-- Left: Hourly Velocity Histogram -->
-        <div class="lg:col-span-7 p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div>
-                    <h3 class="text-base sm:text-lg font-black text-slate-900">Distribusi Kecepatan Suara per Jam</h3>
-                    <p class="text-xs text-slate-500">Histori ritme kedatangan anggota di bilik suara dari waktu ke waktu</p>
+    <!-- ROW 1 (Full Width): 24-Hour Velocity Spectrum -->
+    <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-3">
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse"></span>
+                    <h3 class="text-base sm:text-xl font-black text-slate-900 tracking-tight">Distribusi Kecepatan Suara per Jam (Hourly Voting Velocity)</h3>
                 </div>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Analisis histori ritme kedatangan anggota di bilik suara sepanjang 24 jam</p>
+            </div>
+            <div class="flex items-center gap-2">
                 <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    Puncak: {{ $peakHourLabel }} WIB ({{ $peakHourVotes }} suara)
+                </span>
+                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
                     24-Hour Spectrum
                 </span>
             </div>
-
-            <div id="chartHourlyVelocity" class="w-full min-h-[300px]"></div>
         </div>
 
-        <!-- Right: Department Turnout Ranking -->
-        <div class="lg:col-span-5 p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div>
-                    <h3 class="text-base sm:text-lg font-black text-slate-900">Peringkat Partisipasi Departemen</h3>
-                    <p class="text-xs text-slate-500">Persentase suara masuk di tiap unit kerja koperasi</p>
+        <div id="chartHourlyVelocity" class="w-full min-h-[320px]"></div>
+
+        <!-- Detailed Breakdown Timeline Strips -->
+        <div class="pt-4 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div class="p-3 rounded-2xl bg-indigo-50/70 border border-indigo-100">
+                <span class="text-[10px] font-bold uppercase text-indigo-700 block">Jam Lonjakan Tertinggi</span>
+                <span class="text-lg font-black text-indigo-900 font-mono">{{ $peakHourLabel }} WIB</span>
+                <span class="text-[11px] text-indigo-600 block">{{ $peakHourVotes }} suara/jam</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-100">
+                <span class="text-[10px] font-bold uppercase text-emerald-700 block">Rata-rata Suara / Jam Aktif</span>
+                @php
+                    $activeHoursCount = count(array_filter($hoursValues));
+                    $avgVotes = $activeHoursCount > 0 ? round($totalVoted / $activeHoursCount, 1) : 0;
+                @endphp
+                <span class="text-lg font-black text-emerald-900 font-mono">{{ $avgVotes }}</span>
+                <span class="text-[11px] text-emerald-600 block">suara per jam aktif</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-blue-50/70 border border-blue-100">
+                <span class="text-[10px] font-bold uppercase text-blue-700 block">Rentang Jam Aktif</span>
+                <span class="text-lg font-black text-blue-900 font-mono">{{ $activeHoursCount }} Jam</span>
+                <span class="text-[11px] text-blue-600 block">tercatat ada aktivitas</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <span class="text-[10px] font-bold uppercase text-slate-500 block">Tingkat Kelancaran TPS</span>
+                <span class="text-lg font-black text-slate-800 font-mono">100% Bebas Antrean</span>
+                <span class="text-[11px] text-slate-500 block">Aliran lancar terdistribusi</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 2 (Full Width): Department Turnout Ranking & Live Candidate Standing -->
+    <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-3">
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                    <h3 class="text-base sm:text-xl font-black text-slate-900 tracking-tight">Peringkat Partisipasi & Klasemen Suara Kandidat</h3>
                 </div>
-                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                    {{ count($deptStats) }} Dept
-                </span>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Komparasi tingkat partisipasi unit kerja koperasi & perolehan suara sementara</p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                {{ count($deptStats) }} Departemen Terdaftar
+            </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left: Department Horizontal Ranking Bar (7 cols) -->
+            <div class="lg:col-span-7 space-y-3">
+                <div class="flex items-center justify-between">
+                    <h4 class="text-xs font-black uppercase text-slate-500 tracking-wider">Persentase Partisipasi per Unit Kerja</h4>
+                    <span class="text-xs text-slate-400 font-medium">Garis target Quorum: {{ $quorumThreshold }}%</span>
+                </div>
+                <div id="chartDeptRanking" class="w-full min-h-[340px]"></div>
             </div>
 
-            <div id="chartDeptRanking" class="w-full min-h-[300px]"></div>
+            <!-- Right: Candidate Live Leaderboard (5 cols) -->
+            <div class="lg:col-span-5 space-y-4">
+                <h4 class="text-xs font-black uppercase text-slate-500 tracking-wider">Klasemen Perolehan Suara Sementara</h4>
+
+                <!-- Ketua Standing -->
+                <div class="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-indigo-900 uppercase">Calon Ketua Koperasi</span>
+                        <span class="text-[10px] font-bold text-indigo-600 font-mono">{{ $totalVoted }} Suara Masuk</span>
+                    </div>
+                    <div class="space-y-2">
+                        @foreach($rankingKetua as $rk)
+                            @php $rkPct = $totalVoted > 0 ? round(($rk->perolehan_suara_count / $totalVoted) * 100, 1) : 0; @endphp
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-bold text-slate-800">
+                                    <span>#{{ $rk->nomor_urut }} {{ $rk->nama }}</span>
+                                    <span class="font-mono text-indigo-700">{{ $rk->perolehan_suara_count }} ({{ $rkPct }}%)</span>
+                                </div>
+                                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                                    <div class="h-full bg-indigo-600 rounded-full" style="width: {{ $rkPct }}%;"></div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Pengawas Standing -->
+                <div class="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-emerald-900 uppercase">Calon Pengawas Koperasi</span>
+                        <span class="text-[10px] font-bold text-emerald-600 font-mono">{{ $totalVoted }} Suara Masuk</span>
+                    </div>
+                    <div class="space-y-2">
+                        @foreach($rankingPengawas as $rp)
+                            @php $rpPct = $totalVoted > 0 ? round(($rp->perolehan_suara_count / $totalVoted) * 100, 1) : 0; @endphp
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-bold text-slate-800">
+                                    <span>#{{ $rp->nomor_urut }} {{ $rp->nama }}</span>
+                                    <span class="font-mono text-emerald-700">{{ $rp->perolehan_suara_count }} ({{ $rpPct }}%)</span>
+                                </div>
+                                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                                    <div class="h-full bg-emerald-600 rounded-full" style="width: {{ $rpPct }}%;"></div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -283,7 +430,7 @@
             }],
             chart: {
                 type: 'area',
-                height: 300,
+                height: 320,
                 fontFamily: 'Plus Jakarta Sans, sans-serif',
                 toolbar: { show: false },
                 animations: { enabled: true, easing: 'easeinout', speed: 800 }
@@ -333,7 +480,7 @@
             }],
             chart: {
                 type: 'bar',
-                height: 300,
+                height: 340,
                 fontFamily: 'Plus Jakarta Sans, sans-serif',
                 toolbar: { show: false }
             },

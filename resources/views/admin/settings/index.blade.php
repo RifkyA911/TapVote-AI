@@ -13,19 +13,20 @@
             </div>
             <div>
                 <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">System Settings & Controls</h2>
-                <p class="text-xs sm:text-sm text-slate-500 font-medium">Pengaturan komprehensif mode pemilihan, sensor nfc, telemetri sse publik, ai reasoning & keamanan.</p>
+                <p class="text-xs sm:text-sm text-slate-500 font-medium">Pengaturan otomatis tersimpan secara real-time tanpa perlu tombol simpan manual.</p>
             </div>
         </div>
 
         <div class="flex items-center space-x-2">
-            <span class="inline-flex items-center px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
-                v2.5 Production
-            </span>
+            <!-- Active Autosave Indicator -->
+            <div id="autosave-status" class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200 shadow-2xs transition-all duration-300">
+                <span id="autosave-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span id="autosave-text">Autosave Siap</span>
+            </div>
         </div>
     </div>
 
-    <!-- Form Configuration -->
+    <!-- Form Configuration (Autosaved via AJAX) -->
     <form action="{{ route('admin.settings.update') }}" method="POST" id="settings-form" class="space-y-6 sm:space-y-8">
         @csrf
 
@@ -41,17 +42,17 @@
                 </div>
                 <div class="flex items-center space-x-1.5">
                     @if($settings['voting_status'] === 'STARTED')
-                        <span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-700 border border-emerald-300 flex items-center">
+                        <span id="status-badge-current" class="px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-700 border border-emerald-300 flex items-center">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-ping"></span>
                             CURRENT: LIVE
                         </span>
                     @elseif($settings['voting_status'] === 'PAUSED')
-                        <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-800 border border-amber-300 flex items-center">
+                        <span id="status-badge-current" class="px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-800 border border-amber-300 flex items-center">
                             <span class="w-2 h-2 rounded-full bg-amber-500 mr-1.5"></span>
                             CURRENT: PAUSED
                         </span>
                     @else
-                        <span class="px-3 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 border border-rose-300 flex items-center">
+                        <span id="status-badge-current" class="px-3 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 border border-rose-300 flex items-center">
                             <span class="w-2 h-2 rounded-full bg-rose-500 mr-1.5"></span>
                             CURRENT: FINISHED
                         </span>
@@ -102,11 +103,11 @@
             </div>
         </div>
 
-        <!-- 2. IDENTITAS & KUORUM PEMILU -->
+        <!-- 2. IDENTITAS, KUORUM & DEADLINE PEMILU -->
         <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-5">
             <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
                 <span class="text-lg">🏛️</span>
-                <h3 class="text-base font-extrabold text-slate-900">2. Parameter Utama Pemilihan & Kuorum</h3>
+                <h3 class="text-base font-extrabold text-slate-900">2. Parameter Utama Pemilihan, Kuorum & Deadline</h3>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -150,7 +151,29 @@
                     <p class="text-[11px] text-slate-500 mt-1">Standar aturan koperasi umumnya mensyaratkan minimal 50% partisipasi anggota.</p>
                 </div>
 
+                <!-- DEADLINE WAKTU PEMILIHAN (OPSI: HARI, TANGGAL, JAM, WAKTU) -->
                 <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="block text-xs font-bold text-slate-700">Tenggat Waktu / Deadline Pemilihan</label>
+                        <div class="flex items-center space-x-2 text-[11px]">
+                            <button type="button" onclick="setDeadlinePreset('today17')" class="text-blue-600 font-bold hover:underline">Hari Ini 17:00</button>
+                            <span class="text-slate-300">•</span>
+                            <button type="button" onclick="setDeadlinePreset('clear')" class="text-rose-600 font-bold hover:underline">Hapus</button>
+                        </div>
+                    </div>
+                    <input 
+                        type="datetime-local" 
+                        name="voting_deadline" 
+                        id="voting_deadline_input"
+                        value="{{ old('voting_deadline', $settings['voting_deadline']) }}" 
+                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-mono font-bold focus:bg-white focus:border-blue-500 outline-none"
+                    >
+                    <p class="text-[11px] text-slate-500 mt-1">
+                        Batas waktu selesai mencakup hari, tanggal, dan jam. Disiarkan langsung (*streaming*) dengan countdown ke publik.
+                    </p>
+                </div>
+
+                <div class="sm:col-span-2">
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">Kiosk Click Throttle (Anti Double-Tap / Jitter)</label>
                     <div class="relative">
                         <input 
@@ -161,9 +184,9 @@
                             step="100" 
                             required 
                             value="{{ old('throttle_click_ms', $settings['throttle_click_ms']) }}" 
-                            class="w-full px-4 py-2.5 pr-12 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-mono font-bold focus:bg-white focus:border-blue-500 outline-none"
+                            class="w-full sm:w-64 px-4 py-2.5 pr-12 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-mono font-bold focus:bg-white focus:border-blue-500 outline-none"
                         >
-                        <span class="absolute right-3.5 top-2.5 text-xs font-bold text-slate-400">ms</span>
+                        <span class="absolute sm:left-56 right-3.5 top-2.5 text-xs font-bold text-slate-400">ms</span>
                     </div>
                     <p class="text-[11px] text-slate-500 mt-1">Waktu perlindungan tombol untuk mencegah klik ganda tak sengaja (rekomendasi: 800ms).</p>
                 </div>
@@ -355,20 +378,69 @@
             </div>
         </div>
 
-        <!-- Submit Button -->
-        <div class="flex items-center justify-end space-x-3 pt-2">
-            <button 
-                type="submit" 
-                class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-sm shadow-lg hover:shadow-xl transition cursor-pointer flex items-center space-x-2"
-            >
-                <span>💾 Simpan & Terapkan Konfigurasi</span>
-            </button>
-        </div>
-
     </form>
 </div>
 
 <script>
+// Autosave Debounced Engine
+let autosaveTimer = null;
+
+function triggerAutosave() {
+    clearTimeout(autosaveTimer);
+    const dot = document.getElementById('autosave-dot');
+    const text = document.getElementById('autosave-text');
+    const statusBox = document.getElementById('autosave-status');
+    
+    dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping';
+    text.innerText = 'Menyimpan...';
+    statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-amber-50 text-amber-800 text-xs font-mono font-bold border border-amber-300 shadow-2xs';
+
+    autosaveTimer = setTimeout(async () => {
+        const form = document.getElementById('settings-form');
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch("{{ route('admin.settings.update') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            const data = await res.json();
+            if (res.ok && data.success) {
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500';
+                text.innerText = 'Tersimpan ' + data.saved_at;
+                statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-mono font-bold border border-emerald-300 shadow-2xs';
+            } else {
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
+                text.innerText = 'Gagal menyimpan';
+                statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-rose-50 text-rose-800 text-xs font-mono font-bold border border-rose-300 shadow-2xs';
+            }
+        } catch(err) {
+            dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
+            text.innerText = 'Koneksi terputus';
+            statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-rose-50 text-rose-800 text-xs font-mono font-bold border border-rose-300 shadow-2xs';
+        }
+    }, 600);
+}
+
+function setDeadlinePreset(preset) {
+    const input = document.getElementById('voting_deadline_input');
+    if (preset === 'today17') {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        input.value = `${year}-${month}-${day}T17:00`;
+    } else if (preset === 'clear') {
+        input.value = '';
+    }
+    triggerAutosave();
+}
+
 function toggleApiKeyVisibility() {
     const input = document.getElementById('gemini_api_key_input');
     const label = document.getElementById('toggle-key-label');
@@ -441,5 +513,13 @@ async function testGeminiConnection() {
         label.innerText = 'Test AI Connection';
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('settings-form');
+    if (form) {
+        form.addEventListener('input', triggerAutosave);
+        form.addEventListener('change', triggerAutosave);
+    }
+});
 </script>
 @endsection

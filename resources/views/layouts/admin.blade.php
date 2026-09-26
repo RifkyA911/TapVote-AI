@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="robots" content="noindex, nofollow, noarchive">
     <title>@yield('title', 'Admin Panel') - TapVote AI</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,10 +22,25 @@
     <meta name="msapplication-TileColor" content="#2563eb">
     <meta name="msapplication-TileImage" content="/images/pwa/icon-192.png">
 
+    <!-- Admin Panel Only Theme Initializer (Strictly Isolated to Admin) -->
+    <script>
+        (function() {
+            try {
+                const theme = localStorage.getItem('tapvote_admin_theme') || 'system';
+                const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                if (isDark) {
+                    document.documentElement.classList.add('dark', 'admin-dark');
+                } else {
+                    document.documentElement.classList.remove('dark', 'admin-dark');
+                }
+            } catch(e) {}
+        })();
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="h-screen overflow-hidden bg-slate-100 text-slate-800 font-sans antialiased flex flex-col lg:flex-row relative">
+<body class="h-screen overflow-hidden bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased flex flex-col lg:flex-row relative">
 
     <!-- Mobile & iPad Mini Sidebar Backdrop Overlay -->
     <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-30 hidden lg:hidden transition-opacity duration-300"></div>
@@ -56,9 +72,13 @@
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 <span>Live Dashboard</span>
             </a>
-            <a href="{{ route('admin.analytics') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.analytics') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
+            <a href="{{ route('admin.analytics') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.analytics') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                 <span>Analytics</span>
+            </a>
+            <a href="{{ route('admin.vote-flow') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.vote-flow*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                <span>Vote Flow</span>
             </a>
 
             <div class="text-[11px] uppercase tracking-wider text-slate-400 font-bold px-3 pt-4 pb-1">Master Data</div>
@@ -136,7 +156,7 @@
     <!-- Main Content Viewport -->
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
         <!-- Top App Bar (Matched Height: h-16) -->
-        <header class="sticky top-0 z-20 h-16 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between shadow-2xs shrink-0">
+        <header class="sticky top-0 z-20 h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 flex items-center justify-between shadow-2xs shrink-0">
             <div class="flex items-center space-x-3">
                 <!-- Toggle Sidebar Button (Visible on mobile/tablet and desktop) -->
                 <button 
@@ -144,7 +164,7 @@
                     type="button" 
                     id="sidebar-toggle-btn"
                     title="Toggle Sidebar"
-                    class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition cursor-pointer flex items-center justify-center"
+                    class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center justify-center"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
@@ -161,20 +181,20 @@
 
                 <!-- Compact Voting System Status Dot & Label -->
                 <div class="flex items-center space-x-2">
-                    <div id="voting-status-badge" class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-black tracking-wide uppercase {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' : ($adminVotingStatus === 'PAUSED' ? 'bg-amber-50 text-amber-800 border border-amber-300' : 'bg-rose-50 text-rose-800 border border-rose-300') }}">
+                    <div id="voting-status-badge" class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-black tracking-wide uppercase {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800' : ($adminVotingStatus === 'PAUSED' ? 'bg-amber-50 text-amber-800 border border-amber-300 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800' : 'bg-rose-50 text-rose-800 border border-rose-300 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800') }}">
                         <span id="voting-status-dot" class="w-2 h-2 rounded-full {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-500 animate-pulse' : ($adminVotingStatus === 'PAUSED' ? 'bg-amber-500 animate-ping' : 'bg-rose-500') }}"></span>
                         <span id="voting-status-text">{{ $statusDisplayLabel }}</span>
                     </div>
                 </div>
 
                 <!-- Modern Throttled Segmented Controls: LIVE / PAUSE / END -->
-                <div id="voting-controls-group" class="inline-flex items-center rounded-xl bg-slate-100 p-0.5 border border-slate-200/90 shadow-2xs space-x-0.5">
+                <div id="voting-controls-group" class="inline-flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200/90 dark:border-slate-700 shadow-2xs space-x-0.5">
                     <button 
                         type="button" 
                         id="btn-status-started"
                         onclick="handleVotingStatusAction('STARTED')"
                         title="Start / Resume Voting System (LIVE)"
-                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-700 hover:bg-white' }}"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-emerald-700 hover:bg-white dark:hover:bg-slate-700' }}"
                     >
                         <span>●</span>
                         <span>LIVE</span>
@@ -184,7 +204,7 @@
                         id="btn-status-paused"
                         onclick="handleVotingStatusAction('PAUSED')"
                         title="Pause Voting System"
-                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'PAUSED' ? 'bg-amber-500 text-white shadow-xs' : 'text-slate-600 hover:text-amber-700 hover:bg-white' }}"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'PAUSED' ? 'bg-amber-500 text-white shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-amber-700 hover:bg-white dark:hover:bg-slate-700' }}"
                     >
                         <span>⏸</span>
                         <span>PAUSE</span>
@@ -194,7 +214,7 @@
                         id="btn-status-stopped"
                         onclick="handleVotingStatusAction('STOPPED')"
                         title="Officially End Voting System (FINISHED)"
-                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STOPPED' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 hover:text-rose-700 hover:bg-white' }}"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STOPPED' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-rose-700 hover:bg-white dark:hover:bg-slate-700' }}"
                     >
                         <span>⏹</span>
                         <span>END</span>
@@ -202,18 +222,61 @@
                 </div>
             </div>
 
-            <!-- Right Header Actions (Language Switcher & Live SSE & PWA Install) -->
-            <div class="flex items-center space-x-2.5 text-xs text-slate-600">
-                <!-- PWA Install Button -->
-                <button id="pwa-install-btn" type="button" class="hidden px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold border border-indigo-200 transition items-center space-x-1 shadow-2xs cursor-pointer" title="Install Aplikasi TapVote AI">
-                    <span>📲</span>
-                    <span>Install App</span>
+            <!-- Center Command Palette Search Bar -->
+            <div class="flex-1 max-w-sm mx-4 hidden md:flex items-center justify-center">
+                <button 
+                    type="button" 
+                    onclick="openAdminCommandPalette()" 
+                    class="w-full flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200/90 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-xs font-medium transition cursor-pointer shadow-2xs"
+                >
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <span>Cari menu atau fitur...</span>
+                    </div>
+                    <kbd class="px-1.5 py-0.5 rounded bg-white dark:bg-slate-900 text-[10px] font-mono text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700 font-bold shadow-2xs">Ctrl K</kbd>
+                </button>
+            </div>
+
+            <!-- Right Header Actions (Search Mobile, Theme Switcher, Language, Live SSE) -->
+            <div class="flex items-center space-x-2.5 text-xs text-slate-600 dark:text-slate-300">
+                <!-- Mobile Search Button -->
+                <button 
+                    type="button" 
+                    onclick="openAdminCommandPalette()" 
+                    class="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                    title="Cari"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </button>
 
+                <!-- Admin Theme Switcher (Light / Dark / System - Admin panel only) -->
+                <div class="relative inline-block text-left" id="admin-theme-dropdown-wrap">
+                    <button 
+                        type="button" 
+                        id="admin-theme-btn" 
+                        onclick="toggleAdminThemeDropdown()" 
+                        class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition cursor-pointer shadow-2xs flex items-center justify-center"
+                        title="Tema Admin Panel"
+                    >
+                        <span id="admin-theme-icon" class="text-sm">🌓</span>
+                    </button>
+                    <div id="admin-theme-menu" class="hidden absolute right-0 mt-2 w-36 rounded-2xl bg-white dark:bg-slate-800 shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50 text-xs font-semibold">
+                        <button type="button" onclick="setAdminTheme('light')" class="w-full flex items-center space-x-2 px-3 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 cursor-pointer">
+                            <span>☀️</span><span>Terang</span>
+                        </button>
+                        <button type="button" onclick="setAdminTheme('dark')" class="w-full flex items-center space-x-2 px-3 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 cursor-pointer">
+                            <span>🌙</span><span>Gelap</span>
+                        </button>
+                        <button type="button" onclick="setAdminTheme('system')" class="w-full flex items-center space-x-2 px-3 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 cursor-pointer">
+                            <span>💻</span><span>Sistem</span>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Language Switcher EN / ID -->
-                <div class="inline-flex items-center rounded-xl bg-slate-100 p-0.5 border border-slate-200 text-xs font-extrabold">
-                    <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-slate-900' }}">EN</a>
-                    <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-slate-900' }}">ID</a>
+                <div class="inline-flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs font-extrabold">
+                    <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}">EN</a>
+                    <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}">ID</a>
                 </div>
 
                 <a href="{{ route('home') }}" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-blue-700 font-bold border border-slate-200 transition flex items-center space-x-1.5 shadow-2xs">
@@ -467,7 +530,223 @@
                 if (btnStopped) btnStopped.className = 'px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 bg-rose-600 text-white shadow-xs';
             }
         }
+
+        // ==========================================
+        // ADMIN THEME SWITCHER (Isolated to Admin)
+        // ==========================================
+        function toggleAdminThemeDropdown() {
+            const menu = document.getElementById('admin-theme-menu');
+            if (menu) menu.classList.toggle('hidden');
+        }
+
+        function setAdminTheme(theme) {
+            localStorage.setItem('tapvote_admin_theme', theme);
+            const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            const icon = document.getElementById('admin-theme-icon');
+            if (isDark) {
+                document.documentElement.classList.add('dark', 'admin-dark');
+                if (icon) icon.textContent = '🌙';
+            } else {
+                document.documentElement.classList.remove('dark', 'admin-dark');
+                if (icon) icon.textContent = '☀️';
+            }
+            if (theme === 'system' && icon) icon.textContent = '🌓';
+            const menu = document.getElementById('admin-theme-menu');
+            if (menu) menu.classList.add('hidden');
+        }
+
+        // Close dropdown on outside click
+        document.addEventListener('click', function(e) {
+            const wrap = document.getElementById('admin-theme-dropdown-wrap');
+            const menu = document.getElementById('admin-theme-menu');
+            if (wrap && menu && !wrap.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Initialize Theme Icon
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('tapvote_admin_theme') || 'system';
+            const icon = document.getElementById('admin-theme-icon');
+            if (icon) {
+                if (savedTheme === 'dark') icon.textContent = '🌙';
+                else if (savedTheme === 'light') icon.textContent = '☀️';
+                else icon.textContent = '🌓';
+            }
+            renderCommandResults(commandItems);
+        });
+
+        // ==========================================
+        // COMMAND PALETTE SEARCH (Ctrl+K or /)
+        // ==========================================
+        const commandItems = [
+            { title: 'Live Dashboard', group: 'Monitoring', icon: '📊', url: '{{ route("admin.dashboard") }}' },
+            { title: 'Analytics (Mata Langit Telemetri)', group: 'Monitoring', icon: '🛰️', url: '{{ route("admin.analytics") }}' },
+            { title: 'Vote Flow (Broker Summary)', group: 'Monitoring', icon: '🌊', url: '{{ route("admin.vote-flow") }}' },
+            { title: 'Chairman Candidates (Kandidat Ketua)', group: 'Master Data', icon: '👤', url: '{{ route("admin.ketua.index") }}' },
+            { title: 'Supervisor Candidates (Kandidat Pengawas)', group: 'Master Data', icon: '👥', url: '{{ route("admin.pengawas.index") }}' },
+            { title: 'Eligible Voters (DPT Pemilih)', group: 'Master Data', icon: '📋', url: '{{ route("admin.voters.index") }}' },
+            { title: 'Chairman Recap Report (Rekapitulasi Ketua)', group: 'Reports', icon: '📜', url: '{{ route("admin.reports.ketua") }}' },
+            { title: 'Supervisor Recap Report (Rekapitulasi Pengawas)', group: 'Reports', icon: '📑', url: '{{ route("admin.reports.pengawas") }}' },
+            { title: 'Forensic Traceback (Audit Suara)', group: 'Reports', icon: '🔍', url: '{{ route("admin.reports.traceback") }}' },
+            { title: 'Doorprize Raffle & Undian', group: 'Reports', icon: '🎁', url: '{{ route("admin.reports.doorprize") }}' },
+            { title: 'Audit Trail Logs', group: 'Reports', icon: '🛡️', url: '{{ route("admin.logs.index") }}' },
+            { title: 'System Settings (Deadline & Konfigurasi)', group: 'System', icon: '⚙️', url: '{{ route("admin.settings") }}' },
+            { title: 'Buka Voting Terminal (RFID Scan)', group: 'Terminal', icon: '💳', url: '{{ route("voter.tap") }}' },
+            { title: 'Audience Stage View Doorprize', group: 'Terminal', icon: '📺', url: '{{ route("doorprize.public") }}' },
+            { title: 'Public Live Stream Screen', group: 'Public', icon: '🌐', url: '{{ route("home") }}' }
+        ];
+
+        let selectedCommandIndex = 0;
+        let currentFilteredCommands = [...commandItems];
+
+        function openAdminCommandPalette() {
+            const modal = document.getElementById('admin-command-palette-modal');
+            const input = document.getElementById('admin-command-input');
+            if (modal) {
+                modal.classList.remove('hidden');
+                selectedCommandIndex = 0;
+                filterCommandPalette('');
+                if (input) {
+                    input.value = '';
+                    setTimeout(() => input.focus(), 50);
+                }
+            }
+        }
+
+        function closeAdminCommandPalette() {
+            const modal = document.getElementById('admin-command-palette-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function filterCommandPalette(query) {
+            const q = query.toLowerCase().trim();
+            if (!q) {
+                currentFilteredCommands = [...commandItems];
+            } else {
+                currentFilteredCommands = commandItems.filter(item => 
+                    item.title.toLowerCase().includes(q) || item.group.toLowerCase().includes(q)
+                );
+            }
+            selectedCommandIndex = 0;
+            renderCommandResults(currentFilteredCommands);
+        }
+
+        function renderCommandResults(items) {
+            const container = document.getElementById('admin-command-results');
+            if (!container) return;
+
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="p-6 text-center text-xs text-slate-400">
+                        Tidak ada fitur atau menu yang cocok dengan pencarian.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map((item, idx) => `
+                <a 
+                    href="${item.url}" 
+                    id="cmd-item-${idx}"
+                    class="flex items-center justify-between px-3 py-2.5 rounded-2xl transition cursor-pointer ${idx === selectedCommandIndex ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200'}"
+                    onmouseover="selectCommandIndex(${idx})"
+                >
+                    <div class="flex items-center space-x-3">
+                        <span class="text-base">${item.icon}</span>
+                        <div>
+                            <span class="font-bold text-xs block leading-tight">${item.title}</span>
+                            <span class="text-[10px] ${idx === selectedCommandIndex ? 'text-blue-100' : 'text-slate-400 dark:text-slate-500'} uppercase font-semibold">${item.group}</span>
+                        </div>
+                    </div>
+                    <span class="text-xs ${idx === selectedCommandIndex ? 'text-white' : 'text-slate-400'}">→</span>
+                </a>
+            `).join('');
+        }
+
+        function selectCommandIndex(idx) {
+            selectedCommandIndex = idx;
+            const items = document.querySelectorAll('[id^="cmd-item-"]');
+            items.forEach((el, i) => {
+                if (i === idx) {
+                    el.className = 'flex items-center justify-between px-3 py-2.5 rounded-2xl transition cursor-pointer bg-blue-600 text-white';
+                } else {
+                    el.className = 'flex items-center justify-between px-3 py-2.5 rounded-2xl transition cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200';
+                }
+            });
+        }
+
+        function handleCommandKeydown(e) {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (selectedCommandIndex < currentFilteredCommands.length - 1) {
+                    selectCommandIndex(selectedCommandIndex + 1);
+                    document.getElementById(`cmd-item-${selectedCommandIndex}`)?.scrollIntoView({ block: 'nearest' });
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (selectedCommandIndex > 0) {
+                    selectCommandIndex(selectedCommandIndex - 1);
+                    document.getElementById(`cmd-item-${selectedCommandIndex}`)?.scrollIntoView({ block: 'nearest' });
+                }
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (currentFilteredCommands[selectedCommandIndex]) {
+                    window.location.href = currentFilteredCommands[selectedCommandIndex].url;
+                }
+            } else if (e.key === 'Escape') {
+                closeAdminCommandPalette();
+            }
+        }
+
+        // Global shortcut Ctrl+K and /
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                openAdminCommandPalette();
+            } else if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.tagName !== 'SELECT') {
+                e.preventDefault();
+                openAdminCommandPalette();
+            } else if (e.key === 'Escape') {
+                closeAdminCommandPalette();
+            }
+        });
     </script>
+
+    <!-- Admin Command Palette Modal (Ctrl+K or /) -->
+    <div id="admin-command-palette-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
+        <div onclick="closeAdminCommandPalette()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20 flex justify-center items-start">
+            <div class="w-full max-w-xl transform rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl transition-all overflow-hidden">
+                <div class="relative border-b border-slate-200 dark:border-slate-800">
+                    <svg class="pointer-events-none absolute top-4 left-4 h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input 
+                        type="text" 
+                        id="admin-command-input" 
+                        placeholder="Cari semua fitur admin, laporan, pengaturan..." 
+                        class="h-13 w-full pl-12 pr-12 bg-transparent text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
+                        oninput="filterCommandPalette(this.value)"
+                        onkeydown="handleCommandKeydown(event)"
+                    >
+                    <button onclick="closeAdminCommandPalette()" class="absolute top-3.5 right-4 p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold cursor-pointer">
+                        ESC
+                    </button>
+                </div>
+
+                <div id="admin-command-results" class="max-h-80 overflow-y-auto p-2 space-y-1">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <div class="px-4 py-2.5 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                    <div class="flex items-center space-x-3">
+                        <span><kbd class="px-1 py-0.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">↑</kbd> <kbd class="px-1 py-0.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">↓</kbd> Navigasi</span>
+                        <span><kbd class="px-1 py-0.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">↵</kbd> Buka</span>
+                    </div>
+                    <span>TapVote AI Quick Navigator</span>
+                </div>
+            </div>
+        </div>
+    </div>
     @stack('scripts')
     <script>
         if ('serviceWorker' in navigator) {

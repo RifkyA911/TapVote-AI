@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppSetting;
 use App\Models\KandidatKetua;
 use App\Models\KandidatPengawas;
 use App\Models\Pemilih;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -142,6 +144,15 @@ class LiveCountController extends Controller
             $leaderPengawasName = $leaderPengawas ? $leaderPengawas->nama : '';
         }
 
+        $votingDeadline = AppSetting::get('voting_deadline', '');
+        $deadlineFormatted = '';
+        $deadlineTimestamp = null;
+        if (!empty($votingDeadline) && strtotime($votingDeadline)) {
+            $deadlineCarbon = Carbon::parse($votingDeadline);
+            $deadlineFormatted = $deadlineCarbon->locale('id')->isoFormat('dddd, D MMMM Y - HH:mm') . ' WIB';
+            $deadlineTimestamp = $deadlineCarbon->timestamp;
+        }
+
         return [
             'metrics' => [
                 'total_voters' => $totalVoters,
@@ -157,6 +168,9 @@ class LiveCountController extends Controller
                 'leader_pengawas' => $leaderPengawasName,
                 'is_ketua_seri' => $isKetuaSeri,
                 'is_pengawas_seri' => $isPengawasSeri,
+                'voting_deadline' => $votingDeadline,
+                'deadline_formatted' => $deadlineFormatted,
+                'deadline_timestamp' => $deadlineTimestamp,
                 'last_updated' => now()->timezone('Asia/Jakarta')->format('H:i:s') . ' WIB',
                 'last_updated_full' => now()->timezone('Asia/Jakarta')->format('d M Y, H:i:s') . ' WIB',
             ],

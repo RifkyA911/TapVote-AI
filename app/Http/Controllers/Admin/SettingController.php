@@ -16,6 +16,7 @@ class SettingController extends Controller
             'institution_name' => AppSetting::get('institution_name', 'Koperasi Karyawan PT Semen Indonesia'),
             'quorum_percentage' => AppSetting::get('quorum_percentage', '50.0'),
             'voting_status' => AppSetting::get('voting_status', 'STARTED'),
+            'voting_deadline' => AppSetting::get('voting_deadline', ''),
             'gemini_api_key' => AppSetting::get('gemini_api_key', ''),
             'gemini_model' => AppSetting::get('gemini_model', 'gemini-2.0-flash'),
             'enable_voice_greeting' => AppSetting::get('enable_voice_greeting', '1'),
@@ -34,32 +35,54 @@ class SettingController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'election_title' => 'required|string|max:255',
-            'institution_name' => 'required|string|max:255',
-            'quorum_percentage' => 'required|numeric|min:1|max:100',
-            'voting_status' => 'required|in:STARTED,PAUSED,STOPPED',
+            'election_title' => 'sometimes|required|string|max:255',
+            'institution_name' => 'sometimes|required|string|max:255',
+            'quorum_percentage' => 'sometimes|required|numeric|min:1|max:100',
+            'voting_status' => 'sometimes|required|in:STARTED,PAUSED,STOPPED',
+            'voting_deadline' => 'nullable|string|max:50',
             'gemini_api_key' => 'nullable|string|max:255',
-            'gemini_model' => 'required|string|in:gemini-2.0-flash,gemini-1.5-flash,gemini-1.5-pro',
-            'throttle_click_ms' => 'required|integer|min:200|max:5000',
-            'kiosk_session_timeout' => 'required|integer|min:10|max:600',
+            'gemini_model' => 'sometimes|required|string|in:gemini-2.0-flash,gemini-1.5-flash,gemini-1.5-pro',
+            'throttle_click_ms' => 'sometimes|required|integer|min:200|max:5000',
+            'kiosk_session_timeout' => 'sometimes|required|integer|min:10|max:600',
         ]);
 
-        $validated['enable_voice_greeting'] = $request->has('enable_voice_greeting') ? '1' : '0';
-        $validated['enable_sound_fx'] = $request->has('enable_sound_fx') ? '1' : '0';
-        $validated['public_sse_enabled'] = $request->has('public_sse_enabled') ? '1' : '0';
-        $validated['show_candidate_nik'] = $request->has('show_candidate_nik') ? '1' : '0';
-        $validated['enable_nfc_mobile'] = $request->has('enable_nfc_mobile') ? '1' : '0';
-        $validated['enable_demo_accounts'] = $request->has('enable_demo_accounts') ? '1' : '0';
+        $booleanFields = [
+            'enable_voice_greeting',
+            'enable_sound_fx',
+            'public_sse_enabled',
+            'show_candidate_nik',
+            'enable_nfc_mobile',
+            'enable_demo_accounts',
+        ];
+
+        foreach ($booleanFields as $field) {
+            if ($request->has($field)) {
+                $validated[$field] = $request->boolean($field) ? '1' : '0';
+            }
+        }
+
+        if ($request->has('voting_deadline')) {
+            $validated['voting_deadline'] = (string) $request->input('voting_deadline', '');
+        }
 
         foreach ($validated as $key => $val) {
-            AppSetting::set($key, (string) ($val ?? '0'));
+            AppSetting::set($key, (string) ($val ?? ''));
         }
 
         ActivityLog::log(
             'SETTINGS_UPDATE',
             'ADMIN',
-            'Konfigurasi sistem TapVote AI berhasil diperbarui oleh Administrator.'
+            'Konfigurasi sistem TapVote AI berhasil diperbarui otomatis oleh Administrator.'
         );
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Tersimpan otomatis',
+                'saved_at' => now()->format('H:i:s') . ' WIB',
+                'updated' => array_keys($validated),
+            ]);
+        }
 
         return redirect()->route('admin.settings')->with('success', 'Konfigurasi sistem berhasil disimpan dan diterapkan.');
     }

@@ -557,10 +557,24 @@ class DashboardController extends Controller
                 ];
             });
 
+        $votingDeadline = AppSetting::get('voting_deadline', '');
+        $deadlineFormatted = null;
+        $deadlineTimestamp = null;
+        if (!empty($votingDeadline)) {
+            try {
+                $dt = \Carbon\Carbon::parse($votingDeadline);
+                $deadlineFormatted = $dt->translatedFormat('l, d F Y - H:i') . ' WIB';
+                $deadlineTimestamp = $dt->timestamp;
+            } catch (\Throwable $e) {}
+        }
+
         return [
             'timestamp' => now()->timestamp,
             'time_formatted' => now()->format('d M Y H:i:s WIB'),
             'voting_status' => $votingStatus,
+            'voting_deadline' => $votingDeadline,
+            'deadline_formatted' => $deadlineFormatted,
+            'deadline_timestamp' => $deadlineTimestamp,
             'metrics' => [
                 'total_voters' => $totalVoters,
                 'total_voted' => $totalVoted,

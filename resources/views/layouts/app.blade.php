@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @stack('meta')
     <title>@yield('title', 'TapVote AI') - {{ __('Live Count Cooperative Election') }}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,6 +21,11 @@
     <link rel="apple-touch-icon" href="/images/pwa/icon-192.png">
     <meta name="msapplication-TileColor" content="#2563eb">
     <meta name="msapplication-TileImage" content="/images/pwa/icon-192.png">
+
+    <!-- Strictly Guarantee Public Viewport Theme Integrity (No Admin Dark bleed) -->
+    <script>
+        document.documentElement.classList.remove('dark', 'admin-dark');
+    </script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')

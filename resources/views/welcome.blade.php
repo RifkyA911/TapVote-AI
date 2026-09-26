@@ -31,14 +31,14 @@
 
             <a href="{{ route('voter.tap') }}" class="flex-1 sm:flex-none justify-center px-4 py-2.5 sm:px-5 sm:py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm shadow-md transition flex items-center space-x-2">
                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 004 11m0 0a8 8 0 00.99 7.132"></path></svg>
-                <span>{{ __('Open Voter Kiosk (Tap Card)') }}</span>
+                <span>{{ __('Open Voting Terminal (Tap Card)') }}</span>
             </a>
         </div>
     </header>
 
     <!-- Executive Public Election Overview Banner -->
     <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-center">
             
             <!-- Turnout Percentage & Progress -->
             <div>
@@ -53,7 +53,7 @@
             </div>
 
             <!-- Election Status & Security -->
-            <div class="border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-6">
+            <div class="border-t sm:border-t-0 sm:border-l border-slate-200 pt-4 sm:pt-0 sm:pl-6">
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">{{ __('Election Status') }}</span>
                 <div class="flex items-center space-x-2">
                     <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -63,7 +63,7 @@
             </div>
 
             <!-- Frontrunners Spotlight -->
-            <div class="border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-6">
+            <div class="border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-6">
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-1">{{ __('Frontrunners Spotlight') }}</span>
                 <div class="space-y-1">
                     <div class="text-xs text-slate-700 flex items-center justify-between">
@@ -75,6 +75,26 @@
                         <strong id="leader-pengawas-text" class="text-emerald-700 truncate max-w-[170px]">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                     </div>
                 </div>
+            </div>
+
+            <!-- Voting Deadline Countdown -->
+            <div id="deadline-container" class="border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-6 {{ empty($metrics['voting_deadline']) ? 'hidden' : '' }}">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs font-bold uppercase tracking-wider text-rose-600 block">⏰ Batas Waktu Vote</span>
+                    <span id="deadline-status-pill" class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-rose-50 text-rose-700 border border-rose-200">Countdown</span>
+                </div>
+                <div class="flex items-center space-x-1 font-mono text-base sm:text-lg font-black text-slate-900" id="deadline-countdown-timer">
+                    <span id="deadline-days" class="bg-slate-100 px-1.5 py-0.5 rounded-md">00d</span>
+                    <span>:</span>
+                    <span id="deadline-hours" class="bg-slate-100 px-1.5 py-0.5 rounded-md">00h</span>
+                    <span>:</span>
+                    <span id="deadline-mins" class="bg-slate-100 px-1.5 py-0.5 rounded-md">00m</span>
+                    <span>:</span>
+                    <span id="deadline-secs" class="bg-slate-100 px-1.5 py-0.5 rounded-md text-rose-600">00s</span>
+                </div>
+                <p id="deadline-info-text" class="text-[11px] text-slate-500 mt-1 font-medium truncate">
+                    Batas: <strong id="deadline-formatted-text" class="text-slate-800">{{ $metrics['deadline_formatted'] ?? '-' }}</strong>
+                </p>
             </div>
 
         </div>
@@ -810,6 +830,19 @@
             });
         }
 
+        // Update Voting Deadline Countdown
+        if (data.metrics && data.metrics.voting_deadline) {
+            currentDeadlineTimestamp = data.metrics.deadline_timestamp;
+            const container = document.getElementById('deadline-container');
+            if (container) container.classList.remove('hidden');
+            const fmt = document.getElementById('deadline-formatted-text');
+            if (fmt && data.metrics.deadline_formatted) fmt.innerText = data.metrics.deadline_formatted;
+            tickCountdown();
+        } else if (data.metrics && !data.metrics.voting_deadline) {
+            const container = document.getElementById('deadline-container');
+            if (container) container.classList.add('hidden');
+        }
+
         // Update Chart
         if (comparisonChart) {
             const { labels, datasets } = generateChartData(currentChartMode);
@@ -818,6 +851,45 @@
             comparisonChart.update('none');
         }
     }
+
+    // Voting Deadline Realtime Countdown Timer
+    let currentDeadlineTimestamp = {{ $metrics['deadline_timestamp'] ?? 'null' }};
+    function tickCountdown() {
+        if (!currentDeadlineTimestamp) return;
+        const now = Math.floor(Date.now() / 1000);
+        const diff = currentDeadlineTimestamp - now;
+
+        const daysEl = document.getElementById('deadline-days');
+        const hoursEl = document.getElementById('deadline-hours');
+        const minsEl = document.getElementById('deadline-mins');
+        const secsEl = document.getElementById('deadline-secs');
+        const pillEl = document.getElementById('deadline-status-pill');
+
+        if (diff <= 0) {
+            if (daysEl) daysEl.innerText = '00d';
+            if (hoursEl) hoursEl.innerText = '00h';
+            if (minsEl) minsEl.innerText = '00m';
+            if (secsEl) secsEl.innerText = '00s';
+            if (pillEl) {
+                pillEl.className = 'px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-slate-200 text-slate-800';
+                pillEl.innerText = 'Telah Berakhir';
+            }
+            return;
+        }
+
+        const days = Math.floor(diff / 86400);
+        const hours = Math.floor((diff % 86400) / 3600);
+        const mins = Math.floor((diff % 3600) / 60);
+        const secs = diff % 60;
+
+        if (daysEl) daysEl.innerText = String(days).padStart(2, '0') + 'd';
+        if (hoursEl) hoursEl.innerText = String(hours).padStart(2, '0') + 'h';
+        if (minsEl) minsEl.innerText = String(mins).padStart(2, '0') + 'm';
+        if (secsEl) secsEl.innerText = String(secs).padStart(2, '0') + 's';
+    }
+
+    setInterval(tickCountdown, 1000);
+    document.addEventListener('DOMContentLoaded', tickCountdown);
 
     // 3. Modal Detail Calon & Text-to-Speech (TTS) Engine
     let activeModalCandidate = null;

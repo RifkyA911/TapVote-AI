@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'voter.auth' => \App\Http\Middleware\VoterAuthMiddleware::class,
             'role.admin' => \App\Http\Middleware\AdminAuthMiddleware::class,
+            'admin.ip' => \App\Http\Middleware\AdminIpWhitelistMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

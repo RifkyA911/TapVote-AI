@@ -48,13 +48,6 @@
       "description": "View Live Election Results",
       "url": "/",
       "icons": [{ "src": "/images/pwa/icon-192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Admin Dashboard",
-      "short_name": "Admin",
-      "description": "Command Center & Telemetry",
-      "url": "/admin/dashboard",
-      "icons": [{ "src": "/images/pwa/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

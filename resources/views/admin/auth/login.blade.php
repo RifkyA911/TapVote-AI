@@ -2,6 +2,10 @@
 
 @section('title', 'Admin Portal Login - TapVote AI')
 
+@push('meta')
+    <meta name="robots" content="noindex, nofollow, noarchive">
+@endpush
+
 @push('styles')
 <style>
     /* Pure Neumorphism (Soft UI) Elevation System */

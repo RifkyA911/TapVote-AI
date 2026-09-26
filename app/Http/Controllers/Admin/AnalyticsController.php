@@ -10,6 +10,7 @@ use App\Models\HasilPengawas;
 use App\Models\KandidatKetua;
 use App\Models\KandidatPengawas;
 use App\Models\Pemilih;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,17 +19,74 @@ class AnalyticsController extends Controller
     /**
      * "Mata Langit" (Sky Eye Telemetry & Deep Analytics)
      */
-    public function index()
+    public function index(Request $request)
     {
-        $totalVoters = Pemilih::count();
-        $totalVoted = Pemilih::where('pilih', 'T')->count();
+        $data = $this->gatherAnalyticsData($request);
+        return view('admin.analytics.index', $data);
+    }
+
+    /**
+     * Export Analytics Telemetry Report to PDF
+     */
+    public function exportPdf(Request $request)
+    {
+        $data = $this->gatherAnalyticsData($request);
+        $pdf = Pdf::loadView('admin.analytics.pdf', $data);
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->download('laporan_telemetri_analytics_' . date('Ymd_His') . '.pdf');
+    }
+
+    /**
+     * Centralized Data Aggregator for Analytics Telemetry & Filters
+     */
+    private function gatherAnalyticsData(Request $request)
+    {
+        $selectedDept = $request->query('dept', '');
+        $selectedDate = $request->query('date', '');
+        $selectedShift = $request->query('shift', '');
+
+        // Base voters query with filters
+        $voterQuery = Pemilih::query();
+        if ($selectedDept) {
+            $voterQuery->where('dept', $selectedDept);
+        }
+
+        $totalVoters = (clone $voterQuery)->count();
+
+        // Query voted members with date/shift filters
+        $votedQuery = (clone $voterQuery)->where('pilih', 'T');
+
+        if ($selectedDate === 'today') {
+            $votedQuery->whereDate('voted_at', now()->toDateString());
+        } elseif (!empty($selectedDate) && strtotime($selectedDate)) {
+            $votedQuery->whereDate('voted_at', $selectedDate);
+        }
+
+        if ($selectedShift === 'morning') {
+            $votedQuery->whereTime('voted_at', '>=', '06:00:00')->whereTime('voted_at', '<', '12:00:00');
+        } elseif ($selectedShift === 'afternoon') {
+            $votedQuery->whereTime('voted_at', '>=', '12:00:00')->whereTime('voted_at', '<', '18:00:00');
+        } elseif ($selectedShift === 'night') {
+            $votedQuery->whereTime('voted_at', '>=', '18:00:00')->whereTime('voted_at', '<=', '23:59:59');
+        }
+
+        $totalVoted = $votedQuery->count();
         $remaining = max(0, $totalVoters - $totalVoted);
         $turnoutPct = $totalVoters > 0 ? round(($totalVoted / $totalVoters) * 100, 1) : 0;
         $quorumThreshold = (float) AppSetting::get('quorum_percentage', 50.0);
         $quorumMet = $turnoutPct >= $quorumThreshold;
 
+        // Distinct departments list for filter dropdown
+        $allDepartments = Pemilih::distinct()->orderBy('dept')->pluck('dept');
+
         // 1. Department Breakdown (Real Database Telemetry)
-        $deptStats = Pemilih::select('dept', 
+        $deptBaseQuery = Pemilih::query();
+        if ($selectedDept) {
+            $deptBaseQuery->where('dept', $selectedDept);
+        }
+
+        $deptStats = $deptBaseQuery->select('dept', 
                 DB::raw('COUNT(*) as total_members'),
                 DB::raw("SUM(CASE WHEN pilih = 'T' THEN 1 ELSE 0 END) as voted_members"),
                 DB::raw("SUM(CASE WHEN pilih = 'F' THEN 1 ELSE 0 END) as pending_members")
@@ -51,8 +109,17 @@ class AnalyticsController extends Controller
         $isSqlite = DB::connection()->getDriverName() === 'sqlite';
         $hourExpr = $isSqlite ? "strftime('%H', voted_at)" : "DATE_FORMAT(voted_at, '%H')";
 
-        $hourlyDistribution = Pemilih::where('pilih', 'T')
-            ->whereNotNull('voted_at')
+        $hourlyQuery = Pemilih::where('pilih', 'T')->whereNotNull('voted_at');
+        if ($selectedDept) {
+            $hourlyQuery->where('dept', $selectedDept);
+        }
+        if ($selectedDate === 'today') {
+            $hourlyQuery->whereDate('voted_at', now()->toDateString());
+        } elseif (!empty($selectedDate) && strtotime($selectedDate)) {
+            $hourlyQuery->whereDate('voted_at', $selectedDate);
+        }
+
+        $hourlyDistribution = $hourlyQuery
             ->select(DB::raw("{$hourExpr} as hour_slot"), DB::raw('COUNT(*) as vote_count'))
             ->groupBy('hour_slot')
             ->orderBy('hour_slot', 'asc')
@@ -105,13 +172,28 @@ class AnalyticsController extends Controller
             ->take(10)
             ->get();
 
-        return view('admin.analytics.index', compact(
+        // 6. Candidate Live Rankings (Ketua & Pengawas)
+        $rankingKetua = KandidatKetua::withCount('perolehanSuara')
+            ->orderBy('perolehan_suara_count', 'desc')
+            ->orderBy('nomor_urut', 'asc')
+            ->get();
+
+        $rankingPengawas = KandidatPengawas::withCount('perolehanSuara')
+            ->orderBy('perolehan_suara_count', 'desc')
+            ->orderBy('nomor_urut', 'asc')
+            ->get();
+
+        return compact(
             'totalVoters',
             'totalVoted',
             'remaining',
             'turnoutPct',
             'quorumThreshold',
             'quorumMet',
+            'allDepartments',
+            'selectedDept',
+            'selectedDate',
+            'selectedShift',
             'deptStats',
             'hoursLabels',
             'hoursValues',
@@ -122,8 +204,10 @@ class AnalyticsController extends Controller
             'rfidAuthenticityRate',
             'totalScanAttempts',
             'logsWithAgents',
-            'recentSecurityEvents'
-        ));
+            'recentSecurityEvents',
+            'rankingKetua',
+            'rankingPengawas'
+        );
     }
 
     /**
