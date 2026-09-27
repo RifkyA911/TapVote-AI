@@ -326,9 +326,9 @@ class ReportController extends Controller
     }
      public function doorprize()
      {
-         $eligibleQuery = Pemilih::where('pilih', 'T')->orderBy('voted_at', 'desc');
+         $eligibleQuery = Pemilih::where('pilih', 'T')->where('can_raffle', true)->orderBy('voted_at', 'desc');
          $eligibleVoters = (clone $eligibleQuery)->paginate(15);
-         $totalEligible = Pemilih::where('pilih', 'T')->count();
+         $totalEligible = Pemilih::where('pilih', 'T')->where('can_raffle', true)->count();
 
          // Master Hadiah Doorprize
          $doorprizes = Doorprize::withCount('winners')->orderBy('id', 'asc')->get();
@@ -340,6 +340,7 @@ class ReportController extends Controller
 
          // Pool pemilih untuk client-side rapid name animation
          $eligibleList = Pemilih::where('pilih', 'T')
+             ->where('can_raffle', true)
              ->select('nik', 'nama', 'dept')
              ->get()
              ->map(function ($p) {
@@ -376,6 +377,7 @@ class ReportController extends Controller
          $existingWinners = DoorprizeWinner::where('doorprize_id', $doorprize->id)->pluck('nik');
 
          $winnerVoter = Pemilih::where('pilih', 'T')
+             ->where('can_raffle', true)
              ->whereNotIn('nik', $existingWinners)
              ->inRandomOrder()
              ->first();
@@ -590,10 +592,11 @@ class ReportController extends Controller
      public function publicDoorprize()
      {
          $doorprizes = Doorprize::withCount('winners')->orderBy('id', 'asc')->get();
-         $totalEligible = Pemilih::where('pilih', 'T')->count();
+         $totalEligible = Pemilih::where('pilih', 'T')->where('can_raffle', true)->count();
          $winners = DoorprizeWinner::with(['doorprize', 'pemilih'])->latest('won_at')->get();
 
          $eligibleList = Pemilih::where('pilih', 'T')
+             ->where('can_raffle', true)
              ->select('nik', 'nama', 'dept')
              ->get()
              ->map(function ($p) {
@@ -636,7 +639,7 @@ class ReportController extends Controller
          });
 
          return response()->json([
-             'total_eligible' => Pemilih::where('pilih', 'T')->count(),
+             'total_eligible' => Pemilih::where('pilih', 'T')->where('can_raffle', true)->count(),
              'doorprizes' => $doorprizes,
              'winners' => $winners,
          ]);

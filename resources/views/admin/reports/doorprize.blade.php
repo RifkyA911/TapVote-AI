@@ -260,36 +260,26 @@
     <!-- ======================================================== -->
     <!-- 2. ANIMATED DIGITAL LOTTERY STAGE (NO STARS / NO CLIPPING)-->
     <!-- ======================================================== -->
-    <div id="undi-section" class="scroll-mt-24 p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-amber-50/90 via-white to-yellow-50/70 text-slate-900 border-2 border-amber-300 shadow-xl relative overflow-visible text-center">
-        <!-- Ambient decorative accents -->
-        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-amber-400/20 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-yellow-400/20 blur-3xl pointer-events-none"></div>
+    <div id="undi-section" class="scroll-mt-24 rounded-3xl bg-gradient-to-br from-amber-50/90 via-white to-yellow-50/70 text-slate-900 border-2 border-amber-300 shadow-xl relative overflow-hidden text-center">
+        {{-- Three.js 3D Canvas (renders behind content) --}}
+        <div id="doorprize-3d-canvas" class="absolute inset-0 z-0 pointer-events-none"></div>
 
-        <div class="max-w-xl mx-auto relative z-10 space-y-6">
+        {{-- Ambient decorative accents --}}
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-amber-400/15 blur-3xl pointer-events-none z-0"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-yellow-400/15 blur-3xl pointer-events-none z-0"></div>
 
-            <!-- Active Selected Prize Indicator Badge -->
-            <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-black shadow-xs">
+        <div class="max-w-xl mx-auto relative z-10 space-y-6 p-6 sm:p-10">
+
+            {{-- Active Selected Prize Indicator Badge --}}
+            <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-amber-100/90 text-amber-950 border border-amber-300 text-xs font-black shadow-xs backdrop-blur-sm">
                 <span>🎁 {{ __('Target Hadiah:') }}</span>
                 <strong id="active-prize-title" class="text-slate-900 font-extrabold">{{ $doorprizes->first()?->title ?? __('Pilih Hadiah') }}</strong>
                 <span id="active-prize-slots" class="text-amber-800 font-mono">({{ $doorprizes->first()?->remaining_slots ?? 0 }} {{ __('Sisa') }})</span>
             </div>
 
-            <!-- STATE 1: INITIAL READY STATE -->
-            <div id="doorprize-stage-initial" class="{{ $totalEligible > 0 ? '' : 'hidden' }} space-y-4">
-                <div class="w-28 h-28 sm:w-32 sm:h-32 mx-auto relative flex items-center justify-center">
-                    <svg class="w-full h-full text-amber-500 drop-shadow-[0_4px_16px_rgba(245,158,11,0.3)]" viewBox="0 0 100 100" fill="none">
-                        <circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 4" class="animate-spin" style="animation-duration: 25s;" />
-                        <circle cx="50" cy="50" r="36" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.4" />
-                        <circle cx="50" cy="50" r="26" fill="url(#digitalGoldGradient)" />
-                        <path d="M44 40L60 50L44 60V40Z" fill="#0f172a" />
-                        <defs>
-                            <linearGradient id="digitalGoldGradient" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#f59e0b" />
-                                <stop offset="100%" stop-color="#fbbf24" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </div>
+            {{-- STATE 1: INITIAL READY STATE --}}
+            <div id="doorprize-stage-initial" class="{{ $totalEligible > 0 ? '' : 'hidden' }} space-y-5">
+                <div class="h-44 sm:h-52"></div> {{-- spacer for 3D canvas --}}
 
                 <h3 class="text-2xl sm:text-3xl font-black text-slate-950">{{ __('Mesin Undian Digital Anggota') }}</h3>
                 <p class="text-xs sm:text-sm text-slate-600 max-w-md mx-auto font-medium">
@@ -309,25 +299,17 @@
                 </div>
             </div>
 
-            <!-- STATE 2: ANIMATED DIGITAL GYROSCOPE SPINNER (NO STARS / NO CLIPPING) -->
+            {{-- STATE 2: ANIMATED 3D SPINNING --}}
             <div id="doorprize-stage-spinning" class="hidden space-y-6">
-                <div class="relative w-36 h-36 mx-auto flex items-center justify-center overflow-visible">
-                    <svg class="w-full h-full text-amber-500 drop-shadow-[0_0_24px_rgba(245,158,11,0.6)]" viewBox="0 0 100 100" fill="none">
-                        <circle cx="50" cy="50" r="45" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" stroke-dasharray="25 15" class="animate-spin" style="animation-duration: 0.5s;" />
-                        <circle cx="50" cy="50" r="35" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="18 18" class="animate-spin" style="animation-duration: 0.75s; animation-direction: reverse;" />
-                        <circle cx="50" cy="50" r="24" stroke="#10b981" stroke-width="2" stroke-dasharray="12 12" class="animate-spin" style="animation-duration: 1.1s;" />
-                        <circle cx="50" cy="50" r="14" fill="#f59e0b" class="animate-ping" style="animation-duration: 1.2s;" />
-                        <circle cx="50" cy="50" r="10" fill="#ffffff" />
-                    </svg>
-                </div>
+                <div class="h-44 sm:h-52"></div> {{-- spacer for 3D canvas --}}
 
-                <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-black animate-pulse">
+                <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-amber-100/90 text-amber-950 border border-amber-300 text-xs font-black animate-pulse backdrop-blur-sm">
                     <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
                     <span>{{ __('SILINDER DIGITAL BERPUTAR CEPAT...') }}</span>
                 </div>
 
-                <!-- Digital Reel Card in Light Theme -->
-                <div class="p-6 rounded-3xl bg-white border-2 border-amber-400 shadow-xl min-h-[140px] flex flex-col justify-center items-center">
+                {{-- Digital Reel Card --}}
+                <div class="p-6 rounded-3xl bg-white/90 backdrop-blur-md border-2 border-amber-400 shadow-xl min-h-[140px] flex flex-col justify-center items-center doorprize-reel-glow">
                     <span class="text-[11px] font-extrabold text-amber-700 uppercase tracking-widest block mb-1">{{ __('Mencari Nama Pemenang...') }}</span>
                     <h4 id="slot-name" class="text-2xl sm:text-3xl font-black text-slate-950 transition-all">{{ __('Memutar Data...') }}</h4>
                     <p id="slot-dept" class="text-sm font-bold text-amber-900 mt-1 font-mono">{{ __('Bagian:') }} -</p>
@@ -335,14 +317,16 @@
                 </div>
             </div>
 
-            <!-- STATE 3: WINNER REVEAL STATE (LIGHT THEME MATCHING!) -->
+            {{-- STATE 3: WINNER REVEAL STATE --}}
             <div id="doorprize-stage-winner" class="hidden space-y-5">
-                <div class="inline-flex items-center space-x-2 px-5 py-2 rounded-full text-xs font-black uppercase tracking-wider bg-amber-400 text-slate-950 shadow-md">
+                <div class="h-36 sm:h-44"></div> {{-- spacer for 3D canvas --}}
+
+                <div class="inline-flex items-center space-x-2 px-5 py-2 rounded-full text-xs font-black uppercase tracking-wider bg-amber-400 text-slate-950 shadow-md doorprize-winner-badge-glow">
                     <span>🏆</span>
                     <span>{{ __('SELAMAT! PEMENANG RESMI TERCATAT') }}</span>
                 </div>
 
-                <div class="p-6 sm:p-8 rounded-3xl bg-white border-2 border-amber-400 shadow-2xl relative overflow-hidden">
+                <div class="p-6 sm:p-8 rounded-3xl bg-white/95 backdrop-blur-md border-2 border-amber-400 shadow-2xl relative overflow-hidden doorprize-winner-card-enter">
                     <div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-tr from-amber-400 to-yellow-300 text-slate-950 flex items-center justify-center text-4xl mb-3 shadow-md">
                         🎉
                     </div>
@@ -370,7 +354,7 @@
                 </div>
             </div>
 
-            <!-- EMPTY POOL STATE -->
+            {{-- EMPTY POOL STATE --}}
             @if($totalEligible === 0)
                 <div class="p-6 text-center text-slate-400">
                     <p class="font-medium text-sm">{{ __('Belum ada anggota yang memberikan suara (Pool undian masih kosong).') }}</p>
@@ -542,10 +526,10 @@
                                         <button 
                                             type="button" 
                                             onclick="openUpdateStatusModal({{ $w->id }}, '{{ $w->status }}', '{{ addslashes($w->status_note ?? '') }}', '{{ addslashes($w->pemilih?->nama ?? $w->nik) }}', '{{ addslashes($w->doorprize?->title ?? '') }}')"
-                                            class="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold transition cursor-pointer"
+                                            class="p-1.5 rounded-xl text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition cursor-pointer"
                                             title="{{ __('Ubah Status Serah Terima Hadiah') }}"
                                         >
-                                            {{ __('Ubah Status') }}
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                         </button>
 
                                         <form action="{{ route('admin.reports.doorprize.winner.destroy', $w->id) }}" method="POST" onsubmit="return confirm('{{ __('Batalkan kemenangan :nama? Kuota hadiah akan dikembalikan.', ['nama' => $w->pemilih?->nama]) }}')" class="inline">
@@ -734,7 +718,222 @@
     </div>
 </div>
 
+@push('styles')
+<style>
+    .doorprize-reel-glow {
+        animation: doorprize-reel-pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes doorprize-reel-pulse {
+        0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.15); }
+        50% { box-shadow: 0 0 40px rgba(245,158,11,0.35); }
+    }
+    .doorprize-winner-badge-glow {
+        animation: doorprize-badge-glow 2s ease-in-out infinite;
+    }
+    @keyframes doorprize-badge-glow {
+        0%, 100% { box-shadow: 0 0 12px rgba(245,158,11,0.3); }
+        50% { box-shadow: 0 0 30px rgba(245,158,11,0.6); }
+    }
+    .doorprize-winner-card-enter {
+        animation: doorprize-card-slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes doorprize-card-slide-up {
+        0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+</style>
+@endpush
+
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+    const container = document.getElementById('doorprize-3d-canvas');
+    if (!container || typeof THREE === 'undefined') return;
+
+    let scene, camera, renderer, giftBox, ribbon, particles, animId;
+    let currentMode = 'idle'; // idle | spin | reveal
+    const clock = new THREE.Clock();
+
+    function init() {
+        scene = new THREE.Scene();
+
+        camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(0, 0.5, 5);
+        camera.lookAt(0, 0, 0);
+
+        renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor(0x000000, 0);
+        container.appendChild(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xfbbf24, 1.2);
+        dirLight.position.set(3, 4, 5);
+        scene.add(dirLight);
+        const pointLight = new THREE.PointLight(0xf59e0b, 0.8, 12);
+        pointLight.position.set(-2, 2, 3);
+        scene.add(pointLight);
+
+        // Gift box body
+        const boxGeo = new THREE.BoxGeometry(1.4, 1.0, 1.4);
+        const boxMat = new THREE.MeshPhongMaterial({
+            color: 0xf59e0b,
+            specular: 0xfef3c7,
+            shininess: 80,
+            emissive: 0x92400e,
+            emissiveIntensity: 0.15
+        });
+        giftBox = new THREE.Group();
+        const box = new THREE.Mesh(boxGeo, boxMat);
+        giftBox.add(box);
+
+        // Lid
+        const lidGeo = new THREE.BoxGeometry(1.55, 0.2, 1.55);
+        const lidMat = new THREE.MeshPhongMaterial({
+            color: 0xfbbf24,
+            specular: 0xfffbeb,
+            shininess: 90,
+            emissive: 0x78350f,
+            emissiveIntensity: 0.1
+        });
+        const lid = new THREE.Mesh(lidGeo, lidMat);
+        lid.position.y = 0.6;
+        lid.name = 'lid';
+        giftBox.add(lid);
+
+        // Ribbon cross (vertical strip on front face)
+        const ribbonMat = new THREE.MeshPhongMaterial({
+            color: 0xdc2626,
+            specular: 0xfca5a5,
+            shininess: 60
+        });
+        const ribbonV = new THREE.Mesh(new THREE.BoxGeometry(0.15, 1.01, 1.42), ribbonMat);
+        giftBox.add(ribbonV);
+        const ribbonH = new THREE.Mesh(new THREE.BoxGeometry(1.42, 0.15, 1.42), ribbonMat);
+        ribbonH.position.y = 0.1;
+        giftBox.add(ribbonH);
+
+        // Bow on top
+        const bowGeo = new THREE.TorusGeometry(0.2, 0.06, 8, 16);
+        const bowMat = new THREE.MeshPhongMaterial({ color: 0xdc2626, shininess: 60 });
+        const bow1 = new THREE.Mesh(bowGeo, bowMat);
+        bow1.position.set(-0.15, 0.75, 0);
+        bow1.rotation.y = Math.PI / 4;
+        giftBox.add(bow1);
+        const bow2 = new THREE.Mesh(bowGeo, bowMat);
+        bow2.position.set(0.15, 0.75, 0);
+        bow2.rotation.y = -Math.PI / 4;
+        giftBox.add(bow2);
+
+        scene.add(giftBox);
+
+        // Floating particles
+        const particleCount = 50;
+        const pGeo = new THREE.BufferGeometry();
+        const pPositions = new Float32Array(particleCount * 3);
+        const pSizes = new Float32Array(particleCount);
+        for (let i = 0; i < particleCount; i++) {
+            pPositions[i * 3] = (Math.random() - 0.5) * 8;
+            pPositions[i * 3 + 1] = (Math.random() - 0.5) * 6;
+            pPositions[i * 3 + 2] = (Math.random() - 0.5) * 4;
+            pSizes[i] = Math.random() * 3 + 1;
+        }
+        pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+        pGeo.setAttribute('size', new THREE.BufferAttribute(pSizes, 1));
+        const pMat = new THREE.PointsMaterial({
+            color: 0xfbbf24,
+            size: 0.06,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
+        particles = new THREE.Points(pGeo, pMat);
+        scene.add(particles);
+
+        window.addEventListener('resize', onResize);
+        animate();
+    }
+
+    function onResize() {
+        if (!renderer || !container.clientWidth) return;
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function animate() {
+        animId = requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+
+        if (giftBox) {
+            if (currentMode === 'idle') {
+                giftBox.rotation.y += 0.008;
+                giftBox.position.y = Math.sin(t * 1.2) * 0.15;
+                giftBox.rotation.x = Math.sin(t * 0.8) * 0.05;
+            } else if (currentMode === 'spin') {
+                giftBox.rotation.y += 0.12;
+                giftBox.rotation.x += 0.03;
+                giftBox.position.y = Math.sin(t * 3) * 0.1;
+                const scale = 1 + Math.sin(t * 4) * 0.05;
+                giftBox.scale.set(scale, scale, scale);
+            } else if (currentMode === 'reveal') {
+                giftBox.rotation.y += 0.005;
+                giftBox.position.y = Math.sin(t * 0.8) * 0.08;
+                // Lid opens
+                const lid = giftBox.getObjectByName('lid');
+                if (lid && lid.rotation.x < 0.8) {
+                    lid.rotation.x += 0.02;
+                    lid.position.y += 0.008;
+                    lid.position.z -= 0.005;
+                }
+            }
+        }
+
+        // Animate particles
+        if (particles) {
+            const positions = particles.geometry.attributes.position.array;
+            for (let i = 0; i < positions.length; i += 3) {
+                positions[i + 1] += (currentMode === 'spin' ? 0.015 : 0.004);
+                if (positions[i + 1] > 3) positions[i + 1] = -3;
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
+            particles.rotation.y += 0.002;
+            particles.material.opacity = currentMode === 'spin' ? 0.9 : 0.5;
+            particles.material.size = currentMode === 'spin' ? 0.1 : 0.06;
+        }
+
+        renderer.render(scene, camera);
+    }
+
+    // Expose controls to global scope
+    window.doorprize3D = {
+        setMode: function(mode) {
+            currentMode = mode;
+            if (mode === 'idle' && giftBox) {
+                giftBox.scale.set(1, 1, 1);
+                giftBox.rotation.x = 0;
+                const lid = giftBox.getObjectByName('lid');
+                if (lid) {
+                    lid.rotation.x = 0;
+                    lid.position.y = 0.6;
+                    lid.position.z = 0;
+                }
+            }
+        }
+    };
+
+    // Init on DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
 <script>
     const eligiblePool = @json($eligibleList);
     let selectedPrizeId = {{ $doorprizes->first()?->id ?? 'null' }};
@@ -911,6 +1110,9 @@
         stageWinner.classList.add('hidden');
         stageSpinning.classList.remove('hidden');
 
+        if (window.doorprize3D) window.doorprize3D.setMode('spin');
+        if (window.SoundEffects && window.SoundEffects.drumRoll) window.SoundEffects.drumRoll(5);
+
         // Rapid name slot simulation with audio tick
         let tickCounter = 0;
         slotInterval = setInterval(() => {
@@ -968,6 +1170,8 @@
         stageSpinning.classList.add('hidden');
         stageWinner.classList.remove('hidden');
 
+        if (window.doorprize3D) window.doorprize3D.setMode('reveal');
+
         document.getElementById('winner-name').innerText = data.winner.nama;
         document.getElementById('winner-meta').innerText = `NIK: ${data.winner.nik} • Bagian: ${data.winner.dept}`;
         document.getElementById('winner-time').innerText = `Tercatat Sah: ${data.winner.won_at} WIB`;
@@ -987,8 +1191,12 @@
         // Append to logs table dynamically
         appendWinnerToTable(data.winner, data.doorprize);
 
-        // Celebratory sound and gentle confetti behind
-        if (window.SoundEffects && window.SoundEffects.success) window.SoundEffects.success();
+        // Celebratory sound: crash impact + congrats chime
+        if (window.SoundEffects) {
+            if (window.SoundEffects.stopDrumRoll) window.SoundEffects.stopDrumRoll();
+            if (window.SoundEffects.crash) window.SoundEffects.crash();
+            setTimeout(() => { if (window.SoundEffects.success) window.SoundEffects.success(); }, 300);
+        }
         if (window.confetti) {
             window.confetti({
                 particleCount: 60,
@@ -1042,6 +1250,8 @@
         document.getElementById('doorprize-stage-spinning').classList.add('hidden');
         document.getElementById('doorprize-stage-winner').classList.add('hidden');
         document.getElementById('doorprize-stage-initial').classList.remove('hidden');
+
+        if (window.doorprize3D) window.doorprize3D.setMode('idle');
     }
 
     function toggleRewardsFold() {

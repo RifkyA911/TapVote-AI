@@ -150,6 +150,22 @@ class VoterController extends Controller
                 ->with('error', $msg);
         }
 
+        if (!$pemilih->can_raffle) {
+            ActivityLog::log('TAP_INELIGIBLE', 'VOTING', "Akses bilik suara ditolak: Anggota {$pemilih->nama} (NIK: {$pemilih->nik}) dinonaktifkan dari partisipasi undian/voting.");
+            $msg = "Akses Ditolak: Anggota [{$pemilih->nik} - {$pemilih->nama}] dinonaktifkan dari partisipasi undian & pemilihan. Silakan hubungi panitia.";
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'status' => 'danger',
+                    'ineligible' => true,
+                    'message' => $msg,
+                    'voter_name' => $pemilih->nama,
+                ], 403);
+            }
+
+            return redirect()->route('voter.tap')
+                ->with('error', $msg);
+        }
+
         if ($pemilih->sudahMemilih()) {
             ActivityLog::log('TAP_REJECTED', 'VOTING', "Percobaan memilih ulang ditolak untuk NIK: {$pemilih->nik} ({$pemilih->nama})");
             $waktuFormatted = $pemilih->voted_at 
@@ -202,7 +218,16 @@ class VoterController extends Controller
         }
 
         $voterNik = session('voter_nik');
-        $pemilih = Pemilih::findOrFail($voterNik);
+        if (!$voterNik) {
+            return redirect()->route('voter.tap');
+        }
+
+        $pemilih = Pemilih::find($voterNik);
+        if (!$pemilih || !$pemilih->can_raffle) {
+            session()->forget('voter_nik');
+            return redirect()->route('voter.tap')
+                ->with('error', 'Akses Ditolak: Anda tidak diizinkan mengikuti pemilihan & undian. Silakan hubungi panitia.');
+        }
 
         $kandidatKetua = KandidatKetua::orderBy('nomor_urut', 'asc')->get();
         $kandidatPengawas = KandidatPengawas::orderBy('nomor_urut', 'asc')->get();
@@ -222,6 +247,12 @@ class VoterController extends Controller
         }
 
         $voterNik = session('voter_nik');
+        $pemilih = Pemilih::find($voterNik);
+        if (!$pemilih || !$pemilih->can_raffle) {
+            session()->forget('voter_nik');
+            return redirect()->route('voter.tap')
+                ->with('error', 'Akses Ditolak: Anda tidak diizinkan memberikan suara.');
+        }
 
         $request->validate([
             'ketua_nik' => 'required|exists:kandidat_ketua,nik',

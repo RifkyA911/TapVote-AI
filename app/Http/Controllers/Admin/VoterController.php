@@ -56,6 +56,7 @@ class VoterController extends Controller
             'rfid' => 'required|string|unique:pemilih,rfid|max:100',
             'nama' => 'required|string|max:255',
             'dept' => 'required|string|max:100',
+            'can_raffle' => 'nullable|boolean',
         ]);
 
         $voter = Pemilih::create([
@@ -64,11 +65,43 @@ class VoterController extends Controller
             'nama' => trim($validated['nama']),
             'dept' => trim($validated['dept']),
             'pilih' => 'F',
+            'can_raffle' => $request->has('can_raffle') ? (bool)$request->can_raffle : true,
         ]);
 
         ActivityLog::log('CREATE_VOTER', 'PEMILIH', "Menambahkan pemilih manual: {$voter->nama} (NIK: {$voter->nik}, RFID: {$voter->rfid})");
 
         return redirect()->route('admin.voters.index')->with('success', "Pemilih {$voter->nama} berhasil didaftarkan!");
+    }
+
+    /**
+     * Toggle status partisipasi undian doorprize & voting individual
+     */
+    public function toggleRaffle(Request $request, $nik)
+    {
+        $voter = Pemilih::findOrFail($nik);
+        $newState = $request->has('can_raffle') ? filter_var($request->input('can_raffle'), FILTER_VALIDATE_BOOLEAN) : !$voter->can_raffle;
+        $voter->can_raffle = $newState;
+        $voter->save();
+
+        ActivityLog::log(
+            'UPDATE_VOTER_RAFFLE',
+            'PEMILIH',
+            "Status partisipasi undian pemilih {$voter->nama} ({$voter->nik}) diubah menjadi: " . ($newState ? 'Diizinkan (Aktif)' : 'Dinonaktifkan')
+        );
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'nik' => $voter->nik,
+                'nama' => $voter->nama,
+                'can_raffle' => (bool)$voter->can_raffle,
+                'message' => $newState 
+                    ? "Partisipasi undian untuk {$voter->nama} diaktifkan."
+                    : "Partisipasi undian untuk {$voter->nama} dinonaktifkan."
+            ]);
+        }
+
+        return back()->with('success', "Status undian pemilih {$voter->nama} berhasil diperbarui.");
     }
 
     public function destroy($nik)
@@ -294,8 +327,10 @@ class VoterController extends Controller
                     'dept' => $v->dept,
                     'rfid' => $v->rfid,
                     'pilih' => $v->pilih,
+                    'can_raffle' => (bool)$v->can_raffle,
                     'voted_at' => $v->voted_at ? $v->voted_at->format('H:i:s d/m/Y') : '-',
                     'delete_url' => route('admin.voters.destroy', $v->nik),
+                    'toggle_raffle_url' => route('admin.voters.toggle-raffle', $v->nik),
                 ];
             }),
             'pagination' => [

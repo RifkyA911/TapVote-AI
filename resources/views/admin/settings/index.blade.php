@@ -299,17 +299,17 @@
         </div>
 
         <!-- 4. AI INTELLIGENCE & GOOGLE GEMINI -->
-        <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-5">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-5 transition-colors">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">🤖</span>
-                    <h3 class="text-base font-extrabold text-slate-900">{{ __('4. Mesin Analisis AI (Google Gemini Reasoning)') }}</h3>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ __('4. Mesin Analisis AI (Google Gemini Reasoning)') }}</h3>
                 </div>
                 <button 
                     type="button" 
                     id="btn-test-gemini" 
                     onclick="testGeminiConnection()"
-                    class="px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold border border-blue-200 transition cursor-pointer flex items-center space-x-1.5"
+                    class="px-3.5 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 text-xs font-bold border border-blue-200 dark:border-blue-800 transition cursor-pointer flex items-center space-x-1.5"
                 >
                     <span id="gemini-test-icon">⚡</span>
                     <span id="gemini-test-label">Test AI Connection</span>
@@ -359,7 +359,7 @@
         </div>
 
         <!-- 5. PWA & OFFLINE DIAGNOSTICS (Clean Light White Card) -->
-        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4">
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4 transition-colors">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">📲</span>
@@ -371,17 +371,17 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                    <span class="text-slate-500 block text-[10px] uppercase font-bold">Web Manifest</span>
-                    <strong class="text-slate-900 font-mono">/manifest.json (200 OK)</strong>
+                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+                    <span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Web Manifest</span>
+                    <strong class="text-slate-900 dark:text-slate-100 font-mono">/manifest.json (200 OK)</strong>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                    <span class="text-slate-500 block text-[10px] uppercase font-bold">Service Worker</span>
-                    <strong class="text-emerald-700 font-mono">/sw.js (Cache-First + Offline)</strong>
+                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+                    <span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Service Worker</span>
+                    <strong class="text-emerald-700 dark:text-emerald-400 font-mono">/sw.js (Cache-First + Offline)</strong>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                    <span class="text-slate-500 block text-[10px] uppercase font-bold">PWA Icon Assets</span>
-                    <strong class="text-blue-700 font-mono">192px, 512px, Maskable OK</strong>
+                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+                    <span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">PWA Icon Assets</span>
+                    <strong class="text-blue-700 dark:text-blue-400 font-mono">192px, 512px, Maskable OK</strong>
                 </div>
             </div>
         </div>

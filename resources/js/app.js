@@ -369,6 +369,10 @@ class SoundFX {
             osc.stop(start + n.dur + 0.02);
         });
     }
+    // Alias for doorprize winner celebration
+    congrats() {
+        this.success();
+    }
 }
 
 window.SoundEffects = new SoundFX();

@@ -21,12 +21,14 @@ class Pemilih extends Model
         'nama',
         'dept',
         'pilih',
+        'can_raffle',
         'voted_at',
     ];
 
     protected function casts(): array
     {
         return [
+            'can_raffle' => 'boolean',
             'voted_at' => 'datetime',
         ];
     }

@@ -220,6 +220,11 @@
                                 <span id="sort-icon-pilih">↕</span>
                             </span>
                         </th>
+                        <th class="py-3 px-3 text-center whitespace-nowrap">
+                            <span class="inline-flex items-center space-x-1">
+                                <span>{{ __('Ikut Undian') }}</span>
+                            </span>
+                        </th>
                         <th class="py-3 px-3 text-center cursor-pointer hover:text-slate-900 transition whitespace-nowrap" onclick="changeSort('voted_at')">
                             <span class="inline-flex items-center space-x-1">
                                 <span>{{ __('Waktu Vote') }}</span>
@@ -250,6 +255,18 @@
                                     </span>
                                 @endif
                             </td>
+                            <td class="py-3 px-3 text-center whitespace-nowrap">
+                                <button type="button" 
+                                        onclick="toggleVoterRaffle('{{ $v->nik }}', this)" 
+                                        data-nik="{{ $v->nik }}"
+                                        data-active="{{ $v->can_raffle ? '1' : '0' }}"
+                                        class="relative inline-flex items-center h-[22px] w-[40px] shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none {{ $v->can_raffle ? 'bg-emerald-500' : 'bg-slate-300' }}"
+                                        role="switch" 
+                                        aria-checked="{{ $v->can_raffle ? 'true' : 'false' }}"
+                                        title="{{ $v->can_raffle ? __('Boleh Ikut Undian & Voting (Klik untuk menonaktifkan)') : __('Tidak Boleh Ikut Undian & Voting (Klik untuk mengaktifkan)') }}">
+                                    <span class="pointer-events-none inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out" style="transform: translateX({{ $v->can_raffle ? '20px' : '2px' }})"></span>
+                                </button>
+                            </td>
                             <td class="py-3 px-3 text-center font-mono text-slate-500 text-xs whitespace-nowrap">
                                 {{ $v->voted_at ? $v->voted_at->format('H:i:s d/m/Y') : '-' }}
                             </td>
@@ -265,7 +282,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-8 text-center text-slate-400">{{ __('Tidak ada data pemilih.') }}</td>
+                            <td colspan="8" class="py-8 text-center text-slate-400">{{ __('Tidak ada data pemilih.') }}</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -326,6 +343,13 @@
             <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('RFID UID Mifare') }}</label>
                 <input type="text" name="rfid" required placeholder="{{ __('Tempelkan pada reader atau input hex...') }}" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 font-mono focus:border-blue-500 outline-none">
+            </div>
+
+            <div class="pt-1">
+                <label class="flex items-center space-x-2.5 cursor-pointer">
+                    <input type="checkbox" name="can_raffle" value="1" checked class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-slate-300">
+                    <span class="text-xs font-bold text-slate-700">{{ __('Izinkan Ikut Undian Doorprize & Voting') }} <span class="text-[11px] text-slate-400 font-normal">({{ __('Default: Aktif') }})</span></span>
+                </label>
             </div>
 
             <div class="pt-3 border-t border-slate-200 flex justify-end space-x-2">
@@ -533,7 +557,7 @@
         if (items.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="7" class="py-8 text-center text-slate-400">{{ __('Tidak ada data pemilih yang sesuai kriteria query.') }}</td>
+                    <td colspan="8" class="py-8 text-center text-slate-400">{{ __('Tidak ada data pemilih yang sesuai kriteria query.') }}</td>
                 </tr>
             `;
         } else {
@@ -542,6 +566,20 @@
                 const statusBadge = v.pilih === 'T'
                     ? `<span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">{{ __('Sudah Memilih (T)') }}</span>`
                     : `<span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">{{ __('Belum (F)') }}</span>`;
+
+                const isRaffle = v.can_raffle !== false;
+                const raffleSwitch = `
+                    <button type="button" 
+                            onclick="toggleVoterRaffle('${v.nik}', this)" 
+                            data-nik="${v.nik}"
+                            data-active="${isRaffle ? '1' : '0'}"
+                            class="relative inline-flex items-center h-[22px] w-[40px] shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${isRaffle ? 'bg-emerald-500' : 'bg-slate-300'}"
+                            role="switch" 
+                            aria-checked="${isRaffle ? 'true' : 'false'}"
+                            title="${isRaffle ? '{{ __('Boleh Ikut Undian & Voting (Klik untuk menonaktifkan)') }}' : '{{ __('Tidak Boleh Ikut Undian & Voting (Klik untuk mengaktifkan)') }}'}">
+                        <span class="pointer-events-none inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out" style="transform: translateX(${isRaffle ? '20px' : '2px'})"></span>
+                    </button>
+                `;
 
                 rowsHtml += `
                     <tr class="hover:bg-slate-50 transition">
@@ -552,6 +590,7 @@
                             <span class="bg-slate-50 rounded px-2 py-0.5 inline-block border border-slate-200">${v.rfid}</span>
                         </td>
                         <td class="py-3 px-3 text-center whitespace-nowrap">${statusBadge}</td>
+                        <td class="py-3 px-3 text-center whitespace-nowrap">${raffleSwitch}</td>
                         <td class="py-3 px-3 text-center font-mono text-slate-500 text-xs whitespace-nowrap">${v.voted_at}</td>
                         <td class="py-3 px-3 text-right whitespace-nowrap">
                             <form action="${v.delete_url}" method="POST" onsubmit="return confirm('{{ __('Hapus pemilih') }} ${v.nama}?')">
@@ -607,6 +646,57 @@
         }
 
         container.innerHTML = html;
+    }
+
+    async function toggleVoterRaffle(nik, btnEl) {
+        if (!btnEl) return;
+        const currentActive = btnEl.getAttribute('data-active') === '1';
+        const nextActive = !currentActive;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        btnEl.disabled = true;
+        btnEl.style.opacity = '0.6';
+
+        try {
+            const res = await fetch(`/admin/voters/${encodeURIComponent(nik)}/toggle-raffle`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ can_raffle: nextActive })
+            });
+            const data = await res.json();
+            if (data.success) {
+                const isActive = data.can_raffle;
+                btnEl.setAttribute('data-active', isActive ? '1' : '0');
+                btnEl.setAttribute('aria-checked', isActive ? 'true' : 'false');
+                const dot = btnEl.querySelector('span');
+                if (isActive) {
+                    btnEl.classList.remove('bg-slate-300');
+                    btnEl.classList.add('bg-emerald-500');
+                    if (dot) dot.style.transform = 'translateX(20px)';
+                    btnEl.title = "{{ __('Boleh Ikut Undian & Voting (Klik untuk menonaktifkan)') }}";
+                } else {
+                    btnEl.classList.remove('bg-emerald-500');
+                    btnEl.classList.add('bg-slate-300');
+                    if (dot) dot.style.transform = 'translateX(2px)';
+                    btnEl.title = "{{ __('Tidak Boleh Ikut Undian & Voting (Klik untuk mengaktifkan)') }}";
+                }
+                if (window.SoundEffects && window.SoundEffects.click) {
+                    window.SoundEffects.click();
+                }
+            } else {
+                alert(data.message || 'Gagal mengubah status undian.');
+            }
+        } catch (err) {
+            console.error('Toggle error:', err);
+            alert('Terjadi kesalahan jaringan saat memperbarui status.');
+        } finally {
+            btnEl.disabled = false;
+            btnEl.style.opacity = '1';
+        }
     }
 
     // Initial load on page ready

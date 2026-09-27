@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DocumentationController;
 use App\Http\Controllers\Admin\KandidatKetuaController;
 use App\Http\Controllers\Admin\KandidatPengawasController;
 use App\Http\Controllers\Admin\LogController;
@@ -119,6 +120,7 @@ Route::prefix('admin')->middleware(['admin.ip', 'auth', 'role.admin'])->group(fu
     // CRUD Voters & Query DPT
     Route::get('/voters', [AdminVoterController::class, 'index'])->name('admin.voters.index');
     Route::match(['GET', 'POST', 'QUERY'], '/voters/query', [AdminVoterController::class, 'queryVoters'])->name('admin.voters.query');
+    Route::patch('/voters/{nik}/toggle-raffle', [AdminVoterController::class, 'toggleRaffle'])->name('admin.voters.toggle-raffle');
     Route::get('/voters/export', [AdminVoterController::class, 'export'])->name('admin.voters.export');
     Route::get('/voters/export-pdf', [AdminVoterController::class, 'exportPdf'])->name('admin.voters.export.pdf');
     Route::post('/voters', [AdminVoterController::class, 'store'])->name('admin.voters.store');
@@ -154,4 +156,7 @@ Route::prefix('admin')->middleware(['admin.ip', 'auth', 'role.admin'])->group(fu
     // Audit Trail Logs Viewer
     Route::get('/logs', [LogController::class, 'index'])->name('admin.logs.index');
     Route::get('/logs/ai-analysis', [LogController::class, 'getAiAnalysis'])->name('admin.logs.ai');
+
+    // System Documentation (Comprehensive Architecture, API, DDL/DML, Flowcharts)
+    Route::get('/docs', [DocumentationController::class, 'index'])->name('admin.docs');
 });

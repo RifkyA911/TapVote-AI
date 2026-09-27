@@ -719,7 +719,8 @@
             } else {
                 // VERIFIKASI DB GAGAL: Kartu tidak dikenal atau ditolak (Riak Merah/Danger)
                 isVerifyingCard = false;
-                showDangerError(data.message || "{{ __('Keplek belum bisa mengikuti voting.') }}");
+                const errTitle = data.ineligible ? "{{ __('Akses Ditolak') }}" : "{{ __('Belum Bisa Mengikuti Voting') }}";
+                showDangerError(data.message || "{{ __('Keplek belum bisa mengikuti voting.') }}", errTitle);
             }
         })
         .catch(err => {
@@ -757,8 +758,8 @@
         }, 4500);
     }
 
-    // 3b. Pengujian Kartu Tidak Dikenali / Asing (Ripple Merah Danger Waving Chaos)
-    function triggerUnknownCardTest(mockUid = '99A88F11') {
+    // 3b. Pengujian Kartu Tidak Dikenali / Asing / Ditolak (Ripple Merah Danger)
+    function showDangerError(msg, customTitle = null) {
         if (window.SoundEffects) window.SoundEffects.error();
 
         // Aktifkan Ripple Merah Bahaya Waving Chaos
@@ -768,18 +769,20 @@
         dangerRings.classList.remove('hidden');
 
         const box = document.getElementById('tap-kiosk-box');
-        box.classList.remove('animate-distracted-shake');
-        void box.offsetWidth;
-        box.classList.add('animate-distracted-shake');
+        if (box) {
+            box.classList.remove('animate-distracted-shake');
+            void box.offsetWidth;
+            box.classList.add('animate-distracted-shake');
+        }
 
         const badgeImg = document.getElementById('card-badge-img');
         if (badgeImg) {
             badgeImg.classList.add('grayscale', 'opacity-70');
         }
 
-        tapTitle.innerText = "{{ __('Belum Bisa Mengikuti Voting') }}";
+        tapTitle.innerText = customTitle || "{{ __('Belum Bisa Mengikuti Voting') }}";
         tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-rose-100 border-2 border-rose-400 text-rose-950 text-sm sm:text-base font-black shadow-md";
-        tapStatusText.innerText = "{{ __('Keplek belum bisa mengikuti voting.') }}";
+        tapStatusText.innerText = msg;
 
         setTimeout(() => {
             dangerRings.classList.add('hidden');
@@ -790,7 +793,11 @@
             tapTitle.innerText = "{{ __('Tempelkan Keplek Anda ke Scanner') }}";
             tapStatusPill.className = "inline-flex items-center space-x-3 px-6 py-3.5 rounded-full bg-emerald-50 border-2 border-emerald-300 text-emerald-800 text-sm sm:text-base font-black shadow-md";
             tapStatusText.innerText = "{{ __('Scanner Siap • Menunggu Keplek') }}";
-        }, 4500);
+        }, 5000);
+    }
+
+    function triggerUnknownCardTest(mockUid = '99A88F11') {
+        showDangerError("{{ __('Keplek belum bisa mengikuti voting.') }}", "{{ __('Belum Bisa Mengikuti Voting') }}");
     }
 
     // 4. Efek Distracted Red Danger Saat Terjadi Error DPT Lainnya
