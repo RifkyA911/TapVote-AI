@@ -19,21 +19,7 @@
 </p>
 
 <p align="center">
-
-```
- ┌──────────────────────────────────────────────────────────────────────┐
- │                                                                      │
- │   📱 NFC/RFID TAP      🗳️ TACTILE KIOSK      📊 LIVE SSE COUNT    │
- │   ─────────────── ──▶  ────────────────── ──▶  ─────────────────    │
- │                                                                      │
- │   🤖 AI GEMINI         🎰 3D DOORPRIZE        🔗 MCP PROTOCOL      │
- │   ─────────────── ──▶  ────────────────── ──▶  ─────────────────    │
- │                                                                      │
- │   🏗️ THREE.JS 3D       📈 APEX CHARTS         🔐 PWA READY         │
- │                                                                      │
- └──────────────────────────────────────────────────────────────────────┘
-```
-
+  <img src="public/images/tapvote_hero_banner.jpg" alt="TapVote AI Hero Banner" width="100%" style="border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);" />
 </p>
 
 ---
@@ -96,8 +82,21 @@
 - **Interactive 3D RFID Smart Card Simulator (`/admin/dashboard`)**:
   - Realistic Three.js physical model replicating the official UBS Gold ID badge: "BUDI" nameplate on solid black bar, blue collared shirt portrait, vertical barcode, slot punch, matte black swivel clasp, and royal blue satin lanyard ribbon loop.
   - 360° interactive rotation on X & Y axes with mouse drag, touch controls, and pure white spotless PVC back.
-- **ApexCharts Donut Charts & Responsive Candidate Recaps**:
-  - Donut charts with thickened slices (`size: 50%`) and responsive column stacking (`lg:grid-cols-12`) preventing chart and tally collisions on tablet/mobile screens.
+- **Full Internationalization (Intl) & Dual-Language Engine (`EN` & `ID`)**:
+  - Deep localization across public kiosk, landing page, and all administrative modules (Chairman, Supervisor, DPT, Settings, Logs, and Reports).
+  - Over 740+ curated translation strings in `lang/en.json` and `lang/id.json` with instant language switching without page reloads.
+- **Standardized Pure Tailwind 2-Element Toggle Switches**:
+  - Engineered zero-overflow switch component (`w-11 h-6` track with `absolute left-0.5 top-0.5 w-5 h-5 peer-checked:translate-x-5` knob).
+  - Eliminates CSS transform collisions and guarantees exact 2px padding on all 4 sides across Voters table and System Settings.
+- **Decoupled Chairman & Supervisor Telemetry Tabs (`/admin/analytics`)**:
+  - Independent tabbed views for Chairman and Supervisory Board metrics, preventing data collisions and clutter.
+  - Voting Surge and Time Distribution charts auto-update instantly on filter changes without requiring manual apply button clicks.
+- **RFC-Draft Compliant HTTP `QUERY` Method (`/admin/voters`)**:
+  - Implements safe, read-only HTTP `QUERY` method for fetching filtered voter rosters with JSON payloads, including automatic fallback to `POST` with `X-HTTP-Method-Override: QUERY`.
+- **Vector PDF Official Plenary Minutes & Rosters**:
+  - Real server-side vector PDF generation powered by DomPDF for Chairman, Supervisor, DPT Voter Roster, Audit Logs, and Doorprize winners, styled cleanly with localized metadata.
+- **Robust 40-Test Suite & Security Hardening**:
+  - Comprehensive PHPUnit/Pest automated test suite with 40 tests and 160 assertions verifying ballot casting atomicity, pessimistic row locking, quorum thresholds, and security flows.
 - **Telemetry Analytics Module (`/admin/analytics`)**:
   - Comprehensive telemetry center: 24-hour voting velocity histogram, department turnout rankings, RFID Mifare authenticity audit, foreign card scan tracking, and downloadable PDF report.
 - **Vote Flow & Department Distribution Module (`/admin/vote-flow`)**:

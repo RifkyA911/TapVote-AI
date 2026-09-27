@@ -112,3 +112,67 @@ Pemilihan suara melibatkan operasi kritis:
 4. Update `pemilih` set `pilih = 'T'`, `voted_at = NOW()`.
 5. Insert audit log ke `activity_logs`.
 6. Seluruh langkah dieksekusi di dalam `DB::transaction()`. Jika ada kegagalan, rollback otomatis terjadi tanpa mengubah status pemilih.
+
+---
+
+### 5. AI Reasoning Architecture (Google Gemini + Local Heuristic)
+Arsitektur analisis AI dirancang dengan paradigma **Hybrid Multi-Tier Intelligence**:
+1. **Tier 1 - Remote Cloud LLM (Google Gemini 2.0 Flash / 1.5 Flash)**:
+   - Mentransmisikan payload terstruktur (metrik kuorum, histogram kecepatan 24 jam, disparitas unit kerja) melalui Google AI Studio REST API.
+   - Menghasilkan narasi penalaran eksekutif, evaluasi margin elektoral, dan rekomendasi mitigasi risiko panitia.
+2. **Tier 2 - Local Deterministic Heuristic Fallback Engine**:
+   - Jika koneksi internet terputus, API key belum disetel, atau terjadi rate limit, sistem secara otomatis beralih ke analisis deterministik internal berbasis rumus matematika dan ambang batas kuorum AD/ART koperasi.
+   - Hasil dijamin selalu tersedia 100% tanpa delay dan mendukung kedua bahasa (EN/ID).
+3. **Cybersecurity & Forensic Reasoning (`/admin/logs/ai`)**:
+   - Menganalisis log audit jejak kriptografis SHA-256 untuk mendeteksi serangan *brute force* UID RFID, anomali penolakan kartu asing, dan upaya bypass sistem.
+
+---
+
+### 6. Model Context Protocol (MCP) Server Architecture
+TapVote AI mengintegrasikan server MCP standar (`mcp/server.js`) yang memungkinkan agen AI (Claude Desktop, Cursor, Antigravity, dsb.) berinteraksi dengan database pemilu:
+- **Transpor Ganda**:
+  - **Stdio Transport**: Untuk integrasi lokal instan melalui command line.
+  - **HTTP / SSE Transport (`--http 3100`)**: Untuk koneksi remote agentik lintas jaringan LAN/WAN.
+- **Daftar MCP Tools**:
+  - `get_election_stats`: Mengambil statistik kuorum, total suara masuk, dan persentase partisipasi.
+  - `list_candidates`: Mengambil data profil, nomor urut, visi, misi kandidat ketua dan pengawas.
+  - `verify_voter_card`: Memvalidasi status keaktifan dan hak suara kartu RFID.
+  - `get_ai_insights`: Mengambil penalaran analitik telemetri terbaru dari sistem.
+
+---
+
+### 7. Three.js 3D WebGL Pipeline & Procedural Assets
+Sistem menggunakan Three.js untuk visualisasi interaktif real-time:
+1. **3D Smartcard Keplek Lanyard Simulator (`/admin/dashboard`)**:
+   - Mesh prosedural kartu identitas standar CR80 dengan material PBR (*Physically Based Rendering*).
+   - Tekstur dinamis render kanvas: nameplate, portrait siluet, barcode vertikal, slot punch cutout, dan pita satin lanyard 3D ganda.
+   - Interaktivitas orbit 360° via mouse dan touch drag.
+2. **3D Doorprize Lottery Machine (`/admin/reports/doorprize` & `/doorprize`)**:
+   - Model kotak hadiah emas 3D dengan pita merah dan sistem partikel partikel berkilau (*floating golden dust*).
+   - Tiga status animasi: *Idle Float* $\rightarrow$ *High-Speed Spin Burst* $\rightarrow$ *Lid Opening Reveal*.
+
+---
+
+### 8. Internationalization (Intl) & Theme Engine
+1. **Dual Language JSON Dictionaries**:
+   - Menggunakan `lang/en.json` dan `lang/id.json` berisi lebih dari 740 pasangan kunci terjemahan terpadu.
+   - Helper global `__('Key')` memfasilitasi lokalisasi dinamis tanpa mengganggu performa server.
+2. **Admin Theme Engine (Light / Dark / System)**:
+   - Terisolasi pada panel admin via kelas CSS `admin-dark` dan `dark` di elemen root `<html>`.
+   - Menggunakan skema warna Slate-900 / Slate-800 dengan kontras tinggi berstandar WCAG AAA.
+
+---
+
+### 9. Progressive Web App (PWA) & Service Worker
+- **Web App Manifest (`/manifest.json`)**: Mendukung instalasi standalone pada Chrome Android, Safari iOS, Edge Windows, dan Linux.
+- **Service Worker (`/sw.js`)**: Strategi caching *Cache-First* untuk aset statis (fonts, SVG, Three.js models) dan *Network-First* untuk transaksi suara dinamis.
+
+---
+
+### 10. HTTP QUERY Method & Vector PDF Pipeline
+1. **RFC Draft Safe HTTP `QUERY` Protocol**:
+   - Digunakan pada endpoint `/admin/voters/query` untuk melewatkan payload filter JSON kompleks tanpa batasan panjang URL string query `GET`.
+   - Fallback otomatis ke `POST` dengan header `X-HTTP-Method-Override: QUERY` jika browser klien memblokir kata kunci method non-standar.
+2. **Vector PDF Generation Engine**:
+   - Didukung oleh `Barryvdh\DomPDF` yang merender layout HTML/CSS cetak menjadi berkas PDF vektor murni beresolusi tinggi (A4 Landscape & Portrait) untuk berita acara pleno, sertifikat hasil rekapitulasi, dan log forensik audit.
+

@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.9.0] - 2026-09-27
+
+### Added
+- **Futuristic High-Tech Hero Banner & Visual Asset**:
+  - Generated and integrated ultra-detailed cyber-physical e-voting hero banner (`public/images/tapvote_hero_banner.jpg`) showcasing smartcard tap, tactile kiosk, real-time live telemetry, and Google Gemini AI reasoning.
+- **Deep Internationalization (Intl) Across Admin Panel**:
+  - Full localization with `__('...')` across Chairman CRUD (`create`, `edit`, `index`), Supervisor CRUD (`create`, `edit`, `index`), Settings, Logs, and modals.
+  - Added 65+ new translation pairs to `lang/en.json` and `lang/id.json`, bringing total dictionary size to 740+ curated keys.
+- **Standardized Pure Tailwind 2-Element Toggle Switches**:
+  - Refactored toggle switches in `voters/index.blade.php` and `settings/index.blade.php` to a clean 2-element pattern (`w-11 h-6` track + `absolute left-0.5 top-0.5 w-5 h-5 peer-checked:translate-x-5` knob).
+  - Eliminated conflicting CSS transforms and pseudo-element overflows, ensuring exact 2px padding on all 4 sides in both on and off states.
+- **Decoupled Chairman & Supervisory Analytics Tabs (`/admin/analytics`)**:
+  - Separated Chairman and Supervisor metrics into dedicated tabbed views.
+  - Voting Surge and Time Distribution charts now update dynamically and immediately upon filter selection without requiring manual apply clicks.
+- **Comprehensive Core E-Voting Test Suite**:
+  - 40 automated PHPUnit/Pest test cases with 160 assertions covering ballot casting atomicity, pessimistic locking (`FOR UPDATE`), duplicate vote prevention, quorum calculations, RFID validation, and security audit logs.
+- **RFC-Draft Compliant HTTP `QUERY` Method (`/admin/voters/query`)**:
+  - Implemented safe HTTP `QUERY` method for filtered voter lookups with automatic fallback to `POST` + `X-HTTP-Method-Override: QUERY`.
+- **Vector PDF Official Plenary Minutes & Audit Rosters**:
+  - Server-side DomPDF vector rendering for Chairman recap, Supervisor recap, Trace Back audit logs, DPT voter roster, and Doorprize winner logs.
+
+### Changed
+- **Comprehensive Dark Mode Coverage**:
+  - Standardized dark mode styles (`dark:bg-slate-900`, `dark:border-slate-800`, `dark:text-slate-100`) across all admin modules (`/admin/ketua`, `/admin/pengawas`, `/admin/voters`, `/admin/settings`, `/admin/logs`, `/admin/reports/*`).
+- **Mobile & Tablet Responsive Overhauls**:
+  - Off-canvas drawer navigation with smooth slide animations and backdrop overlay on screens `< 1280px`.
+  - Responsive stacking for candidate recaps, live tally cards, and mobile-optimized voter docks.
+
+---
+
 ## [1.8.0] - 2026-09-26
 
 ### Added

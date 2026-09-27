@@ -14,7 +14,14 @@ erDiagram
     PEMILIH ||--o{ HASIL_PENGAWAS : "memilih (1:1 per session)"
     KANDIDAT_KETUA ||--o{ HASIL_KETUA : "menerima suara"
     KANDIDAT_PENGAWAS ||--o{ HASIL_PENGAWAS : "menerima suara"
-    PEMILIH ||--o{ UNDIAN : "berhak jika pilih = T"
+    PEMILIH ||--o{ DOORPRIZE_WINNERS : "berhak jika pilih = T & can_raffle = 1"
+    DOORPRIZES ||--o{ DOORPRIZE_WINNERS : "diberikan kepada"
+    APP_SETTINGS {
+        string key PK
+        text value
+        timestamp created_at
+        timestamp updated_at
+    }
 
     USERS {
         bigint id PK
@@ -32,6 +39,7 @@ erDiagram
         string nama
         string dept "Departemen/Divisi"
         enum pilih "T, F (Default: F)"
+        boolean can_raffle "Default: 1 (True)"
         timestamp voted_at "Nullable"
         timestamp created_at
         timestamp updated_at
@@ -73,6 +81,31 @@ erDiagram
         bigint id PK
         string pemilih_nik FK "FK -> pemilih.nik"
         string pengawas_nik FK "FK -> kandidat_pengawas.nik"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    DOORPRIZES {
+        bigint id PK
+        string title
+        string category
+        int quantity
+        string sponsor
+        string icon
+        string image
+        text description
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    DOORPRIZE_WINNERS {
+        bigint id PK
+        bigint doorprize_id FK "FK -> doorprizes.id"
+        string nik FK "FK -> pemilih.nik"
+        timestamp won_at
+        enum status "pending, accepted, rejected, other"
+        text status_note
+        timestamp received_at
         timestamp created_at
         timestamp updated_at
     }
@@ -119,11 +152,13 @@ CREATE TABLE IF NOT EXISTS `pemilih` (
     `nama` VARCHAR(255) NOT NULL,
     `dept` VARCHAR(100) NOT NULL,
     `pilih` ENUM('T', 'F') NOT NULL DEFAULT 'F',
+    `can_raffle` TINYINT(1) NOT NULL DEFAULT 1,
     `voted_at` TIMESTAMP NULL,
     `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX `idx_pemilih_rfid` (`rfid`),
-    INDEX `idx_pemilih_pilih` (`pilih`)
+    INDEX `idx_pemilih_pilih` (`pilih`),
+    INDEX `idx_pemilih_can_raffle` (`can_raffle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 3. Tabel Kandidat Ketua
@@ -178,7 +213,15 @@ CREATE TABLE IF NOT EXISTS `hasil_pengawas` (
     INDEX `idx_hasil_pengawas_kandidat` (`pengawas_nik`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 7. Tabel Activity Logs (Audit CRUD & Transaksi)
+-- 7. Tabel App Settings (Konfigurasi Dinamis & API Credentials)
+CREATE TABLE IF NOT EXISTS `app_settings` (
+    `key` VARCHAR(100) NOT NULL PRIMARY KEY,
+    `value` TEXT NULL,
+    `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 8. Tabel Activity Logs (Audit CRUD & Transaksi)
 CREATE TABLE IF NOT EXISTS `activity_logs` (
     `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `user_type` VARCHAR(50) NOT NULL DEFAULT 'system',
@@ -192,6 +235,37 @@ CREATE TABLE IF NOT EXISTS `activity_logs` (
     `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX `idx_logs_module` (`module`),
     INDEX `idx_logs_action` (`action`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 9. Tabel Master Hadiah Doorprize
+CREATE TABLE IF NOT EXISTS `doorprizes` (
+    `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `title` VARCHAR(255) NOT NULL,
+    `category` VARCHAR(100) NOT NULL DEFAULT 'Elektronik',
+    `quantity` INT UNSIGNED NOT NULL DEFAULT 1,
+    `sponsor` VARCHAR(255) NULL,
+    `icon` VARCHAR(50) NULL,
+    `image` VARCHAR(255) NULL,
+    `description` TEXT NULL,
+    `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 10. Tabel Log Pemenang Doorprize & Status Klaim
+CREATE TABLE IF NOT EXISTS `doorprize_winners` (
+    `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `doorprize_id` BIGINT UNSIGNED NOT NULL,
+    `nik` VARCHAR(50) NOT NULL,
+    `won_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `status` ENUM('pending', 'accepted', 'rejected', 'other') NOT NULL DEFAULT 'pending',
+    `status_note` VARCHAR(255) NULL,
+    `received_at` TIMESTAMP NULL,
+    `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT `fk_winner_doorprize` FOREIGN KEY (`doorprize_id`) REFERENCES `doorprizes`(`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_winner_pemilih` FOREIGN KEY (`nik`) REFERENCES `pemilih`(`nik`) ON DELETE CASCADE,
+    INDEX `idx_winner_nik` (`nik`),
+    INDEX `idx_winner_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -245,46 +319,37 @@ WHERE pem.pilih = 'T'
 ORDER BY pem.voted_at DESC;
 ```
 
-#### 3.4. Siapa Saja yang Berhak Mengikuti Undian Doorprize
+#### 3.4. Siapa Saja yang Berhak Mengikuti Undian Doorprize (Eligible Pool)
+Anggota berhak mengikuti undian doorprize jika dan hanya jika telah menggunakan hak suaranya (`pilih = 'T'`), belum memenangkan hadiah doorprize lain, dan tidak dieksklusi secara manual (`can_raffle = 1`):
 ```sql
 SELECT 
-    nik,
-    nama,
-    dept,
-    voted_at
-FROM pemilih
-WHERE pilih = 'T'
-ORDER BY nama ASC;
+    p.nik,
+    p.nama,
+    p.dept,
+    p.voted_at
+FROM pemilih p
+WHERE p.pilih = 'T'
+  AND p.can_raffle = 1
+  AND p.nik NOT IN (SELECT nik FROM doorprize_winners)
+ORDER BY p.nama ASC;
 ```
 
-#### 3.5. Skema & Pencatatan Pemenang Undian Hadiah (Doorprize Claim Tracking)
+#### 3.5. Rekapitulasi Pemenang Undian Hadiah & Status Klaim (Doorprize Claim Tracking)
 ```sql
--- Tabel Master Hadiah Doorprize
-CREATE TABLE IF NOT EXISTS `doorprizes` (
-    `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `title` VARCHAR(255) NOT NULL,
-    `category` VARCHAR(100) NOT NULL DEFAULT 'Elektronik',
-    `quantity` INT UNSIGNED NOT NULL DEFAULT 1,
-    `sponsor` VARCHAR(255) NULL,
-    `icon` VARCHAR(50) NULL,
-    `image` VARCHAR(255) NULL,
-    `description` TEXT NULL,
-    `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Tabel Log Pemenang & Status Klaim
-CREATE TABLE IF NOT EXISTS `doorprize_winners` (
-    `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `doorprize_id` BIGINT UNSIGNED NOT NULL,
-    `nik` VARCHAR(50) NOT NULL,
-    `won_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `status` ENUM('pending', 'accepted', 'rejected', 'other') NOT NULL DEFAULT 'pending',
-    `status_note` VARCHAR(255) NULL,
-    `received_at` TIMESTAMP NULL,
-    `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`doorprize_id`) REFERENCES `doorprizes`(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`nik`) REFERENCES `pemilih`(`nik`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+SELECT 
+    w.id AS winner_id,
+    d.title AS nama_hadiah,
+    d.category AS kategori_hadiah,
+    d.sponsor,
+    p.nik AS pemilih_nik,
+    p.nama AS nama_pemenang,
+    p.dept AS departemen,
+    w.won_at AS waktu_menang,
+    w.status AS status_klaim,
+    w.status_note AS catatan_klaim,
+    w.received_at AS waktu_diterima
+FROM doorprize_winners w
+JOIN doorprizes d ON w.doorprize_id = d.id
+JOIN pemilih p ON w.nik = p.nik
+ORDER BY w.won_at DESC;
 ```
