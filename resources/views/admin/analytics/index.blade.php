@@ -33,13 +33,13 @@
     </div>
 
     <!-- Filter & PDF Export Bar -->
-    <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+    <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <form method="GET" action="{{ route('admin.analytics') }}" class="flex flex-wrap items-center gap-2.5 sm:gap-3 flex-1 w-full">
             <!-- Filter Dept -->
             <div class="flex items-center space-x-1.5 text-xs w-full sm:w-auto justify-between sm:justify-start">
-                <span class="font-bold text-slate-600">Departemen:</span>
-                <select name="dept" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
-                    <option value="">Semua Departemen</option>
+                <span class="font-bold text-slate-600 dark:text-slate-300">{{ __('Departemen:') }}</span>
+                <select name="dept" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-semibold bg-white dark:bg-slate-800 text-slate-800 dark:text-white focus:ring-2 focus:ring-indigo-500">
+                    <option value="">{{ __('Semua Departemen') }}</option>
                     @foreach($allDepartments as $deptName)
                         <option value="{{ $deptName }}" {{ $selectedDept === $deptName ? 'selected' : '' }}>{{ $deptName }}</option>
                     @endforeach
@@ -48,32 +48,32 @@
 
             <!-- Filter Date -->
             <div class="flex items-center space-x-1.5 text-xs w-full sm:w-auto justify-between sm:justify-start">
-                <span class="font-bold text-slate-600">Tanggal:</span>
-                <select name="date" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
-                    <option value="">Semua Tanggal</option>
-                    <option value="today" {{ $selectedDate === 'today' ? 'selected' : '' }}>Hari Ini</option>
+                <span class="font-bold text-slate-600 dark:text-slate-300">{{ __('Tanggal:') }}</span>
+                <select name="date" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-semibold bg-white dark:bg-slate-800 text-slate-800 dark:text-white focus:ring-2 focus:ring-indigo-500">
+                    <option value="">{{ __('Semua Tanggal') }}</option>
+                    <option value="today" {{ $selectedDate === 'today' ? 'selected' : '' }}>{{ __('Hari Ini') }}</option>
                 </select>
             </div>
 
             <!-- Filter Shift -->
             <div class="flex items-center space-x-1.5 text-xs w-full sm:w-auto justify-between sm:justify-start">
-                <span class="font-bold text-slate-600">Waktu:</span>
-                <select name="shift" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
-                    <option value="">Semua Jam (24H)</option>
-                    <option value="morning" {{ $selectedShift === 'morning' ? 'selected' : '' }}>Pagi (06:00 - 12:00)</option>
-                    <option value="afternoon" {{ $selectedShift === 'afternoon' ? 'selected' : '' }}>Siang (12:00 - 18:00)</option>
-                    <option value="night" {{ $selectedShift === 'night' ? 'selected' : '' }}>Malam (18:00 - 24:00)</option>
+                <span class="font-bold text-slate-600 dark:text-slate-300">{{ __('Waktu:') }}</span>
+                <select name="shift" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-semibold bg-white dark:bg-slate-800 text-slate-800 dark:text-white focus:ring-2 focus:ring-indigo-500">
+                    <option value="">{{ __('Semua Jam (24H)') }}</option>
+                    <option value="morning" {{ $selectedShift === 'morning' ? 'selected' : '' }}>{{ __('Pagi (06:00 - 12:00)') }}</option>
+                    <option value="afternoon" {{ $selectedShift === 'afternoon' ? 'selected' : '' }}>{{ __('Siang (12:00 - 18:00)') }}</option>
+                    <option value="night" {{ $selectedShift === 'night' ? 'selected' : '' }}>{{ __('Malam (18:00 - 24:00)') }}</option>
                 </select>
             </div>
 
             <!-- Buttons -->
             <div class="flex items-center gap-2 w-full sm:w-auto mt-1 sm:mt-0">
                 <button type="submit" class="flex-1 sm:flex-none justify-center px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1 cursor-pointer">
-                    <span>🔍 Terapkan Filter</span>
+                    <span>🔍 {{ __('Terapkan Filter') }}</span>
                 </button>
                 @if($selectedDept || $selectedDate || $selectedShift)
-                    <a href="{{ route('admin.analytics') }}" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs transition cursor-pointer">
-                        ✕ Reset
+                    <a href="{{ route('admin.analytics') }}" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs transition cursor-pointer">
+                        ✕ {{ __('Reset') }}
                     </a>
                 @endif
             </div>
@@ -82,7 +82,7 @@
         <div class="flex items-center gap-2 w-full lg:w-auto">
             <a href="{{ route('admin.analytics.export.pdf', request()->query()) }}" target="_blank" class="w-full lg:w-auto justify-center px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-md shadow-rose-600/20 transition flex items-center space-x-1.5 cursor-pointer">
                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                <span>Unduh Laporan Telemetri (PDF)</span>
+                <span>{{ __('Unduh Laporan Telemetri (PDF)') }}</span>
             </a>
         </div>
     </div>
@@ -90,59 +90,59 @@
     <!-- 4 High-Altitude KPI Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         <!-- Metric 1: Quorum & Turnout -->
-        <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
             <div class="flex items-center justify-between">
-                <span class="text-xs uppercase font-extrabold tracking-wider text-slate-500">Tingkat Partisipasi</span>
-                <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase {{ $quorumMet ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' }}">
-                    {{ $quorumMet ? 'Quorum Sah' : 'Menuju Quorum' }}
+                <span class="text-xs uppercase font-extrabold tracking-wider text-slate-500 dark:text-slate-400">{{ __('Tingkat Partisipasi') }}</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase {{ $quorumMet ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300' }}">
+                    {{ $quorumMet ? __('✓ Quorum Sah') : __('Menuju Quorum') }}
                 </span>
             </div>
             <div class="my-3 flex items-baseline space-x-2">
-                <span class="text-3xl sm:text-4xl font-black text-blue-600 font-mono">{{ $turnoutPct }}%</span>
-                <span class="text-xs text-slate-500 font-semibold">Target: {{ $quorumThreshold }}%</span>
+                <span class="text-3xl sm:text-4xl font-black text-blue-600 dark:text-blue-400 font-mono">{{ $turnoutPct }}%</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">{{ __('Target:') }} {{ $quorumThreshold }}%</span>
             </div>
-            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
                 <div class="h-full bg-blue-600 rounded-full transition-all duration-700" style="width: {{ min(100, $turnoutPct) }}%;"></div>
             </div>
         </div>
 
         <!-- Metric 2: Total Suara Sah vs Pending -->
-        <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
             <div class="flex items-center justify-between">
-                <span class="text-xs uppercase font-extrabold tracking-wider text-emerald-700">Total Suara Masuk</span>
-                <span class="w-7 h-7 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs">✓</span>
+                <span class="text-xs uppercase font-extrabold tracking-wider text-emerald-700 dark:text-emerald-400">{{ __('Total Suara Masuk') }}</span>
+                <span class="w-7 h-7 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs">✓</span>
             </div>
             <div class="my-3 flex items-baseline space-x-2">
-                <span class="text-3xl sm:text-4xl font-black text-emerald-600 font-mono">{{ $totalVoted }}</span>
-                <span class="text-xs text-slate-500 font-semibold">/ {{ $totalVoters }} Anggota</span>
+                <span class="text-3xl sm:text-4xl font-black text-emerald-600 dark:text-emerald-400 font-mono">{{ $totalVoted }}</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">/ {{ $totalVoters }} {{ __('Anggota') }}</span>
             </div>
-            <span class="text-xs text-slate-500 font-medium">Sisa belum memilih: <strong class="text-amber-600 font-mono">{{ $remaining }}</strong></span>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">{{ __('Sisa belum memilih:') }} <strong class="text-amber-600 dark:text-amber-400 font-mono">{{ $remaining }}</strong></span>
         </div>
 
         <!-- Metric 3: Peak Voting Hour -->
-        <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
             <div class="flex items-center justify-between">
-                <span class="text-xs uppercase font-extrabold tracking-wider text-indigo-700">Jam Lonjakan Puncak</span>
+                <span class="text-xs uppercase font-extrabold tracking-wider text-indigo-700 dark:text-indigo-400">{{ __('Jam Lonjakan Puncak') }}</span>
                 <span class="text-lg">⚡</span>
             </div>
             <div class="my-3 flex items-baseline space-x-2">
-                <span class="text-3xl sm:text-4xl font-black text-indigo-600 font-mono">{{ $peakHourLabel }}</span>
-                <span class="text-xs text-slate-500 font-semibold">WIB</span>
+                <span class="text-3xl sm:text-4xl font-black text-indigo-600 dark:text-indigo-400 font-mono">{{ $peakHourLabel }}</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">WIB</span>
             </div>
-            <span class="text-xs text-slate-500 font-medium">Volume tertinggi: <strong class="text-indigo-700 font-mono">{{ $peakHourVotes }} suara/jam</strong></span>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">{{ __('Volume tertinggi:') }} <strong class="text-indigo-700 dark:text-indigo-400 font-mono">{{ $peakHourVotes }} {{ __('suara/jam') }}</strong></span>
         </div>
 
         <!-- Metric 4: RFID Pass Rate -->
-        <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
             <div class="flex items-center justify-between">
-                <span class="text-xs uppercase font-extrabold tracking-wider text-slate-500">Integritas Kartu RFID</span>
-                <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-blue-100 text-blue-800">Mifare 13.56M</span>
+                <span class="text-xs uppercase font-extrabold tracking-wider text-slate-500 dark:text-slate-400">{{ __('Integritas Kartu RFID') }}</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300">Mifare 13.56M</span>
             </div>
             <div class="my-3 flex items-baseline space-x-2">
-                <span class="text-3xl sm:text-4xl font-black text-slate-900 font-mono">{{ $rfidAuthenticityRate }}%</span>
-                <span class="text-xs text-slate-500 font-semibold">Pass Rate</span>
+                <span class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white font-mono">{{ $rfidAuthenticityRate }}%</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Pass Rate</span>
             </div>
-            <span class="text-xs text-slate-500 font-medium">Kartu asing dicegah: <strong class="text-rose-600 font-mono">{{ $unknownCardAttempts }} kali</strong></span>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">{{ __('Kartu asing dicegah:') }} <strong class="text-rose-600 dark:text-rose-400 font-mono">{{ $unknownCardAttempts }} {{ __('kali') }}</strong></span>
         </div>
     </div>
 

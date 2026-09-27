@@ -10,10 +10,10 @@
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-indigo-100 text-indigo-800 border border-indigo-200">
-                    Vote Flow Intelligence
+                    {{ __('Vote Flow Intelligence') }}
                 </span>
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
-                    Department Distribution Matrix
+                    {{ __('Department Distribution Matrix') }}
                 </span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Aliran Suara & Distribusi Departemen') }}</h2>
@@ -34,7 +34,7 @@
             </div>
 
             <!-- Export PDF Button -->
-            <a href="{{ route('admin.vote-flow.export.pdf', ['target' => $target]) }}" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="Download Official Vector PDF Report">
+            <a href="{{ route('admin.vote-flow.export.pdf', ['target' => $target]) }}" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="{{ __('Download Official Vector PDF Report') }}">
                 <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 <span>{{ __('Export PDF') }}</span>
             </a>
@@ -204,7 +204,7 @@
                 <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="broker-datatable">
                     <thead>
                         <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
-                            <th class="py-3.5 px-4 text-center whitespace-nowrap">Rank</th>
+                            <th class="py-3.5 px-4 text-center whitespace-nowrap">{{ __('Rank') }}</th>
                             <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Departemen') }}</th>
                             <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('Volume Suara') }}</th>
                             <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('Porsi (%)') }}</th>
@@ -274,7 +274,7 @@
                         <th class="py-3 px-4">{{ __('Departemen') }}</th>
                         @foreach($candidates as $c)
                             <th class="py-3 px-4 text-center">
-                                <span class="block">{{ __('Candidate No.') }} {{ $c->nomor_urut }}</span>
+                                <span class="block">{{ __('Kandidat No.') }} {{ $c->nomor_urut }}</span>
                                 <span class="text-[10px] text-slate-400 font-normal lowercase truncate block max-w-[120px]">{{ $c->nama }}</span>
                             </th>
                         @endforeach
@@ -421,13 +421,13 @@ async function runVoteFlowAi() {
     btn.disabled = true;
     btn.classList.add('opacity-70', 'cursor-not-allowed');
     icon.innerHTML = '<span class="inline-block animate-spin">⚙️</span>';
-    text.innerText = 'Menganalisis Aliran...';
+    text.innerText = '{{ __('Menganalisis Aliran...') }}';
 
     container.innerHTML = `
         <div class="p-6 rounded-2xl bg-indigo-950/60 border border-indigo-800/40 text-center py-10 space-y-3">
             <div class="inline-block animate-spin text-3xl">🌊</div>
-            <h4 class="text-sm font-bold text-indigo-200">AI Vision sedang memetakan matriks aliran suara antar-departemen...</h4>
-            <p class="text-xs text-indigo-300/60">Mengidentifikasi blok pemilih loyal, departemen swing, dan kingmaker elektoral</p>
+            <h4 class="text-sm font-bold text-indigo-200">{{ __('AI Vision sedang memetakan matriks aliran suara antar-departemen...') }}</h4>
+            <p class="text-xs text-indigo-300/60">{{ __('Mengidentifikasi blok pemilih loyal, departemen swing, dan kingmaker elektoral') }}</p>
         </div>
     `;
 
@@ -468,16 +468,16 @@ async function runVoteFlowAi() {
                     <!-- Top Summary & Score -->
                     <div class="p-5 rounded-2xl bg-indigo-900/40 border border-indigo-700/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="space-y-1">
-                            <span class="text-[10px] font-black uppercase tracking-widest text-indigo-300">AI Vision Executive Summary</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-indigo-300">{{ __('AI Vision Executive Summary') }}</span>
                             <p class="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">${d.executive_summary || '-'}</p>
                         </div>
                         <div class="flex items-center space-x-3 shrink-0">
                             <div class="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
-                                <span class="text-[10px] uppercase font-bold text-slate-400 block">Consolidation Score</span>
+                                <span class="text-[10px] uppercase font-bold text-slate-400 block">{{ __('Skor Konsolidasi') }}</span>
                                 <span class="text-base font-black text-emerald-400 font-mono">${d.consolidation_score || 85}%</span>
                             </div>
                             <div class="px-3.5 py-2.5 rounded-xl border text-xs font-black uppercase bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
-                                Risk: ${d.risk_assessment || 'LOW'}
+                                {{ __('Risiko') }}: ${d.risk_assessment || 'LOW'}
                             </div>
                         </div>
                     </div>
@@ -487,7 +487,7 @@ async function runVoteFlowAi() {
                         <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
                             <h5 class="text-xs font-extrabold text-amber-300 flex items-center space-x-1.5">
                                 <span>👑</span>
-                                <span>Kingmaker & Swing Departments</span>
+                                <span>{{ __('Kingmaker & Swing Departments') }}</span>
                             </h5>
                             <p class="text-xs text-slate-300 leading-relaxed">${d.kingmaker_analysis || '-'}</p>
                         </div>
@@ -495,7 +495,7 @@ async function runVoteFlowAi() {
                         <div class="space-y-2">
                             <h5 class="text-xs font-extrabold text-blue-300 flex items-center space-x-1.5">
                                 <span>🤝</span>
-                                <span>Koalisi Departemen Terkonsolidasi</span>
+                                <span>{{ __('Koalisi Departemen Terkonsolidasi') }}</span>
                             </h5>
                             <div class="space-y-1.5">${coalitionsHtml}</div>
                         </div>
@@ -503,7 +503,7 @@ async function runVoteFlowAi() {
 
                     <!-- Key Strategic Takeaways -->
                     <div class="p-4 rounded-2xl bg-slate-900/60 border border-indigo-900/60 space-y-2">
-                        <h5 class="text-xs font-black uppercase tracking-wider text-indigo-300">Poin Kunci & Analisis Strategis:</h5>
+                        <h5 class="text-xs font-black uppercase tracking-wider text-indigo-300">{{ __('Poin Kunci & Analisis Strategis:') }}</h5>
                         <ul class="space-y-1.5">${takeawaysHtml}</ul>
                     </div>
                 </div>
@@ -511,7 +511,7 @@ async function runVoteFlowAi() {
         } else {
             container.innerHTML = `
                 <div class="p-4 rounded-2xl bg-rose-950/60 border border-rose-800 text-xs text-rose-200">
-                    Gagal memuat analisis AI: ${payload.message || 'Terjadi kesalahan sistem.'}
+                    {{ __('Gagal memuat analisis AI:') }} ${payload.message || '{{ __('Terjadi kesalahan sistem.') }}'}
                 </div>
             `;
         }
@@ -519,14 +519,14 @@ async function runVoteFlowAi() {
         console.error(err);
         container.innerHTML = `
             <div class="p-4 rounded-2xl bg-rose-950/60 border border-rose-800 text-xs text-rose-200">
-                Terjadi gangguan koneksi jaringan saat memanggil AI.
+                {{ __('Terjadi gangguan koneksi jaringan saat memanggil AI.') }}
             </div>
         `;
     } finally {
         btn.disabled = false;
         btn.classList.remove('opacity-70', 'cursor-not-allowed');
         icon.innerText = '⚡';
-        text.innerText = 'Jalankan Analisis AI Vision';
+        text.innerText = '{{ __('Jalankan Analisis AI Vision') }}';
     }
 }
 </script>

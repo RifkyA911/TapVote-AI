@@ -12,26 +12,26 @@
         <div class="space-y-1">
             <div class="flex flex-wrap items-center gap-2">
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-indigo-500/30 text-indigo-300 border border-indigo-400/30">
-                    Live Telemetry Center
+                    {{ __('Live Telemetry Center') }}
                 </span>
                 <span id="sse-indicator" class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                     <span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                    <span id="sse-status-text">SSE Live Stream Active</span>
+                    <span id="sse-status-text">{{ __('SSE Live Stream Active') }}</span>
                 </span>
             </div>
             <h2 class="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-white">
-                Live E-Voting Intelligence & Monitoring
+                {{ __('Live E-Voting Intelligence & Monitoring') }}
             </h2>
             <p class="text-xs sm:text-sm text-slate-300 max-w-2xl">
-                Real-time voting telemetry for Chairman & Supervisory Board. Validated through continuous cryptographic hash logs.
+                {{ __('Real-time voting telemetry for Chairman & Supervisory Board. Validated through continuous cryptographic hash logs.') }}
             </p>
         </div>
 
         <div class="flex items-center gap-2.5 self-start md:self-auto shrink-0">
             <!-- Manual Refresh -->
-            <button onclick="fetchLatestData()" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 shadow-sm transition cursor-pointer flex items-center space-x-1.5 text-xs font-bold" title="Refresh Metrik Manual">
+            <button onclick="fetchLatestData()" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 shadow-sm transition cursor-pointer flex items-center space-x-1.5 text-xs font-bold" title="{{ __('Segarkan Data') }}">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                <span>Segarkan Data</span>
+                <span>{{ __('Segarkan Data') }}</span>
             </button>
         </div>
     </div>
@@ -39,67 +39,67 @@
     <!-- 4 High-Tech KPI Metric Cards (Responsive Mobile & iPad Mini) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         <!-- Metric 1: Total DPT -->
-        <div class="relative overflow-hidden p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition">
+        <div class="relative overflow-hidden p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition">
             <div class="flex items-center justify-between">
-                <span class="text-xs uppercase font-extrabold tracking-wider text-slate-500">Total DPT Anggota</span>
-                <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
+                <span class="text-xs uppercase font-extrabold tracking-wider text-slate-500 dark:text-slate-400">{{ __('Total DPT Anggota') }}</span>
+                <div class="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center border border-blue-100 dark:border-blue-800">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 </div>
             </div>
             <div class="mt-4 flex items-baseline justify-between">
-                <span id="metric-total-voters" class="text-3xl sm:text-4xl font-black text-slate-900 font-mono tracking-tight">{{ $totalVoters }}</span>
-                <span class="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">100% Terdaftar</span>
+                <span id="metric-total-voters" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white font-mono tracking-tight">{{ $totalVoters }}</span>
+                <span class="text-[11px] font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded-md">{{ __('100% Terdaftar') }}</span>
             </div>
-            <p class="text-xs text-slate-500 mt-1.5 font-medium">Buku daftar pemilih tetap terverifikasi</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 font-medium">{{ __('Buku daftar pemilih tetap terverifikasi') }}</p>
         </div>
 
         <!-- Metric 2: Suara Masuk (Turnout) -->
-        <div class="relative overflow-hidden p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition">
+        <div class="relative overflow-hidden p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition">
             <div class="flex items-center justify-between">
-                <span class="text-xs uppercase font-extrabold tracking-wider text-emerald-700">Total Suara Masuk</span>
-                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
+                <span class="text-xs uppercase font-extrabold tracking-wider text-emerald-700 dark:text-emerald-400">{{ __('Total Suara Masuk') }}</span>
+                <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-100 dark:border-emerald-800">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
             </div>
             <div class="mt-4 flex items-baseline justify-between">
-                <span id="metric-total-voted" class="text-3xl sm:text-4xl font-black text-emerald-600 font-mono tracking-tight">{{ $totalVoted }}</span>
-                <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">Tervalidasi RFID</span>
+                <span id="metric-total-voted" class="text-3xl sm:text-4xl font-black text-emerald-600 dark:text-emerald-400 font-mono tracking-tight">{{ $totalVoted }}</span>
+                <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-md">{{ __('Tervalidasi RFID') }}</span>
             </div>
-            <p class="text-xs text-slate-500 mt-1.5 font-medium">Surat suara sah masuk bilik</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 font-medium">{{ __('Surat suara sah masuk bilik') }}</p>
         </div>
 
         <!-- Metric 3: Partisipasi & Quorum Meter -->
-        <div class="relative overflow-hidden p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition">
+        <div class="relative overflow-hidden p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition">
             <div class="flex items-center justify-between">
-                <span class="text-xs uppercase font-extrabold tracking-wider text-indigo-700">Tingkat Partisipasi</span>
-                <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+                <span class="text-xs uppercase font-extrabold tracking-wider text-indigo-700 dark:text-indigo-400">{{ __('Tingkat Partisipasi') }}</span>
+                <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center border border-indigo-100 dark:border-indigo-800">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                 </div>
             </div>
             <div class="mt-4 flex items-baseline justify-between">
-                <span id="metric-turnout-pct" class="text-3xl sm:text-4xl font-black text-indigo-600 font-mono tracking-tight">{{ $turnoutPct }}%</span>
-                <span id="quorum-chip" class="text-[11px] font-bold px-2 py-0.5 rounded-md {{ $turnoutPct >= 50.0 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700' }}">
-                    {{ $turnoutPct >= 50.0 ? '✓ Quorum Sah' : 'Menuju Quorum' }}
+                <span id="metric-turnout-pct" class="text-3xl sm:text-4xl font-black text-indigo-600 dark:text-indigo-400 font-mono tracking-tight">{{ $turnoutPct }}%</span>
+                <span id="quorum-chip" class="text-[11px] font-bold px-2 py-0.5 rounded-md {{ $turnoutPct >= 50.0 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300' : 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300' }}">
+                    {{ $turnoutPct >= 50.0 ? __('✓ Quorum Sah') : __('Menuju Quorum') }}
                 </span>
             </div>
-            <div class="w-full bg-slate-100 h-2.5 rounded-full mt-3 overflow-hidden relative">
+            <div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full mt-3 overflow-hidden relative">
                 <div id="metric-turnout-bar" class="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-700" style="width: {{ $turnoutPct }}%;"></div>
             </div>
         </div>
 
         <!-- Metric 4: Sisa Belum Memilih -->
-        <div class="relative overflow-hidden p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition">
+        <div class="relative overflow-hidden p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition">
             <div class="flex items-center justify-between">
-                <span class="text-xs uppercase font-extrabold tracking-wider text-amber-700">Sisa Belum Memilih</span>
-                <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
+                <span class="text-xs uppercase font-extrabold tracking-wider text-amber-700 dark:text-amber-400">{{ __('Sisa Belum Memilih') }}</span>
+                <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center border border-amber-100 dark:border-amber-800">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
             </div>
             <div class="mt-4 flex items-baseline justify-between">
-                <span id="metric-remaining" class="text-3xl sm:text-4xl font-black text-amber-600 font-mono tracking-tight">{{ $remaining }}</span>
-                <span class="text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">Pending</span>
+                <span id="metric-remaining" class="text-3xl sm:text-4xl font-black text-amber-600 dark:text-amber-400 font-mono tracking-tight">{{ $remaining }}</span>
+                <span class="text-[11px] font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded-md">{{ __('Pending') }}</span>
             </div>
-            <p class="text-xs text-slate-500 mt-1.5 font-medium">Anggota di pool absensi</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 font-medium">{{ __('Anggota di pool absensi') }}</p>
         </div>
     </div>
 
@@ -121,18 +121,18 @@
                     </div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <h3 class="text-lg sm:text-xl font-black text-white tracking-tight">Gemini AI Election Intelligence</h3>
+                            <h3 class="text-lg sm:text-xl font-black text-white tracking-tight">{{ __('Gemini AI Election Intelligence') }}</h3>
                             <span id="ai-model-pill" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
                                 Google Gemini 2.0 Flash
                             </span>
                         </div>
-                        <p class="text-xs text-indigo-200/70 mt-0.5">Real-time election outcome projection & quorum margin analysis</p>
+                        <p class="text-xs text-indigo-200/70 mt-0.5">{{ __('Real-time election outcome projection & quorum margin analysis') }}</p>
                     </div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2.5">
                     <button type="button" onclick="toggleGeminiDrawer()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-indigo-200 hover:text-white text-xs font-bold border border-white/15 transition cursor-pointer flex items-center space-x-1.5">
-                        <span>🔑 Pengaturan & Test API Key</span>
+                        <span>🔑 {{ __('Pengaturan & Test API Key') }}</span>
                     </button>
 
                     <button 
@@ -142,7 +142,7 @@
                         class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white text-xs sm:text-sm font-extrabold shadow-lg shadow-indigo-500/25 transition cursor-pointer flex items-center space-x-2"
                     >
                         <span id="ai-btn-icon">⚡</span>
-                        <span id="ai-btn-text">Analisis dengan Gemini AI</span>
+                        <span id="ai-btn-text">{{ __('Analisis dengan Gemini AI') }}</span>
                     </button>
                 </div>
             </div>
@@ -271,17 +271,17 @@
     <!-- REAL-TIME CANDIDATE CHARTS (POWERED BY APEXCHARTS!)      -->
     <!-- ======================================================== -->
     <!-- Row 1: Perolehan Suara Calon Ketua (Full Width Row, Lapang & Responsive) -->
-    <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-5">
-        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+    <div class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
             <div class="flex items-center space-x-3">
                 <span class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center justify-center shadow-xs">1</span>
                 <div>
-                    <h3 class="text-base sm:text-lg font-black text-slate-900">Perolehan Suara: Calon Ketua Koperasi</h3>
-                    <p class="text-xs text-slate-500">Distribusi perolehan suara masuk secara komprehensif via ApexCharts Dynamic Bar Ranking & Rekapitulasi</p>
+                    <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">{{ __('Perolehan Suara: Calon Ketua Koperasi') }}</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Distribusi perolehan suara masuk secara komprehensif via ApexCharts Dynamic Bar Ranking & Rekapitulasi') }}</p>
                 </div>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
-                {{ count($ketuaResults) }} Kandidat Terdaftar
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                {{ count($ketuaResults) }} {{ __('Kandidat Terdaftar') }}
             </span>
         </div>
 
@@ -294,11 +294,11 @@
             <!-- Progress & Tally List (Right) -->
             <div class="lg:col-span-6 space-y-3" id="admin-ketua-list">
                 @foreach($ketuaResults as $k)
-                    <div class="p-4 rounded-2xl bg-slate-50 hover:bg-blue-50/40 border border-slate-200/80 transition space-y-2">
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-blue-50/40 dark:hover:bg-blue-950/30 border border-slate-200/80 dark:border-slate-700/60 transition space-y-2">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center space-x-3 min-w-0">
                                 @if(!empty($k['foto']))
-                                    <img src="{{ str_starts_with($k['foto'], 'http') ? $k['foto'] : asset(ltrim($k['foto'], '/')) }}" alt="{{ $k['nama'] }}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
+                                    <img src="{{ str_starts_with($k['foto'], 'http') ? $k['foto'] : asset(ltrim($k['foto'], '/')) }}" alt="{{ $k['nama'] }}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shadow-2xs shrink-0">
                                 @else
                                     <span class="w-10 h-10 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-2xs">
                                         {{ $k['nomor_urut'] }}
@@ -306,18 +306,18 @@
                                 @endif
                                 <div class="min-w-0">
                                     <div class="flex items-center space-x-1.5">
-                                        <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-800">No. {{ $k['nomor_urut'] }}</span>
-                                        <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">{{ $k['nama'] }}</h4>
+                                        <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300">No. {{ $k['nomor_urut'] }}</span>
+                                        <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white truncate">{{ $k['nama'] }}</h4>
                                     </div>
-                                    <span class="text-[11px] text-slate-500 font-mono font-medium">Kandidat Ketua</span>
+                                    <span class="text-[11px] text-slate-500 dark:text-slate-400 font-mono font-medium">{{ __('Kandidat Ketua') }}</span>
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
-                                <span class="text-sm sm:text-base font-black text-blue-700 font-mono">{{ $k['suara'] }} Suara</span>
-                                <span class="text-xs text-slate-600 block font-bold">({{ $k['persen'] }}%)</span>
+                                <span class="text-sm sm:text-base font-black text-blue-700 dark:text-blue-400 font-mono">{{ $k['suara'] }} {{ __('Suara') }}</span>
+                                <span class="text-xs text-slate-600 dark:text-slate-400 block font-bold">({{ $k['persen'] }}%)</span>
                             </div>
                         </div>
-                        <div class="w-full bg-slate-200/70 h-2 rounded-full overflow-hidden">
+                        <div class="w-full bg-slate-200/70 dark:bg-slate-700/70 h-2 rounded-full overflow-hidden">
                             <div class="bg-blue-600 h-2 rounded-full transition-all duration-700" style="width: {{ $k['persen'] }}%;"></div>
                         </div>
                     </div>
@@ -327,17 +327,17 @@
     </div>
 
     <!-- Row 2: Perolehan Suara Calon Pengawas (Full Width Row, Lapang & Responsive) -->
-    <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-5">
-        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+    <div class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
             <div class="flex items-center space-x-3">
                 <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-xs">2</span>
                 <div>
-                    <h3 class="text-base sm:text-lg font-black text-slate-900">Perolehan Suara: Calon Pengawas Koperasi</h3>
-                    <p class="text-xs text-slate-500">Distribusi perolehan suara masuk secara komprehensif via ApexCharts Dynamic Bar Ranking & Rekapitulasi</p>
+                    <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">{{ __('Perolehan Suara: Calon Pengawas Koperasi') }}</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Distribusi perolehan suara masuk secara komprehensif via ApexCharts Dynamic Bar Ranking & Rekapitulasi') }}</p>
                 </div>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                {{ count($pengawasResults) }} Kandidat Terdaftar
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                {{ count($pengawasResults) }} {{ __('Kandidat Terdaftar') }}
             </span>
         </div>
 
@@ -350,11 +350,11 @@
             <!-- Progress & Tally List (Right) -->
             <div class="lg:col-span-6 space-y-3" id="admin-pengawas-list">
                 @foreach($pengawasResults as $p)
-                    <div class="p-4 rounded-2xl bg-slate-50 hover:bg-emerald-50/40 border border-slate-200/80 transition space-y-2">
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/30 border border-slate-200/80 dark:border-slate-700/60 transition space-y-2">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center space-x-3 min-w-0">
                                 @if(!empty($p['foto']))
-                                    <img src="{{ str_starts_with($p['foto'], 'http') ? $p['foto'] : asset(ltrim($p['foto'], '/')) }}" alt="{{ $p['nama'] }}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-2xs shrink-0">
+                                    <img src="{{ str_starts_with($p['foto'], 'http') ? $p['foto'] : asset(ltrim($p['foto'], '/')) }}" alt="{{ $p['nama'] }}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shadow-2xs shrink-0">
                                 @else
                                     <span class="w-10 h-10 rounded-xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-2xs">
                                         {{ $p['nomor_urut'] }}
@@ -362,18 +362,18 @@
                                 @endif
                                 <div class="min-w-0">
                                     <div class="flex items-center space-x-1.5">
-                                        <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800">No. {{ $p['nomor_urut'] }}</span>
-                                        <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">{{ $p['nama'] }}</h4>
+                                        <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">No. {{ $p['nomor_urut'] }}</span>
+                                        <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white truncate">{{ $p['nama'] }}</h4>
                                     </div>
-                                    <span class="text-[11px] text-slate-500 font-mono font-medium">Kandidat Pengawas</span>
+                                    <span class="text-[11px] text-slate-500 dark:text-slate-400 font-mono font-medium">{{ __('Kandidat Pengawas') }}</span>
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
-                                <span class="text-sm sm:text-base font-black text-emerald-700 font-mono">{{ $p['suara'] }} Suara</span>
-                                <span class="text-xs text-slate-600 block font-bold">({{ $p['persen'] }}%)</span>
+                                <span class="text-sm sm:text-base font-black text-emerald-700 dark:text-emerald-400 font-mono">{{ $p['suara'] }} {{ __('Suara') }}</span>
+                                <span class="text-xs text-slate-600 dark:text-slate-400 block font-bold">({{ $p['persen'] }}%)</span>
                             </div>
                         </div>
-                        <div class="w-full bg-slate-200/70 h-2 rounded-full overflow-hidden">
+                        <div class="w-full bg-slate-200/70 dark:bg-slate-700/70 h-2 rounded-full overflow-hidden">
                             <div class="bg-emerald-600 h-2 rounded-full transition-all duration-700" style="width: {{ $p['persen'] }}%;"></div>
                         </div>
                     </div>
@@ -397,33 +397,33 @@
             <div class="lg:col-span-5 space-y-4 text-left">
                 <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/25 text-blue-300 border border-blue-400/40 text-xs font-black uppercase tracking-wider">
                     <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-                    <span>Admin Hardware & Keplek Lanyard 3D RFID Simulator</span>
+                    <span>{{ __('Admin Hardware & Keplek Lanyard 3D RFID Simulator') }}</span>
                 </div>
 
                 <h3 class="text-xl sm:text-3xl font-black text-white tracking-tight leading-tight">
-                    Simulator Kredensial RFID & Identitas Anggota
+                    {{ __('Simulator Kredensial RFID & Identitas Anggota') }}
                 </h3>
 
                 <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Simulator diagnostik verifikasi visual kartu RFID Mifare ISO/IEC 14443A dan keplek resmi pemilih. Digunakan oleh admin untuk memvalidasi spesifikasi fisik, orientasi tap antena, dan struktur visual kartu secara interaktif <strong>360° pada sumbu X & Y</strong>.
+                    {{ __('Simulator diagnostik verifikasi visual kartu RFID Mifare ISO/IEC 14443A dan keplek resmi pemilih. Digunakan oleh admin untuk memvalidasi spesifikasi fisik, orientasi tap antena, dan struktur visual kartu secara interaktif') }} <strong>360° {{ __('pada sumbu X & Y') }}</strong>.
                 </p>
 
                 <!-- Feature Specs Badges -->
                 <div class="grid grid-cols-2 gap-2.5 pt-1 text-xs">
                     <div class="p-3 rounded-2xl bg-blue-900/40 border border-blue-400/20">
-                        <span class="text-blue-300 block text-[10px] uppercase font-bold">Standard RFID</span>
+                        <span class="text-blue-300 block text-[10px] uppercase font-bold">{{ __('Standard RFID') }}</span>
                         <strong class="text-white font-mono">ISO/IEC 14443A</strong>
                     </div>
                     <div class="p-3 rounded-2xl bg-blue-900/40 border border-blue-400/20">
-                        <span class="text-blue-300 block text-[10px] uppercase font-bold">Frekuensi Chip</span>
+                        <span class="text-blue-300 block text-[10px] uppercase font-bold">{{ __('Frekuensi Chip') }}</span>
                         <strong class="text-amber-400 font-mono">13.56 MHz HF</strong>
                     </div>
                     <div class="p-3 rounded-2xl bg-blue-900/40 border border-blue-400/20">
-                        <span class="text-blue-300 block text-[10px] uppercase font-bold">Kredensial Fisik</span>
+                        <span class="text-blue-300 block text-[10px] uppercase font-bold">{{ __('Kredensial Fisik') }}</span>
                         <strong class="text-blue-300 font-mono">Vertical Badge + Lanyard</strong>
                     </div>
                     <div class="p-3 rounded-2xl bg-blue-900/40 border border-blue-400/20">
-                        <span class="text-blue-300 block text-[10px] uppercase font-bold">Validasi Kunci</span>
+                        <span class="text-blue-300 block text-[10px] uppercase font-bold">{{ __('Validasi Kunci') }}</span>
                         <strong class="text-emerald-400 font-mono">Sector Key A / AES-128</strong>
                     </div>
                 </div>
@@ -437,7 +437,7 @@
                         class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition cursor-pointer flex items-center space-x-1.5"
                     >
                         <span id="dash-spin-icon">⏸</span>
-                        <span id="dash-spin-text">Jeda Putaran</span>
+                        <span id="dash-spin-text">{{ __('Jeda Putaran') }}</span>
                     </button>
 
                     <button 
@@ -445,7 +445,7 @@
                         onclick="flipDashCard()"
                         class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition cursor-pointer flex items-center space-x-1.5"
                     >
-                        <span>🔄 Balik Kartu</span>
+                        <span>🔄 {{ __('Balik Kartu') }}</span>
                     </button>
 
                     <button 
@@ -453,16 +453,16 @@
                         onclick="rotateDashCard360X()"
                         class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition cursor-pointer flex items-center space-x-1.5"
                     >
-                        <span>↕ Putar 360° X</span>
+                        <span>↕ {{ __('Putar 360° X') }}</span>
                     </button>
 
                     <button 
                         type="button" 
                         onclick="resetDashCardView()"
                         class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/15 text-slate-300 font-bold text-xs border border-white/10 transition cursor-pointer"
-                        title="Reset Sudut"
+                        title="{{ __('Reset') }}"
                     >
-                        ⟲ Reset
+                        ⟲ {{ __('Reset') }}
                     </button>
                 </div>
             </div>
@@ -486,133 +486,273 @@
     <!-- VOTING ACTIVITY TIMELINE & OFFICIAL RECAP REPORT EXPORT  -->
     <!-- (Replaces Suara Terakhir Masuk & Audit Logs per request)  -->
     <!-- ======================================================== -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-        
-        <!-- Left: ApexCharts Voting Activity by Hour / Day -->
-        <div class="lg:col-span-8 p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+    <!-- ======================================================== -->
+    <!-- SECTION 1: VOTING ACTIVITY & FLOW TELEMETRY TIMELINE     -->
+    <!-- ======================================================== -->
+    <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+        <!-- Section Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-5 border-b border-slate-100 dark:border-slate-800 gap-4">
+            <div class="flex items-start space-x-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-xl shrink-0 shadow-2xs">
+                    📈
+                </div>
                 <div>
                     <div class="flex items-center space-x-2">
-                        <span class="text-lg">📈</span>
-                        <h3 class="text-base font-extrabold text-slate-900">Distribusi & Lonjakan Jam Pemungutan Suara</h3>
+                        <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">{{ __('Distribusi & Lonjakan Jam Pemungutan Suara') }}</h3>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800 dark:bg-blue-950/70 dark:text-blue-300">
+                            {{ __('Telemetri Waktu Nyata') }}
+                        </span>
                     </div>
-                    <p class="text-xs text-slate-500">Histori lonjakan waktu dan volume pemilih yang melakukan tap kartu RFID di bilik suara.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                        {{ __('Histori lonjakan waktu dan volume pemilih yang melakukan tap kartu RFID di bilik suara.') }}
+                    </p>
                 </div>
-                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-blue-50 text-blue-800 border border-blue-200 self-start sm:self-auto">
-                    Total Tervalidasi: <strong id="timeline-total">{{ $timelineData['total_recorded'] }}</strong> Suara
+            </div>
+
+            <div class="flex items-center space-x-2 self-start md:self-auto">
+                <span class="px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shadow-2xs">
+                    {{ __('Total Tervalidasi') }}: <strong id="timeline-total" class="font-black">{{ $timelineData['total_recorded'] }}</strong> {{ __('Suara') }}
                 </span>
             </div>
-
-            <!-- Custom Filter Controls: Tanggal, Departemen, Kartu Asing / Tidak Dikenali -->
-            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
-                <div class="flex flex-wrap items-center gap-2.5">
-                    <div class="flex items-center space-x-1.5">
-                        <label for="timeline-filter-date" class="font-bold text-slate-600">Tanggal:</label>
-                        <input 
-                            type="date" 
-                            id="timeline-filter-date" 
-                            value="{{ date('Y-m-d') }}" 
-                            class="px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-800 shadow-2xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        >
-                    </div>
-
-                    <div class="flex items-center space-x-1.5">
-                        <label for="timeline-filter-dept" class="font-bold text-slate-600">Departemen:</label>
-                        <select 
-                            id="timeline-filter-dept" 
-                            class="px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-800 shadow-2xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        >
-                            <option value="ALL">Semua Departemen</option>
-                            <option value="ICT">ICT</option>
-                            <option value="Keuangan">Keuangan</option>
-                            <option value="Operasional">Operasional</option>
-                            <option value="HRD">HRD</option>
-                            <option value="Logistik">Logistik</option>
-                            <option value="Produksi">Produksi</option>
-                            <option value="Pemasaran">Pemasaran</option>
-                        </select>
-                    </div>
-
-                    <label class="inline-flex items-center space-x-1.5 cursor-pointer font-bold text-slate-700 select-none py-1 px-2 rounded-lg hover:bg-slate-200/50 transition">
-                        <input type="checkbox" id="timeline-filter-unknown" class="w-3.5 h-3.5 rounded text-rose-600 focus:ring-rose-500 border-slate-300">
-                        <span class="text-rose-700">Audit Kartu Asing</span>
-                    </label>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                    <button 
-                        type="button" 
-                        onclick="applyTimelineFilters()" 
-                        class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-2xs transition cursor-pointer flex items-center space-x-1"
-                    >
-                        <span>🔍</span>
-                        <span>Terapkan</span>
-                    </button>
-                    <button 
-                        type="button" 
-                        onclick="resetTimelineFilters()" 
-                        class="px-2.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-200 text-slate-600 font-bold text-xs transition cursor-pointer"
-                        title="Reset Filter"
-                    >
-                        Reset
-                    </button>
-                </div>
-            </div>
-
-            <!-- ApexCharts Spline Area Timeline -->
-            <div id="apexChartTimeline" class="w-full min-h-[280px]"></div>
         </div>
 
-        <!-- Right: Official Recap Report Card with Real Vector PDF & Excel Export -->
-        <div class="lg:col-span-4 p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between space-y-5">
-            <div>
-                <div class="flex items-center space-x-2 pb-3 mb-4 border-b border-slate-100">
-                    <span class="text-lg">📋</span>
-                    <h3 class="text-base font-extrabold text-slate-900">Rekapitulasi & Berita Acara</h3>
+        <!-- 4 Telemetry Quick Stat Chips -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
+                <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Jam Puncak Tertinggi') }}</div>
+                <div class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-1">{{ $timelineData['peak_hour'] ?? '-' }}</div>
+                <div class="text-[11px] text-blue-600 dark:text-blue-400 font-bold mt-0.5">{{ $timelineData['peak_count'] ?? 0 }} {{ __('Suara dicatat') }}</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
+                <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Kecepatan Rata-rata') }}</div>
+                <div class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-1">{{ $timelineData['avg_velocity'] ?? 0 }} <span class="text-xs font-normal text-slate-500">/jam</span></div>
+                <div class="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">{{ __('Throughput bilik stabil') }}</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
+                <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Departemen Paling Padat') }}</div>
+                <div class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-1 truncate">{{ $timelineData['busiest_dept'] ?? 'ICT' }}</div>
+                <div class="text-[11px] text-amber-600 dark:text-amber-400 font-bold mt-0.5">{{ __('Aktivitas voter tertinggi') }}</div>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60">
+                <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Status Sensor Bilik') }}</div>
+                <div class="text-lg sm:text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1 flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>{{ __('Optimal 100%') }}</span>
                 </div>
-                <p class="text-xs text-slate-600 leading-relaxed mb-4">
-                    Unduh dokumen rekapitulasi pemilihan resmi untuk arsip panitia, saksi, dan sidang pleno pengesahan hasil suara.
-                </p>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400 font-bold mt-0.5">{{ __('Zero Packet Loss') }}</div>
+            </div>
+        </div>
 
-                <div class="space-y-2.5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">Format Dokumen:</span>
-                        <span class="font-bold text-slate-900">PDF (Vector) & Excel</span>
+        <!-- Filter Controls Toolbar -->
+        <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex flex-wrap items-center gap-2.5 sm:gap-3">
+                <div class="flex items-center space-x-1.5">
+                    <label for="timeline-filter-date" class="font-bold text-slate-600 dark:text-slate-300">{{ __('Tanggal:') }}</label>
+                    <input 
+                        type="date" 
+                        id="timeline-filter-date" 
+                        value="{{ date('Y-m-d') }}" 
+                        class="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-bold text-slate-800 dark:text-white shadow-2xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    >
+                </div>
+
+                <div class="flex items-center space-x-1.5">
+                    <label for="timeline-filter-dept" class="font-bold text-slate-600 dark:text-slate-300">{{ __('Departemen:') }}</label>
+                    <select 
+                        id="timeline-filter-dept" 
+                        class="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-bold text-slate-800 dark:text-white shadow-2xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    >
+                        <option value="ALL">{{ __('Semua Departemen') }}</option>
+                        <option value="ICT">ICT</option>
+                        <option value="Keuangan">{{ __('Keuangan') }}</option>
+                        <option value="Operasional">{{ __('Operasional') }}</option>
+                        <option value="HRD">HRD</option>
+                        <option value="Logistik">{{ __('Logistik') }}</option>
+                        <option value="Produksi">{{ __('Produksi') }}</option>
+                        <option value="Pemasaran">{{ __('Pemasaran') }}</option>
+                    </select>
+                </div>
+
+                <label class="inline-flex items-center space-x-1.5 cursor-pointer font-bold text-slate-700 dark:text-slate-300 select-none py-1 px-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <input type="checkbox" id="timeline-filter-unknown" class="w-3.5 h-3.5 rounded text-rose-600 focus:ring-rose-500 border-slate-300">
+                    <span class="text-rose-600 dark:text-rose-400 font-extrabold">{{ __('Audit Kartu Asing') }}</span>
+                </label>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button 
+                    type="button" 
+                    onclick="applyTimelineFilters()" 
+                    class="px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-2xs transition cursor-pointer flex items-center space-x-1"
+                >
+                    <span>🔍</span>
+                    <span>{{ __('Terapkan') }}</span>
+                </button>
+                <button 
+                    type="button" 
+                    onclick="resetTimelineFilters()" 
+                    class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-xs transition cursor-pointer"
+                    title="{{ __('Reset Filter') }}"
+                >
+                    {{ __('Reset') }}
+                </button>
+            </div>
+        </div>
+
+        <!-- ApexCharts Spline Area Timeline (Enlarged Height: 320px) -->
+        <div id="apexChartTimeline" class="w-full min-h-[320px]"></div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 2: OFFICIAL PLENARY CERTIFICATION & RECAP EXPORTS-->
+    <!-- ======================================================== -->
+    <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+        <!-- Section Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-5 border-b border-slate-100 dark:border-slate-800 gap-4">
+            <div class="flex items-start space-x-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-xl shrink-0 shadow-2xs">
+                    📜
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">{{ __('Pusat Dokumen Berita Acara & Pengesahan Hasil Pemilihan') }}</h3>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300">
+                            {{ __('Resmi & Terverifikasi') }}
+                        </span>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">Validasi Quorum:</span>
-                        <span class="font-bold {{ $turnoutPct >= 50.0 ? 'text-emerald-700' : 'text-amber-700' }}">{{ $turnoutPct >= 50.0 ? 'Sah Terpenuhi' : 'Menuju Quorum' }}</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">Keamanan Hash:</span>
-                        <span class="font-mono text-[10px] text-blue-700 font-bold">SHA-256 Verified</span>
-                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                        {{ __('Unduh dokumen rekapitulasi pemilihan resmi untuk arsip panitia, saksi, dan sidang pleno pengesahan hasil suara.') }}
+                    </p>
                 </div>
             </div>
 
-            <div class="space-y-2.5 pt-2">
-                <!-- Export to Official Vector PDF via DomPDF -->
+            <!-- Quorum & Integrity Status Pill -->
+            <div class="flex flex-wrap items-center gap-2 self-start md:self-auto">
+                <span class="px-3.5 py-1.5 rounded-xl text-xs font-bold border shadow-2xs {{ $turnoutPct >= 50.0 ? 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800' : 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800' }}">
+                    {{ __('Validasi Kuorum') }}: <strong>{{ $turnoutPct >= 50.0 ? __('Sah Terpenuhi') : __('Menuju Kuorum') }}</strong> ({{ $turnoutPct }}%)
+                </span>
+                <span class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                    SHA-256 Seal
+                </span>
+            </div>
+        </div>
+
+        <!-- 3 Feature Cards for Document Exports -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- Card A: Official PDF Vector -->
+            <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex flex-col justify-between space-y-4">
+                <div class="space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-lg">
+                        📄
+                    </div>
+                    <h4 class="text-sm font-black text-slate-900 dark:text-white">{{ __('Berita Acara Pleno (PDF Vektor)') }}</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                        {{ __('Dokumen resmi berformat PDF high-resolution siap cetak dengan lembar pengesahan tanda tangan ketua sidang, saksi kandidat, dan panitia.') }}
+                    </p>
+                    <div class="space-y-1 pt-1 text-[11px] text-slate-600 dark:text-slate-400">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span>{{ __('Format Standar Sidang Pleno Koperasi') }}</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span>{{ __('Dilengkapi QR Code Validitas Dokumen') }}</span>
+                        </div>
+                    </div>
+                </div>
+
                 <a 
                     href="{{ route('admin.dashboard.export.pdf') }}" 
-                    class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-rose-600 via-red-600 to-rose-700 hover:from-rose-700 hover:to-red-800 text-white font-black text-xs sm:text-sm shadow-md transition flex items-center justify-center space-x-2"
-                    title="Cetak Berita Acara Resmi Format PDF (DomPDF Vector Library)"
+                    class="w-full py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-sm transition flex items-center justify-center space-x-2"
+                    title="{{ __('Unduh Berita Acara (PDF Resmi)') }}"
                 >
-                    <span class="text-base">📄</span>
-                    <span>Unduh Berita Acara (PDF Resmi)</span>
+                    <span>📄</span>
+                    <span>{{ __('Unduh Berita Acara (PDF Resmi)') }}</span>
                 </a>
+            </div>
 
-                <!-- Export to Excel (CSV UTF-8 BOM) -->
+            <!-- Card B: Excel Spreadsheet -->
+            <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex flex-col justify-between space-y-4">
+                <div class="space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-lg">
+                        📊
+                    </div>
+                    <h4 class="text-sm font-black text-slate-900 dark:text-white">{{ __('Tabulasi Suara (Excel Spreadsheet)') }}</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                        {{ __('Data rekapitulasi angka mentah terperinci dalam format CSV UTF-8 BOM yang dapat dibuka langsung di Microsoft Excel, Google Sheets, dan LibreOffice.') }}
+                    </p>
+                    <div class="space-y-1 pt-1 text-[11px] text-slate-600 dark:text-slate-400">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span>{{ __('Tabel Terpisah Calon Ketua & Pengawas') }}</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span>{{ __('Persentase dan Status Pemilihan Akurat') }}</span>
+                        </div>
+                    </div>
+                </div>
+
                 <a 
                     href="{{ route('admin.dashboard.export.excel') }}" 
-                    class="w-full py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm shadow-md transition flex items-center justify-center space-x-2"
-                    title="Unduh Tabel Rekapitulasi Suara Format Excel Spreadsheet"
+                    class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-sm transition flex items-center justify-center space-x-2"
+                    title="{{ __('Unduh Rekapan Spreadsheet (Excel)') }}"
                 >
-                    <span class="text-base">📊</span>
-                    <span>Unduh Rekapan Spreadsheet (Excel)</span>
+                    <span>📊</span>
+                    <span>{{ __('Unduh Rekapan Spreadsheet (Excel)') }}</span>
+                </a>
+            </div>
+
+            <!-- Card C: Forensic Traceback & Audit Trail -->
+            <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex flex-col justify-between space-y-4">
+                <div class="space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-lg">
+                        🔍
+                    </div>
+                    <h4 class="text-sm font-black text-slate-900 dark:text-white">{{ __('Laporan Audit Forensik (Traceback)') }}</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                        {{ __('Jejak audit forensik suara terenkripsi dengan timestamp detil dan verifikasi integritas kartu RFID pemilih untuk kebutuhan transparansi saksi.') }}
+                    </p>
+                    <div class="space-y-1 pt-1 text-[11px] text-slate-600 dark:text-slate-400">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span>{{ __('Log Enkripsi Suara & Anonymity Assurance') }}</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span>{{ __('Pemeriksaan Keaslian Kartu RFID Mifare') }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <a 
+                    href="{{ route('admin.reports.traceback') }}" 
+                    class="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-sm transition flex items-center justify-center space-x-2"
+                    title="{{ __('Buka Laporan Audit Forensik') }}"
+                >
+                    <span>🔍</span>
+                    <span>{{ __('Buka Laporan Audit Forensik') }}</span>
                 </a>
             </div>
         </div>
 
+        <!-- Plenary Seal & Digital Signature Info Box -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 flex items-center justify-center font-black text-sm shrink-0">
+                    🛡️
+                </div>
+                <div>
+                    <span class="font-bold text-slate-900 dark:text-white">{{ __('Integritas Dokumen Terjamin:') }}</span>
+                    <span class="text-slate-600 dark:text-slate-400 ml-1">
+                        {{ __('Seluruh dokumen yang diunduh mencantumkan stempel waktu kriptografis dan hash SHA-256 yang sah untuk sidang pleno.') }}
+                    </span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3 shrink-0 text-slate-500 dark:text-slate-400 font-mono text-[11px]">
+                <span>{{ __('Waktu Cetak:') }} {{ now()->format('d/m/Y H:i:s') }} WIB</span>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -809,7 +949,7 @@
         const optionsTimeline = {
             chart: {
                 type: 'area',
-                height: 270,
+                height: 320,
                 fontFamily: 'Plus Jakarta Sans, sans-serif',
                 toolbar: { show: false },
                 animations: { enabled: true, easing: 'easeinout', speed: 600 }

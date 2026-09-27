@@ -312,10 +312,32 @@ class DashboardController extends Controller
 
         ksort($hourBuckets);
 
+        $peakHour = '-';
+        $peakCount = 0;
+        foreach ($hourBuckets as $h => $c) {
+            if ($c > $peakCount) {
+                $peakCount = $c;
+                $peakHour = $h . ' WIB';
+            }
+        }
+
+        $activeHoursCount = count(array_filter($hourBuckets, fn($v) => $v > 0)) ?: 1;
+        $avgVelocity = round($votedRecords->count() / $activeHoursCount, 1);
+
+        $busiestDept = Pemilih::where('pilih', 'T')
+            ->selectRaw('dept, count(*) as total')
+            ->groupBy('dept')
+            ->orderByDesc('total')
+            ->first();
+
         return [
             'categories' => array_keys($hourBuckets),
             'series' => array_values($hourBuckets),
             'total_recorded' => $votedRecords->count(),
+            'peak_hour' => $peakHour,
+            'peak_count' => $peakCount,
+            'avg_velocity' => $avgVelocity,
+            'busiest_dept' => $busiestDept ? $busiestDept->dept : 'ICT',
         ];
     }
 

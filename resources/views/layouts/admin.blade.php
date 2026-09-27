@@ -39,13 +39,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="h-screen overflow-hidden bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased flex flex-col lg:flex-row relative">
+<body class="h-screen overflow-hidden bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased flex flex-col xl:flex-row relative">
 
-    <!-- Mobile & Tablet Sidebar Backdrop Overlay (z-40 with smooth blur and fade) -->
-    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity duration-300"></div>
+    <!-- Mobile & Tablet Sidebar Backdrop Overlay (z-50 with smooth blur and fade) -->
+    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden xl:hidden transition-opacity duration-300"></div>
 
-    <!-- Sidebar Navigation (Responsive: Off-canvas drawer with z-50 on Mobile & Tablet, static on Desktop) -->
-    <aside id="admin-sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 sm:w-80 lg:w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none h-full">
+    <!-- Sidebar Navigation (Responsive: Off-canvas drawer with z-[60] on Mobile & Tablet, static on Desktop) -->
+    <aside id="admin-sidebar" class="fixed xl:static inset-y-0 left-0 z-[60] w-72 sm:w-80 xl:w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 transform -translate-x-full xl:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl xl:shadow-none h-full">
         <!-- Sidebar Brand Header (Height 64px / h-16 matched exactly with Top App Bar) -->
         <div class="h-16 px-5 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 shrink-0">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3">
@@ -54,79 +54,79 @@
                 </div>
                 <div>
                     <h1 class="font-black text-lg leading-tight text-slate-900 dark:text-white">TapVote AI</h1>
-                    <p class="text-[11px] text-blue-700 dark:text-blue-400 font-extrabold tracking-wide uppercase">Admin Panel</p>
+                    <p class="text-[11px] text-blue-700 dark:text-blue-400 font-extrabold tracking-wide uppercase">{{ __('Admin Panel') }}</p>
                 </div>
             </a>
 
-            <!-- Close Sidebar Button on Mobile/iPad Mini -->
-            <button onclick="toggleSidebar()" type="button" class="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 cursor-pointer">
+            <!-- Close Sidebar Button on Mobile/Tablet -->
+            <button onclick="toggleSidebar()" type="button" class="xl:hidden p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 cursor-pointer">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
 
         <!-- Navigation Links -->
         <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
-            <div class="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold px-3 py-1">Monitoring</div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold px-3 py-1">{{ __('Monitoring') }}</div>
             <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                <span>Live Dashboard</span>
+                <span>{{ __('Live Dashboard') }}</span>
             </a>
             <a href="{{ route('admin.analytics') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.analytics') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                <span>Analytics</span>
+                <span>{{ __('Analytics') }}</span>
             </a>
             <a href="{{ route('admin.vote-flow') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.vote-flow*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                <span>Vote Flow</span>
+                <span>{{ __('Vote Flow') }}</span>
             </a>
 
-            <div class="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold px-3 pt-4 pb-1">Master Data</div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold px-3 pt-4 pb-1">{{ __('Master Data') }}</div>
             <a href="{{ route('admin.ketua.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.ketua.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                <span>Chairman Candidates</span>
+                <span>{{ __('Chairman Candidates') }}</span>
             </a>
             <a href="{{ route('admin.pengawas.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.pengawas.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                <span>Supervisor Candidates</span>
+                <span>{{ __('Supervisor Candidates') }}</span>
             </a>
             <a href="{{ route('admin.voters.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.voters.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                <span>Eligible Voters</span>
+                <span>{{ __('Eligible Voters') }}</span>
             </a>
 
-            <div class="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold px-3 pt-4 pb-1">Reports & Analytics</div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold px-3 pt-4 pb-1">{{ __('Reports & Analytics') }}</div>
             <a href="{{ route('admin.reports.ketua') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.reports.ketua') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                <span>Chairman Recap</span>
+                <span>{{ __('Chairman Recap') }}</span>
             </a>
             <a href="{{ route('admin.reports.pengawas') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.reports.pengawas') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path></svg>
-                <span>Supervisor Recap</span>
+                <span>{{ __('Supervisor Recap') }}</span>
             </a>
             <a href="{{ route('admin.reports.traceback') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.reports.traceback*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                <span>Forensic Traceback</span>
+                <span>{{ __('Forensic Traceback') }}</span>
             </a>
             <a href="{{ route('admin.reports.doorprize') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.reports.doorprize') ? 'bg-amber-600 text-white shadow-sm' : 'text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
-                <span>Doorprize Raffle</span>
+                <span>{{ __('Doorprize Raffle') }}</span>
             </a>
             <a href="{{ route('doorprize.public') }}" target="_blank" class="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-bold text-amber-900 dark:text-amber-300 bg-amber-50/80 dark:bg-amber-950/40 hover:bg-amber-100/90 dark:hover:bg-amber-900/50 border border-amber-200 dark:border-amber-800/60 transition">
                 <span class="flex items-center space-x-2">
                     <span>📺</span>
-                    <span>Audience Stage View</span>
+                    <span>{{ __('Audience Stage View') }}</span>
                 </span>
                 <span class="text-[10px] text-amber-600 dark:text-amber-400">↗</span>
             </a>
             <a href="{{ route('admin.logs.index') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.logs.*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span>Audit Trail Logs</span>
+                <span>{{ __('Audit Trail Logs') }}</span>
             </a>
 
-            <div class="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold px-3 pt-4 pb-1">System</div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold px-3 pt-4 pb-1">{{ __('System') }}</div>
             <a href="{{ route('admin.settings') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.settings*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                <span>System Settings</span>
+                <span>{{ __('System Settings') }}</span>
             </a>
         </nav>
 
@@ -134,7 +134,7 @@
         <div class="p-4 border-t border-slate-200 dark:border-slate-800 space-y-2 bg-slate-50 dark:bg-slate-950/60 shrink-0">
             <a href="{{ route('voter.tap') }}" target="_blank" class="w-full flex items-center justify-center space-x-2 py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-bold text-white shadow-xs transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                <span>Open Voting Terminal</span>
+                <span>{{ __('Open Voting Terminal') }}</span>
             </a>
 
             <div class="flex items-center justify-between pt-2">
@@ -196,7 +196,7 @@
                 >
                     <div class="flex items-center space-x-2">
                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        <span>Cari menu atau fitur...</span>
+                        <span>{{ __('Cari menu atau fitur...') }}</span>
                     </div>
                     <kbd class="px-1.5 py-0.5 rounded bg-white dark:bg-slate-900 text-[10px] font-mono text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700 font-bold shadow-2xs">Ctrl K</kbd>
                 </button>
@@ -209,7 +209,7 @@
                     type="button" 
                     onclick="openAdminCommandPalette()" 
                     class="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
-                    title="Cari"
+                    title="{{ __('Cari') }}"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </button>
@@ -221,19 +221,19 @@
                         id="admin-theme-btn" 
                         onclick="toggleAdminThemeDropdown()" 
                         class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition cursor-pointer shadow-2xs flex items-center justify-center"
-                        title="Tema Admin Panel"
+                        title="{{ __('Tema Admin Panel') }}"
                     >
                         <span id="admin-theme-icon" class="text-sm">🌓</span>
                     </button>
                     <div id="admin-theme-menu" class="hidden absolute right-0 mt-2 w-36 rounded-2xl bg-white dark:bg-slate-800 shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50 text-xs font-semibold">
                         <button type="button" onclick="setAdminTheme('light')" class="w-full flex items-center space-x-2 px-3 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 cursor-pointer">
-                            <span>☀️</span><span>Terang</span>
+                            <span>☀️</span><span>{{ __('Terang') }}</span>
                         </button>
                         <button type="button" onclick="setAdminTheme('dark')" class="w-full flex items-center space-x-2 px-3 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 cursor-pointer">
-                            <span>🌙</span><span>Gelap</span>
+                            <span>🌙</span><span>{{ __('Gelap') }}</span>
                         </button>
                         <button type="button" onclick="setAdminTheme('system')" class="w-full flex items-center space-x-2 px-3 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 cursor-pointer">
-                            <span>💻</span><span>Sistem</span>
+                            <span>💻</span><span>{{ __('Sistem') }}</span>
                         </button>
                     </div>
                 </div>
@@ -278,14 +278,14 @@
 
         <!-- Dialog Container -->
         <div class="fixed inset-0 z-10 overflow-y-auto flex items-center justify-center p-4">
-            <div id="headless-modal-panel" class="relative bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 transform scale-95 opacity-0 transition-all duration-200">
+            <div id="headless-modal-panel" class="relative bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-800 transform scale-95 opacity-0 transition-all duration-200">
                 <div class="flex items-start space-x-4">
                     <div id="headless-modal-icon-wrap" class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
                         <!-- Icon will be inserted here -->
                     </div>
                     <div class="flex-1">
-                        <h3 id="headless-modal-title" class="text-base font-black text-slate-900">Konfirmasi Status Voting</h3>
-                        <p id="headless-modal-desc" class="text-xs text-slate-500 mt-1 leading-relaxed">Deskripsi konfirmasi aksi.</p>
+                        <h3 id="headless-modal-title" class="text-base font-black text-slate-900 dark:text-white">{{ __('Konfirmasi Status Voting') }}</h3>
+                        <p id="headless-modal-desc" class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">{{ __('Deskripsi konfirmasi aksi.') }}</p>
                     </div>
                 </div>
 
@@ -293,16 +293,16 @@
                     <button 
                         type="button" 
                         id="headless-modal-btn-cancel"
-                        class="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+                        class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
                     >
-                        Batal
+                        {{ __('Batal') }}
                     </button>
                     <button 
                         type="button" 
                         id="headless-modal-btn-confirm"
                         class="px-5 py-2.5 rounded-xl text-xs font-black text-white shadow-xs transition cursor-pointer"
                     >
-                        Ya, Lanjutkan
+                        {{ __('Ya, Lanjutkan') }}
                     </button>
                 </div>
             </div>
@@ -314,8 +314,8 @@
             const sidebar = document.getElementById('admin-sidebar');
             const backdrop = document.getElementById('sidebar-backdrop');
             
-            if (window.innerWidth < 1024) {
-                // Mobile & Tablet Drawer Toggle
+            if (window.innerWidth < 1280) {
+                // Mobile & Tablet Drawer Toggle with overlay (z-[60] so it floats over content without squeezing layout)
                 if (sidebar.classList.contains('-translate-x-full')) {
                     sidebar.classList.remove('-translate-x-full');
                     backdrop.classList.remove('hidden');
@@ -325,7 +325,7 @@
                 }
             } else {
                 // Desktop toggle collapse
-                sidebar.classList.toggle('lg:hidden');
+                sidebar.classList.toggle('xl:hidden');
             }
         }
 
@@ -365,7 +365,7 @@
 
                 titleEl.textContent = title;
                 descEl.textContent = description;
-                btnConfirm.textContent = confirmText || 'Konfirmasi';
+                btnConfirm.textContent = confirmText || "{{ __('Konfirmasi') }}";
 
                 if (type === 'danger') {
                     iconWrap.className = 'w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 bg-rose-100 text-rose-600';
@@ -418,25 +418,25 @@
 
             if (newStatus === 'PAUSED') {
                 const confirmed = await showHeadlessConfirm({
-                    title: 'Jeda Pemungutan Suara (PAUSE)?',
-                    description: 'Sistem pemungutan suara akan dijeda sementara. Seluruh bilik suara dan terminal NFC tidak akan menerima tap kartu sampai diaktifkan kembali.',
-                    confirmText: 'Ya, Jeda Sistem',
+                    title: "{{ __('Jeda Pemungutan Suara Sementara (PAUSED)?') }}",
+                    description: "{{ __('Bilik pemungutan suara akan dibekukan sementara. Seluruh bilik suara dan terminal NFC tidak akan menerima tap kartu sampai diaktifkan kembali.') }}",
+                    confirmText: "{{ __('Ya, Jeda Sistem') }}",
                     type: 'warning'
                 });
                 if (!confirmed) return;
             } else if (newStatus === 'STOPPED') {
                 const confirmed = await showHeadlessConfirm({
-                    title: 'Akhiri Pemungutan Suara (END)?',
-                    description: 'PERINGATAN RESMI: Pemungutan suara akan diakhiri secara resmi (FINISHED) dan seluruh sesi bilik ditutup. Anda dapat mengunduh Rekapitulasi Berita Acara resmi setelah ini.',
-                    confirmText: 'Ya, Akhiri Resmi (END)',
+                    title: "{{ __('Tutup Resmi Pemungutan Suara (FINISHED)?') }}",
+                    description: "{{ __('PERINGATAN: Bilik suara akan dikunci secara permanen dan proses pemungutan suara dinyatakan berakhir. Pastikan seluruh pemilih yang berhak telah selesai memilih.') }}",
+                    confirmText: "{{ __('Ya, Tutup Pemilihan Resmi') }}",
                     type: 'danger'
                 });
                 if (!confirmed) return;
             } else if (newStatus === 'STARTED') {
                 const confirmed = await showHeadlessConfirm({
-                    title: 'Aktifkan Sesi Pemungutan Suara (LIVE)?',
-                    description: 'Terminal bilik suara akan dibuka dan siap menerima pemilih untuk melakukan tap kartu RFID Mifare.',
-                    confirmText: 'Buka Sesi (LIVE)',
+                    title: "{{ __('Aktifkan Sesi Pemungutan Suara (LIVE)?') }}",
+                    description: "{{ __('Terminal bilik suara akan dibuka dan siap menerima pemilih untuk melakukan tap kartu RFID Mifare.') }}",
+                    confirmText: "{{ __('Buka Sesi (LIVE)') }}",
                     type: 'success'
                 });
                 if (!confirmed) return;
@@ -710,7 +710,7 @@
                     <input 
                         type="text" 
                         id="admin-command-input" 
-                        placeholder="Cari semua fitur admin, laporan, pengaturan..." 
+                        placeholder="{{ __('Cari semua fitur admin, laporan, pengaturan...') }}" 
                         class="h-13 w-full pl-12 pr-12 bg-transparent text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
                         oninput="filterCommandPalette(this.value)"
                         onkeydown="handleCommandKeydown(event)"
@@ -726,8 +726,8 @@
 
                 <div class="px-4 py-2.5 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-medium">
                     <div class="flex items-center space-x-3">
-                        <span><kbd class="px-1 py-0.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">↑</kbd> <kbd class="px-1 py-0.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">↓</kbd> Navigasi</span>
-                        <span><kbd class="px-1 py-0.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">↵</kbd> Buka</span>
+                        <span><kbd class="px-1 py-0.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">↑</kbd> <kbd class="px-1 py-0.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">↓</kbd> {{ __('Navigasi') }}</span>
+                        <span><kbd class="px-1 py-0.5 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-mono text-[10px]">↵</kbd> {{ __('Buka') }}</span>
                     </div>
                     <span>TapVote AI Quick Navigator</span>
                 </div>

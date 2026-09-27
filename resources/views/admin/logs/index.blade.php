@@ -10,10 +10,10 @@
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-800 border border-slate-300">
-                    Security Audit
+                    {{ __('Security Audit') }}
                 </span>
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                    Activity Ledger
+                    {{ __('Activity Ledger') }}
                 </span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Audit Trail & Security Logs') }}</h2>
@@ -23,7 +23,7 @@
         <div class="flex items-center gap-2.5 self-start sm:self-auto">
             <button onclick="window.print()" type="button" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                <span>Export PDF / Print</span>
+                <span>{{ __('Export PDF / Print') }}</span>
             </button>
         </div>
     </div>
@@ -32,7 +32,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-slate-500 font-semibold">Total Rekam Jejak</span>
+                <span class="text-xs text-slate-500 font-semibold">{{ __('Total Rekam Jejak') }}</span>
                 <strong class="block text-2xl font-black text-slate-900 font-mono">{{ $totalLogs ?? count($logs) }}</strong>
             </div>
             <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
@@ -42,7 +42,7 @@
 
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-rose-700 font-semibold">Security Alerts / Gagal</span>
+                <span class="text-xs text-rose-700 font-semibold">{{ __('Security Alerts / Gagal') }}</span>
                 <strong class="block text-2xl font-black text-rose-600 font-mono">{{ $securityEvents ?? 0 }}</strong>
             </div>
             <span class="p-2.5 rounded-xl bg-rose-50 text-rose-600">
@@ -52,7 +52,7 @@
 
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-emerald-700 font-semibold">Transaksi Sukses</span>
+                <span class="text-xs text-emerald-700 font-semibold">{{ __('Transaksi Sukses') }}</span>
                 <strong class="block text-2xl font-black text-emerald-600 font-mono">{{ $successEvents ?? 0 }}</strong>
             </div>
             <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
@@ -74,12 +74,12 @@
                     </div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <h3 class="text-lg sm:text-xl font-black text-white tracking-tight">AI Cybersecurity & Forensic Threat Reasoner</h3>
+                            <h3 class="text-lg sm:text-xl font-black text-white tracking-tight">{{ __('AI Cybersecurity & Forensic Threat Reasoner') }}</h3>
                             <span id="logs-ai-engine-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
                                 Google Gemini 2.0 Flash / Heuristic
                             </span>
                         </div>
-                        <p class="text-xs text-indigo-200/70 mt-0.5">Penalaran forensik mendalam untuk deteksi anomali tap ganda, brute-force RFID, dan audit integritas data</p>
+                        <p class="text-xs text-indigo-200/70 mt-0.5">{{ __('Penalaran forensik mendalam untuk deteksi anomali tap ganda, brute-force RFID, dan audit integritas data') }}</p>
                     </div>
                 </div>
 
@@ -91,7 +91,7 @@
                         class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white text-xs sm:text-sm font-extrabold shadow-lg shadow-rose-900/30 transition cursor-pointer flex items-center space-x-2"
                     >
                         <span id="logs-ai-btn-icon">🛡️</span>
-                        <span id="logs-ai-btn-text">Audit Forensik dengan AI</span>
+                        <span id="logs-ai-btn-text">{{ __('Audit Forensik dengan AI') }}</span>
                     </button>
                 </div>
             </div>
@@ -100,9 +100,9 @@
             <div id="logs-ai-container" class="space-y-4">
                 <div class="p-5 rounded-2xl bg-indigo-950/60 border border-indigo-800/40 text-center py-8">
                     <span class="text-3xl block mb-2">🔍</span>
-                    <h4 class="text-sm font-black text-white">AI Forensic Threat Intelligence Siap Dijalankan</h4>
+                    <h4 class="text-sm font-black text-white">{{ __('AI Forensic Threat Intelligence Siap Dijalankan') }}</h4>
                     <p class="text-xs text-indigo-200/70 max-w-md mx-auto mt-1">
-                        Klik tombol di atas untuk menjalankan penalaran forensik terhadap log audit trail, verifikasi tamper-proof sha256, dan pola percobaan bypass keamanan.
+                        {{ __('Klik tombol di atas untuk menjalankan penalaran forensik terhadap log audit trail, verifikasi tamper-proof sha256, dan pola percobaan bypass keamanan.') }}
                     </p>
                 </div>
             </div>
@@ -118,8 +118,8 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                 </div>
                 <div>
-                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">Filter & Dynamic Search</h4>
-                    <p class="text-[11px] text-slate-400">Cari log berdasarkan kata kunci deskripsi, modul, aksi, atau IP Address</p>
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">{{ __('Filter & Dynamic Search') }}</h4>
+                    <p class="text-[11px] text-slate-400">{{ __('Cari log berdasarkan kata kunci deskripsi, modul, aksi, atau IP Address') }}</p>
                 </div>
             </div>
             <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
@@ -134,12 +134,12 @@
                     <input 
                         type="text" 
                         id="logs-search-input" 
-                        placeholder="Cari deskripsi, user identifier, atau IP address (Tekan '/' untuk fokus)..."
+                        placeholder="{{ __('Cari deskripsi, user identifier, atau IP address (Tekan \'/\' untuk fokus)...') }}"
                         oninput="filterLogsTable()"
                         class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
                     >
                     <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <button type="button" onclick="clearLogsSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="Hapus Pencarian">✕</button>
+                    <button type="button" onclick="clearLogsSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
                 </div>
                 <div class="hidden md:flex items-center shrink-0">
                     <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
@@ -152,7 +152,7 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 <div class="col-span-1">
                     <select id="logs-module-filter" onchange="filterLogsTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
-                        <option value="">Semua Modul</option>
+                        <option value="">{{ __('Semua Modul') }}</option>
                         @foreach($modules as $m)
                             <option value="{{ $m }}">{{ $m }}</option>
                         @endforeach
@@ -161,7 +161,7 @@
 
                 <div class="col-span-1">
                     <select id="logs-action-filter" onchange="filterLogsTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
-                        <option value="">Semua Aksi</option>
+                        <option value="">{{ __('Semua Aksi') }}</option>
                         @foreach($actions as $a)
                             <option value="{{ $a }}">{{ $a }}</option>
                         @endforeach
@@ -173,10 +173,10 @@
                         type="button" 
                         onclick="filterLogsTable()" 
                         class="w-full h-11 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-black shadow-xs transition flex items-center justify-center space-x-1.5 cursor-pointer"
-                        title="Terapkan Filter"
+                        title="{{ __('Terapkan Filter') }}"
                     >
                         <span>⚡</span>
-                        <span>Apply</span>
+                        <span>{{ __('Apply') }}</span>
                     </button>
                 </div>
 
@@ -187,7 +187,7 @@
                         class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
                     >
                         <span>↺</span>
-                        <span>Reset</span>
+                        <span>{{ __('Reset') }}</span>
                     </button>
                 </div>
             </div>
@@ -200,11 +200,11 @@
             <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="logs-datatable">
                 <thead>
                     <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
-                        <th class="py-3.5 px-4 whitespace-nowrap">Timestamp</th>
-                        <th class="py-3.5 px-4 whitespace-nowrap">Tipe Modul</th>
-                        <th class="py-3.5 px-4 whitespace-nowrap">Aksi</th>
-                        <th class="py-3.5 px-4">Keterangan Aktivitas</th>
-                        <th class="py-3.5 px-4 text-right whitespace-nowrap">IP Address</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Timestamp') }}</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Tipe Modul') }}</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Aksi') }}</th>
+                        <th class="py-3.5 px-4">{{ __('Keterangan Aktivitas') }}</th>
+                        <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('IP Address') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100" id="logs-table-body">
@@ -230,7 +230,7 @@
                         </tr>
                     @empty
                         <tr id="empty-logs-row">
-                            <td colspan="5" class="py-12 text-center text-slate-400 font-medium">Belum ada rekam log aktivitas.</td>
+                            <td colspan="5" class="py-12 text-center text-slate-400 font-medium">{{ __('Belum ada rekam log aktivitas.') }}</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -312,13 +312,13 @@
         btn.disabled = true;
         btn.classList.add('opacity-70', 'cursor-not-allowed');
         icon.innerHTML = '<span class="inline-block animate-spin">⚙️</span>';
-        text.innerText = 'Menjalankan Audit Forensik...';
+        text.innerText = '{{ __('Menjalankan Audit Forensik...') }}';
 
         container.innerHTML = `
             <div class="p-6 rounded-2xl bg-indigo-950/60 border border-indigo-800/40 text-center py-10 space-y-3">
                 <div class="inline-block animate-spin text-3xl">🛡️</div>
-                <h4 class="text-sm font-bold text-indigo-200">AI sedang menganalisis pola transaksi & log integritas kriptografis...</h4>
-                <p class="text-xs text-indigo-300/60">Memeriksa upaya tap kartu asing, frekuensi brute-force, dan validitas audit trail</p>
+                <h4 class="text-sm font-bold text-indigo-200">{{ __('AI sedang menganalisis pola transaksi & log integritas kriptografis...') }}</h4>
+                <p class="text-xs text-indigo-300/60">{{ __('Memeriksa upaya tap kartu asing, frekuensi brute-force, dan validitas audit trail') }}</p>
             </div>
         `;
 
@@ -364,16 +364,16 @@
                         <!-- Top Forensic Summary & Threat Level -->
                         <div class="p-5 rounded-2xl bg-indigo-900/40 border border-indigo-700/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div class="space-y-1">
-                                <span class="text-[10px] font-black uppercase tracking-widest text-indigo-300">Forensic Investigation Summary</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest text-indigo-300">{{ __('Forensic Investigation Summary') }}</span>
                                 <p class="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">${d.forensic_summary || '-'}</p>
                             </div>
                             <div class="flex items-center space-x-3 shrink-0">
                                 <div class="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
-                                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Integrity Verdict</span>
+                                    <span class="text-[10px] uppercase font-bold text-slate-400 block">{{ __('Integrity Verdict') }}</span>
                                     <span class="text-xs font-black text-emerald-400 font-mono">${d.integrity_verdict || 'Tamper-Proof'}</span>
                                 </div>
                                 <div class="px-3.5 py-2.5 rounded-xl border text-xs font-black uppercase ${threatBadgeColor}">
-                                    Threat: ${d.threat_level || 'SECURE'}
+                                    {{ __('Ancaman') }}: ${d.threat_level || 'SECURE'}
                                 </div>
                             </div>
                         </div>
@@ -383,7 +383,7 @@
                             <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
                                 <h5 class="text-xs font-extrabold text-blue-300 flex items-center space-x-1.5">
                                     <span>🔎</span>
-                                    <span>Evaluasi Pola Serangan & Replay Check</span>
+                                    <span>{{ __('Evaluasi Pola Serangan & Replay Check') }}</span>
                                 </h5>
                                 <p class="text-xs text-slate-300 leading-relaxed">${d.attack_pattern_evaluation || '-'}</p>
                             </div>
@@ -391,7 +391,7 @@
                             <div class="space-y-2">
                                 <h5 class="text-xs font-extrabold text-amber-300 flex items-center space-x-1.5">
                                     <span>⚠️</span>
-                                    <span>Hasil Analisis Kejadian Anomali</span>
+                                    <span>{{ __('Hasil Analisis Kejadian Anomali') }}</span>
                                 </h5>
                                 <div class="space-y-1.5">${anomaliesHtml}</div>
                             </div>
@@ -399,7 +399,7 @@
 
                         <!-- Security Recommendations -->
                         <div class="p-4 rounded-2xl bg-slate-900/60 border border-indigo-900/60 space-y-2">
-                            <h5 class="text-xs font-black uppercase tracking-wider text-indigo-300">Rekomendasi Keamanan Siber & Panitia:</h5>
+                            <h5 class="text-xs font-black uppercase tracking-wider text-indigo-300">{{ __('Rekomendasi Keamanan Siber & Panitia:') }}</h5>
                             <ul class="space-y-1.5">${recsHtml}</ul>
                         </div>
                     </div>
@@ -407,7 +407,7 @@
             } else {
                 container.innerHTML = `
                     <div class="p-4 rounded-2xl bg-rose-950/60 border border-rose-800 text-xs text-rose-200">
-                        Gagal memuat analisis forensik AI: ${payload.message || 'Terjadi kesalahan sistem.'}
+                        {{ __('Gagal memuat analisis forensik AI:') }} ${payload.message || '{{ __('Terjadi kesalahan sistem.') }}'}
                     </div>
                 `;
             }
@@ -415,14 +415,14 @@
             console.error(err);
             container.innerHTML = `
                 <div class="p-4 rounded-2xl bg-rose-950/60 border border-rose-800 text-xs text-rose-200">
-                    Koneksi ke endpoint AI Forensic terputus. Silakan coba lagi.
+                    {{ __('Koneksi ke endpoint AI Forensic terputus. Silakan coba lagi.') }}
                 </div>
             `;
         } finally {
             btn.disabled = false;
             btn.classList.remove('opacity-70', 'cursor-not-allowed');
             icon.innerText = '🛡️';
-            text.innerText = 'Audit Ulang dengan AI';
+            text.innerText = '{{ __('Audit Ulang dengan AI') }}';
         }
     }
 </script>

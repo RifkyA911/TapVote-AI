@@ -10,10 +10,10 @@
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-800 border border-blue-200">
-                    Eligible Voters
+                    {{ __('Eligible Voters') }}
                 </span>
                 <span id="http-method-badge" class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                    HTTP Method: QUERY
+                    {{ __('HTTP Method: QUERY') }}
                 </span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Eligible Voters & Dynamic Query') }}</h2>
@@ -23,28 +23,28 @@
         <div class="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
             <a href="{{ route('admin.voters.export') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                <span>Export CSV</span>
+                <span>{{ __('Export CSV') }}</span>
             </a>
 
-            <a href="{{ route('admin.voters.export.pdf') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="Download Official Vector PDF">
+            <a href="{{ route('admin.voters.export.pdf') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="{{ __('Download Official Vector PDF') }}">
                 <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                <span>Export PDF</span>
+                <span>{{ __('Export PDF') }}</span>
             </a>
 
             <button onclick="openImportModal()" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
                 <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                <span>Import CSV</span>
+                <span>{{ __('Import CSV') }}</span>
             </button>
 
             <button onclick="openAddModal()" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                <span>Add Voter</span>
+                <span>{{ __('Add Voter') }}</span>
             </button>
 
             <form action="{{ route('admin.voters.reset') }}" method="POST" onsubmit="return confirm('PERINGATAN: Apakah Anda yakin ingin ME-RESET SELURUH SUARA pemilihan? Semua data suara ketua & pengawas akan dikosongkan dan status pemilih dikembalikan ke Belum Memilih (F).')">
                 @csrf
-                <button type="submit" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition cursor-pointer" title="Reset Suara untuk Demo/Gladi">
-                    Reset Suara
+                <button type="submit" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition cursor-pointer" title="{{ __('Reset Suara untuk Demo/Gladi') }}">
+                    {{ __('Reset Suara') }}
                 </button>
             </form>
         </div>
@@ -54,7 +54,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-slate-500 font-semibold">Total Registered</span>
+                <span class="text-xs text-slate-500 font-semibold">{{ __('Total Registered') }}</span>
                 <strong id="stat-total" class="block text-2xl font-black text-slate-900 font-mono">{{ $stats['total'] }}</strong>
             </div>
             <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
@@ -64,7 +64,7 @@
 
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-emerald-700 font-semibold">Already Voted (T)</span>
+                <span class="text-xs text-emerald-700 font-semibold">{{ __('Already Voted (T)') }}</span>
                 <strong id="stat-voted" class="block text-2xl font-black text-emerald-600 font-mono">{{ $stats['voted'] }}</strong>
             </div>
             <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
@@ -74,7 +74,7 @@
 
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-amber-700 font-semibold">Pending Vote (F)</span>
+                <span class="text-xs text-amber-700 font-semibold">{{ __('Pending Vote (F)') }}</span>
                 <strong id="stat-not-voted" class="block text-2xl font-black text-amber-600 font-mono">{{ $stats['not_voted'] }}</strong>
             </div>
             <span class="p-2.5 rounded-xl bg-amber-50 text-amber-600">
@@ -92,8 +92,8 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                 </div>
                 <div>
-                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">Filter & Dynamic Search</h4>
-                    <p class="text-[11px] text-slate-400">Refine voter roster by keyword, status, and department</p>
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">{{ __('Filter & Dynamic Search') }}</h4>
+                    <p class="text-[11px] text-slate-400">{{ __('Refine voter roster by keyword, status, and department') }}</p>
                 </div>
             </div>
             <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
@@ -108,12 +108,12 @@
                     <input 
                         type="text" 
                         id="query-search-input" 
-                        placeholder="Search by NIK, Name, Department, or RFID UID (Press '/' to focus)..."
+                        placeholder="{{ __('Search by NIK, Name, Department, or RFID UID (Press \'/\' to focus)...') }}"
                         oninput="debounceExecuteQuery()"
                         class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
                     >
                     <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <button type="button" onclick="clearSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="Hapus Pencarian">✕</button>
+                    <button type="button" onclick="clearSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
                 </div>
                 <div class="hidden md:flex items-center shrink-0">
                     <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
@@ -127,16 +127,16 @@
                 <!-- Status Filter -->
                 <div class="col-span-1">
                     <select id="query-status-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
-                        <option value="">All Eligibility Status</option>
-                        <option value="T">Already Voted (T)</option>
-                        <option value="F">Pending Vote (F)</option>
+                        <option value="">{{ __('All Eligibility Status') }}</option>
+                        <option value="T">{{ __('Already Voted (T)') }}</option>
+                        <option value="F">{{ __('Pending Vote (F)') }}</option>
                     </select>
                 </div>
 
                 <!-- Department Filter -->
                 <div class="col-span-1">
                     <select id="query-dept-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
-                        <option value="">All Departments</option>
+                        <option value="">{{ __('All Departments') }}</option>
                         @foreach($departments as $d)
                             <option value="{{ $d }}">{{ $d }}</option>
                         @endforeach
@@ -146,10 +146,10 @@
                 <!-- Items Per Page -->
                 <div class="col-span-1">
                     <select id="query-per-page-select" onchange="executeQuery(1)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
-                        <option value="10">10 / Page</option>
-                        <option value="25">25 / Page</option>
-                        <option value="50">50 / Page</option>
-                        <option value="100">100 / Page</option>
+                        <option value="10">10 / {{ __('Page') }}</option>
+                        <option value="25">25 / {{ __('Page') }}</option>
+                        <option value="50">50 / {{ __('Page') }}</option>
+                        <option value="100">100 / {{ __('Page') }}</option>
                     </select>
                 </div>
 
@@ -159,10 +159,10 @@
                         type="button" 
                         onclick="executeQuery(1)" 
                         class="w-full h-11 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-black shadow-xs transition flex items-center justify-center space-x-1.5 cursor-pointer"
-                        title="Apply Current Filters"
+                        title="{{ __('Apply Current Filters') }}"
                     >
                         <span id="query-btn-icon">⚡</span>
-                        <span>Apply</span>
+                        <span>{{ __('Apply') }}</span>
                     </button>
                 </div>
 
@@ -174,7 +174,7 @@
                         class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
                     >
                         <span>↺</span>
-                        <span>Reset</span>
+                        <span>{{ __('Reset') }}</span>
                     </button>
                 </div>
             </div>
@@ -203,30 +203,30 @@
                         </th>
                         <th class="py-3 px-3 cursor-pointer hover:text-slate-900 transition whitespace-nowrap" onclick="changeSort('nama')">
                             <span class="flex items-center space-x-1">
-                                <span>Nama Pemilih</span>
+                                <span>{{ __('Nama Pemilih') }}</span>
                                 <span id="sort-icon-nama">↕</span>
                             </span>
                         </th>
                         <th class="py-3 px-3 cursor-pointer hover:text-slate-900 transition whitespace-nowrap" onclick="changeSort('dept')">
                             <span class="flex items-center space-x-1">
-                                <span>Departemen</span>
+                                <span>{{ __('Departemen') }}</span>
                                 <span id="sort-icon-dept">↕</span>
                             </span>
                         </th>
                         <th class="py-3 px-3 whitespace-nowrap">RFID UID (Mifare)</th>
                         <th class="py-3 px-3 text-center cursor-pointer hover:text-slate-900 transition whitespace-nowrap" onclick="changeSort('pilih')">
                             <span class="inline-flex items-center space-x-1">
-                                <span>Status Suara</span>
+                                <span>{{ __('Status Suara') }}</span>
                                 <span id="sort-icon-pilih">↕</span>
                             </span>
                         </th>
                         <th class="py-3 px-3 text-center cursor-pointer hover:text-slate-900 transition whitespace-nowrap" onclick="changeSort('voted_at')">
                             <span class="inline-flex items-center space-x-1">
-                                <span>Waktu Vote</span>
+                                <span>{{ __('Waktu Vote') }}</span>
                                 <span id="sort-icon-voted_at">↕</span>
                             </span>
                         </th>
-                        <th class="py-3 px-3 text-right whitespace-nowrap">Aksi</th>
+                        <th class="py-3 px-3 text-right whitespace-nowrap">{{ __('Aksi') }}</th>
                     </tr>
                 </thead>
                 <tbody id="voters-table-body" class="divide-y divide-slate-100">
@@ -242,11 +242,11 @@
                             <td class="py-3 px-3 text-center whitespace-nowrap">
                                 @if($v->pilih === 'T')
                                     <span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                                        Sudah Memilih (T)
+                                        {{ __('Sudah Memilih (T)') }}
                                     </span>
                                 @else
                                     <span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
-                                        Belum (F)
+                                        {{ __('Belum (F)') }}
                                     </span>
                                 @endif
                             </td>
@@ -254,10 +254,10 @@
                                 {{ $v->voted_at ? $v->voted_at->format('H:i:s d/m/Y') : '-' }}
                             </td>
                             <td class="py-3 px-3 text-right whitespace-nowrap">
-                                <form action="{{ route('admin.voters.destroy', $v->nik) }}" method="POST" onsubmit="return confirm('Hapus pemilih {{ $v->nama }}?')">
+                                <form action="{{ route('admin.voters.destroy', $v->nik) }}" method="POST" onsubmit="return confirm('{{ __('Hapus pemilih') }} {{ $v->nama }}?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition" title="Hapus Pemilih">
+                                    <button type="submit" class="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition" title="{{ __('Hapus Pemilih') }}">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </button>
                                 </form>
@@ -265,7 +265,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-8 text-center text-slate-400">Tidak ada data pemilih.</td>
+                            <td colspan="7" class="py-8 text-center text-slate-400">{{ __('Tidak ada data pemilih.') }}</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -275,7 +275,7 @@
         <!-- Custom Pagination & Range Indicator -->
         <div class="mt-5 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
             <div>
-                Menampilkan <strong id="pagination-from" class="text-slate-900">1</strong> sampai <strong id="pagination-to" class="text-slate-900">10</strong> dari <strong id="pagination-total" class="text-slate-900">{{ $stats['total'] }}</strong> data anggota
+                {{ __('Menampilkan') }} <strong id="pagination-from" class="text-slate-900">1</strong> {{ __('sampai') }} <strong id="pagination-to" class="text-slate-900">10</strong> {{ __('dari') }} <strong id="pagination-total" class="text-slate-900">{{ $stats['total'] }}</strong> {{ __('data anggota') }}
             </div>
 
             <div class="flex items-center space-x-1" id="pagination-buttons">
@@ -290,26 +290,26 @@
 <div id="add-modal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
     <div class="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 shadow-2xl">
         <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
-            <h3 class="text-lg font-bold text-slate-900">Tambah Pemilih Baru</h3>
+            <h3 class="text-lg font-bold text-slate-900">{{ __('Tambah Pemilih Baru') }}</h3>
             <button onclick="closeAddModal()" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
         </div>
 
         <form action="{{ route('admin.voters.store') }}" method="POST" class="space-y-4">
             @csrf
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">NIK (Nomor Induk Anggota)</label>
-                <input type="text" name="nik" required placeholder="Contoh: 2024099" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-blue-500 outline-none">
+                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('NIK (Nomor Induk Anggota)') }}</label>
+                <input type="text" name="nik" required placeholder="{{ __('Contoh: 2024099') }}" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-blue-500 outline-none">
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap</label>
-                <input type="text" name="nama" required placeholder="Nama anggota koperasi..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-blue-500 outline-none">
+                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Nama Lengkap') }}</label>
+                <input type="text" name="nama" required placeholder="{{ __('Nama anggota koperasi...') }}" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-blue-500 outline-none">
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Departemen / Bagian</label>
+                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Departemen / Bagian') }}</label>
                 <select name="dept" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-blue-500 outline-none cursor-pointer">
-                    <option value="" disabled selected>Pilih Departemen...</option>
+                    <option value="" disabled selected>{{ __('Pilih Departemen...') }}</option>
                     @foreach($departments as $d)
                         <option value="{{ $d }}">{{ $d }}</option>
                     @endforeach
@@ -324,13 +324,13 @@
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">RFID UID Mifare</label>
-                <input type="text" name="rfid" required placeholder="Tempelkan pada reader atau input hex..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 font-mono focus:border-blue-500 outline-none">
+                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('RFID UID Mifare') }}</label>
+                <input type="text" name="rfid" required placeholder="{{ __('Tempelkan pada reader atau input hex...') }}" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 font-mono focus:border-blue-500 outline-none">
             </div>
 
             <div class="pt-3 border-t border-slate-200 flex justify-end space-x-2">
-                <button type="button" onclick="closeAddModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Batal</button>
-                <button type="submit" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow">Simpan</button>
+                <button type="button" onclick="closeAddModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">{{ __('Batal') }}</button>
+                <button type="submit" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow">{{ __('Simpan') }}</button>
             </div>
         </form>
     </div>
@@ -340,28 +340,28 @@
 <div id="import-modal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
     <div class="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 shadow-2xl">
         <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
-            <h3 class="text-lg font-bold text-slate-900">Import Data Pemilih (DPT)</h3>
+            <h3 class="text-lg font-bold text-slate-900">{{ __('Import Data Pemilih (DPT)') }}</h3>
             <button onclick="closeImportModal()" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
         </div>
 
         <form action="{{ route('admin.voters.import') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Pilih File CSV / Excel (.csv, .xlsx, .xls)</label>
+                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Pilih File CSV / Excel (.csv, .xlsx, .xls)') }}</label>
                 <input type="file" name="file" required accept=".csv,.xlsx,.xls" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-700 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
             </div>
 
             <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900">
-                Format kolom wajib: <strong>nik, rfid, nama, dept</strong>.
+                {{ __('Format kolom wajib:') }} <strong>nik, rfid, nama, dept</strong>.
             </div>
 
             <div class="flex items-center justify-between pt-3 border-t border-slate-200">
                 <a href="{{ route('admin.voters.template') }}" class="text-xs font-bold text-blue-700 hover:underline">
-                    ↓ Unduh Template CSV
+                    {{ __('↓ Unduh Template CSV') }}
                 </a>
                 <div class="flex space-x-2">
-                    <button type="button" onclick="closeImportModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Batal</button>
-                    <button type="submit" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow">Mulai Import</button>
+                    <button type="button" onclick="closeImportModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">{{ __('Batal') }}</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow">{{ __('Mulai Import') }}</button>
                 </div>
             </div>
         </form>
@@ -533,15 +533,15 @@
         if (items.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="7" class="py-8 text-center text-slate-400">Tidak ada data pemilih yang sesuai kriteria query.</td>
+                    <td colspan="7" class="py-8 text-center text-slate-400">{{ __('Tidak ada data pemilih yang sesuai kriteria query.') }}</td>
                 </tr>
             `;
         } else {
             let rowsHtml = '';
             items.forEach(v => {
                 const statusBadge = v.pilih === 'T'
-                    ? `<span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">Sudah Memilih (T)</span>`
-                    : `<span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">Belum (F)</span>`;
+                    ? `<span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">{{ __('Sudah Memilih (T)') }}</span>`
+                    : `<span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">{{ __('Belum (F)') }}</span>`;
 
                 rowsHtml += `
                     <tr class="hover:bg-slate-50 transition">
@@ -554,10 +554,10 @@
                         <td class="py-3 px-3 text-center whitespace-nowrap">${statusBadge}</td>
                         <td class="py-3 px-3 text-center font-mono text-slate-500 text-xs whitespace-nowrap">${v.voted_at}</td>
                         <td class="py-3 px-3 text-right whitespace-nowrap">
-                            <form action="${v.delete_url}" method="POST" onsubmit="return confirm('Hapus pemilih ${v.nama}?')">
+                            <form action="${v.delete_url}" method="POST" onsubmit="return confirm('{{ __('Hapus pemilih') }} ${v.nama}?')">
                                 <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').content}">
                                 <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition" title="Hapus Pemilih">
+                                <button type="submit" class="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition" title="{{ __('Hapus Pemilih') }}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
                             </form>

@@ -322,9 +322,9 @@
             <div class="space-y-4">
                 <div>
                     <div class="flex items-center justify-between mb-1.5">
-                        <label class="block text-xs font-bold text-slate-700">Google AI Studio Gemini API Key</label>
-                        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-xs text-blue-600 hover:underline font-bold inline-flex items-center">
-                            Dapatkan API Key Gratis di Google AI Studio ↗
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">{{ __('Google AI Studio Gemini API Key') }}</label>
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-xs text-blue-600 dark:text-blue-400 hover:underline font-bold inline-flex items-center">
+                            {{ __('Dapatkan API Key Gratis di Google AI Studio ↗') }}
                         </a>
                     </div>
                     <div class="relative">
@@ -334,22 +334,22 @@
                             id="gemini_api_key_input"
                             placeholder="AIzaSy..." 
                             value="{{ old('gemini_api_key', $settings['gemini_api_key']) }}" 
-                            class="w-full px-4 py-2.5 pr-20 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-mono focus:bg-white focus:border-blue-500 outline-none"
+                            class="w-full px-4 py-2.5 pr-20 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white font-mono focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none"
                         >
                         <button 
                             type="button" 
                             onclick="toggleApiKeyVisibility()"
-                            class="absolute right-3 top-2 text-xs font-bold text-slate-400 hover:text-slate-600 px-2 py-1 rounded bg-slate-200/50 cursor-pointer"
+                            class="absolute right-3 top-2 text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 px-2 py-1 rounded bg-slate-200/50 dark:bg-slate-700 cursor-pointer"
                         >
                             <span id="toggle-key-label">SHOW</span>
                         </button>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-1">{{ __('API Key disimpan secara aman dan digunakan untuk analisis mendalam telemetri pemilu dan deteksi anomali log audit.') }}</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">{{ __('API Key disimpan secara aman dan digunakan untuk analisis mendalam telemetri pemilu dan deteksi anomali log audit.') }}</p>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Model Gemini yang Digunakan') }}</label>
-                    <select name="gemini_model" class="w-full h-10 px-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm font-bold text-slate-800 focus:bg-white focus:border-blue-500 outline-none cursor-pointer">
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('Model Gemini yang Digunakan') }}</label>
+                    <select name="gemini_model" class="w-full h-10 px-3.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none cursor-pointer">
                         <option value="gemini-2.0-flash" {{ $settings['gemini_model'] === 'gemini-2.0-flash' ? 'selected' : '' }}>Google Gemini 2.0 Flash ({{ __('Direkomendasikan • Cepat & Presisi') }})</option>
                         <option value="gemini-1.5-flash" {{ $settings['gemini_model'] === 'gemini-1.5-flash' ? 'selected' : '' }}>Google Gemini 1.5 Flash ({{ __('Stabil') }})</option>
                         <option value="gemini-1.5-pro" {{ $settings['gemini_model'] === 'gemini-1.5-pro' ? 'selected' : '' }}>Google Gemini 1.5 Pro ({{ __('Deep Reasoning') }})</option>
@@ -359,14 +359,14 @@
         </div>
 
         <!-- 5. PWA & OFFLINE DIAGNOSTICS (Clean Light White Card) -->
-        <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">📲</span>
-                    <h3 class="text-base font-extrabold text-slate-900">{{ __('5. Status Progressive Web App (PWA)') }}</h3>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ __('5. Status Progressive Web App (PWA)') }}</h3>
                 </div>
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    Install Ready
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                    {{ __('Install Ready') }}
                 </span>
             </div>
 
