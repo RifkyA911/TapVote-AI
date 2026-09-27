@@ -184,15 +184,15 @@
         <!-- Fluid 3D Three.js Asset + Purple/Blue/Cyan Blend Card    -->
         <!-- ======================================================== -->
         <a href="{{ route('voter.tap') }}" id="voting-hero-card" onclick="handleVotingHeroClick(event)"
-            class="voting-hero-card group w-full p-3.5 sm:py-4 sm:px-6 lg:py-5 lg:px-7 rounded-2xl sm:rounded-3xl text-white shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-between gap-3 sm:gap-6 cursor-pointer mb-6 sm:mb-8 border-2 border-white/25 hover:border-white/40 hover:scale-[1.008] active:scale-[0.995] relative overflow-hidden">
+            class="voting-hero-card group w-full p-4 sm:py-5 sm:px-7 rounded-2xl sm:rounded-3xl text-white shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-between gap-3 sm:gap-6 cursor-pointer mb-6 sm:mb-8 border-2 border-white/25 hover:border-white/40 hover:scale-[1.008] active:scale-[0.995] relative overflow-hidden">
             
             <!-- Soft Ambient Glow Orbs -->
             <div class="absolute -right-20 -top-20 w-72 h-72 bg-cyan-400/25 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -left-20 -bottom-20 w-72 h-72 bg-purple-600/30 rounded-full blur-3xl pointer-events-none"></div>
 
             <!-- Left: Icon & English/Bilingual Title -->
-            <div class="flex items-center space-x-3 sm:space-x-5 min-w-0 relative z-10 flex-1">
-                <div class="w-11 h-11 sm:w-16 sm:h-16 rounded-xl sm:rounded-3xl bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 group-hover:bg-white/20 transition-all duration-300">
+            <div class="flex items-center space-x-3.5 sm:space-x-5 min-w-0 relative z-10 flex-1">
+                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 group-hover:bg-white/20 transition-all duration-300">
                     <svg class="w-6 h-6 sm:w-9 sm:h-9 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
                         <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
                         <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
@@ -206,16 +206,21 @@
                             {{ __('Ready') }}
                         </span>
                     </div>
-                    <h2 class="text-base sm:text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight leading-snug sm:leading-tight drop-shadow-sm">
+                    <h2 class="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight leading-snug sm:leading-tight drop-shadow-sm">
                         {{ __('Start Voting (Tap Card / Touch Here)') }}
                     </h2>
                 </div>
             </div>
 
-            <!-- Right: Interactive 3D Rectangular ID Card Pass (Three.js WebGL, responsive aspect ratio) -->
-            <div class="shrink-0 flex items-center relative z-10 pl-1 sm:pl-2">
+            <!-- Mobile Only: Clean Arrow Action (Hidden on desktop) -->
+            <div class="flex sm:hidden shrink-0 items-center justify-center w-11 h-11 rounded-2xl bg-white/15 border border-white/30 text-white relative z-10 group-hover:translate-x-1 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </div>
+
+            <!-- Desktop Only: Interactive 3D Rectangular ID Card Pass (Hidden on mobile) -->
+            <div class="hidden sm:flex shrink-0 items-center relative z-10 pl-2">
                 <div id="hero-card-3d-wrapper"
-                    class="w-20 h-[120px] sm:w-36 sm:h-[210px] md:w-44 md:h-[250px] rounded-xl sm:rounded-3xl bg-white/10 backdrop-blur-md border border-white/25 shadow-inner flex items-center justify-center relative group-hover:border-cyan-300/60 group-hover:scale-105 group-hover:shadow-cyan-500/30 group-hover:shadow-lg transition-all duration-300">
+                    class="w-36 h-[210px] md:w-44 md:h-[250px] rounded-3xl bg-white/10 backdrop-blur-md border border-white/25 shadow-inner flex items-center justify-center relative group-hover:border-cyan-300/60 group-hover:scale-105 group-hover:shadow-cyan-500/30 group-hover:shadow-lg transition-all duration-300">
                     <!-- Three.js Canvas mounts here -->
                     <div id="hero-card-3d-canvas" class="w-full h-full flex items-center justify-center pointer-events-none"></div>
                 </div>
@@ -321,84 +326,82 @@
                         </div>
                     </div>
 
-                    <!-- Row 3: Leading Frontrunners (Dedicated Top Header Row + Full-Width Candidate Cards) -->
-                    <div
-                        class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-amber-50/80 border-2 border-amber-200 shadow-sm flex flex-col space-y-3 sm:space-y-4">
-                        <!-- Top Header Row (Full Width, Never Crammed with Candidate Cards) -->
-                        <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-amber-200/80 gap-2 sm:gap-3">
-                            <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
-                                <span
-                                    class="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-amber-500 ring-3 sm:ring-4 ring-amber-200 animate-pulse shrink-0"></span>
-                                <div class="min-w-0">
-                                    <span
-                                        class="text-[10px] sm:text-sm font-black uppercase tracking-wider text-amber-950 block">{{ __('Leading Frontrunners') }}</span>
-                                    <h3 class="text-base sm:text-xl font-black text-slate-950 tracking-tight">
-                                        {{ __('Current Vote Leaders') }}</h3>
-                                </div>
-                            </div>
-                            <span
-                                class="text-[11px] sm:text-sm font-black text-amber-900 bg-amber-100/90 border border-amber-300 px-2.5 sm:px-3 py-1 rounded-lg sm:rounded-xl shrink-0">
-                                ✓ {{ __('Live Verified') }}
-                            </span>
-                        </div>
-
-                        <!-- Candidates Row (2 Wide Equal Rows with Photo at End) -->
-                        <div class="grid grid-cols-1 gap-2.5 sm:gap-4">
-                            <!-- Chairman Leader -->
-                            <div onclick="previewLeader('ketua')"
-                                class="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-white border-2 border-amber-300 hover:border-red-400 hover:shadow-md transition-all flex items-center justify-between gap-3 sm:gap-4 cursor-pointer group/leader"
-                                title="{{ __('Click to preview leader candidate') }}">
-                                <div class="flex items-center space-x-2.5 sm:space-x-4 min-w-0 flex-1">
-                                    <span
-                                        class="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-sm font-black uppercase tracking-wider bg-red-100 text-red-800 border-2 border-red-300 shrink-0 group-hover/leader:bg-red-600 group-hover/leader:text-white transition-colors">
-                                        {{ __('Chairman') }}
-                                    </span>
-                                    <div class="min-w-0 flex-1">
-                                        <span
-                                            class="text-[10px] sm:text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
-                                        <strong id="leader-ketua-text"
-                                            class="text-sm sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-red-700 transition-colors">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                    <!-- Row 3: Leading Frontrunners Split into 2 Dedicated Distinct Cards (Chairman & Supervisor Separated) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5">
+                        <!-- Card 1: Chairman Leader (Ketua) -->
+                        <div onclick="previewLeader('ketua')"
+                            class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-rose-50/80 border-2 border-rose-200 hover:border-red-400 shadow-sm hover:shadow-md transition-all cursor-pointer group/leader"
+                            title="{{ __('Click to preview leader candidate') }}">
+                            <!-- Top Card Header -->
+                            <div class="flex items-center justify-between pb-3 border-b border-rose-200/80 gap-2 mb-3 sm:mb-4">
+                                <div class="flex items-center space-x-2.5 min-w-0">
+                                    <span class="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-red-600 ring-4 ring-red-100 animate-pulse shrink-0"></span>
+                                    <div class="min-w-0">
+                                        <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider text-red-950 block">{{ __('Category 1: Cooperative Chairman') }}</span>
+                                        <h4 class="text-xs sm:text-sm font-black text-red-700 tracking-tight">{{ __('Leading Frontrunner') }}</h4>
                                     </div>
                                 </div>
-                                <div class="shrink-0 flex items-center space-x-2">
-                                    <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-slate-200 group-hover/leader:border-red-400 group-hover/leader:scale-105 shadow-xs transition-all bg-slate-100 flex items-center justify-center">
+                                <span class="text-[10px] sm:text-xs font-black text-red-800 bg-red-100/90 border border-red-300 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg shrink-0">
+                                    ✓ {{ __('Live Verified') }}
+                                </span>
+                            </div>
+                            <!-- Candidate Details -->
+                            <div class="flex items-center justify-between gap-3 sm:gap-4">
+                                <div class="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
+                                    <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-rose-300 group-hover/leader:border-red-500 group-hover/leader:scale-105 shadow-xs transition-all bg-white flex items-center justify-center shrink-0">
                                         <img id="leader-ketua-img" 
                                             src="{{ $metrics['leader_ketua_foto'] ?? 'https://ui-avatars.com/api/?name=Chairman&background=ef4444&color=ffffff&size=200' }}" 
                                             alt="Leader Chairman" 
                                             class="w-full h-full object-cover">
                                     </div>
-                                    <div class="hidden sm:flex items-center text-xs font-bold text-slate-400 group-hover/leader:text-red-600 transition-colors">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                    <div class="min-w-0 flex-1">
+                                        <span class="text-[10px] sm:text-xs font-bold text-rose-800/80 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
+                                        <strong id="leader-ketua-text"
+                                            class="text-base sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-red-700 transition-colors">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                                     </div>
+                                </div>
+                                <div class="shrink-0 flex items-center text-xs font-bold text-red-600 bg-white/80 p-2 sm:px-3 sm:py-2 rounded-xl border border-rose-200 group-hover/leader:bg-red-600 group-hover/leader:text-white transition-colors">
+                                    <span class="hidden sm:inline mr-1">{{ __('Visi & Misi') }}</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Supervisor Leader -->
-                            <div onclick="previewLeader('pengawas')"
-                                class="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-white border-2 border-amber-300 hover:border-emerald-400 hover:shadow-md transition-all flex items-center justify-between gap-3 sm:gap-4 cursor-pointer group/leader"
-                                title="{{ __('Click to preview leader candidate') }}">
-                                <div class="flex items-center space-x-2.5 sm:space-x-4 min-w-0 flex-1">
-                                    <span
-                                        class="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-sm font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border-2 border-emerald-300 shrink-0 group-hover/leader:bg-emerald-600 group-hover/leader:text-white transition-colors">
-                                        {{ __('Supervisor') }}
-                                    </span>
-                                    <div class="min-w-0 flex-1">
-                                        <span
-                                            class="text-[10px] sm:text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
-                                        <strong id="leader-pengawas-text"
-                                            class="text-sm sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-emerald-700 transition-colors">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                        <!-- Card 2: Supervisor Leader (Pengawas) -->
+                        <div onclick="previewLeader('pengawas')"
+                            class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-emerald-50/80 border-2 border-emerald-200 hover:border-emerald-400 shadow-sm hover:shadow-md transition-all cursor-pointer group/leader"
+                            title="{{ __('Click to preview leader candidate') }}">
+                            <!-- Top Card Header -->
+                            <div class="flex items-center justify-between pb-3 border-b border-emerald-200/80 gap-2 mb-3 sm:mb-4">
+                                <div class="flex items-center space-x-2.5 min-w-0">
+                                    <span class="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-emerald-600 ring-4 ring-emerald-100 animate-pulse shrink-0"></span>
+                                    <div class="min-w-0">
+                                        <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider text-emerald-950 block">{{ __('Category 2: Supervisory Board') }}</span>
+                                        <h4 class="text-xs sm:text-sm font-black text-emerald-700 tracking-tight">{{ __('Leading Frontrunner') }}</h4>
                                     </div>
                                 </div>
-                                <div class="shrink-0 flex items-center space-x-2">
-                                    <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-slate-200 group-hover/leader:border-emerald-400 group-hover/leader:scale-105 shadow-xs transition-all bg-slate-100 flex items-center justify-center">
+                                <span class="text-[10px] sm:text-xs font-black text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg shrink-0">
+                                    ✓ {{ __('Live Verified') }}
+                                </span>
+                            </div>
+                            <!-- Candidate Details -->
+                            <div class="flex items-center justify-between gap-3 sm:gap-4">
+                                <div class="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
+                                    <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-emerald-300 group-hover/leader:border-emerald-500 group-hover/leader:scale-105 shadow-xs transition-all bg-white flex items-center justify-center shrink-0">
                                         <img id="leader-pengawas-img" 
                                             src="{{ $metrics['leader_pengawas_foto'] ?? 'https://ui-avatars.com/api/?name=Supervisor&background=10b981&color=ffffff&size=200' }}" 
                                             alt="Leader Supervisor" 
                                             class="w-full h-full object-cover">
                                     </div>
-                                    <div class="hidden sm:flex items-center text-xs font-bold text-slate-400 group-hover/leader:text-emerald-600 transition-colors">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                    <div class="min-w-0 flex-1">
+                                        <span class="text-[10px] sm:text-xs font-bold text-emerald-800/80 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
+                                        <strong id="leader-pengawas-text"
+                                            class="text-base sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-emerald-700 transition-colors">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                                     </div>
+                                </div>
+                                <div class="shrink-0 flex items-center text-xs font-bold text-emerald-600 bg-white/80 p-2 sm:px-3 sm:py-2 rounded-xl border border-emerald-200 group-hover/leader:bg-emerald-600 group-hover/leader:text-white transition-colors">
+                                    <span class="hidden sm:inline mr-1">{{ __('Visi & Misi') }}</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                                 </div>
                             </div>
                         </div>
@@ -1007,7 +1010,7 @@
                         if (comparisonChart) {
                             const isMobile = window.innerWidth < 640;
                             comparisonChart.options.layout.padding.top = isMobile ? 24 : 36;
-                            comparisonChart.options.layout.padding.bottom = isMobile ? 80 : 110;
+                            comparisonChart.options.layout.padding.bottom = isMobile ? 48 : 110;
                             comparisonChart.options.layout.padding.left = isMobile ? 8 : 16;
                             comparisonChart.options.layout.padding.right = isMobile ? 8 : 16;
                             const { datasets } = generateChartData(currentChartMode);
@@ -1106,36 +1109,38 @@
                         ctx.fillText(cand.nomor_urut, xPos + size / 2 - 2, yPos + badgeRadius);
                         ctx.restore();
 
-                        // Candidate name with NO-OVERLAP constraint
-                        ctx.save();
-                        ctx.font = `900 ${nameFontSize}px "Plus Jakarta Sans", sans-serif`;
-                        ctx.fillStyle = '#0f172a';
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'top';
+                        // Candidate name: Completely hidden on mobile as requested to prevent collisions!
+                        const isMobile = window.innerWidth < 640 || chartW < 540;
+                        if (!isMobile) {
+                            ctx.save();
+                            ctx.font = `900 ${nameFontSize}px "Plus Jakarta Sans", sans-serif`;
+                            ctx.fillStyle = '#0f172a';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'top';
 
-                        const fullName = (cand.nama || '').trim();
-                        const words = fullName.split(/\s+/);
-                        let line1 = '';
-                        let line2 = '';
+                            const fullName = (cand.nama || '').trim();
+                            const words = fullName.split(/\s+/);
+                            let line1 = '';
+                            let line2 = '';
 
-                        if (words.length === 1) {
-                            line1 = words[0];
-                        } else if (words.length === 2) {
-                            line1 = words[0];
-                            line2 = words[1];
-                        } else {
-                            const mid = Math.ceil(words.length / 2);
-                            line1 = words.slice(0, mid).join(' ');
-                            line2 = words.slice(mid).join(' ');
+                            if (words.length === 1) {
+                                line1 = words[0];
+                            } else if (words.length === 2) {
+                                line1 = words[0];
+                                line2 = words[1];
+                            } else {
+                                const mid = Math.ceil(words.length / 2);
+                                line1 = words.slice(0, mid).join(' ');
+                                line2 = words.slice(mid).join(' ');
+                            }
+
+                            const textStartY = yPos + size + 6;
+                            ctx.fillText(line1, xPos, textStartY, maxTextWidth);
+                            if (line2) {
+                                ctx.fillText(line2, xPos, textStartY + lineHeight, maxTextWidth);
+                            }
+                            ctx.restore();
                         }
-
-                        const textStartY = yPos + size + 6;
-                        // Passing maxTextWidth guarantees the browser scales down glyphs if needed and NEVER bleeds into adjacent candidate columns!
-                        ctx.fillText(line1, xPos, textStartY, maxTextWidth);
-                        if (line2) {
-                            ctx.fillText(line2, xPos, textStartY + lineHeight, maxTextWidth);
-                        }
-                        ctx.restore();
                     });
                 }
             };
@@ -1161,7 +1166,7 @@
                         layout: {
                             padding: {
                                 top: isMobile ? 24 : 36,
-                                bottom: isMobile ? 80 : 110, // Generous breathing space for avatars & names
+                                bottom: isMobile ? 48 : 110, // 48px on mobile (avatars only), 110px on desktop (avatars + names)
                                 left: isMobile ? 8 : 16,
                                 right: isMobile ? 8 : 16
                             }

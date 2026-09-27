@@ -5,49 +5,63 @@
 @section('content')
 <div class="flex-1 flex flex-col justify-between px-4 pt-2 sm:pt-3 pb-4 sm:pb-6 lg:pb-8 max-w-6xl mx-auto w-full min-h-screen">
 
-    <!-- Header Instansi & Navigasi -->
-    <header class="flex items-center justify-between gap-4 py-2 sm:py-3 border-b border-slate-200">
-        <div class="flex items-center space-x-3 min-w-0 flex-1 pr-2">
-            <a href="{{ route('home') }}" class="flex items-center space-x-2.5 sm:space-x-3 group cursor-pointer min-w-0" title="{{ __('Kembali ke Beranda Live Count') }}">
-                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-600 group-hover:bg-blue-700 text-white flex items-center justify-center shadow-sm shrink-0 transition">
-                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                    </svg>
-                </div>
-                <div class="min-w-0">
-                    <h1 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition leading-snug">{{ \App\Models\AppSetting::getElectionTitle() }}</h1>
-                    <p class="text-[11px] text-slate-500 font-medium whitespace-nowrap">{{ __('Digital Voting Booth') }} • <span class="text-blue-600 font-bold">← {{ __('Beranda') }}</span></p>
-                </div>
-            </a>
-        </div>
+    <!-- Header Instansi & Navigasi (Fully Responsive Mobile & Desktop Layout) -->
+    <header class="py-2.5 sm:py-3.5 border-b border-slate-200">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            <!-- Row 1 (Mobile) / Left (Desktop): Brand & Election Title -->
+            <div class="flex items-center justify-between gap-3 min-w-0 flex-1">
+                <a href="{{ route('home') }}" class="flex items-center space-x-2.5 sm:space-x-3 group cursor-pointer min-w-0 flex-1" title="{{ __('Kembali ke Beranda Live Count') }}">
+                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-600 group-hover:bg-blue-700 text-white flex items-center justify-center shadow-sm shrink-0 transition">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <h1 class="text-sm sm:text-lg lg:text-xl font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition leading-snug">{{ \App\Models\AppSetting::getElectionTitle() }}</h1>
+                        <p class="text-[11px] text-slate-500 font-semibold flex items-center gap-1.5 mt-0.5">
+                            <span>{{ __('Digital Voting Booth') }}</span>
+                            <span>•</span>
+                            <span class="text-blue-600 font-bold hover:underline">← {{ __('Beranda') }}</span>
+                        </p>
+                    </div>
+                </a>
 
-        <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
-            <!-- Language Switcher Pill (Single Responsive Pill) -->
-            <div class="inline-flex rounded-xl border border-slate-200 bg-white p-1 text-xs sm:text-sm font-bold shadow-2xs shrink-0">
-                <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-blue-600' }}">EN</a>
-                <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
+                <!-- Mobile Only: Quick Live Count Button -->
+                <a href="{{ route('home') }}" class="sm:hidden p-2.5 rounded-xl bg-white hover:bg-blue-50 text-blue-900 border-2 border-blue-600 shadow-xs transition flex items-center justify-center shrink-0 cursor-pointer" title="{{ __('Live Count') }}">
+                    <svg class="w-5 h-5 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M3 20.25h18M3.75 20.25V3.75" />
+                    </svg>
+                </a>
             </div>
 
-            <!-- Tombol Petunjuk Cara Memilih -->
-            <button 
-                type="button" 
-                onclick="openGuideModal()"
-                class="text-xs sm:text-sm font-extrabold text-amber-900 hover:text-amber-950 py-2 sm:py-2.5 px-3 sm:px-4 rounded-2xl border-2 border-amber-300 hover:border-amber-400 bg-amber-50 hover:bg-amber-100 shadow-xs transition flex items-center justify-center space-x-1.5 cursor-pointer shrink-0"
-                title="{{ __('Petunjuk Memilih') }}"
-            >
-                <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
-                </svg>
-                <span class="hidden sm:inline">{{ __('Petunjuk Memilih') }}</span>
-                <span class="sm:hidden">{{ __('Petunjuk') }}</span>
-            </button>
+            <!-- Row 2 (Mobile) / Right (Desktop): Action Controls -->
+            <div class="flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3 w-full sm:w-auto">
+                <!-- Language Switcher Pill -->
+                <div class="inline-flex rounded-xl border border-slate-200 bg-white p-1 text-xs sm:text-sm font-bold shadow-2xs shrink-0">
+                    <a href="{{ route('lang.switch', 'en') }}" class="px-3 sm:px-3.5 py-1.5 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-blue-600' }}">EN</a>
+                    <a href="{{ route('lang.switch', 'id') }}" class="px-3 sm:px-3.5 py-1.5 rounded-lg transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
+                </div>
 
-            <!-- Tombol Live Count (Background putih, outline biru, icon biru tua) -->
-            <a href="{{ route('home') }}" class="p-2 sm:p-2.5 rounded-2xl bg-white hover:bg-blue-50 text-blue-900 border-2 border-blue-600 shadow-xs transition flex items-center justify-center shrink-0 cursor-pointer" title="{{ __('Live Count') }}">
-                <svg class="w-5 h-5 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.3">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M3 20.25h18M3.75 20.25V3.75" />
-                </svg>
-            </a>
+                <!-- Tombol Petunjuk Cara Memilih -->
+                <button 
+                    type="button" 
+                    onclick="openGuideModal()"
+                    class="flex-1 sm:flex-none text-xs sm:text-sm font-extrabold text-amber-900 hover:text-amber-950 py-2 sm:py-2.5 px-3.5 sm:px-4 rounded-xl sm:rounded-2xl border-2 border-amber-300 hover:border-amber-400 bg-amber-50 hover:bg-amber-100 shadow-xs transition flex items-center justify-center space-x-1.5 cursor-pointer shrink-0"
+                    title="{{ __('Petunjuk Memilih') }}"
+                >
+                    <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                    </svg>
+                    <span>{{ __('Petunjuk Memilih') }}</span>
+                </button>
+
+                <!-- Desktop Only: Live Count -->
+                <a href="{{ route('home') }}" class="hidden sm:flex p-2 sm:p-2.5 rounded-2xl bg-white hover:bg-blue-50 text-blue-900 border-2 border-blue-600 shadow-xs transition items-center justify-center shrink-0 cursor-pointer" title="{{ __('Live Count') }}">
+                    <svg class="w-5 h-5 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M3 20.25h18M3.75 20.25V3.75" />
+                    </svg>
+                </a>
+            </div>
         </div>
     </header>
 

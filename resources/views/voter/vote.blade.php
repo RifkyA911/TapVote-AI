@@ -41,18 +41,18 @@
 
     <!-- Header Identitas Pemilih & Kontrol Aksi (Boomer Friendly Size) -->
     <header class="p-4 sm:p-5 rounded-3xl bg-white border-2 border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div class="flex items-center space-x-3.5 sm:space-x-4">
+        <div class="flex items-center space-x-3.5 sm:space-x-4 min-w-0 flex-1">
             <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black text-lg sm:text-xl shadow-sm shrink-0">
                 {{ strtoupper(substr($pemilih->nama, 0, 2)) }}
             </div>
-            <div>
+            <div class="min-w-0 flex-1">
                 <div class="flex flex-wrap items-center gap-2">
-                    <h2 class="text-base sm:text-xl font-black text-slate-900">{{ $pemilih->nama }}</h2>
-                    <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    <h2 class="text-base sm:text-xl font-black text-slate-900 truncate">{{ $pemilih->nama }}</h2>
+                    <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300 shrink-0">
                         {{ __('Hak Suara Aktif') }}
                     </span>
                 </div>
-                <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-0.5">
+                <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-0.5 truncate">
                     {{ __('NIK:') }} <span class="font-bold text-slate-900 font-mono text-xs sm:text-sm">{{ $pemilih->nik }}</span> • {{ __('Departemen:') }} <span class="font-bold text-slate-900">{{ $pemilih->dept }}</span>
                 </p>
             </div>
