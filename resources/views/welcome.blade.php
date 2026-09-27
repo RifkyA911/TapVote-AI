@@ -129,24 +129,24 @@
             <!-- Row 2: Action Controls Row (Expand/Collapse on Left, Large EN/ID Language Switcher on Right) -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
                 <!-- Left: Section Expand/Collapse Controls & Guide Button & Admin Button if IP is 192.168.1.5 -->
-                <div class="flex items-center space-x-2.5 flex-wrap gap-y-2">
+                <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
                     <button type="button" onclick="expandAllSections()"
-                        class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-200 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-2 cursor-pointer">
-                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-full sm:w-auto justify-center px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-200 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-1.5 sm:space-x-2 cursor-pointer">
+                        <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
                         </svg>
-                        <span>{{ __('Expand All') }}</span>
+                        <span class="truncate">{{ __('Expand All') }}</span>
                     </button>
                     <button type="button" onclick="collapseAllSections()"
-                        class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-200 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-2 cursor-pointer">
-                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-full sm:w-auto justify-center px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-200 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-1.5 sm:space-x-2 cursor-pointer">
+                        <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
                         </svg>
-                        <span>{{ __('Collapse All') }}</span>
+                        <span class="truncate">{{ __('Collapse All') }}</span>
                     </button>
                     <button type="button" onclick="scrollToGuideSection(event)"
-                        class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-900 border-2 border-amber-300 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-2 cursor-pointer">
-                        <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="col-span-2 sm:col-span-1 w-full sm:w-auto justify-center px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-900 border-2 border-amber-300 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-1.5 sm:space-x-2 cursor-pointer">
+                        <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                         <span>{{ __('Voting Guide') }}</span>
@@ -154,8 +154,8 @@
 
                     @if(in_array(request()->ip(), ['192.168.1.5', '127.0.0.1', '::1']) || request()->server('REMOTE_ADDR') === '192.168.1.5')
                         <a href="{{ route('admin.login') }}"
-                            class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white border-2 border-slate-700 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-2 cursor-pointer">
-                            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="col-span-2 sm:col-span-1 w-full sm:w-auto justify-center px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-slate-900 hover:bg-slate-800 text-white border-2 border-slate-700 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-1.5 sm:space-x-2 cursor-pointer">
+                            <svg class="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                             </svg>
                             <span>{{ __('Admin Panel') }}</span>
@@ -164,14 +164,14 @@
                 </div>
 
                 <!-- Right: Large EN / ID Language Switcher Buttons (Boomer-Readable) -->
-                <div class="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto justify-end">
-                    <div class="inline-flex rounded-2xl border-2 border-slate-300 bg-white p-1.5 shadow-xs shrink-0">
+                <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center sm:justify-end mt-1 sm:mt-0">
+                    <div class="inline-flex rounded-xl sm:rounded-2xl border-2 border-slate-300 bg-white p-1 shadow-xs shrink-0 w-full sm:w-auto justify-center">
                         <a href="{{ route('lang.switch', 'en') }}"
-                            class="px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl transition text-sm sm:text-base font-black {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-100' }}">
+                            class="flex-1 sm:flex-none text-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl transition text-xs sm:text-base font-black {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-100' }}">
                             EN
                         </a>
                         <a href="{{ route('lang.switch', 'id') }}"
-                            class="px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl transition text-sm sm:text-base font-black {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-100' }}">
+                            class="flex-1 sm:flex-none text-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl transition text-xs sm:text-base font-black {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-100' }}">
                             ID
                         </a>
                     </div>
@@ -184,38 +184,38 @@
         <!-- Fluid 3D Three.js Asset + Purple/Blue/Cyan Blend Card    -->
         <!-- ======================================================== -->
         <a href="{{ route('voter.tap') }}" id="voting-hero-card" onclick="handleVotingHeroClick(event)"
-            class="voting-hero-card group w-full py-3 px-5 sm:py-4 sm:px-6 lg:py-5 lg:px-7 rounded-3xl text-white shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-between gap-4 cursor-pointer mb-8 border-2 border-white/25 hover:border-white/40 hover:scale-[1.008] active:scale-[0.995] relative overflow-hidden">
+            class="voting-hero-card group w-full p-3.5 sm:py-4 sm:px-6 lg:py-5 lg:px-7 rounded-2xl sm:rounded-3xl text-white shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-between gap-3 sm:gap-6 cursor-pointer mb-6 sm:mb-8 border-2 border-white/25 hover:border-white/40 hover:scale-[1.008] active:scale-[0.995] relative overflow-hidden">
             
             <!-- Soft Ambient Glow Orbs -->
             <div class="absolute -right-20 -top-20 w-72 h-72 bg-cyan-400/25 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -left-20 -bottom-20 w-72 h-72 bg-purple-600/30 rounded-full blur-3xl pointer-events-none"></div>
 
             <!-- Left: Icon & English/Bilingual Title -->
-            <div class="flex items-center space-x-3.5 sm:space-x-5 min-w-0 relative z-10">
-                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 group-hover:bg-white/20 transition-all duration-300">
-                    <svg class="w-7 h-7 sm:w-9 sm:h-9 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
+            <div class="flex items-center space-x-3 sm:space-x-5 min-w-0 relative z-10 flex-1">
+                <div class="w-11 h-11 sm:w-16 sm:h-16 rounded-xl sm:rounded-3xl bg-white/15 backdrop-blur-md border border-white/30 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 group-hover:bg-white/20 transition-all duration-300">
+                    <svg class="w-6 h-6 sm:w-9 sm:h-9 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
                         <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
                         <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
                         <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
                     </svg>
                 </div>
-                <div class="min-w-0">
-                    <div class="flex items-center gap-2 mb-0.5">
-                        <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-cyan-200 block drop-shadow-xs">{{ __('Digital Voting Booth') }}</span>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black bg-cyan-400/25 border border-cyan-300/40 text-cyan-100 uppercase tracking-widest hidden sm:inline-flex">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5 sm:gap-2 mb-0.5">
+                        <span class="text-[11px] sm:text-sm font-black uppercase tracking-wider text-cyan-200 block drop-shadow-xs">{{ __('Digital Voting Booth') }}</span>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-black bg-cyan-400/25 border border-cyan-300/40 text-cyan-100 uppercase tracking-widest">
                             {{ __('Ready') }}
                         </span>
                     </div>
-                    <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight drop-shadow-sm">
+                    <h2 class="text-base sm:text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight leading-snug sm:leading-tight drop-shadow-sm">
                         {{ __('Start Voting (Tap Card / Touch Here)') }}
                     </h2>
                 </div>
             </div>
 
-            <!-- Right: Interactive 3D Rectangular ID Card Pass (Three.js WebGL, 610x988 aspect ratio, enlarged transparent space) -->
-            <div class="shrink-0 flex items-center relative z-10 pl-2">
+            <!-- Right: Interactive 3D Rectangular ID Card Pass (Three.js WebGL, responsive aspect ratio) -->
+            <div class="shrink-0 flex items-center relative z-10 pl-1 sm:pl-2">
                 <div id="hero-card-3d-wrapper"
-                    class="w-32 h-[185px] sm:w-40 sm:h-[225px] md:w-48 md:h-[265px] rounded-3xl bg-white/10 backdrop-blur-md border border-white/25 shadow-inner flex items-center justify-center relative group-hover:border-cyan-300/60 group-hover:scale-105 group-hover:shadow-cyan-500/30 group-hover:shadow-lg transition-all duration-300">
+                    class="w-20 h-[120px] sm:w-36 sm:h-[210px] md:w-44 md:h-[250px] rounded-xl sm:rounded-3xl bg-white/10 backdrop-blur-md border border-white/25 shadow-inner flex items-center justify-center relative group-hover:border-cyan-300/60 group-hover:scale-105 group-hover:shadow-cyan-500/30 group-hover:shadow-lg transition-all duration-300">
                     <!-- Three.js Canvas mounts here -->
                     <div id="hero-card-3d-canvas" class="w-full h-full flex items-center justify-center pointer-events-none"></div>
                 </div>
@@ -226,7 +226,7 @@
         <!-- SECTION 1: EXECUTIVE OVERVIEW & KEY INDICATORS (FOLDABLE)-->
         <!-- ======================================================== -->
         <div id="sec-overview"
-            class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
+            class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-xs mb-6 sm:mb-8 transition-all">
             <!-- Section Foldable Header (Minimalist Dot Color) -->
             <div class="flex items-center justify-between gap-3 pb-4 border-b border-slate-100 cursor-pointer select-none group"
                 onclick="toggleSection('sec-overview')">
@@ -258,37 +258,37 @@
             </div>
 
             <!-- Section Content (Dedicated Full-Width Row Cards, Boomer-Readable, No Empty Grid Gaps) -->
-            <div id="sec-overview-content" class="pt-6">
-                <div class="flex flex-col space-y-4">
+            <div id="sec-overview-content" class="pt-4 sm:pt-6">
+                <div class="flex flex-col space-y-3 sm:space-y-4">
                     <!-- Row 1: Voter Participation Rate & Turnout Progress -->
                     <div
-                        class="p-6 sm:p-7 rounded-3xl bg-blue-50/80 border-2 border-blue-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
-                        <div class="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-7 min-w-0">
+                        class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-blue-50/80 border-2 border-blue-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-7 min-w-0">
                             <span id="stat-turnout-pct"
-                                class="text-5xl sm:text-6xl lg:text-7xl font-black text-blue-700 font-mono tracking-tight shrink-0">{{ $metrics['turnout_pct'] }}%</span>
+                                class="text-4xl sm:text-6xl lg:text-7xl font-black text-blue-700 font-mono tracking-tight shrink-0">{{ $metrics['turnout_pct'] }}%</span>
                             <div class="min-w-0">
                                 <span
-                                    class="text-xs sm:text-sm font-black uppercase tracking-wider text-blue-900 block">{{ __('Voter Participation Rate') }}</span>
-                                <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">
+                                    class="text-[11px] sm:text-sm font-black uppercase tracking-wider text-blue-900 block">{{ __('Voter Participation Rate') }}</span>
+                                <h3 class="text-lg sm:text-2xl font-black text-slate-900 mt-0.5 sm:mt-1">
                                     {{ __('Total Verified Turnout') }}</h3>
                                 <p id="stat-total-votes-container" class="hidden" style="display: none !important;">
                                     <span id="stat-total-voted"
-                                        class="text-blue-700 font-black text-lg sm:text-xl">{{ $metrics['total_voted'] }}</span>
+                                        class="text-blue-700 font-black text-base sm:text-xl">{{ $metrics['total_voted'] }}</span>
                                     {{ __('of') }} <span id="stat-total-voters"
-                                        class="text-slate-950 font-black text-lg sm:text-xl">{{ $metrics['total_voters'] }}</span>
+                                        class="text-slate-950 font-black text-base sm:text-xl">{{ $metrics['total_voters'] }}</span>
                                     {{ __('Votes Cast') }}
                                 </p>
                             </div>
                         </div>
                         <div class="w-full md:w-80 lg:w-96 shrink-0">
-                            <div class="flex justify-between text-xs sm:text-sm font-black text-blue-950 mb-2">
+                            <div class="flex justify-between text-xs sm:text-sm font-black text-blue-950 mb-1.5 sm:mb-2">
                                 <span>{{ __('Live Progress') }}</span>
                                 <span class="text-blue-700 font-bold">✓ {{ __('Realtime Audited') }}</span>
                             </div>
                             <div
-                                class="w-full bg-blue-200/90 rounded-full h-5 overflow-hidden p-0.5 border border-blue-300">
+                                class="w-full bg-blue-200/90 rounded-full h-4 sm:h-5 overflow-hidden p-0.5 border border-blue-300">
                                 <div id="stat-turnout-bar"
-                                    class="bg-blue-600 h-4 rounded-full transition-all duration-700 ease-out shadow-xs"
+                                    class="bg-blue-600 h-3 sm:h-4 rounded-full transition-all duration-700 ease-out shadow-xs"
                                     style="width: {{ $metrics['turnout_pct'] }}%;"></div>
                             </div>
                         </div>
@@ -296,25 +296,25 @@
 
                     <!-- Row 2: Election Status & Live Verification -->
                     <div
-                        class="p-6 sm:p-7 rounded-3xl bg-emerald-50/80 border-2 border-emerald-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-                        <div class="flex items-center space-x-5 min-w-0">
+                        class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-emerald-50/80 border-2 border-emerald-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-5">
+                        <div class="flex items-center space-x-3.5 sm:space-x-5 min-w-0">
                             <div
-                                class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-emerald-100 border-2 border-emerald-300 flex items-center justify-center shrink-0">
+                                class="w-11 h-11 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-emerald-100 border-2 border-emerald-300 flex items-center justify-center shrink-0">
                                 <span
-                                    class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-emerald-500 ring-8 ring-emerald-200 animate-pulse"></span>
+                                    class="w-4 h-4 sm:w-6 sm:h-6 rounded-full bg-emerald-500 ring-4 sm:ring-8 ring-emerald-200 animate-pulse"></span>
                             </div>
                             <div class="min-w-0">
                                 <span
-                                    class="text-xs sm:text-sm font-black uppercase tracking-wider text-emerald-900 block">{{ __('Election Status') }}</span>
-                                <h3 class="text-2xl sm:text-3xl font-black text-emerald-950 tracking-tight mt-1">
+                                    class="text-[11px] sm:text-sm font-black uppercase tracking-wider text-emerald-900 block">{{ __('Election Status') }}</span>
+                                <h3 class="text-lg sm:text-3xl font-black text-emerald-950 tracking-tight mt-0.5 sm:mt-1">
                                     {{ __('Active & Verified') }}</h3>
-                                <p class="text-sm sm:text-base font-bold text-emerald-800 mt-1">✓
+                                <p class="text-xs sm:text-base font-bold text-emerald-800 mt-0.5 sm:mt-1">✓
                                     {{ __('Voting Booth Ready • Secure Digital Ballot Transmission Active') }}</p>
                             </div>
                         </div>
-                        <div class="shrink-0 flex items-center">
+                        <div class="shrink-0 flex items-center w-full sm:w-auto">
                             <span
-                                class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-black bg-emerald-600 text-white shadow-xs tracking-wider uppercase flex items-center space-x-2">
+                                class="w-full sm:w-auto justify-center px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-black bg-emerald-600 text-white shadow-xs tracking-wider uppercase flex items-center space-x-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
                                 <span>{{ __('LIVE VOTING OPEN') }}</span>
                             </span>
@@ -323,45 +323,45 @@
 
                     <!-- Row 3: Leading Frontrunners (Dedicated Top Header Row + Full-Width Candidate Cards) -->
                     <div
-                        class="p-6 sm:p-7 rounded-3xl bg-amber-50/80 border-2 border-amber-200 shadow-sm flex flex-col space-y-4">
+                        class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-amber-50/80 border-2 border-amber-200 shadow-sm flex flex-col space-y-3 sm:space-y-4">
                         <!-- Top Header Row (Full Width, Never Crammed with Candidate Cards) -->
-                        <div class="flex items-center justify-between pb-3 border-b border-amber-200/80 gap-3">
-                            <div class="flex items-center space-x-3 min-w-0">
+                        <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-amber-200/80 gap-2 sm:gap-3">
+                            <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
                                 <span
-                                    class="w-3.5 h-3.5 rounded-full bg-amber-500 ring-4 ring-amber-200 animate-pulse shrink-0"></span>
+                                    class="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-amber-500 ring-3 sm:ring-4 ring-amber-200 animate-pulse shrink-0"></span>
                                 <div class="min-w-0">
                                     <span
-                                        class="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-950 block">{{ __('Leading Frontrunners') }}</span>
-                                    <h3 class="text-lg sm:text-xl font-black text-slate-950 tracking-tight">
+                                        class="text-[10px] sm:text-sm font-black uppercase tracking-wider text-amber-950 block">{{ __('Leading Frontrunners') }}</span>
+                                    <h3 class="text-base sm:text-xl font-black text-slate-950 tracking-tight">
                                         {{ __('Current Vote Leaders') }}</h3>
                                 </div>
                             </div>
                             <span
-                                class="text-xs sm:text-sm font-black text-amber-900 bg-amber-100/90 border border-amber-300 px-3 py-1 rounded-xl shrink-0">
+                                class="text-[11px] sm:text-sm font-black text-amber-900 bg-amber-100/90 border border-amber-300 px-2.5 sm:px-3 py-1 rounded-lg sm:rounded-xl shrink-0">
                                 ✓ {{ __('Live Verified') }}
                             </span>
                         </div>
 
                         <!-- Candidates Row (2 Wide Equal Rows with Photo at End) -->
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="grid grid-cols-1 gap-2.5 sm:gap-4">
                             <!-- Chairman Leader -->
                             <div onclick="previewLeader('ketua')"
-                                class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 hover:border-red-400 hover:shadow-md transition-all flex items-center justify-between gap-4 cursor-pointer group/leader"
+                                class="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-white border-2 border-amber-300 hover:border-red-400 hover:shadow-md transition-all flex items-center justify-between gap-3 sm:gap-4 cursor-pointer group/leader"
                                 title="{{ __('Click to preview leader candidate') }}">
-                                <div class="flex items-center space-x-3.5 sm:space-x-4 min-w-0">
+                                <div class="flex items-center space-x-2.5 sm:space-x-4 min-w-0 flex-1">
                                     <span
-                                        class="px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-red-100 text-red-800 border-2 border-red-300 shrink-0 group-hover/leader:bg-red-600 group-hover/leader:text-white transition-colors">
+                                        class="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-sm font-black uppercase tracking-wider bg-red-100 text-red-800 border-2 border-red-300 shrink-0 group-hover/leader:bg-red-600 group-hover/leader:text-white transition-colors">
                                         {{ __('Chairman') }}
                                     </span>
                                     <div class="min-w-0 flex-1">
                                         <span
-                                            class="text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
+                                            class="text-[10px] sm:text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
                                         <strong id="leader-ketua-text"
-                                            class="text-base sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-red-700 transition-colors">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                                            class="text-sm sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-red-700 transition-colors">{{ $metrics['leader_ketua'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                                     </div>
                                 </div>
                                 <div class="shrink-0 flex items-center space-x-2">
-                                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-slate-200 group-hover/leader:border-red-400 group-hover/leader:scale-105 shadow-xs transition-all bg-slate-100 flex items-center justify-center">
+                                    <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-slate-200 group-hover/leader:border-red-400 group-hover/leader:scale-105 shadow-xs transition-all bg-slate-100 flex items-center justify-center">
                                         <img id="leader-ketua-img" 
                                             src="{{ $metrics['leader_ketua_foto'] ?? 'https://ui-avatars.com/api/?name=Chairman&background=ef4444&color=ffffff&size=200' }}" 
                                             alt="Leader Chairman" 
@@ -375,22 +375,22 @@
 
                             <!-- Supervisor Leader -->
                             <div onclick="previewLeader('pengawas')"
-                                class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 hover:border-emerald-400 hover:shadow-md transition-all flex items-center justify-between gap-4 cursor-pointer group/leader"
+                                class="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-white border-2 border-amber-300 hover:border-emerald-400 hover:shadow-md transition-all flex items-center justify-between gap-3 sm:gap-4 cursor-pointer group/leader"
                                 title="{{ __('Click to preview leader candidate') }}">
-                                <div class="flex items-center space-x-3.5 sm:space-x-4 min-w-0">
+                                <div class="flex items-center space-x-2.5 sm:space-x-4 min-w-0 flex-1">
                                     <span
-                                        class="px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border-2 border-emerald-300 shrink-0 group-hover/leader:bg-emerald-600 group-hover/leader:text-white transition-colors">
+                                        class="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-sm font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border-2 border-emerald-300 shrink-0 group-hover/leader:bg-emerald-600 group-hover/leader:text-white transition-colors">
                                         {{ __('Supervisor') }}
                                     </span>
                                     <div class="min-w-0 flex-1">
                                         <span
-                                            class="text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
+                                            class="text-[10px] sm:text-xs font-bold text-slate-500 block uppercase tracking-wider">{{ __('Vote Leader') }}</span>
                                         <strong id="leader-pengawas-text"
-                                            class="text-base sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-emerald-700 transition-colors">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
+                                            class="text-sm sm:text-xl font-black text-slate-950 block truncate group-hover/leader:text-emerald-700 transition-colors">{{ $metrics['leader_pengawas'] ?: '(' . __('No Votes Yet') . ')' }}</strong>
                                     </div>
                                 </div>
                                 <div class="shrink-0 flex items-center space-x-2">
-                                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-slate-200 group-hover/leader:border-emerald-400 group-hover/leader:scale-105 shadow-xs transition-all bg-slate-100 flex items-center justify-center">
+                                    <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-slate-200 group-hover/leader:border-emerald-400 group-hover/leader:scale-105 shadow-xs transition-all bg-slate-100 flex items-center justify-center">
                                         <img id="leader-pengawas-img" 
                                             src="{{ $metrics['leader_pengawas_foto'] ?? 'https://ui-avatars.com/api/?name=Supervisor&background=10b981&color=ffffff&size=200' }}" 
                                             alt="Leader Supervisor" 
@@ -406,38 +406,38 @@
 
                     <!-- Row 4: Voting Deadline Countdown (Hidden if not configured, leaves zero gaps!) -->
                     <div id="deadline-container"
-                        class="p-6 sm:p-7 rounded-3xl bg-rose-50/80 border-2 border-rose-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 {{ empty($metrics['voting_deadline']) ? 'hidden' : '' }}">
-                        <div class="flex items-start sm:items-center space-x-4 min-w-0">
+                        class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-rose-50/80 border-2 border-rose-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 {{ empty($metrics['voting_deadline']) ? 'hidden' : '' }}">
+                        <div class="flex items-start sm:items-center space-x-3 sm:space-x-4 min-w-0">
                             <span
-                                class="w-4 h-4 rounded-full bg-rose-500 ring-6 ring-rose-200 animate-pulse shrink-0 mt-1 sm:mt-0"></span>
+                                class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-rose-500 ring-4 sm:ring-6 ring-rose-200 animate-pulse shrink-0 mt-1 sm:mt-0"></span>
                             <div class="min-w-0">
-                                <div class="flex items-center space-x-3">
+                                <div class="flex items-center space-x-2 sm:space-x-3">
                                     <span
-                                        class="text-xs sm:text-sm font-black uppercase tracking-wider text-rose-950 block">{{ __('Voting Deadline') }}</span>
+                                        class="text-[10px] sm:text-sm font-black uppercase tracking-wider text-rose-950 block">{{ __('Voting Deadline') }}</span>
                                     <span id="deadline-status-pill"
-                                        class="px-3 py-0.5 rounded-full text-xs font-black uppercase bg-rose-200 text-rose-900 border border-rose-300">{{ __('Countdown Active') }}</span>
+                                        class="px-2.5 sm:px-3 py-0.5 rounded-full text-[10px] sm:text-xs font-black uppercase bg-rose-200 text-rose-900 border border-rose-300">{{ __('Countdown Active') }}</span>
                                 </div>
-                                <h3 class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight mt-1">
+                                <h3 class="text-base sm:text-2xl font-black text-slate-950 tracking-tight mt-0.5 sm:mt-1">
                                     {{ __('Election Time Remaining') }}</h3>
-                                <p id="deadline-info-text" class="text-sm sm:text-base text-slate-700 mt-1 font-bold">
+                                <p id="deadline-info-text" class="text-xs sm:text-base text-slate-700 mt-0.5 sm:mt-1 font-bold">
                                     {{ __('Official Deadline:') }} <strong id="deadline-formatted-text"
                                         class="text-slate-950 font-black">{{ $metrics['deadline_formatted'] ?? '-' }}</strong>
                                 </p>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-1.5 font-mono text-2xl sm:text-3xl font-black text-slate-950 shrink-0"
+                        <div class="flex items-center justify-center space-x-1 sm:space-x-1.5 font-mono text-base sm:text-2xl md:text-3xl font-black text-slate-950 shrink-0"
                             id="deadline-countdown-timer">
                             <span id="deadline-days"
-                                class="bg-white border-2 border-rose-300 px-3 py-2 rounded-2xl shadow-xs">00d</span>
+                                class="bg-white border-2 border-rose-300 px-2 sm:px-3 py-1 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs">00d</span>
                             <span class="text-rose-400 font-bold">:</span>
                             <span id="deadline-hours"
-                                class="bg-white border-2 border-rose-300 px-3 py-2 rounded-2xl shadow-xs">00h</span>
+                                class="bg-white border-2 border-rose-300 px-2 sm:px-3 py-1 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs">00h</span>
                             <span class="text-rose-400 font-bold">:</span>
                             <span id="deadline-mins"
-                                class="bg-white border-2 border-rose-300 px-3 py-2 rounded-2xl shadow-xs">00m</span>
+                                class="bg-white border-2 border-rose-300 px-2 sm:px-3 py-1 sm:py-2 rounded-xl sm:rounded-2xl shadow-xs">00m</span>
                             <span class="text-rose-400 font-bold">:</span>
                             <span id="deadline-secs"
-                                class="bg-white border-2 border-rose-300 px-3 py-2 rounded-2xl text-rose-600 shadow-xs">00s</span>
+                                class="bg-white border-2 border-rose-300 px-2 sm:px-3 py-1 sm:py-2 rounded-xl sm:rounded-2xl text-rose-600 shadow-xs">00s</span>
                         </div>
                     </div>
                 </div>
@@ -447,17 +447,17 @@
         <!-- ======================================================== -->
         <!-- SECTION 2: ADVANCED COMPARATIVE BAR CHART (FOLDABLE)     -->
         <!-- ======================================================== -->
-        <div id="sec-chart" class="scroll-sundul-init p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
+        <div id="sec-chart" class="scroll-sundul-init p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-xs mb-6 sm:mb-8 transition-all">
             <!-- Section Foldable Header (Row 1 Full Width Title, Row 2 Filter Tabs) -->
-            <div class="pb-5 border-b border-slate-100 space-y-4">
+            <div class="pb-4 sm:pb-5 border-b border-slate-100 space-y-3 sm:space-y-4">
                 <!-- Row 1: Full-Width Title & Fold Trigger (No Truncation) -->
-                <div class="flex items-center justify-between gap-4 cursor-pointer select-none group"
+                <div class="flex items-center justify-between gap-3 sm:gap-4 cursor-pointer select-none group"
                     onclick="toggleSection('sec-chart')">
-                    <div class="flex items-center space-x-3 min-w-0">
-                        <span class="w-3.5 h-3.5 rounded-full bg-indigo-600 ring-4 ring-indigo-100 shrink-0"></span>
+                    <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+                        <span class="w-3 sm:w-3.5 h-3 sm:h-3.5 rounded-full bg-indigo-600 ring-3 sm:ring-4 ring-indigo-100 shrink-0"></span>
                         <div>
                             <h2
-                                class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">
+                                class="text-base sm:text-2xl font-black text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">
                                 {{ __('Comparative Bar Chart of All Candidates') }}
                             </h2>
                             <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-0.5">
@@ -482,22 +482,22 @@
                 </div>
 
                 <!-- Row 2: Filter Tabs on Dedicated Row (Large, Touch-Friendly Buttons) -->
-                <div class="flex items-center overflow-x-auto pt-1">
+                <div class="flex items-center overflow-x-auto pt-1 pb-1 scrollbar-none">
                     <div
-                        class="inline-flex rounded-2xl bg-slate-100 p-1.5 text-xs sm:text-sm md:text-base font-extrabold shadow-inner gap-1">
+                        class="inline-flex rounded-xl sm:rounded-2xl bg-slate-100 p-1 sm:p-1.5 text-xs sm:text-sm md:text-base font-extrabold shadow-inner gap-1 w-full sm:w-auto">
                         <button type="button" onclick="switchChartMode('all')" id="btn-chart-all"
-                            class="px-4 sm:px-6 py-2.5 rounded-xl bg-white text-slate-900 shadow-sm transition cursor-pointer whitespace-nowrap font-black">{{ __('All Candidates') }}</button>
+                            class="flex-1 sm:flex-none text-center px-3 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-white text-slate-900 shadow-sm transition cursor-pointer whitespace-nowrap font-black">{{ __('All Candidates') }}</button>
                         <button type="button" onclick="switchChartMode('ketua')" id="btn-chart-ketua"
-                            class="px-4 sm:px-6 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer whitespace-nowrap font-extrabold">{{ __('Chairman Candidates') }}</button>
+                            class="flex-1 sm:flex-none text-center px-3 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer whitespace-nowrap font-extrabold">{{ __('Chairman Candidates') }}</button>
                         <button type="button" onclick="switchChartMode('pengawas')" id="btn-chart-pengawas"
-                            class="px-4 sm:px-6 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer whitespace-nowrap font-extrabold">{{ __('Supervisor Candidates') }}</button>
+                            class="flex-1 sm:flex-none text-center px-3 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-slate-600 hover:text-slate-900 transition cursor-pointer whitespace-nowrap font-extrabold">{{ __('Supervisor Candidates') }}</button>
                     </div>
                 </div>
             </div>
 
             <!-- Section Content (Enlarged Height For Boomer Readability) -->
-            <div id="sec-chart-content" class="pt-6">
-                <div class="relative w-full max-w-full mx-auto h-[460px] sm:h-[540px] md:h-[620px] overflow-hidden">
+            <div id="sec-chart-content" class="pt-4 sm:pt-6">
+                <div class="relative w-full max-w-full mx-auto h-[380px] sm:h-[500px] md:h-[600px] overflow-hidden">
                     <canvas id="comparisonChart"></canvas>
                 </div>
             </div>
@@ -506,15 +506,15 @@
         <!-- ======================================================== -->
         <!-- SECTION 3: PROCEDURAL VOTING GUIDE (3 QUICK FULL-WIDTH ROWS) -->
         <!-- ======================================================== -->
-        <div id="sec-guide" class="scroll-sundul-init p-5 sm:p-7 rounded-3xl bg-slate-50 border border-slate-200 mb-8 transition-all">
+        <div id="sec-guide" class="scroll-sundul-init p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-slate-50 border border-slate-200 mb-6 sm:mb-8 transition-all">
             <!-- Section Foldable Header (Minimalist Dot Color + Text to Voice TTS) -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
-                <div class="flex items-center space-x-3 min-w-0 cursor-pointer select-none group"
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-slate-200">
+                <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0 cursor-pointer select-none group"
                     onclick="toggleSection('sec-guide')">
-                    <span class="w-3.5 h-3.5 rounded-full bg-amber-500 ring-4 ring-amber-100 shrink-0"></span>
+                    <span class="w-3 sm:w-3.5 h-3 sm:h-3.5 rounded-full bg-amber-500 ring-3 sm:ring-4 ring-amber-100 shrink-0"></span>
                     <div class="min-w-0">
                         <h2
-                            class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight group-hover:text-amber-600 transition-colors">
+                            class="text-base sm:text-2xl font-black text-slate-900 tracking-tight group-hover:text-amber-600 transition-colors">
                             {{ __('Voting Guide (3 Quick Steps)') }}
                         </h2>
                         <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-0.5">
@@ -522,10 +522,10 @@
                         </p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-2.5 shrink-0 justify-between sm:justify-end">
+                <div class="flex items-center space-x-2 shrink-0 justify-between sm:justify-end">
                     <!-- Text to Voice Button for Voting Guide -->
                     <button type="button" id="btn-guide-tts" onclick="toggleVotingGuideTTS(event)"
-                        class="inline-flex items-center justify-center space-x-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-black text-xs sm:text-sm border-2 border-amber-300 shadow-xs transition cursor-pointer">
+                        class="inline-flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-black text-xs sm:text-sm border-2 border-amber-300 shadow-xs transition cursor-pointer">
                         <svg id="guide-tts-icon" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
                         </svg>
@@ -550,20 +550,20 @@
             </div>
 
             <!-- Section Content (3 Full-Width Row Cards, Enormous Step Badges & Description Text) -->
-            <div id="sec-guide-content" class="pt-6">
-                <div class="grid grid-cols-1 gap-5">
+            <div id="sec-guide-content" class="pt-4 sm:pt-6">
+                <div class="grid grid-cols-1 gap-3.5 sm:gap-5">
                     <!-- Card 1: Step 01 -->
                     <div
-                        class="p-6 sm:p-7 rounded-3xl bg-white border-2 border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div class="flex items-start sm:items-center space-x-5 min-w-0">
+                        class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-white border-2 border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 min-w-0 flex-1">
                             <span
-                                class="px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl text-base sm:text-lg font-black uppercase tracking-wider bg-blue-100 text-blue-900 border-2 border-blue-300 shrink-0 shadow-xs">
+                                class="self-start sm:self-auto px-3.5 py-1.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-lg font-black uppercase tracking-wider bg-blue-100 text-blue-900 border-2 border-blue-300 shrink-0 shadow-xs">
                                 {{ __('Step 01') }}
                             </span>
-                            <div class="min-w-0">
-                                <h4 class="text-xl sm:text-2xl font-black text-slate-950">{{ __('Tap RFID Member Card') }}
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-base sm:text-2xl font-black text-slate-950">{{ __('Tap RFID Member Card') }}
                                 </h4>
-                                <p class="text-base sm:text-xl text-slate-700 font-bold mt-1.5 leading-relaxed">
+                                <p class="text-xs sm:text-base md:text-xl text-slate-700 font-medium sm:font-bold mt-1 sm:mt-1.5 leading-relaxed">
                                     {{ __('Scan your registered cooperative RFID card on the voting booth reader to authenticate your identity and open the digital ballot.') }}
                                 </p>
                             </div>
@@ -572,16 +572,16 @@
 
                     <!-- Card 2: Step 02 -->
                     <div
-                        class="p-6 sm:p-7 rounded-3xl bg-white border-2 border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div class="flex items-start sm:items-center space-x-5 min-w-0">
+                        class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-white border-2 border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 min-w-0 flex-1">
                             <span
-                                class="px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl text-base sm:text-lg font-black uppercase tracking-wider bg-indigo-100 text-indigo-900 border-2 border-indigo-300 shrink-0 shadow-xs">
+                                class="self-start sm:self-auto px-3.5 py-1.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-lg font-black uppercase tracking-wider bg-indigo-100 text-indigo-900 border-2 border-indigo-300 shrink-0 shadow-xs">
                                 {{ __('Step 02') }}
                             </span>
-                            <div class="min-w-0">
-                                <h4 class="text-xl sm:text-2xl font-black text-slate-950">{{ __('Select Your Candidates') }}
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-base sm:text-2xl font-black text-slate-950">{{ __('Select Your Candidates') }}
                                 </h4>
-                                <p class="text-base sm:text-xl text-slate-700 font-bold mt-1.5 leading-relaxed">
+                                <p class="text-xs sm:text-base md:text-xl text-slate-700 font-medium sm:font-bold mt-1 sm:mt-1.5 leading-relaxed">
                                     {{ __('Touch candidate photo on the screen to choose 1 Chairman and 1 Supervisory Board candidate of your choice.') }}
                                 </p>
                             </div>
@@ -590,16 +590,16 @@
 
                     <!-- Card 3: Step 03 -->
                     <div
-                        class="p-6 sm:p-7 rounded-3xl bg-white border-2 border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div class="flex items-start sm:items-center space-x-5 min-w-0">
+                        class="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-white border-2 border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 min-w-0 flex-1">
                             <span
-                                class="px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl text-base sm:text-lg font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 border-2 border-emerald-300 shrink-0 shadow-xs">
+                                class="self-start sm:self-auto px-3.5 py-1.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-lg font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 border-2 border-emerald-300 shrink-0 shadow-xs">
                                 {{ __('Step 03') }}
                             </span>
-                            <div class="min-w-0">
-                                <h4 class="text-xl sm:text-2xl font-black text-slate-950">{{ __('Submit & Complete Vote') }}
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-base sm:text-2xl font-black text-slate-950">{{ __('Submit & Complete Vote') }}
                                 </h4>
-                                <p class="text-base sm:text-xl text-slate-700 font-bold mt-1.5 leading-relaxed">
+                                <p class="text-xs sm:text-base md:text-xl text-slate-700 font-medium sm:font-bold mt-1 sm:mt-1.5 leading-relaxed">
                                     {{ __('Review your selected candidates on the confirmation screen and tap Submit Vote to securely record your ballot in the system.') }}
                                 </p>
                             </div>
@@ -999,9 +999,28 @@
             document.addEventListener('DOMContentLoaded', function () {
                 initComparisonChart();
                 initLiveSSE();
+
+                let resizeTimer;
+                window.addEventListener('resize', function () {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(() => {
+                        if (comparisonChart) {
+                            const isMobile = window.innerWidth < 640;
+                            comparisonChart.options.layout.padding.top = isMobile ? 24 : 36;
+                            comparisonChart.options.layout.padding.bottom = isMobile ? 80 : 110;
+                            comparisonChart.options.layout.padding.left = isMobile ? 8 : 16;
+                            comparisonChart.options.layout.padding.right = isMobile ? 8 : 16;
+                            const { datasets } = generateChartData(currentChartMode);
+                            comparisonChart.data.datasets = datasets;
+                            comparisonChart.resize();
+                            comparisonChart.update();
+                        }
+                    }, 100);
+                });
             });
 
             // Custom Chart.js Plugin: Candidate Avatar Portraits on X-Axis
+            // Custom Chart.js Plugin: Candidate Avatar Portraits on X-Axis with Anti-Collision Logic
             const candidateAvatarPlugin = {
                 id: 'candidateAvatars',
                 afterDraw(chart) {
@@ -1018,11 +1037,31 @@
                         ];
                     }
 
+                    if (!candidates.length) return;
+
+                    const chartW = chart.width || (chart.chartArea ? chart.chartArea.right - chart.chartArea.left : 400);
+                    // Determine horizontal space available per candidate
+                    let colWidth = 100;
+                    if (candidates.length > 1 && !isNaN(x.getPixelForTick(1)) && !isNaN(x.getPixelForTick(0))) {
+                        colWidth = Math.abs(x.getPixelForTick(1) - x.getPixelForTick(0));
+                    } else if (candidates.length > 0) {
+                        colWidth = chartW / candidates.length;
+                    }
+
+                    const isUltraCompact = colWidth < 55 || chartW < 380;
+                    const isCompact = colWidth < 78 || chartW < 640;
+
+                    const size = isUltraCompact ? 28 : (isCompact ? 34 : 44);
+                    const badgeRadius = isUltraCompact ? 5.5 : (isCompact ? 7 : 8.5);
+                    const badgeFontSize = isUltraCompact ? '9px' : (isCompact ? '10px' : '12px');
+                    const nameFontSize = isUltraCompact ? 9 : (isCompact ? 10.5 : 13);
+                    const lineHeight = nameFontSize + 3.5;
+                    const maxTextWidth = Math.max(colWidth - 4, 30);
+
                     candidates.forEach((cand, idx) => {
                         const xPos = x.getPixelForTick(idx);
                         if (isNaN(xPos)) return;
-                        const yPos = y.bottom + 12;
-                        const size = 46;
+                        const yPos = y.bottom + 8;
 
                         const defaultAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(cand.nama) + '&background=' + (cand.type === 'ketua' ? 'dc2626' : '059669') + '&color=ffffff&size=100';
                         const avatarSrc = cand.foto || defaultAvatar;
@@ -1046,47 +1085,55 @@
                         ctx.save();
                         ctx.beginPath();
                         ctx.arc(xPos, yPos + size / 2, size / 2, 0, Math.PI * 2);
-                        ctx.lineWidth = 3;
+                        ctx.lineWidth = isUltraCompact ? 2 : 2.5;
                         ctx.strokeStyle = cand.type === 'ketua' ? '#dc2626' : '#059669';
                         ctx.stroke();
                         ctx.restore();
 
-                        // Mini number badge pill (Enlarged for boomer readability)
+                        // Mini number badge pill
                         ctx.save();
                         ctx.beginPath();
-                        ctx.arc(xPos + size / 2 - 3, yPos + 5, 9, 0, Math.PI * 2);
+                        ctx.arc(xPos + size / 2 - 2, yPos + badgeRadius, badgeRadius, 0, Math.PI * 2);
                         ctx.fillStyle = '#ffffff';
                         ctx.fill();
-                        ctx.lineWidth = 2;
+                        ctx.lineWidth = 1.8;
                         ctx.strokeStyle = cand.type === 'ketua' ? '#dc2626' : '#059669';
                         ctx.stroke();
-                        ctx.font = '900 12px "Plus Jakarta Sans", sans-serif';
+                        ctx.font = `900 ${badgeFontSize} "Plus Jakarta Sans", sans-serif`;
                         ctx.fillStyle = '#0f172a';
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
-                        ctx.fillText(cand.nomor_urut, xPos + size / 2 - 3, yPos + 5);
+                        ctx.fillText(cand.nomor_urut, xPos + size / 2 - 2, yPos + badgeRadius);
                         ctx.restore();
 
-                        // Candidate full name (Large font, horizontal, non-tilted, clean multi-line wrapping)
+                        // Candidate name with NO-OVERLAP constraint
                         ctx.save();
-                        ctx.font = '900 14px "Plus Jakarta Sans", sans-serif';
+                        ctx.font = `900 ${nameFontSize}px "Plus Jakarta Sans", sans-serif`;
                         ctx.fillStyle = '#0f172a';
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'top';
 
-                        const fullName = cand.nama || '';
-                        const words = fullName.split(' ');
-                        if (words.length > 2) {
-                            const mid = Math.ceil(words.length / 2);
-                            const line1 = words.slice(0, mid).join(' ');
-                            const line2 = words.slice(mid).join(' ');
-                            ctx.fillText(line1, xPos, yPos + size + 8);
-                            ctx.fillText(line2, xPos, yPos + size + 26);
-                        } else if (fullName.length > 14 && words.length === 2) {
-                            ctx.fillText(words[0], xPos, yPos + size + 8);
-                            ctx.fillText(words[1], xPos, yPos + size + 26);
+                        const fullName = (cand.nama || '').trim();
+                        const words = fullName.split(/\s+/);
+                        let line1 = '';
+                        let line2 = '';
+
+                        if (words.length === 1) {
+                            line1 = words[0];
+                        } else if (words.length === 2) {
+                            line1 = words[0];
+                            line2 = words[1];
                         } else {
-                            ctx.fillText(fullName, xPos, yPos + size + 8);
+                            const mid = Math.ceil(words.length / 2);
+                            line1 = words.slice(0, mid).join(' ');
+                            line2 = words.slice(mid).join(' ');
+                        }
+
+                        const textStartY = yPos + size + 6;
+                        // Passing maxTextWidth guarantees the browser scales down glyphs if needed and NEVER bleeds into adjacent candidate columns!
+                        ctx.fillText(line1, xPos, textStartY, maxTextWidth);
+                        if (line2) {
+                            ctx.fillText(line2, xPos, textStartY + lineHeight, maxTextWidth);
                         }
                         ctx.restore();
                     });
@@ -1099,6 +1146,7 @@
                 const ctx = document.getElementById('comparisonChart').getContext('2d');
 
                 const { labels, datasets } = generateChartData(currentChartMode);
+                const isMobile = window.innerWidth < 640;
 
                 comparisonChart = new Chart(ctx, {
                     type: 'bar',
@@ -1112,10 +1160,10 @@
                         maintainAspectRatio: false,
                         layout: {
                             padding: {
-                                top: 36,
-                                bottom: 110, // Generous breathing space for enlarged photo avatars & full candidate names
-                                left: 16,
-                                right: 16
+                                top: isMobile ? 24 : 36,
+                                bottom: isMobile ? 80 : 110, // Generous breathing space for avatars & names
+                                left: isMobile ? 8 : 16,
+                                right: isMobile ? 8 : 16
                             }
                         },
                         animation: {
@@ -1127,19 +1175,19 @@
                                 position: 'top',
                                 align: 'center',
                                 labels: {
-                                    padding: 26,
-                                    font: { family: 'Plus Jakarta Sans', weight: '900', size: 16 },
+                                    padding: isMobile ? 12 : 26,
+                                    font: { family: 'Plus Jakarta Sans', weight: '900', size: isMobile ? 12 : 16 },
                                     usePointStyle: true,
                                     pointStyle: 'rect',
-                                    boxWidth: 20,
-                                    boxHeight: 20
+                                    boxWidth: isMobile ? 12 : 20,
+                                    boxHeight: isMobile ? 12 : 20
                                 }
                             },
                             tooltip: {
                                 backgroundColor: '#0f172a',
-                                titleFont: { family: 'Plus Jakarta Sans', weight: '900', size: 15 },
-                                bodyFont: { family: 'Plus Jakarta Sans', weight: 'bold', size: 14 },
-                                padding: 16,
+                                titleFont: { family: 'Plus Jakarta Sans', weight: '900', size: 14 },
+                                bodyFont: { family: 'Plus Jakarta Sans', weight: 'bold', size: 13 },
+                                padding: 14,
                                 cornerRadius: 14,
                                 boxPadding: 8,
                                 callbacks: {
@@ -1151,22 +1199,22 @@
                                         let pct = '0.0';
 
                                         if (currentChartMode === 'ketua' && rawKetuaData[dataIndex]) {
-                                            candidateName = rawKetuaData[dataIndex].nama;
-                                            pct = rawKetuaData[dataIndex].persen;
+                                             candidateName = rawKetuaData[dataIndex].nama;
+                                             pct = rawKetuaData[dataIndex].persen;
                                         } else if (currentChartMode === 'pengawas' && rawPengawasData[dataIndex]) {
-                                            candidateName = rawPengawasData[dataIndex].nama;
-                                            pct = rawPengawasData[dataIndex].persen;
+                                             candidateName = rawPengawasData[dataIndex].nama;
+                                             pct = rawPengawasData[dataIndex].persen;
                                         } else if (currentChartMode === 'all') {
-                                            if (dataIndex < rawKetuaData.length && rawKetuaData[dataIndex]) {
-                                                candidateName = rawKetuaData[dataIndex].nama;
-                                                pct = rawKetuaData[dataIndex].persen;
-                                            } else {
-                                                const pIndex = dataIndex - rawKetuaData.length;
-                                                if (rawPengawasData[pIndex]) {
-                                                    candidateName = rawPengawasData[pIndex].nama;
-                                                    pct = rawPengawasData[pIndex].persen;
-                                                }
-                                            }
+                                             if (dataIndex < rawKetuaData.length && rawKetuaData[dataIndex]) {
+                                                 candidateName = rawKetuaData[dataIndex].nama;
+                                                 pct = rawKetuaData[dataIndex].persen;
+                                             } else {
+                                                 const pIndex = dataIndex - rawKetuaData.length;
+                                                 if (rawPengawasData[pIndex]) {
+                                                     candidateName = rawPengawasData[pIndex].nama;
+                                                     pct = rawPengawasData[pIndex].persen;
+                                                 }
+                                             }
                                         }
                                         return ` ${candidateName}: ${val} Suara (${pct}%)`;
                                     }
@@ -1179,7 +1227,7 @@
                                 grace: '25%',
                                 ticks: {
                                     stepSize: 1,
-                                    font: { family: 'Plus Jakarta Sans', weight: '900', size: 14 },
+                                    font: { family: 'Plus Jakarta Sans', weight: '900', size: isMobile ? 11 : 14 },
                                     color: '#334155'
                                 },
                                 grid: {
@@ -1187,10 +1235,10 @@
                                 }
                             },
                             x: {
-                                barPercentage: 0.65,
-                                categoryPercentage: 0.65,
+                                barPercentage: isMobile ? 0.75 : 0.65,
+                                categoryPercentage: isMobile ? 0.75 : 0.65,
                                 ticks: {
-                                    display: false // Hide text ticks, rendered as circular photo avatars by candidateAvatarPlugin
+                                    display: false // Rendered as circular photo avatars by candidateAvatarPlugin
                                 },
                                 grid: {
                                     display: false
@@ -1202,6 +1250,10 @@
             }
 
             function generateChartData(mode) {
+                const isMobile = window.innerWidth < 640;
+                const barW = isMobile ? (mode === 'all' ? 16 : 24) : 32;
+                const maxBarW = isMobile ? (mode === 'all' ? 22 : 36) : 44;
+
                 if (mode === 'ketua') {
                     return {
                         labels: rawKetuaData.map(k => k.nama),
@@ -1212,8 +1264,8 @@
                             hoverBackgroundColor: 'rgba(220, 38, 38, 0.95)',
                             borderWidth: 0,
                             borderRadius: 0,
-                            barThickness: 32,
-                            maxBarThickness: 44,
+                            barThickness: barW,
+                            maxBarThickness: maxBarW,
                         }]
                     };
                 } else if (mode === 'pengawas') {
@@ -1226,8 +1278,8 @@
                             hoverBackgroundColor: 'rgba(5, 150, 105, 0.95)',
                             borderWidth: 0,
                             borderRadius: 0,
-                            barThickness: 32,
-                            maxBarThickness: 44,
+                            barThickness: barW,
+                            maxBarThickness: maxBarW,
                         }]
                     };
                 } else {
@@ -1248,8 +1300,8 @@
                                 hoverBackgroundColor: 'rgba(220, 38, 38, 0.95)',
                                 borderWidth: 0,
                                 borderRadius: 0,
-                                barThickness: 32,
-                                maxBarThickness: 44,
+                                barThickness: barW,
+                                maxBarThickness: maxBarW,
                                 grouped: false,
                             },
                             {
@@ -1259,8 +1311,8 @@
                                 hoverBackgroundColor: 'rgba(5, 150, 105, 0.95)',
                                 borderWidth: 0,
                                 borderRadius: 0,
-                                barThickness: 32,
-                                maxBarThickness: 44,
+                                barThickness: barW,
+                                maxBarThickness: maxBarW,
                                 grouped: false,
                             }
                         ]
