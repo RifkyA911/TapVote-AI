@@ -58,28 +58,13 @@ export function initRfid3DCard(containerId, options = {}) {
     const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
     cardGroup.add(coreMesh);
 
-    // B. Front Face (Procedural Design matching image.png / dashboard-ubs-card.png)
+    // B. Front Face (Procedural Design matching image.png)
     const frontGeometry = new THREE.PlaneGeometry(cardWidth, cardHeight);
     const frontMaterial = new THREE.MeshStandardMaterial({
         map: frontTexture,
         metalness: 0.1,
         roughness: 0.28,
     });
-
-    // Directly load high-res UBS Gold Card image asset (C:\Users\rifky\Downloads\image.png)
-    const textureLoader = new THREE.TextureLoader();
-    textureLoader.load(
-        '/images/dashboard-ubs-card.png',
-        (loadedTex) => {
-            loadedTex.colorSpace = THREE.SRGBColorSpace;
-            frontMaterial.map = loadedTex;
-            frontMaterial.needsUpdate = true;
-        },
-        undefined,
-        (err) => {
-            console.warn('Fallback to procedural UBS front texture:', err);
-        }
-    );
 
     const frontMesh = new THREE.Mesh(frontGeometry, frontMaterial);
     frontMesh.position.z = cardThickness / 2 + 0.002;
@@ -315,22 +300,22 @@ function createProceduralFrontTexture() {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, 1000, 1580);
 
-    // 2. Top-to-Mid Dynamic Crimson Wave Gradient (Matching contoh.png)
-    const redGrad = ctx.createLinearGradient(0, 0, 1000, 1000);
-    redGrad.addColorStop(0, '#f43f5e'); // Rose Coral
-    redGrad.addColorStop(0.35, '#e11d48'); // Rich Crimson
-    redGrad.addColorStop(0.7, '#be123c'); // Deep Ruby
-    redGrad.addColorStop(1, '#9f1239');
+    // 2. Top-to-Mid Dynamic Royal Navy Wave Gradient (Matching image.png)
+    const blueGrad = ctx.createLinearGradient(0, 0, 1000, 1000);
+    blueGrad.addColorStop(0, '#1d4ed8'); // Vibrant Royal Blue
+    blueGrad.addColorStop(0.35, '#1e40af'); // Classic Blue
+    blueGrad.addColorStop(0.7, '#1e3a8a'); // Deep Royal Navy
+    blueGrad.addColorStop(1, '#0f172a'); // Midnight Slate
 
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(1000, 0);
     ctx.lineTo(1000, 1100);
-    // Smooth swooping curve separating red from bottom light section
+    // Smooth swooping curve separating navy from bottom light section
     ctx.bezierCurveTo(750, 1180, 450, 950, 0, 1180);
     ctx.closePath();
-    ctx.fillStyle = redGrad;
+    ctx.fillStyle = blueGrad;
     ctx.fill();
     ctx.restore();
 
@@ -369,10 +354,10 @@ function createProceduralFrontTexture() {
     ctx.fill();
 
     // 5. Header Emblem & Typography (Corporate Clean, No PT UBS)
-    // Diamond Logo Emblem
+    // Diamond Logo Emblem (Gold & White)
     ctx.save();
     ctx.translate(220, 220);
-    ctx.strokeStyle = '#1e3a8a'; // Deep Navy
+    ctx.strokeStyle = '#f59e0b'; // Gold
     ctx.lineWidth = 14;
     ctx.beginPath();
     ctx.moveTo(0, -38);
@@ -383,7 +368,7 @@ function createProceduralFrontTexture() {
     ctx.stroke();
 
     // Inner diamond accent
-    ctx.fillStyle = '#dc2626'; // Vibrant Red
+    ctx.fillStyle = '#eab308'; // Bright Gold
     ctx.beginPath();
     ctx.moveTo(0, -20);
     ctx.lineTo(24, 0);
@@ -393,15 +378,15 @@ function createProceduralFrontTexture() {
     ctx.fill();
     ctx.restore();
 
-    // Title Text: "UBS GOLD" in Royal Navy Blue
+    // Title Text: "UBS GOLD" in Crisp White
     ctx.font = 'italic 900 82px "Plus Jakarta Sans", Impact, sans-serif';
-    ctx.fillStyle = '#1e3a8a';
+    ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'left';
     ctx.fillText('UBS GOLD', 300, 245);
 
-    // Subtitle in Blue/Slate: "SMART CARD MEMBER • 2026"
+    // Subtitle in Light Blue: "SMART CARD MEMBER • 2026"
     ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
-    ctx.fillStyle = '#2563eb';
+    ctx.fillStyle = '#93c5fd';
     ctx.letterSpacing = '2px';
     ctx.fillText('SMART CARD MEMBER • 2026', 302, 288);
 

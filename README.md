@@ -46,22 +46,30 @@
 - **Clean Public Header**: High-contrast, spacious layout with deadline countdown badge, client IP admin quick-link, and instant language switcher (`EN` / `ID`).
 
 ### 3. Executive Admin Control Panel (`/admin`)
-- **Clean Light Theme by Default**:
-  - Standardized modern light theme interface across all admin views, with optional dark/system mode toggle saved in local storage.
+- **Clean Light Theme & Unified Header Banners**:
+  - Standardized modern light theme interface across all admin views with zero dark-mode bleeding, and optional dark/system mode toggle saved in local storage.
+  - Every admin section features a unified, responsive white card header banner (`rounded-3xl bg-white border border-slate-200 shadow-2xs`) with status chips, bold titles, and quick action bars.
+- **Responsive Mobile & Tablet Drawer**:
+  - Off-canvas drawer navigation (`z-50`) with an explicit backdrop overlay (`z-40`), smooth slide transitions, and instant touch dismissal on mobile and iPad screens.
+- **HeadlessUI Operational Status Sync (LIVE / PAUSED / FINISHED)**:
+  - Context-aware modal confirmation popups safeguarding status changes with Indonesian & English localized warnings.
+  - Synchronizes real-time status badges across top navbar, kiosk booth, and public live stream instantly.
+- **Bilingual Election Titles (`election_title_id` & `election_title_en`)**:
+  - Independent official title configuration for Indonesian and English interfaces, dynamically rendered via `AppSetting::getElectionTitle()`.
 - **Interactive 3D RFID Smart Card Simulator (`/admin/dashboard`)**:
-  - Realistic Three.js model featuring UBS Gold Card design: "BUDI" nameplate on solid black bar, blue collared shirt portrait, vertical barcode, and royal blue satin lanyard ribbon loop.
-  - 360° interactive rotation on X & Y axes with auto-spin, flip, and view reset controls.
+  - Realistic Three.js physical model replicating the official UBS Gold ID badge: "BUDI" nameplate on solid black bar, blue collared shirt portrait, vertical barcode, slot punch, matte black swivel clasp, and royal blue satin lanyard ribbon loop.
+  - 360° interactive rotation on X & Y axes with mouse drag, touch controls, and pure white spotless PVC back.
 - **ApexCharts Donut Charts & Responsive Candidate Recaps**:
   - Donut pie charts with thickened slices (`size: 50%`) and responsive column stacking (`lg:grid-cols-12`) preventing chart and tally collisions on tablet/mobile screens.
 - **Telemetry Analytics Module (`/admin/analytics`)**:
   - Comprehensive telemetry center: 24-hour voting velocity histogram, department turnout rankings, RFID Mifare authenticity audit, foreign card scan tracking, and downloadable PDF report.
-- **Vote Flow & Broker Summary Module (`/admin/vote-flow`)**:
+- **Vote Flow & Department Distribution Module (`/admin/vote-flow`)**:
   - **100% Real Database Analytics**: Direct relational SQL joins across ballots (`hasil_ketua`, `hasil_pengawas`), voters (`pemilih`), and candidates (`kandidat_ketua`, `kandidat_pengawas`).
   - **Interactive Apache ECharts Sankey Flow Diagram**: Maps directional vote currents from individual departments to candidates.
-  - **Department Broker Summary & Cross-Tabulation Matrix**: Real-time division rankings, vote share %, candidate solidity scores, and search filter with shortcut key (`/`).
+  - **Department Vote Distribution & Cross-Tabulation Matrix**: Real-time division rankings, vote share %, candidate solidity scores, and search filter with shortcut key (`/`).
   - **AI Vision Flow Intelligence**: Integrated Google Gemini 2.0 Flash reasoning with bilingual heuristic fallback (EN / ID) for identifying dominant coalitions and swing departments.
 - **System Settings Management Panel (`/admin/settings`)**:
-  - Comprehensive control panel for official election title, quorum threshold percentage, Gemini AI model and API keys, voice greeting autoplay, sound effects toggles, and kiosk session timeouts.
+  - Real-time debounced autosave engine for bilingual election titles, quorum threshold percentage, Gemini AI model and API keys, voice greeting autoplay, sound effects toggles, and kiosk session timeouts.
 - **Candidate Drag-and-Drop Reordering (`/admin/ketua`, `/admin/pengawas`)**:
   - Interactive HTML5 table row drag-and-drop with real-time ballot number recalculation and asynchronous AJAX persistence.
 - **Custom Controller-Based Vector PDF & Excel Exports**:

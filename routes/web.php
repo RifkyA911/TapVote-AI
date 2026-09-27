@@ -92,7 +92,7 @@ Route::prefix('admin')->middleware(['admin.ip', 'auth', 'role.admin'])->group(fu
     Route::get('/analytics/ai-analysis', [AnalyticsController::class, 'getAiAnalysis'])->name('admin.analytics.ai');
     Route::get('/analytics/export-pdf', [AnalyticsController::class, 'exportPdf'])->name('admin.analytics.export.pdf');
 
-    // Vote Flow - Electoral Flow & Broker Summary Intelligence
+    // Vote Flow - Electoral Flow & Department Distribution Intelligence
     Route::get('/vote-flow', [VoteFlowController::class, 'index'])->name('admin.vote-flow');
     Route::get('/vote-flow/data', [VoteFlowController::class, 'flowData'])->name('admin.vote-flow.data');
     Route::get('/vote-flow/ai-summary', [VoteFlowController::class, 'aiSummary'])->name('admin.vote-flow.ai');

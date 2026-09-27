@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Vote Flow & Broker Summary Intelligence - TapVote AI')
+@section('title', 'Vote Flow & Department Distribution - TapVote AI')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8">
@@ -13,10 +13,10 @@
                     Vote Flow Intelligence
                 </span>
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
-                    Broker Summary Matrix
+                    Department Distribution Matrix
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Aliran Suara & Broker Summary') }}</h2>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Aliran Suara & Distribusi Departemen') }}</h2>
             <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">
                 {{ __('Audit visualisasi aliran suara dari setiap departemen ke masing-masing kandidat, konsentrasi blok pemilih, serta rasio dominasi elektoral.') }}
             </p>
@@ -58,7 +58,7 @@
         @endphp
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-emerald-700 font-semibold">{{ __('Lumbung Suara Terbesar (Top Broker)') }}</span>
+                <span class="text-xs text-emerald-700 font-semibold">{{ __('Lumbung Suara Terbesar') }}</span>
                 <strong class="block text-xl font-black text-emerald-600 truncate mt-0.5">
                     {{ $topBroker ? $topBroker['dept'] : '-' }}
                 </strong>
@@ -157,7 +157,7 @@
         @endif
     </div>
 
-    <!-- BROKER SUMMARY RANKING TABLE -->
+    <!-- DEPARTMENT DISTRIBUTION RANKING TABLE -->
     <div class="space-y-4">
         <!-- Foldable Interactive Query Toolbar -->
         <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
@@ -167,7 +167,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                     </div>
                     <div>
-                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">{{ __('Filter & Broker Summary Search') }}</h4>
+                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">{{ __('Filter & Pencarian Distribusi Departemen') }}</h4>
                         <p class="text-[11px] text-slate-400">{{ __('Cari peringkat lumbung suara berdasarkan nama departemen') }}</p>
                     </div>
                 </div>
@@ -205,7 +205,7 @@
                     <thead>
                         <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
                             <th class="py-3.5 px-4 text-center">Rank</th>
-                            <th class="py-3.5 px-4">{{ __('Departemen (Broker)') }}</th>
+                            <th class="py-3.5 px-4">{{ __('Departemen') }}</th>
                             <th class="py-3.5 px-4 text-right">{{ __('Volume Suara') }}</th>
                             <th class="py-3.5 px-4 text-right">{{ __('Porsi (%)') }}</th>
                             <th class="py-3.5 px-4">{{ __('Kandidat Terunggul di Divisi') }}</th>

@@ -5,35 +5,30 @@
 @section('content')
 <div class="space-y-6 sm:space-y-8">
 
-    <!-- Top Analytics Header -->
-    <div class="p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-900/60 shadow-xl relative overflow-hidden">
-        <div class="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none"></div>
-        <div class="absolute -left-24 -bottom-24 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl pointer-events-none"></div>
-
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <div class="flex items-center space-x-2 mb-2">
-                    <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-indigo-500/30 text-indigo-300 border border-indigo-400/30">
-                        🛰️ Telemetry Analytics
-                    </span>
-                    <span class="px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold bg-white/10 text-emerald-400 border border-white/15">
-                        Live Database Stream
-                    </span>
-                </div>
-                <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Analytics</h2>
-                <p class="text-xs sm:text-sm text-indigo-200/80 mt-1 max-w-2xl font-medium">
-                    Pusat observasi komprehensif metrik pemilu: lonjakan partisipasi per departemen, histori kecepatan voting, audit keaslian kartu RFID, dan deteksi anomali.
-                </p>
+    <!-- Top Header Banner & Action Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+        <div>
+            <div class="flex items-center space-x-2 mb-1.5">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-indigo-100 text-indigo-800 border border-indigo-200">
+                    🛰️ Telemetry Analytics
+                </span>
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                    Live Database Stream
+                </span>
             </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Analytics & Telemetri') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">
+                {{ __('Pusat observasi komprehensif metrik pemilu: lonjakan partisipasi per departemen, histori kecepatan voting, audit keaslian kartu RFID, dan deteksi anomali.') }}
+            </p>
+        </div>
 
-            <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 w-full md:w-auto">
-                <a href="{{ route('admin.dashboard') }}" class="flex-1 sm:flex-none justify-center px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition flex items-center space-x-1.5 cursor-pointer">
-                    <span>← Kembali ke Dashboard</span>
-                </a>
-                <button type="button" onclick="window.location.reload()" class="flex-1 sm:flex-none justify-center px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs shadow-md transition flex items-center space-x-1.5 cursor-pointer">
-                    <span>↻ Segarkan Data</span>
-                </button>
-            </div>
+        <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 self-start sm:self-auto">
+            <a href="{{ route('admin.dashboard') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs border border-slate-200 transition flex items-center space-x-1.5 cursor-pointer">
+                <span>← {{ __('Kembali ke Dashboard') }}</span>
+            </a>
+            <button type="button" onclick="window.location.reload()" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
+                <span>↻ {{ __('Segarkan Data') }}</span>
+            </button>
         </div>
     </div>
 

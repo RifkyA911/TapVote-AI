@@ -5,10 +5,10 @@
 @section('content')
 <div class="space-y-6">
 
-    <!-- Top Header with Actions -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <!-- Top Header Banner & Action Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
         <div>
-            <div class="flex items-center space-x-2 mb-1">
+            <div class="flex items-center space-x-2 mb-1.5">
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-800 border border-blue-200">
                     Forensic Audit
                 </span>
@@ -16,17 +16,17 @@
                     Traceback Ledger
                 </span>
             </div>
-            <h2 class="text-2xl font-extrabold text-slate-900">Trace Back Rekapitulasi Suara</h2>
-            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Audit log pemilih dan verifikasi pasangan pilihan calon (Ketua & Pengawas) per transaksi.</p>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Trace Back Rekapitulasi Suara') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">{{ __('Audit log pemilih dan verifikasi pasangan pilihan calon (Ketua & Pengawas) per transaksi.') }}</p>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2">
-            <a href="{{ route('admin.reports.traceback.export') }}" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
+        <div class="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
+            <a href="{{ route('admin.reports.traceback.export') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 <span>Export Excel</span>
             </a>
 
-            <a href="{{ route('admin.reports.traceback.export.pdf') }}" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="Download Official Vector PDF">
+            <a href="{{ route('admin.reports.traceback.export.pdf') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="Download Official Vector PDF">
                 <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 <span>Export PDF</span>
             </a>

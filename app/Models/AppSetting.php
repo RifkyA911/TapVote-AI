@@ -40,4 +40,25 @@ class AppSetting extends Model
 
         Cache::forget("app_setting_{$key}");
     }
+
+    /**
+     * Dapatkan judul resmi pemilihan yang sesuai dengan bahasa aktif (ID / EN)
+     */
+    public static function getElectionTitle(): string
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'en') {
+            $enTitle = self::get('election_title_en');
+            if (!empty($enTitle)) {
+                return $enTitle;
+            }
+        } else {
+            $idTitle = self::get('election_title_id');
+            if (!empty($idTitle)) {
+                return $idTitle;
+            }
+        }
+        $general = self::get('election_title');
+        return !empty($general) ? $general : __('Live Count Cooperative Election');
+    }
 }

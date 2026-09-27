@@ -1,27 +1,32 @@
 @extends('layouts.admin')
 
-@section('title', 'System Settings & Controls - TapVote AI')
+@section('title', __('System Settings & Controls') . ' - TapVote AI')
 
 @section('content')
 <div class="space-y-6 sm:space-y-8 max-w-5xl mx-auto pb-12">
 
-    <!-- Top Header Banner -->
-    <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div class="flex items-center space-x-3.5">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center font-black shadow-md shadow-blue-500/20">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+    <!-- Top Header Banner & Action Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+        <div>
+            <div class="flex items-center space-x-2 mb-1.5">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-800 border border-blue-200">
+                    System Control Center
+                </span>
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                    Realtime Sync
+                </span>
             </div>
-            <div>
-                <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">System Settings & Controls</h2>
-                <p class="text-xs sm:text-sm text-slate-500 font-medium">Pengaturan otomatis tersimpan secara real-time tanpa perlu tombol simpan manual.</p>
-            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('System Settings & Controls') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">
+                {{ __('Pengaturan operasional pemungutan suara, parameter kuorum, batas waktu, sensor hardware, dan sinkronisasi real-time.') }}
+            </p>
         </div>
 
         <div class="flex items-center space-x-2">
             <!-- Active Autosave Indicator -->
             <div id="autosave-status" class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200 shadow-2xs transition-all duration-300">
                 <span id="autosave-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                <span id="autosave-text">Autosave Siap</span>
+                <span id="autosave-text">{{ __('Autosave Siap') }}</span>
             </div>
         </div>
     </div>
@@ -36,69 +41,57 @@
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">🚦</span>
                     <div>
-                        <h3 class="text-base font-extrabold text-slate-900">1. Status Operasional Pemungutan Suara</h3>
-                        <p class="text-xs text-slate-500 font-medium">Kendalikan akses bilik pemungutan suara secara terpusat.</p>
+                        <h3 class="text-base font-extrabold text-slate-900">{{ __('1. Status Operasional Pemungutan Suara') }}</h3>
+                        <p class="text-xs text-slate-500 font-medium">{{ __('Kendalikan akses bilik pemungutan suara secara terpusat.') }}</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-1.5">
-                    @if($settings['voting_status'] === 'STARTED')
-                        <span id="status-badge-current" class="px-3 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-700 border border-emerald-300 flex items-center">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-ping"></span>
-                            CURRENT: LIVE
-                        </span>
-                    @elseif($settings['voting_status'] === 'PAUSED')
-                        <span id="status-badge-current" class="px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-800 border border-amber-300 flex items-center">
-                            <span class="w-2 h-2 rounded-full bg-amber-500 mr-1.5"></span>
-                            CURRENT: PAUSED
-                        </span>
-                    @else
-                        <span id="status-badge-current" class="px-3 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 border border-rose-300 flex items-center">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 mr-1.5"></span>
-                            CURRENT: FINISHED
-                        </span>
-                    @endif
+                    <span id="status-badge-current" class="px-3 py-1 rounded-full text-xs font-black flex items-center {{ $settings['voting_status'] === 'STARTED' ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' : ($settings['voting_status'] === 'PAUSED' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-rose-100 text-rose-800 border border-rose-300') }}">
+                        <span id="status-badge-dot" class="w-2 h-2 rounded-full mr-1.5 {{ $settings['voting_status'] === 'STARTED' ? 'bg-emerald-500 animate-ping' : ($settings['voting_status'] === 'PAUSED' ? 'bg-amber-500' : 'bg-rose-500') }}"></span>
+                        <span id="status-badge-label">CURRENT: {{ $settings['voting_status'] === 'STARTED' ? 'LIVE' : ($settings['voting_status'] === 'PAUSED' ? 'PAUSED' : 'FINISHED') }}</span>
+                    </span>
                 </div>
             </div>
 
             <!-- Segmented Radio Cards for Voting Status -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="voting-status-cards">
                 <!-- LIVE / STARTED -->
-                <label class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'STARTED' ? 'border-emerald-500 bg-emerald-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50' }}">
+                <label id="card-status-STARTED" onclick="handleStatusRadioClick(event, 'STARTED')" class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'STARTED' ? 'border-emerald-500 bg-emerald-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50' }}">
                     <input type="radio" name="voting_status" value="STARTED" class="sr-only peer" {{ $settings['voting_status'] === 'STARTED' ? 'checked' : '' }}>
                     <div class="flex items-center justify-between mb-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500 text-white uppercase tracking-wider">
                             ● LIVE
                         </span>
-                        <span class="w-4 h-4 rounded-full border-2 border-slate-300 peer-checked:border-emerald-600 peer-checked:bg-emerald-600 flex items-center justify-center"></span>
+                        <span class="radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center {{ $settings['voting_status'] === 'STARTED' ? 'border-emerald-600 bg-emerald-600' : '' }}"></span>
                     </div>
-                    <strong class="text-sm font-black text-slate-900">Bilik Terbuka & Aktif</strong>
-                    <p class="text-xs text-slate-500 mt-1">Pemilih dapat tap RFID / NFC dan memberikan suara di bilik voting secara normal.</p>
+                    <strong class="text-sm font-black text-slate-900">{{ __('Bilik Terbuka & Aktif') }}</strong>
+                    <p class="text-xs text-slate-500 mt-1">{{ __('Pemilih dapat tap RFID / NFC dan memberikan suara di bilik voting secara normal.') }}</p>
                 </label>
 
                 <!-- PAUSED -->
-                <label class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'PAUSED' ? 'border-amber-500 bg-amber-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50' }}">
+                <label id="card-status-PAUSED" onclick="handleStatusRadioClick(event, 'PAUSED')" class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'PAUSED' ? 'border-amber-500 bg-amber-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50' }}">
                     <input type="radio" name="voting_status" value="PAUSED" class="sr-only peer" {{ $settings['voting_status'] === 'PAUSED' ? 'checked' : '' }}>
                     <div class="flex items-center justify-between mb-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-500 text-white uppercase tracking-wider">
                             ❚❚ PAUSED
                         </span>
-                        <span class="w-4 h-4 rounded-full border-2 border-slate-300 peer-checked:border-amber-600 peer-checked:bg-amber-600 flex items-center justify-center"></span>
+                        <span class="radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center {{ $settings['voting_status'] === 'PAUSED' ? 'border-amber-600 bg-amber-600' : '' }}"></span>
                     </div>
-                    <strong class="text-sm font-black text-slate-900">Jeda Sementara (Break)</strong>
-                    <p class="text-xs text-slate-500 mt-1">Bilik suara dibekukan sementara untuk istirahat, ISHOMA, atau verifikasi teknis.</p>
+                    <strong class="text-sm font-black text-slate-900">{{ __('Jeda Sementara (Break)') }}</strong>
+                    <p class="text-xs text-slate-500 mt-1">{{ __('Bilik suara dibekukan sementara untuk istirahat, ISHOMA, atau verifikasi teknis.') }}</p>
                 </label>
 
                 <!-- FINISHED / STOPPED -->
-                <label class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'STOPPED' ? 'border-rose-500 bg-rose-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50' }}">
+                <label id="card-status-STOPPED" onclick="handleStatusRadioClick(event, 'STOPPED')" class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'STOPPED' ? 'border-rose-500 bg-rose-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50' }}">
                     <input type="radio" name="voting_status" value="STOPPED" class="sr-only peer" {{ $settings['voting_status'] === 'STOPPED' ? 'checked' : '' }}>
                     <div class="flex items-center justify-between mb-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-black bg-rose-600 text-white uppercase tracking-wider">
                             ■ FINISHED
                         </span>
-                        <span class="w-4 h-4 rounded-full border-2 border-slate-300 peer-checked:border-rose-600 peer-checked:bg-rose-600 flex items-center justify-center"></span>
+                        <span class="radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center {{ $settings['voting_status'] === 'STOPPED' ? 'border-rose-600 bg-rose-600' : '' }}"></span>
                     </div>
-                    <strong class="text-sm font-black text-slate-900">Ditutup Resmi (End)</strong>
-                    <p class="text-xs text-slate-500 mt-1">Pemungutan suara resmi selesai. Kunci bilik permanen & hasil suara final diumumkan.</p>
+                    <strong class="text-sm font-black text-slate-900">{{ __('Ditutup Resmi (End)') }}</strong>
+                    <p class="text-xs text-slate-500 mt-1">{{ __('Pemungutan suara resmi selesai. Kunci bilik permanen & hasil suara final diumumkan.') }}</p>
                 </label>
             </div>
         </div>
@@ -107,23 +100,38 @@
         <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-5">
             <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
                 <span class="text-lg">🏛️</span>
-                <h3 class="text-base font-extrabold text-slate-900">2. Parameter Utama Pemilihan, Kuorum & Deadline</h3>
+                <h3 class="text-base font-extrabold text-slate-900">{{ __('2. Parameter Utama Pemilihan, Kuorum & Deadline') }}</h3>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <!-- Judul Resmi Bahasa Indonesia -->
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Judul Resmi Pemilihan</label>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Judul Resmi Pemilihan (Bahasa Indonesia)') }}</label>
                     <input 
                         type="text" 
-                        name="election_title" 
+                        name="election_title_id" 
                         required 
-                        value="{{ old('election_title', $settings['election_title']) }}" 
+                        value="{{ old('election_title_id', $settings['election_title_id'] ?? $settings['election_title']) }}" 
                         class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-medium focus:bg-white focus:border-blue-500 outline-none"
                     >
+                    <p class="text-[11px] text-slate-500 mt-1">{{ __('Judul resmi pemilu yang tampil saat antarmuka menggunakan Bahasa Indonesia.') }}</p>
+                </div>
+
+                <!-- Judul Resmi Bahasa Inggris -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Judul Resmi Pemilihan (Bahasa Inggris / English)') }}</label>
+                    <input 
+                        type="text" 
+                        name="election_title_en" 
+                        required 
+                        value="{{ old('election_title_en', $settings['election_title_en'] ?? '') }}" 
+                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-medium focus:bg-white focus:border-blue-500 outline-none"
+                    >
+                    <p class="text-[11px] text-slate-500 mt-1">{{ __('Judul resmi pemilu yang tampil saat antarmuka menggunakan Bahasa Inggris.') }}</p>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Nama Institusi / Badan Koperasi</label>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Nama Institusi / Badan Koperasi') }}</label>
                     <input 
                         type="text" 
                         name="institution_name" 
@@ -134,7 +142,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Batas Minimum Kuorum Suara (%)</label>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Batas Minimum Kuorum Suara (%)') }}</label>
                     <div class="relative">
                         <input 
                             type="number" 
@@ -148,17 +156,17 @@
                         >
                         <span class="absolute right-3.5 top-2.5 text-xs font-bold text-slate-400">%</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-1">Standar aturan koperasi umumnya mensyaratkan minimal 50% partisipasi anggota.</p>
+                    <p class="text-[11px] text-slate-500 mt-1">{{ __('Standar aturan koperasi umumnya mensyaratkan minimal 50% partisipasi anggota.') }}</p>
                 </div>
 
-                <!-- DEADLINE WAKTU PEMILIHAN (OPSI: HARI, TANGGAL, JAM, WAKTU) -->
+                <!-- DEADLINE WAKTU PEMILIHAN -->
                 <div>
                     <div class="flex items-center justify-between mb-1.5">
-                        <label class="block text-xs font-bold text-slate-700">Tenggat Waktu / Deadline Pemilihan</label>
+                        <label class="block text-xs font-bold text-slate-700">{{ __('Tenggat Waktu / Deadline Pemilihan') }}</label>
                         <div class="flex items-center space-x-2 text-[11px]">
-                            <button type="button" onclick="setDeadlinePreset('today17')" class="text-blue-600 font-bold hover:underline">Hari Ini 17:00</button>
+                            <button type="button" onclick="setDeadlinePreset('today17')" class="text-blue-600 font-bold hover:underline cursor-pointer">{{ __('Hari Ini 17:00') }}</button>
                             <span class="text-slate-300">•</span>
-                            <button type="button" onclick="setDeadlinePreset('clear')" class="text-rose-600 font-bold hover:underline">Hapus</button>
+                            <button type="button" onclick="setDeadlinePreset('clear')" class="text-rose-600 font-bold hover:underline cursor-pointer">{{ __('Hapus') }}</button>
                         </div>
                     </div>
                     <input 
@@ -169,12 +177,12 @@
                         class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-mono font-bold focus:bg-white focus:border-blue-500 outline-none"
                     >
                     <p class="text-[11px] text-slate-500 mt-1">
-                        Batas waktu selesai mencakup hari, tanggal, dan jam. Disiarkan langsung (*streaming*) dengan countdown ke publik.
+                        {{ __('Batas waktu selesai mencakup hari, tanggal, dan jam. Disiarkan langsung (*streaming*) dengan countdown ke publik.') }}
                     </p>
                 </div>
 
-                <div class="sm:col-span-2">
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Kiosk Click Throttle (Anti Double-Tap / Jitter)</label>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Kiosk Click Throttle (Anti Double-Tap / Jitter)') }}</label>
                     <div class="relative">
                         <input 
                             type="number" 
@@ -188,7 +196,7 @@
                         >
                         <span class="absolute sm:left-56 right-3.5 top-2.5 text-xs font-bold text-slate-400">ms</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-1">Waktu perlindungan tombol untuk mencegah klik ganda tak sengaja (rekomendasi: 800ms).</p>
+                    <p class="text-[11px] text-slate-500 mt-1">{{ __('Waktu perlindungan tombol untuk mencegah klik ganda tak sengaja (rekomendasi: 800ms).') }}</p>
                 </div>
             </div>
         </div>
@@ -197,15 +205,15 @@
         <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-5">
             <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
                 <span class="text-lg">📡</span>
-                <h3 class="text-base font-extrabold text-slate-900">3. Fitur Kiosk, Hardware Sensor & Public Stream</h3>
+                <h3 class="text-base font-extrabold text-slate-900">{{ __('3. Fitur Kiosk, Hardware Sensor & Public Stream') }}</h3>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- Public SSE -->
                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">Public Realtime SSE Stream</strong>
-                        <span class="text-[11px] text-slate-500">Izinkan publik mengakses siaran langsung Server-Sent Events di beranda utama tanpa login admin.</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Public Realtime SSE Stream') }}</strong>
+                        <span class="text-[11px] text-slate-500">{{ __('Izinkan publik mengakses siaran langsung Server-Sent Events di beranda utama tanpa login admin.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="public_sse_enabled" value="1" {{ ($settings['public_sse_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
@@ -216,8 +224,8 @@
                 <!-- Show Candidate NIK -->
                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">Tampilkan NIK Kandidat di Surat Suara</strong>
-                        <span class="text-[11px] text-slate-500">Menampilkan NIK resmi kandidat di bawah nama pada bilik pemungutan suara.</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Tampilkan NIK Kandidat di Surat Suara') }}</strong>
+                        <span class="text-[11px] text-slate-500">{{ __('Menampilkan NIK resmi kandidat di bawah nama pada bilik pemungutan suara.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="show_candidate_nik" value="1" {{ ($settings['show_candidate_nik'] ?? '0') == '1' ? 'checked' : '' }} class="sr-only peer">
@@ -228,8 +236,8 @@
                 <!-- Mobile NFC Sensor -->
                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">Sensor Web NFC (Mobile Phones)</strong>
-                        <span class="text-[11px] text-slate-500">Aktifkan NDEF Reader hardware bawaan smartphone Chrome Android untuk tap kartu anggota.</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Sensor Web NFC (Mobile Phones)') }}</strong>
+                        <span class="text-[11px] text-slate-500">{{ __('Aktifkan NDEF Reader hardware bawaan smartphone Chrome Android untuk tap kartu anggota.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="enable_nfc_mobile" value="1" {{ ($settings['enable_nfc_mobile'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
@@ -240,8 +248,8 @@
                 <!-- Demo Accounts Display -->
                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">Tampilkan Akun Demo di Halaman Voter</strong>
-                        <span class="text-[11px] text-slate-500">Tampilkan tabel akun demo untuk simulasi cepat penguji / demonstrasi panitia.</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Tampilkan Akun Demo di Halaman Voter') }}</strong>
+                        <span class="text-[11px] text-slate-500">{{ __('Tampilkan tabel akun demo untuk simulasi cepat penguji / demonstrasi panitia.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="enable_demo_accounts" value="1" {{ ($settings['enable_demo_accounts'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
@@ -252,8 +260,8 @@
                 <!-- Voice Greeting -->
                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">Sambutan Suara Otomatis (Voice Greeting)</strong>
-                        <span class="text-[11px] text-slate-500">Auto-play suara sambutan "Selamat Datang Mas Admin" & panduan bilik suara.</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Sambutan Suara Otomatis (Voice Greeting)') }}</strong>
+                        <span class="text-[11px] text-slate-500">{{ __('Auto-play suara sambutan "Selamat Datang Mas Admin" & panduan bilik suara.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="enable_voice_greeting" value="1" {{ ($settings['enable_voice_greeting'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
@@ -264,8 +272,8 @@
                 <!-- Sound FX -->
                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">Efek Suara Audio (Sound FX)</strong>
-                        <span class="text-[11px] text-slate-500">Suara klik tombol, tap RFID, submit bilik, dan gong undian doorprize.</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Efek Suara Audio (Sound FX)') }}</strong>
+                        <span class="text-[11px] text-slate-500">{{ __('Suara klik tombol, tap RFID, submit bilik, dan gong undian doorprize.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="enable_sound_fx" value="1" {{ ($settings['enable_sound_fx'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
@@ -275,7 +283,7 @@
 
                 <!-- Kiosk Session Timeout -->
                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 sm:col-span-2">
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Batas Waktu Auto-Logout Bilik Suara (Detik)</label>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Batas Waktu Auto-Logout Bilik Suara (Detik)') }}</label>
                     <input 
                         type="number" 
                         name="kiosk_session_timeout" 
@@ -285,7 +293,7 @@
                         value="{{ old('kiosk_session_timeout', $settings['kiosk_session_timeout']) }}" 
                         class="w-full sm:w-64 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs sm:text-sm text-slate-900 font-mono font-bold focus:border-blue-500 outline-none"
                     >
-                    <p class="text-[11px] text-slate-500 mt-1">Sesi bilik akan otomatis ditutup jika pemilih tidak melakukan aktivitas dalam bilik.</p>
+                    <p class="text-[11px] text-slate-500 mt-1">{{ __('Sesi bilik akan otomatis ditutup jika pemilih tidak melakukan aktivitas dalam bilik.') }}</p>
                 </div>
             </div>
         </div>
@@ -295,7 +303,7 @@
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">🤖</span>
-                    <h3 class="text-base font-extrabold text-slate-900">4. Mesin Analisis AI (Google Gemini Reasoning)</h3>
+                    <h3 class="text-base font-extrabold text-slate-900">{{ __('4. Mesin Analisis AI (Google Gemini Reasoning)') }}</h3>
                 </div>
                 <button 
                     type="button" 
@@ -331,49 +339,49 @@
                         <button 
                             type="button" 
                             onclick="toggleApiKeyVisibility()"
-                            class="absolute right-3 top-2 text-xs font-bold text-slate-400 hover:text-slate-600 px-2 py-1 rounded bg-slate-200/50"
+                            class="absolute right-3 top-2 text-xs font-bold text-slate-400 hover:text-slate-600 px-2 py-1 rounded bg-slate-200/50 cursor-pointer"
                         >
                             <span id="toggle-key-label">SHOW</span>
                         </button>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-1">API Key disimpan secara aman dan digunakan untuk analisis mendalam telemetri pemilu dan deteksi anomali log audit.</p>
+                    <p class="text-[11px] text-slate-500 mt-1">{{ __('API Key disimpan secara aman dan digunakan untuk analisis mendalam telemetri pemilu dan deteksi anomali log audit.') }}</p>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Model Gemini yang Digunakan</label>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Model Gemini yang Digunakan') }}</label>
                     <select name="gemini_model" class="w-full h-10 px-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm font-bold text-slate-800 focus:bg-white focus:border-blue-500 outline-none cursor-pointer">
-                        <option value="gemini-2.0-flash" {{ $settings['gemini_model'] === 'gemini-2.0-flash' ? 'selected' : '' }}>Google Gemini 2.0 Flash (Direkomendasikan • Cepat & Presisi)</option>
-                        <option value="gemini-1.5-flash" {{ $settings['gemini_model'] === 'gemini-1.5-flash' ? 'selected' : '' }}>Google Gemini 1.5 Flash (Stabil)</option>
-                        <option value="gemini-1.5-pro" {{ $settings['gemini_model'] === 'gemini-1.5-pro' ? 'selected' : '' }}>Google Gemini 1.5 Pro (Deep Reasoning)</option>
+                        <option value="gemini-2.0-flash" {{ $settings['gemini_model'] === 'gemini-2.0-flash' ? 'selected' : '' }}>Google Gemini 2.0 Flash ({{ __('Direkomendasikan • Cepat & Presisi') }})</option>
+                        <option value="gemini-1.5-flash" {{ $settings['gemini_model'] === 'gemini-1.5-flash' ? 'selected' : '' }}>Google Gemini 1.5 Flash ({{ __('Stabil') }})</option>
+                        <option value="gemini-1.5-pro" {{ $settings['gemini_model'] === 'gemini-1.5-pro' ? 'selected' : '' }}>Google Gemini 1.5 Pro ({{ __('Deep Reasoning') }})</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <!-- 5. PWA & OFFLINE DIAGNOSTICS -->
-        <div class="p-6 sm:p-7 rounded-3xl bg-slate-900 text-white border border-slate-800 shadow-2xs space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <!-- 5. PWA & OFFLINE DIAGNOSTICS (Clean Light White Card) -->
+        <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">📲</span>
-                    <h3 class="text-base font-extrabold text-white">5. Status Progressive Web App (PWA)</h3>
+                    <h3 class="text-base font-extrabold text-slate-900">{{ __('5. Status Progressive Web App (PWA)') }}</h3>
                 </div>
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
                     Install Ready
                 </span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
-                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Web Manifest</span>
-                    <strong class="text-white font-mono">/manifest.json (200 OK)</strong>
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                    <span class="text-slate-500 block text-[10px] uppercase font-bold">Web Manifest</span>
+                    <strong class="text-slate-900 font-mono">/manifest.json (200 OK)</strong>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
-                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Service Worker</span>
-                    <strong class="text-emerald-400 font-mono">/sw.js (Cache-First + Offline)</strong>
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                    <span class="text-slate-500 block text-[10px] uppercase font-bold">Service Worker</span>
+                    <strong class="text-emerald-700 font-mono">/sw.js (Cache-First + Offline)</strong>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
-                    <span class="text-slate-400 block text-[10px] uppercase font-bold">PWA Icon Assets</span>
-                    <strong class="text-blue-400 font-mono">192px, 512px, Maskable OK</strong>
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                    <span class="text-slate-500 block text-[10px] uppercase font-bold">PWA Icon Assets</span>
+                    <strong class="text-blue-700 font-mono">192px, 512px, Maskable OK</strong>
                 </div>
             </div>
         </div>
@@ -384,6 +392,107 @@
 <script>
 // Autosave Debounced Engine
 let autosaveTimer = null;
+let currentVotingStatus = '{{ $settings["voting_status"] }}';
+
+async function handleStatusRadioClick(e, targetStatus) {
+    e.preventDefault();
+    if (targetStatus === currentVotingStatus) return;
+
+    let config = {};
+    if (targetStatus === 'STARTED') {
+        config = {
+            title: "{{ __('Aktifkan Bilik Suara (LIVE)?') }}",
+            description: "{{ __('Bilik pemungutan suara akan dibuka kembali. Pemilih yang memiliki hak suara dapat melakukan tap RFID/NFC dan memilih kandidat.') }}",
+            confirmText: "{{ __('Ya, Buka Bilik Suara') }}",
+            type: 'success'
+        };
+    } else if (targetStatus === 'PAUSED') {
+        config = {
+            title: "{{ __('Jeda Pemungutan Suara Sementara (PAUSED)?') }}",
+            description: "{{ __('Bilik pemungutan suara akan dibekukan sementara. Pemilih tidak dapat melakukan tap kartu sampai status diaktifkan kembali.') }}",
+            confirmText: "{{ __('Ya, Jeda Pemilihan') }}",
+            type: 'warning'
+        };
+    } else {
+        config = {
+            title: "{{ __('Tutup Resmi Pemungutan Suara (FINISHED)?') }}",
+            description: "{{ __('PERINGATAN: Bilik suara akan dikunci secara permanen dan proses pemungutan suara dinyatakan berakhir. Pastikan seluruh pemilih yang berhak telah selesai memilih.') }}",
+            confirmText: "{{ __('Ya, Tutup Pemilihan Resmi') }}",
+            type: 'danger'
+        };
+    }
+
+    if (typeof showHeadlessConfirm === 'function') {
+        const confirmed = await showHeadlessConfirm(config);
+        if (confirmed) {
+            currentVotingStatus = targetStatus;
+            applyStatusUI(targetStatus);
+            triggerAutosave();
+        }
+    } else {
+        if (confirm(config.title + "\n\n" + config.description)) {
+            currentVotingStatus = targetStatus;
+            applyStatusUI(targetStatus);
+            triggerAutosave();
+        }
+    }
+}
+
+function applyStatusUI(status) {
+    // Check radio
+    const radios = document.querySelectorAll('input[name="voting_status"]');
+    radios.forEach(r => {
+        r.checked = (r.value === status);
+    });
+
+    // Update radio cards styling
+    ['STARTED', 'PAUSED', 'STOPPED'].forEach(s => {
+        const card = document.getElementById('card-status-' + s);
+        const indicator = card?.querySelector('.radio-indicator');
+        if (!card) return;
+
+        if (s === status) {
+            if (s === 'STARTED') {
+                card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-emerald-500 bg-emerald-50/50 shadow-sm';
+                if (indicator) indicator.className = 'radio-indicator w-4 h-4 rounded-full border-2 border-emerald-600 bg-emerald-600 flex items-center justify-center';
+            } else if (s === 'PAUSED') {
+                card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-amber-500 bg-amber-50/50 shadow-sm';
+                if (indicator) indicator.className = 'radio-indicator w-4 h-4 rounded-full border-2 border-amber-600 bg-amber-600 flex items-center justify-center';
+            } else {
+                card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-rose-500 bg-rose-50/50 shadow-sm';
+                if (indicator) indicator.className = 'radio-indicator w-4 h-4 rounded-full border-2 border-rose-600 bg-rose-600 flex items-center justify-center';
+            }
+        } else {
+            card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-slate-200 hover:border-slate-300 bg-slate-50/50';
+            if (indicator) indicator.className = 'radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center';
+        }
+    });
+
+    // Update settings current badge
+    const badge = document.getElementById('status-badge-current');
+    const dot = document.getElementById('status-badge-dot');
+    const label = document.getElementById('status-badge-label');
+    if (badge && dot && label) {
+        if (status === 'STARTED') {
+            badge.className = 'px-3 py-1 rounded-full text-xs font-black flex items-center bg-emerald-100 text-emerald-700 border border-emerald-300';
+            dot.className = 'w-2 h-2 rounded-full mr-1.5 bg-emerald-500 animate-ping';
+            label.textContent = 'CURRENT: LIVE';
+        } else if (status === 'PAUSED') {
+            badge.className = 'px-3 py-1 rounded-full text-xs font-black flex items-center bg-amber-100 text-amber-800 border border-amber-300';
+            dot.className = 'w-2 h-2 rounded-full mr-1.5 bg-amber-500';
+            label.textContent = 'CURRENT: PAUSED';
+        } else {
+            badge.className = 'px-3 py-1 rounded-full text-xs font-black flex items-center bg-rose-100 text-rose-800 border border-rose-300';
+            dot.className = 'w-2 h-2 rounded-full mr-1.5 bg-rose-500';
+            label.textContent = 'CURRENT: FINISHED';
+        }
+    }
+
+    // Update top navbar badge immediately!
+    if (typeof window.updateVotingStatusBadgeUI === 'function') {
+        window.updateVotingStatusBadgeUI(status);
+    }
+}
 
 function triggerAutosave() {
     clearTimeout(autosaveTimer);
@@ -518,7 +627,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('settings-form');
     if (form) {
         form.addEventListener('input', triggerAutosave);
-        form.addEventListener('change', triggerAutosave);
+        form.addEventListener('change', (e) => {
+            // Radio voting_status is handled exclusively by handleStatusRadioClick
+            if (e.target.name !== 'voting_status') {
+                triggerAutosave();
+            }
+        });
     }
 });
 </script>

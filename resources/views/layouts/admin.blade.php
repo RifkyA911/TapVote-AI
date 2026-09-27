@@ -41,11 +41,11 @@
 </head>
 <body class="h-screen overflow-hidden bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased flex flex-col lg:flex-row relative">
 
-    <!-- Mobile & iPad Mini Sidebar Backdrop Overlay -->
-    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-30 hidden lg:hidden transition-opacity duration-300"></div>
+    <!-- Mobile & Tablet Sidebar Backdrop Overlay (z-40 with smooth blur and fade) -->
+    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity duration-300"></div>
 
-    <!-- Sidebar Navigation (Responsive: Off-canvas drawer on Mobile & iPad Mini, static on Desktop) -->
-    <aside id="admin-sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none h-full">
+    <!-- Sidebar Navigation (Responsive: Off-canvas drawer with z-50 on Mobile & Tablet, static on Desktop) -->
+    <aside id="admin-sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 sm:w-80 lg:w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none h-full">
         <!-- Sidebar Brand Header (Height 64px / h-16 matched exactly with Top App Bar) -->
         <div class="h-16 px-5 flex items-center justify-between border-b border-slate-200 shrink-0">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3">
@@ -315,7 +315,7 @@
             const backdrop = document.getElementById('sidebar-backdrop');
             
             if (window.innerWidth < 1024) {
-                // Mobile & iPad Mini Drawer Toggle
+                // Mobile & Tablet Drawer Toggle
                 if (sidebar.classList.contains('-translate-x-full')) {
                     sidebar.classList.remove('-translate-x-full');
                     backdrop.classList.remove('hidden');
@@ -328,6 +328,28 @@
                 sidebar.classList.toggle('lg:hidden');
             }
         }
+
+        // Global status updater for top navbar badge
+        window.updateVotingStatusBadgeUI = function(status) {
+            const badge = document.getElementById('voting-status-badge');
+            const dot = document.getElementById('voting-status-dot');
+            const text = document.getElementById('voting-status-text');
+            if (!badge || !dot || !text) return;
+            
+            if (status === 'STARTED') {
+                badge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-black tracking-wide uppercase bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800';
+                dot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+                text.textContent = 'LIVE';
+            } else if (status === 'PAUSED') {
+                badge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-black tracking-wide uppercase bg-amber-50 text-amber-800 border border-amber-300 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800';
+                dot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-ping';
+                text.textContent = 'PAUSED';
+            } else if (status === 'STOPPED') {
+                badge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-black tracking-wide uppercase bg-rose-50 text-rose-800 border border-rose-300 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800';
+                dot.className = 'w-2 h-2 rounded-full bg-rose-500';
+                text.textContent = 'FINISHED';
+            }
+        };
 
         // HeadlessUI-style Promise-based modal confirmation
         function showHeadlessConfirm({ title, description, confirmText, type = 'warning' }) {
@@ -547,7 +569,7 @@
         const commandItems = [
             { title: 'Live Dashboard', group: 'Monitoring', icon: '📊', url: '{{ route("admin.dashboard") }}' },
             { title: 'Analytics (Mata Langit Telemetri)', group: 'Monitoring', icon: '🛰️', url: '{{ route("admin.analytics") }}' },
-            { title: 'Vote Flow (Broker Summary)', group: 'Monitoring', icon: '🌊', url: '{{ route("admin.vote-flow") }}' },
+            { title: 'Vote Flow (Distribusi Departemen)', group: 'Monitoring', icon: '🌊', url: '{{ route("admin.vote-flow") }}' },
             { title: 'Chairman Candidates (Kandidat Ketua)', group: 'Master Data', icon: '👤', url: '{{ route("admin.ketua.index") }}' },
             { title: 'Supervisor Candidates (Kandidat Pengawas)', group: 'Master Data', icon: '👥', url: '{{ route("admin.pengawas.index") }}' },
             { title: 'Eligible Voters (DPT Pemilih)', group: 'Master Data', icon: '📋', url: '{{ route("admin.voters.index") }}' },

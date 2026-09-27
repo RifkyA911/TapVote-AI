@@ -5,43 +5,43 @@
 @section('content')
 <div class="space-y-6 sm:space-y-8">
 
-    <!-- Header Actions & Shortcut to Stage View (Light & Gold Gradient) -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 shadow-md">
+    <!-- Top Header Banner & Action Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-slate-950 text-amber-300">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-amber-100 text-amber-800 border border-amber-200">
                     Modul Undian & Master Hadiah
                 </span>
-                <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-white/40 text-slate-950">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
                     Pool Sah: <strong>{{ $totalEligible }}</strong> Anggota
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">Undian Doorprize Anggota</h2>
-            <p class="text-xs sm:text-sm font-semibold text-slate-900/85 mt-1 max-w-xl">
-                Sistem undian digital acak dengan status serah terima hadiah (Diterima / Ditolak), upload foto hadiah, dan display panggung penonton.
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Undian Doorprize Anggota') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">
+                {{ __('Sistem undian digital acak dengan status serah terima hadiah (Diterima / Ditolak), upload foto hadiah, dan display panggung penonton.') }}
             </p>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2.5 self-start md:self-auto">
+        <div class="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
             <!-- Shortcut to Audience Stage View -->
             <a 
                 href="{{ route('doorprize.public') }}" 
                 target="_blank" 
-                class="px-5 py-3 rounded-2xl bg-slate-950 hover:bg-slate-900 text-amber-300 hover:text-amber-200 text-xs sm:text-sm font-black shadow-lg transition flex items-center space-x-2"
+                class="px-4 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black shadow-xs transition flex items-center space-x-2 cursor-pointer"
                 title="Buka Halaman Khusus Penonton untuk Layar Proyektor"
             >
                 <span class="text-base">📺</span>
-                <span>Buka Panggung Penonton (Stage View)</span>
-                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                <span>Stage View</span>
+                <svg class="w-3.5 h-3.5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
             </a>
 
             <!-- Add Doorprize Reward Button -->
             <button 
                 type="button" 
                 onclick="openAddRewardModal()" 
-                class="px-4 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-900 text-xs sm:text-sm font-bold shadow-md transition flex items-center space-x-1.5 cursor-pointer"
+                class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow-xs transition flex items-center space-x-1.5 cursor-pointer"
             >
-                <span>+ Tambah Hadiah Baru</span>
+                <span>+ {{ __('Tambah Hadiah Baru') }}</span>
             </button>
         </div>
     </div>

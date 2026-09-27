@@ -57,7 +57,7 @@ class VoteFlowController extends Controller
         $target = $request->query('target', 'ketua');
         $flowData = $this->gatherFlowData($target);
 
-        $prompt = "Anda adalah Lead Political Data Scientist & Election Flow Intelligence Analyst. Lakukan deep reasoning dan AI vision summary mendalam mengenai pola aliran suara (Vote Flow / Broker Summary) pemilu koperasi berikut:\n" .
+        $prompt = "Anda adalah Lead Political Data Scientist & Election Flow Intelligence Analyst. Lakukan deep reasoning dan AI vision summary mendalam mengenai pola aliran suara (Vote Flow & Distribusi Departemen) pemilu koperasi berikut:\n" .
             "Target Pemilihan: " . strtoupper($target) . "\n" .
             "Data Aliran Suara per Departemen:\n" . json_encode($flowData['brokerSummary'], JSON_PRETTY_PRINT) . "\n\n" .
             "Berikan analisis mendalam HANYA dalam format JSON valid (tanpa blok markdown ```json ... ```) dengan struktur:\n" .
@@ -161,7 +161,7 @@ class VoteFlowController extends Controller
     }
 
     /**
-     * Export Vote Flow & Broker Summary to PDF
+     * Export Vote Flow & Department Distribution to PDF
      */
     public function exportPdf(Request $request)
     {
@@ -171,7 +171,7 @@ class VoteFlowController extends Controller
         $pdf = Pdf::loadView('admin.vote_flow.pdf', compact('flowData', 'target'));
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->download('Laporan_Vote_Flow_Broker_Summary_' . strtoupper($target) . '_' . date('Ymd_His') . '.pdf');
+        return $pdf->download('Laporan_Vote_Flow_Distribusi_Departemen_' . strtoupper($target) . '_' . date('Ymd_His') . '.pdf');
     }
 
     /**

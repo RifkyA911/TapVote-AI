@@ -5,19 +5,19 @@
 @section('content')
 <div class="space-y-6">
 
-    <!-- Top Header with Actions -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <!-- Top Header Banner & Action Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
         <div>
-            <div class="flex items-center space-x-2 mb-1">
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-slate-200 text-slate-800 border border-slate-300">
+            <div class="flex items-center space-x-2 mb-1.5">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-800 border border-slate-300">
                     Security Audit
                 </span>
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
                     Activity Ledger
                 </span>
             </div>
-            <h2 class="text-2xl font-extrabold text-slate-900">Audit Trail & Security Logs</h2>
-            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Rekam jejak setiap aksi sistem: otentikasi login, tap RFID, transaksi bilik suara, dan aktivitas administratif.</p>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Audit Trail & Security Logs') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">{{ __('Rekam jejak setiap aksi sistem: otentikasi login, tap RFID, transaksi bilik suara, dan aktivitas administratif.') }}</p>
         </div>
 
         <div class="flex items-center gap-2.5 self-start sm:self-auto">

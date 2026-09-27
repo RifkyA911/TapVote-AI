@@ -13,6 +13,8 @@ class SettingController extends Controller
     {
         $settings = [
             'election_title' => AppSetting::get('election_title', 'Pemilihan Pengurus Koperasi Mandiri Sejahtera 2026'),
+            'election_title_id' => AppSetting::get('election_title_id', 'Pemilihan Pengurus Koperasi Mandiri Sejahtera 2026'),
+            'election_title_en' => AppSetting::get('election_title_en', 'Mandiri Sejahtera Cooperative Board Election 2026'),
             'institution_name' => AppSetting::get('institution_name', 'Koperasi Karyawan PT Semen Indonesia'),
             'quorum_percentage' => AppSetting::get('quorum_percentage', '50.0'),
             'voting_status' => AppSetting::get('voting_status', 'STARTED'),
@@ -35,7 +37,9 @@ class SettingController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'election_title' => 'sometimes|required|string|max:255',
+            'election_title' => 'nullable|string|max:255',
+            'election_title_id' => 'nullable|string|max:255',
+            'election_title_en' => 'nullable|string|max:255',
             'institution_name' => 'sometimes|required|string|max:255',
             'quorum_percentage' => 'sometimes|required|numeric|min:1|max:100',
             'voting_status' => 'sometimes|required|in:STARTED,PAUSED,STOPPED',
@@ -63,6 +67,12 @@ class SettingController extends Controller
 
         if ($request->has('voting_deadline')) {
             $validated['voting_deadline'] = (string) $request->input('voting_deadline', '');
+        }
+
+        if (!empty($validated['election_title_id'])) {
+            $validated['election_title'] = $validated['election_title_id'];
+        } elseif (!empty($validated['election_title_en'])) {
+            $validated['election_title'] = $validated['election_title_en'];
         }
 
         foreach ($validated as $key => $val) {

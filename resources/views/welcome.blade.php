@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Live Count Cooperative Election'))
+@section('title', \App\Models\AppSetting::getElectionTitle())
 
 @push('styles')
     <style>
@@ -94,7 +94,7 @@
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center space-x-2.5 flex-wrap gap-y-1">
                             <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-                                {{ \App\Models\AppSetting::get('election_title', __('Live Count Cooperative Election')) }}</h1>
+                                {{ \App\Models\AppSetting::getElectionTitle() }}</h1>
                             <span
                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 shrink-0">
                                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1.5"></span>

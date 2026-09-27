@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Aliran Suara & Broker Summary (Vote Flow)</title>
+    <title>Laporan Aliran Suara & Distribusi Departemen (Vote Flow)</title>
     <style>
         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; color: #1e293b; margin: 20px; }
         .header { text-align: center; border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 16px; }
@@ -23,7 +23,7 @@
 </head>
 <body>
     <div class="header">
-        <h1 class="title">Laporan Aliran Suara & Broker Summary Pemilihan</h1>
+        <h1 class="title">Laporan Aliran Suara & Distribusi Departemen Pemilihan</h1>
         <p class="subtitle">Analisis Matriks Aliran Elektoral Lintas Departemen • Target: {{ strtoupper($target) }}</p>
         <span class="badge badge-blue">TapVote AI Intelligence Core</span>
         <span class="badge badge-green">Sah & Terverifikasi</span>
@@ -33,12 +33,12 @@
         <strong>Statistik Ringkas:</strong> Total Suara Dianalisis: <strong>{{ $flowData['totalVotes'] }} Suara</strong> • Total Departemen Berpartisipasi: <strong>{{ count($flowData['departments']) }} Departemen</strong> • Waktu Unduh: <strong>{{ date('d F Y, H:i:s') }} WIB</strong>
     </div>
 
-    <h3 style="font-size: 12px; margin-bottom: 4px; color: #0f172a;">1. Tabel Broker Summary (Peringkat Lumbung Suara per Departemen)</h3>
+    <h3 style="font-size: 12px; margin-bottom: 4px; color: #0f172a;">1. Tabel Distribusi Departemen (Peringkat Lumbung Suara per Departemen)</h3>
     <table>
         <thead>
             <tr>
                 <th style="width: 30px;" class="text-center">No</th>
-                <th>Departemen (Broker)</th>
+                <th>Departemen</th>
                 <th class="text-right">Total Suara</th>
                 <th class="text-right">Porsi (%)</th>
                 <th>Kandidat Dominan yang Didukung</th>

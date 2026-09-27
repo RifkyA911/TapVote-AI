@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', \App\Models\AppSetting::get('election_title', __('Kios Pemilih - Tempelkan Kartu')))
+@section('title', \App\Models\AppSetting::getElectionTitle())
 
 @section('content')
-<div class="flex-1 flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-h-screen">
+<div class="flex-1 flex flex-col justify-between px-4 pt-2 sm:pt-3 pb-4 sm:pb-6 lg:pb-8 max-w-4xl mx-auto w-full min-h-screen">
 
     <!-- Header Instansi & Navigasi -->
-    <header class="flex items-center justify-between gap-3 py-3 border-b border-slate-200">
+    <header class="flex items-center justify-between gap-3 py-2 sm:py-2.5 border-b border-slate-200">
         <div class="flex items-center space-x-3 min-w-0 max-w-[200px] sm:max-w-md">
             <a href="{{ route('home') }}" class="flex items-center space-x-2.5 sm:space-x-3 group cursor-pointer min-w-0" title="{{ __('Kembali ke Beranda Live Count') }}">
                 <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-600 group-hover:bg-blue-700 text-white flex items-center justify-center shadow-sm shrink-0 transition">
@@ -15,7 +15,7 @@
                     </svg>
                 </div>
                 <div class="min-w-0">
-                    <h1 class="text-sm sm:text-base font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition truncate">{{ \App\Models\AppSetting::get('election_title', 'TapVote AI') }}</h1>
+                    <h1 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition truncate">{{ \App\Models\AppSetting::getElectionTitle() }}</h1>
                     <p class="text-[11px] text-slate-500 font-medium truncate">{{ __('Digital Voting Booth') }} • <span class="text-blue-600 font-bold">← {{ __('Beranda') }}</span></p>
                 </div>
             </a>
@@ -42,9 +42,9 @@
                 <span class="sm:hidden">{{ __('Petunjuk') }}</span>
             </button>
 
-            <!-- Tombol Live Count (Tanpa teks, background cyan mencolok, icon putih) -->
-            <a href="{{ route('home') }}" class="p-2 sm:p-2.5 rounded-2xl bg-cyan-500 hover:bg-cyan-600 text-white shadow-md hover:shadow-cyan-500/30 transition flex items-center justify-center shrink-0 cursor-pointer" title="{{ __('Live Count') }}">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.3">
+            <!-- Tombol Live Count (Background putih, outline biru, icon biru tua) -->
+            <a href="{{ route('home') }}" class="p-2 sm:p-2.5 rounded-2xl bg-white hover:bg-blue-50 text-blue-900 border-2 border-blue-600 shadow-xs transition flex items-center justify-center shrink-0 cursor-pointer" title="{{ __('Live Count') }}">
+                <svg class="w-5 h-5 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.3">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M3 20.25h18M3.75 20.25V3.75" />
                 </svg>
             </a>
@@ -138,7 +138,7 @@
         <div class="mt-3 flex items-center justify-center">
             <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-slate-900/5 border border-slate-200 text-xs font-semibold text-slate-700">
                 <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-                <span>Batas Waktu Vote:</span>
+                <span>{{ __('Batas Waktu Vote:') }}</span>
                 <span class="font-mono font-bold text-slate-900" id="tap-deadline-timer">--:--:--</span>
                 <span class="text-slate-400">({{ $deadlineFormatted }})</span>
             </div>
