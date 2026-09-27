@@ -161,23 +161,23 @@
 
         <!-- Master Rewards Table Container -->
         <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs sm:text-sm" id="doorprizes-datatable">
+            <div class="overflow-x-auto w-full">
+                <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="doorprizes-datatable">
                     <thead>
                         <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
-                            <th class="py-3.5 px-4">Foto / Ikon</th>
-                            <th class="py-3.5 px-4">Nama Hadiah & Deskripsi</th>
-                            <th class="py-3.5 px-4">Kategori</th>
-                            <th class="py-3.5 px-4">Total Qty</th>
-                            <th class="py-3.5 px-4">Sisa Kuota</th>
-                            <th class="py-3.5 px-4">Sponsor</th>
-                            <th class="py-3.5 px-4 text-right">Aksi</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Foto / Ikon</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Nama Hadiah & Deskripsi</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Kategori</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Total Qty</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Sisa Kuota</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Sponsor</th>
+                            <th class="py-3.5 px-4 text-right whitespace-nowrap">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
                         @forelse($doorprizes as $d)
                             <tr id="prize-row-{{ $d->id }}" class="hover:bg-amber-50/40 transition border-b border-slate-100 {{ $loop->first ? 'bg-amber-50/70 font-semibold' : '' }}">
-                                <td class="py-3 px-4">
+                                <td class="py-3 px-4 whitespace-nowrap">
                                     @if($d->image)
                                         <img src="{{ $d->image_url }}" alt="{{ $d->title }}" class="w-12 h-12 rounded-xl object-cover border border-slate-300 shadow-xs">
                                     @else
@@ -198,23 +198,23 @@
                                         <span class="text-xs text-slate-500 block line-clamp-1 mt-0.5">{{ $d->description }}</span>
                                     @endif
                                 </td>
-                                <td class="py-3 px-4">
-                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
+                                <td class="py-3 px-4 whitespace-nowrap">
+                                    <span class="whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
                                         {{ $d->category }}
                                     </span>
                                 </td>
-                                <td class="py-3 px-4 font-mono font-bold text-slate-700">
+                                <td class="py-3 px-4 font-mono font-bold text-slate-700 whitespace-nowrap">
                                     {{ $d->quantity }} Unit
                                 </td>
-                                <td class="py-3 px-4">
-                                    <span id="prize-remaining-{{ $d->id }}" class="px-2.5 py-1 rounded-full text-xs font-mono font-bold {{ $d->remaining_slots > 0 ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-rose-100 text-rose-900 border border-rose-300' }}">
+                                <td class="py-3 px-4 whitespace-nowrap">
+                                    <span id="prize-remaining-{{ $d->id }}" class="whitespace-nowrap px-2.5 py-1 rounded-full text-xs font-mono font-bold {{ $d->remaining_slots > 0 ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-rose-100 text-rose-900 border border-rose-300' }}">
                                         {{ $d->remaining_slots }} / {{ $d->quantity }}
                                     </span>
                                 </td>
-                                <td class="py-3 px-4 text-slate-600">
+                                <td class="py-3 px-4 text-slate-600 whitespace-nowrap">
                                     {{ $d->sponsor ?: '-' }}
                                 </td>
-                                <td class="py-3 px-4 text-right">
+                                <td class="py-3 px-4 text-right whitespace-nowrap">
                                     <div class="inline-flex items-center space-x-1.5">
                                         <button 
                                             type="button" 
@@ -481,54 +481,54 @@
 
         <!-- Winners Table Container -->
         <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs sm:text-sm" id="winners-datatable">
+            <div class="overflow-x-auto w-full">
+                <table class="min-w-[850px] w-full text-left text-xs sm:text-sm" id="winners-datatable">
                     <thead>
                         <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
-                            <th class="py-3.5 px-4">Waktu Undian</th>
-                            <th class="py-3.5 px-4">Hadiah (Reward)</th>
-                            <th class="py-3.5 px-4">Nama Pemenang</th>
-                            <th class="py-3.5 px-4">NIK</th>
-                            <th class="py-3.5 px-4">Departemen</th>
-                            <th class="py-3.5 px-4">Status Klaim Hadiah</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Waktu Undian</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Hadiah (Reward)</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Nama Pemenang</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">NIK</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Departemen</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">Status Klaim Hadiah</th>
                             <th class="py-3.5 px-4">Catatan / Alasan</th>
-                            <th class="py-3.5 px-4 text-right">Aksi</th>
+                            <th class="py-3.5 px-4 text-right whitespace-nowrap">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="winners-table-body" class="divide-y divide-slate-100 font-medium">
                         @forelse($winners as $w)
                             <tr id="winner-row-{{ $w->id }}" class="hover:bg-slate-50/75 transition border-b border-slate-100">
-                                <td class="py-3 px-4 font-mono text-slate-500 text-xs">{{ $w->won_at->format('H:i:s d/m/Y') }}</td>
-                                <td class="py-3 px-4 font-bold text-amber-900">
-                                    <span class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 inline-flex items-center space-x-1.5">
+                                <td class="py-3 px-4 font-mono text-slate-500 text-xs whitespace-nowrap">{{ $w->won_at->format('H:i:s d/m/Y') }}</td>
+                                <td class="py-3 px-4 font-bold text-amber-900 whitespace-nowrap">
+                                    <span class="whitespace-nowrap px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 inline-flex items-center space-x-1.5">
                                         <span>🎁</span>
                                         <span>{{ $w->doorprize?->title ?? 'Hadiah Dihapus' }}</span>
                                     </span>
                                 </td>
-                                <td class="py-3 px-4 font-black text-slate-900">{{ $w->pemilih?->nama ?? '-' }}</td>
-                                <td class="py-3 px-4 font-mono text-blue-700 font-bold">{{ $w->nik }}</td>
-                                <td class="py-3 px-4 text-slate-600">{{ $w->pemilih?->dept ?? '-' }}</td>
-                                <td class="py-3 px-4">
+                                <td class="py-3 px-4 font-black text-slate-900 whitespace-nowrap">{{ $w->pemilih?->nama ?? '-' }}</td>
+                                <td class="py-3 px-4 font-mono text-blue-700 font-bold whitespace-nowrap">{{ $w->nik }}</td>
+                                <td class="py-3 px-4 text-slate-600 whitespace-nowrap">{{ $w->pemilih?->dept ?? '-' }}</td>
+                                <td class="py-3 px-4 whitespace-nowrap">
                                     @if($w->status === 'accepted')
-                                        <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
                                             <span>✓</span>
                                             <span>Sudah Diterima</span>
                                         </span>
                                         @if($w->received_at)
-                                            <span class="block text-[10px] text-slate-400 font-mono mt-0.5">{{ $w->received_at->format('d/m/Y H:i') }}</span>
+                                            <span class="block text-[10px] text-slate-400 font-mono mt-0.5 whitespace-nowrap">{{ $w->received_at->format('d/m/Y H:i') }}</span>
                                         @endif
                                     @elseif($w->status === 'rejected')
-                                        <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-rose-100 text-rose-800 border border-rose-300">
+                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-rose-100 text-rose-800 border border-rose-300">
                                             <span>✕</span>
                                             <span>Ditolak</span>
                                         </span>
                                     @elseif($w->status === 'other')
-                                        <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-slate-100 text-slate-800 border border-slate-300">
+                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-slate-100 text-slate-800 border border-slate-300">
                                             <span>ℹ</span>
                                             <span>Lainnya</span>
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300">
+                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300">
                                             <span>⏳</span>
                                             <span>Belum Diambil</span>
                                         </span>
@@ -537,7 +537,7 @@
                                 <td class="py-3 px-4 text-slate-600 text-xs max-w-xs truncate" title="{{ $w->status_note }}">
                                     {{ $w->status_note ?: '-' }}
                                 </td>
-                                <td class="py-3 px-4 text-right">
+                                <td class="py-3 px-4 text-right whitespace-nowrap">
                                     <div class="inline-flex items-center space-x-1.5">
                                         <button 
                                             type="button" 

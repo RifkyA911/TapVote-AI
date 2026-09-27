@@ -96,17 +96,17 @@
 
     <!-- Candidate DataTable Container (Unified with DPT Table) -->
     <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm" id="candidate-table">
+        <div class="overflow-x-auto w-full">
+            <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="candidate-table">
                 <thead>
                     <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none">
-                        <th class="py-3 px-2 text-center w-10" title="Drag & Drop prioritize order">Drag</th>
-                        <th class="py-3 px-3 text-center w-16">No.</th>
-                        <th class="py-3 px-3 text-center w-24">Photo</th>
-                        <th class="py-3 px-3">Candidate Identity</th>
+                        <th class="py-3 px-2 text-center w-10 whitespace-nowrap" title="Drag & Drop prioritize order">Drag</th>
+                        <th class="py-3 px-3 text-center w-16 whitespace-nowrap">No.</th>
+                        <th class="py-3 px-3 text-center w-24 whitespace-nowrap">Photo</th>
+                        <th class="py-3 px-3 whitespace-nowrap">Candidate Identity</th>
                         <th class="py-3 px-3">Vision & Mission</th>
-                        <th class="py-3 px-3 text-center w-44">Tally & Percentage</th>
-                        <th class="py-3 px-3 text-right w-28">Actions</th>
+                        <th class="py-3 px-3 text-center w-44 whitespace-nowrap">Tally & Percentage</th>
+                        <th class="py-3 px-3 text-right w-28 whitespace-nowrap">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100" id="candidate-table-body">
@@ -164,7 +164,7 @@
                             </td>
 
                             <!-- Vote Tally & Percentage -->
-                            <td class="py-3 px-3 text-center">
+                            <td class="py-3 px-3 text-center whitespace-nowrap">
                                 <div class="flex items-baseline justify-center space-x-1.5">
                                     <span class="text-base sm:text-lg font-black text-emerald-700 font-mono">{{ $p->perolehan_suara_count }}</span>
                                     <span class="text-xs text-slate-500 font-bold">Votes</span>
@@ -176,7 +176,7 @@
                             </td>
 
                             <!-- Actions -->
-                            <td class="py-3 px-3 text-right">
+                            <td class="py-3 px-3 text-right whitespace-nowrap">
                                 <div class="flex items-center justify-end space-x-1.5">
                                     <a href="{{ route('admin.pengawas.edit', $p->nik) }}" class="p-2 rounded-xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 transition" title="Edit Candidate">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>

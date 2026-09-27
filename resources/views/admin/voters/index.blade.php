@@ -191,67 +191,69 @@
             </div>
         </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm">
+        <div class="overflow-x-auto w-full">
+            <table class="min-w-[840px] w-full text-left text-xs sm:text-sm">
                 <thead>
                     <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none">
-                        <th class="py-3 px-3 cursor-pointer hover:text-slate-900 transition" onclick="changeSort('nik')">
+                        <th class="py-3 px-3 cursor-pointer hover:text-slate-900 transition whitespace-nowrap" onclick="changeSort('nik')">
                             <span class="flex items-center space-x-1">
                                 <span>NIK</span>
                                 <span id="sort-icon-nik">↕</span>
                             </span>
                         </th>
-                        <th class="py-3 px-3 cursor-pointer hover:text-slate-900 transition" onclick="changeSort('nama')">
+                        <th class="py-3 px-3 cursor-pointer hover:text-slate-900 transition whitespace-nowrap" onclick="changeSort('nama')">
                             <span class="flex items-center space-x-1">
                                 <span>Nama Pemilih</span>
                                 <span id="sort-icon-nama">↕</span>
                             </span>
                         </th>
-                        <th class="py-3 px-3 cursor-pointer hover:text-slate-900 transition" onclick="changeSort('dept')">
+                        <th class="py-3 px-3 cursor-pointer hover:text-slate-900 transition whitespace-nowrap" onclick="changeSort('dept')">
                             <span class="flex items-center space-x-1">
                                 <span>Departemen</span>
                                 <span id="sort-icon-dept">↕</span>
                             </span>
                         </th>
-                        <th class="py-3 px-3">RFID UID (Mifare)</th>
-                        <th class="py-3 px-3 text-center cursor-pointer hover:text-slate-900 transition" onclick="changeSort('pilih')">
+                        <th class="py-3 px-3 whitespace-nowrap">RFID UID (Mifare)</th>
+                        <th class="py-3 px-3 text-center cursor-pointer hover:text-slate-900 transition whitespace-nowrap" onclick="changeSort('pilih')">
                             <span class="inline-flex items-center space-x-1">
                                 <span>Status Suara</span>
                                 <span id="sort-icon-pilih">↕</span>
                             </span>
                         </th>
-                        <th class="py-3 px-3 text-center cursor-pointer hover:text-slate-900 transition" onclick="changeSort('voted_at')">
+                        <th class="py-3 px-3 text-center cursor-pointer hover:text-slate-900 transition whitespace-nowrap" onclick="changeSort('voted_at')">
                             <span class="inline-flex items-center space-x-1">
                                 <span>Waktu Vote</span>
                                 <span id="sort-icon-voted_at">↕</span>
                             </span>
                         </th>
-                        <th class="py-3 px-3 text-right">Aksi</th>
+                        <th class="py-3 px-3 text-right whitespace-nowrap">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="voters-table-body" class="divide-y divide-slate-100">
                     <!-- Populated by JavaScript executeQuery() -->
                     @forelse($voters->take(10) as $v)
                         <tr class="hover:bg-slate-50 transition">
-                            <td class="py-3 px-3 font-mono font-bold text-blue-700">{{ $v->nik }}</td>
+                            <td class="py-3 px-3 font-mono font-bold text-blue-700 whitespace-nowrap">{{ $v->nik }}</td>
                             <td class="py-3 px-3 font-bold text-slate-900">{{ $v->nama }}</td>
-                            <td class="py-3 px-3 text-slate-600">{{ $v->dept }}</td>
-                            <td class="py-3 px-3 font-mono text-slate-700 bg-slate-50 rounded px-2 py-0.5 inline-block my-1 border border-slate-200">{{ $v->rfid }}</td>
-                            <td class="py-3 px-3 text-center">
+                            <td class="py-3 px-3 text-slate-600 whitespace-nowrap">{{ $v->dept }}</td>
+                            <td class="py-3 px-3 font-mono text-slate-700 whitespace-nowrap">
+                                <span class="bg-slate-50 rounded px-2 py-0.5 inline-block border border-slate-200">{{ $v->rfid }}</span>
+                            </td>
+                            <td class="py-3 px-3 text-center whitespace-nowrap">
                                 @if($v->pilih === 'T')
-                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                    <span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
                                         Sudah Memilih (T)
                                     </span>
                                 @else
-                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                    <span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
                                         Belum (F)
                                     </span>
                                 @endif
                             </td>
-                            <td class="py-3 px-3 text-center font-mono text-slate-500 text-xs">
+                            <td class="py-3 px-3 text-center font-mono text-slate-500 text-xs whitespace-nowrap">
                                 {{ $v->voted_at ? $v->voted_at->format('H:i:s d/m/Y') : '-' }}
                             </td>
-                            <td class="py-3 px-3 text-right">
+                            <td class="py-3 px-3 text-right whitespace-nowrap">
                                 <form action="{{ route('admin.voters.destroy', $v->nik) }}" method="POST" onsubmit="return confirm('Hapus pemilih {{ $v->nama }}?')">
                                     @csrf
                                     @method('DELETE')
@@ -538,18 +540,20 @@
             let rowsHtml = '';
             items.forEach(v => {
                 const statusBadge = v.pilih === 'T'
-                    ? `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">Sudah Memilih (T)</span>`
-                    : `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">Belum (F)</span>`;
+                    ? `<span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">Sudah Memilih (T)</span>`
+                    : `<span class="whitespace-nowrap px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">Belum (F)</span>`;
 
                 rowsHtml += `
                     <tr class="hover:bg-slate-50 transition">
-                        <td class="py-3 px-3 font-mono font-bold text-blue-700">${v.nik}</td>
+                        <td class="py-3 px-3 font-mono font-bold text-blue-700 whitespace-nowrap">${v.nik}</td>
                         <td class="py-3 px-3 font-bold text-slate-900">${v.nama}</td>
-                        <td class="py-3 px-3 text-slate-600">${v.dept}</td>
-                        <td class="py-3 px-3 font-mono text-slate-700 bg-slate-50 rounded px-2 py-0.5 inline-block my-1 border border-slate-200">${v.rfid}</td>
-                        <td class="py-3 px-3 text-center">${statusBadge}</td>
-                        <td class="py-3 px-3 text-center font-mono text-slate-500 text-xs">${v.voted_at}</td>
-                        <td class="py-3 px-3 text-right">
+                        <td class="py-3 px-3 text-slate-600 whitespace-nowrap">${v.dept}</td>
+                        <td class="py-3 px-3 font-mono text-slate-700 whitespace-nowrap">
+                            <span class="bg-slate-50 rounded px-2 py-0.5 inline-block border border-slate-200">${v.rfid}</span>
+                        </td>
+                        <td class="py-3 px-3 text-center whitespace-nowrap">${statusBadge}</td>
+                        <td class="py-3 px-3 text-center font-mono text-slate-500 text-xs whitespace-nowrap">${v.voted_at}</td>
+                        <td class="py-3 px-3 text-right whitespace-nowrap">
                             <form action="${v.delete_url}" method="POST" onsubmit="return confirm('Hapus pemilih ${v.nama}?')">
                                 <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').content}">
                                 <input type="hidden" name="_method" value="DELETE">

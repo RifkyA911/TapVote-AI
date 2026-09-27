@@ -144,16 +144,16 @@
 
     <!-- Trace Back Table Container -->
     <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm" id="traceback-datatable">
+        <div class="overflow-x-auto w-full">
+            <table class="min-w-[860px] w-full text-left text-xs sm:text-sm" id="traceback-datatable">
                 <thead>
                     <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
-                        <th class="py-3.5 px-4">Waktu Transaksi</th>
-                        <th class="py-3.5 px-4">NIK Pemilih</th>
-                        <th class="py-3.5 px-4">Nama Pemilih</th>
-                        <th class="py-3.5 px-4">Departemen</th>
-                        <th class="py-3.5 px-4">Pilihan Calon Ketua</th>
-                        <th class="py-3.5 px-4">Pilihan Calon Pengawas</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Waktu Transaksi</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">NIK Pemilih</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Nama Pemilih</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Departemen</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Pilihan Calon Ketua</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Pilihan Calon Pengawas</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100" id="traceback-table-body">
@@ -168,32 +168,32 @@
                             data-dept="{{ strtolower($v->dept) }}"
                             data-ketua="{{ strtolower($ketuaNama) }}"
                             data-pengawas="{{ strtolower($pengawasNama) }}">
-                            <td class="py-3.5 px-4 font-mono text-slate-500 text-xs">
+                            <td class="py-3.5 px-4 font-mono text-slate-500 text-xs whitespace-nowrap">
                                 {{ $v->voted_at ? $v->voted_at->format('H:i:s d/m/Y') : '-' }}
                             </td>
-                            <td class="py-3.5 px-4 font-mono font-bold text-slate-700">{{ $v->nik }}</td>
-                            <td class="py-3.5 px-4 font-extrabold text-slate-900">{{ $v->nama }}</td>
-                            <td class="py-3.5 px-4">
+                            <td class="py-3.5 px-4 font-mono font-bold text-slate-700 whitespace-nowrap">{{ $v->nik }}</td>
+                            <td class="py-3.5 px-4 font-extrabold text-slate-900 whitespace-nowrap">{{ $v->nama }}</td>
+                            <td class="py-3.5 px-4 whitespace-nowrap">
                                 <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700">
                                     {{ $v->dept }}
                                 </span>
                             </td>
-                            <td class="py-3.5 px-4">
+                            <td class="py-3.5 px-4 whitespace-nowrap">
                                 @if($v->hasilKetua && $v->hasilKetua->kandidatKetua)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-xl bg-blue-50 text-blue-800 text-xs font-bold border border-blue-200">
+                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-xl bg-blue-50 text-blue-800 text-xs font-bold border border-blue-200">
                                         No. {{ $v->hasilKetua->kandidatKetua->nomor_urut }} - {{ $v->hasilKetua->kandidatKetua->nama }}
                                     </span>
                                 @else
-                                    <span class="text-slate-400 italic text-xs">Belum memilih</span>
+                                    <span class="text-slate-400 italic text-xs whitespace-nowrap">Belum memilih</span>
                                 @endif
                             </td>
-                            <td class="py-3.5 px-4">
+                            <td class="py-3.5 px-4 whitespace-nowrap">
                                 @if($v->hasilPengawas && $v->hasilPengawas->kandidatPengawas)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200">
+                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200">
                                         No. {{ $v->hasilPengawas->kandidatPengawas->nomor_urut }} - {{ $v->hasilPengawas->kandidatPengawas->nama }}
                                     </span>
                                 @else
-                                    <span class="text-slate-400 italic text-xs">Belum memilih</span>
+                                    <span class="text-slate-400 italic text-xs whitespace-nowrap">Belum memilih</span>
                                 @endif
                             </td>
                         </tr>

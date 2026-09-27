@@ -200,45 +200,45 @@
 
         <!-- Table Container -->
         <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs sm:text-sm" id="broker-datatable">
+            <div class="overflow-x-auto w-full">
+                <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="broker-datatable">
                     <thead>
                         <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
-                            <th class="py-3.5 px-4 text-center">Rank</th>
-                            <th class="py-3.5 px-4">{{ __('Departemen') }}</th>
-                            <th class="py-3.5 px-4 text-right">{{ __('Volume Suara') }}</th>
-                            <th class="py-3.5 px-4 text-right">{{ __('Porsi (%)') }}</th>
-                            <th class="py-3.5 px-4">{{ __('Kandidat Terunggul di Divisi') }}</th>
-                            <th class="py-3.5 px-4 text-right">{{ __('Soliditas (%)') }}</th>
+                            <th class="py-3.5 px-4 text-center whitespace-nowrap">Rank</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Departemen') }}</th>
+                            <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('Volume Suara') }}</th>
+                            <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('Porsi (%)') }}</th>
+                            <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Kandidat Terunggul di Divisi') }}</th>
+                            <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('Soliditas (%)') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100" id="broker-table-body">
                         @forelse($brokerSummary as $idx => $b)
                             <tr class="hover:bg-slate-50/75 transition border-b border-slate-100 broker-row"
                                 data-dept="{{ strtolower($b['dept']) }}">
-                                <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500">
+                                <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500 whitespace-nowrap">
                                     <span class="w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-bold {{ $idx < 3 ? 'bg-indigo-100 text-indigo-700 font-black' : 'bg-slate-100 text-slate-600' }}">
                                         {{ $idx + 1 }}
                                     </span>
                                 </td>
-                                <td class="py-3.5 px-4">
+                                <td class="py-3.5 px-4 whitespace-nowrap">
                                     <strong class="text-slate-900 block font-black text-sm">{{ $b['dept'] }}</strong>
                                 </td>
-                                <td class="py-3.5 px-4 text-right font-mono font-black text-slate-900">
+                                <td class="py-3.5 px-4 text-right font-mono font-black text-slate-900 whitespace-nowrap">
                                     {{ $b['total_votes'] }} {{ __('Suara') }}
                                 </td>
-                                <td class="py-3.5 px-4 text-right">
+                                <td class="py-3.5 px-4 text-right whitespace-nowrap">
                                     <span class="font-mono font-bold text-slate-700">{{ $b['dept_share_pct'] }}%</span>
                                     <div class="w-16 bg-slate-100 rounded-full h-1.5 ml-auto mt-1 overflow-hidden">
                                         <div class="bg-blue-600 h-1.5 rounded-full" style="width: {{ min(100, $b['dept_share_pct'] * 3) }}%"></div>
                                     </div>
                                 </td>
-                                <td class="py-3.5 px-4">
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-xl bg-indigo-50 text-indigo-800 text-xs font-bold border border-indigo-200">
+                                <td class="py-3.5 px-4 whitespace-nowrap">
+                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-xl bg-indigo-50 text-indigo-800 text-xs font-bold border border-indigo-200">
                                         {{ $b['top_candidate'] }} ({{ $b['top_candidate_votes'] }} {{ __('Suara') }})
                                     </span>
                                 </td>
-                                <td class="py-3.5 px-4 text-right">
+                                <td class="py-3.5 px-4 text-right whitespace-nowrap">
                                     <span class="font-mono font-black text-xs {{ $b['loyalty_rate'] >= 60 ? 'text-emerald-600' : 'text-amber-600' }}">
                                         {{ $b['loyalty_rate'] }}%
                                     </span>

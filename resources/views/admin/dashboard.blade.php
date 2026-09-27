@@ -277,7 +277,7 @@
                 <span class="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center justify-center shadow-xs">1</span>
                 <div>
                     <h3 class="text-base sm:text-lg font-black text-slate-900">Perolehan Suara: Calon Ketua Koperasi</h3>
-                    <p class="text-xs text-slate-500">Distribusi suara masuk secara komprehensif via ApexCharts Donut & Rekapitulasi</p>
+                    <p class="text-xs text-slate-500">Distribusi perolehan suara masuk secara komprehensif via ApexCharts Dynamic Bar Ranking & Rekapitulasi</p>
                 </div>
             </div>
             <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
@@ -286,13 +286,13 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            <!-- ApexCharts Donut Viewport (Left) -->
-            <div class="lg:col-span-5 flex items-center justify-center min-h-[270px]">
+            <!-- ApexCharts Bar Viewport (Left) -->
+            <div class="lg:col-span-6 flex items-center justify-center min-h-[270px]">
                 <div id="apexChartKetua" class="w-full"></div>
             </div>
 
             <!-- Progress & Tally List (Right) -->
-            <div class="lg:col-span-7 space-y-3" id="admin-ketua-list">
+            <div class="lg:col-span-6 space-y-3" id="admin-ketua-list">
                 @foreach($ketuaResults as $k)
                     <div class="p-4 rounded-2xl bg-slate-50 hover:bg-blue-50/40 border border-slate-200/80 transition space-y-2">
                         <div class="flex items-center justify-between gap-3">
@@ -333,7 +333,7 @@
                 <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-xs">2</span>
                 <div>
                     <h3 class="text-base sm:text-lg font-black text-slate-900">Perolehan Suara: Calon Pengawas Koperasi</h3>
-                    <p class="text-xs text-slate-500">Distribusi suara masuk secara komprehensif via ApexCharts Donut & Rekapitulasi</p>
+                    <p class="text-xs text-slate-500">Distribusi perolehan suara masuk secara komprehensif via ApexCharts Dynamic Bar Ranking & Rekapitulasi</p>
                 </div>
             </div>
             <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -342,13 +342,13 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            <!-- ApexCharts Donut Viewport (Left) -->
-            <div class="lg:col-span-5 flex items-center justify-center min-h-[270px]">
+            <!-- ApexCharts Bar Viewport (Left) -->
+            <div class="lg:col-span-6 flex items-center justify-center min-h-[270px]">
                 <div id="apexChartPengawas" class="w-full"></div>
             </div>
 
             <!-- Progress & Tally List (Right) -->
-            <div class="lg:col-span-7 space-y-3" id="admin-pengawas-list">
+            <div class="lg:col-span-6 space-y-3" id="admin-pengawas-list">
                 @foreach($pengawasResults as $p)
                     <div class="p-4 rounded-2xl bg-slate-50 hover:bg-emerald-50/40 border border-slate-200/80 transition space-y-2">
                         <div class="flex items-center justify-between gap-3">
@@ -633,58 +633,83 @@
         initDashRfid3D();
         if (typeof ApexCharts === 'undefined') return;
 
-        // 1. ApexChart Ketua (Donut)
+        // 1. ApexChart Ketua (Modern Horizontal Comparative Bar Ranking)
         const ketuaSeries = initialKetua.map(k => k.suara);
         const ketuaLabels = initialKetua.map(k => `No. ${k.nomor_urut} ${k.nama}`);
         const totalSuaraKetua = ketuaSeries.reduce((a, b) => a + b, 0);
 
         const optionsKetua = {
             chart: {
-                type: 'donut',
-                height: 250,
+                type: 'bar',
+                height: Math.max(250, initialKetua.length * 60),
                 fontFamily: 'Plus Jakarta Sans, sans-serif',
+                toolbar: { show: false },
                 animations: { enabled: true, easing: 'easeinout', speed: 600 }
             },
-            series: totalSuaraKetua > 0 ? ketuaSeries : [1],
-            labels: totalSuaraKetua > 0 ? ketuaLabels : ['Belum Ada Suara'],
-            colors: totalSuaraKetua > 0 ? chartColors.slice(0, initialKetua.length) : ['#e2e8f0'],
-            stroke: {
-                show: true,
-                colors: ['#ffffff'],
-                width: 3
-            },
-            dataLabels: { 
-                enabled: totalSuaraKetua > 0,
-                dropShadow: { enabled: true, top: 1, left: 1, blur: 3, opacity: 0.95, color: '#000000' },
-                style: { 
-                    fontSize: '12px', 
-                    fontFamily: 'Plus Jakarta Sans, sans-serif',
-                    fontWeight: '900',
-                    colors: ['#ffffff']
+            series: [{
+                name: 'Perolehan Suara',
+                data: ketuaSeries
+            }],
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    borderRadius: 8,
+                    borderRadiusApplication: 'end',
+                    distributed: true,
+                    barHeight: '60%',
+                    dataLabels: { position: 'top' }
                 }
             },
-            legend: { position: 'bottom', fontSize: '11px', fontWeight: 600 },
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '50%',
-                        labels: {
-                            show: true,
-                            total: {
-                                show: true,
-                                label: 'Total Suara',
-                                fontSize: '12px',
-                                fontWeight: 700,
-                                color: '#64748b',
-                                formatter: () => `${totalSuaraKetua} Suara`
-                            }
-                        }
+            colors: chartColors.slice(0, Math.max(1, initialKetua.length)),
+            dataLabels: {
+                enabled: true,
+                formatter: function(val) {
+                    const pct = totalSuaraKetua > 0 ? Math.round((val / totalSuaraKetua) * 100) : 0;
+                    return val + ' Suara (' + pct + '%)';
+                },
+                offsetX: 10,
+                style: {
+                    fontSize: '11px',
+                    fontFamily: 'Plus Jakarta Sans, sans-serif',
+                    fontWeight: '800',
+                    colors: ['#0f172a']
+                }
+            },
+            xaxis: {
+                categories: ketuaLabels,
+                labels: {
+                    style: {
+                        fontFamily: 'Plus Jakarta Sans, sans-serif',
+                        fontWeight: '600',
+                        colors: '#64748b'
                     }
                 }
             },
+            yaxis: {
+                labels: {
+                    maxWidth: 160,
+                    style: {
+                        fontFamily: 'Plus Jakarta Sans, sans-serif',
+                        fontWeight: '700',
+                        fontSize: '11px',
+                        colors: '#1e293b'
+                    }
+                }
+            },
+            grid: {
+                borderColor: '#f1f5f9',
+                xaxis: { lines: { show: true } },
+                yaxis: { lines: { show: false } }
+            },
+            legend: { show: false },
             tooltip: {
-                enabled: totalSuaraKetua > 0,
-                y: { formatter: (val) => `${val} Suara` }
+                theme: 'light',
+                y: {
+                    formatter: (val) => {
+                        const pct = totalSuaraKetua > 0 ? ((val / totalSuaraKetua) * 100).toFixed(1) : 0;
+                        return `${val} Suara (${pct}%)`;
+                    }
+                }
             }
         };
 
@@ -694,58 +719,83 @@
             apexKetuaChart.render();
         }
 
-        // 2. ApexChart Pengawas (Donut)
+        // 2. ApexChart Pengawas (Modern Horizontal Comparative Bar Ranking)
         const pengawasSeries = initialPengawas.map(p => p.suara);
         const pengawasLabels = initialPengawas.map(p => `No. ${p.nomor_urut} ${p.nama}`);
         const totalSuaraPengawas = pengawasSeries.reduce((a, b) => a + b, 0);
 
         const optionsPengawas = {
             chart: {
-                type: 'donut',
-                height: 250,
+                type: 'bar',
+                height: Math.max(250, initialPengawas.length * 60),
                 fontFamily: 'Plus Jakarta Sans, sans-serif',
+                toolbar: { show: false },
                 animations: { enabled: true, easing: 'easeinout', speed: 600 }
             },
-            series: totalSuaraPengawas > 0 ? pengawasSeries : [1],
-            labels: totalSuaraPengawas > 0 ? pengawasLabels : ['Belum Ada Suara'],
-            colors: totalSuaraPengawas > 0 ? chartColors.slice(0, initialPengawas.length) : ['#e2e8f0'],
-            stroke: {
-                show: true,
-                colors: ['#ffffff'],
-                width: 3
-            },
-            dataLabels: { 
-                enabled: totalSuaraPengawas > 0,
-                dropShadow: { enabled: true, top: 1, left: 1, blur: 3, opacity: 0.95, color: '#000000' },
-                style: { 
-                    fontSize: '12px', 
-                    fontFamily: 'Plus Jakarta Sans, sans-serif',
-                    fontWeight: '900',
-                    colors: ['#ffffff']
+            series: [{
+                name: 'Perolehan Suara',
+                data: pengawasSeries
+            }],
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    borderRadius: 8,
+                    borderRadiusApplication: 'end',
+                    distributed: true,
+                    barHeight: '60%',
+                    dataLabels: { position: 'top' }
                 }
             },
-            legend: { position: 'bottom', fontSize: '11px', fontWeight: 600 },
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '50%',
-                        labels: {
-                            show: true,
-                            total: {
-                                show: true,
-                                label: 'Total Suara',
-                                fontSize: '12px',
-                                fontWeight: 700,
-                                color: '#64748b',
-                                formatter: () => `${totalSuaraPengawas} Suara`
-                            }
-                        }
+            colors: ['#059669', '#2563eb', '#d97706', '#7c3aed', '#db2777'].slice(0, Math.max(1, initialPengawas.length)),
+            dataLabels: {
+                enabled: true,
+                formatter: function(val) {
+                    const pct = totalSuaraPengawas > 0 ? Math.round((val / totalSuaraPengawas) * 100) : 0;
+                    return val + ' Suara (' + pct + '%)';
+                },
+                offsetX: 10,
+                style: {
+                    fontSize: '11px',
+                    fontFamily: 'Plus Jakarta Sans, sans-serif',
+                    fontWeight: '800',
+                    colors: ['#0f172a']
+                }
+            },
+            xaxis: {
+                categories: pengawasLabels,
+                labels: {
+                    style: {
+                        fontFamily: 'Plus Jakarta Sans, sans-serif',
+                        fontWeight: '600',
+                        colors: '#64748b'
                     }
                 }
             },
+            yaxis: {
+                labels: {
+                    maxWidth: 160,
+                    style: {
+                        fontFamily: 'Plus Jakarta Sans, sans-serif',
+                        fontWeight: '700',
+                        fontSize: '11px',
+                        colors: '#1e293b'
+                    }
+                }
+            },
+            grid: {
+                borderColor: '#f1f5f9',
+                xaxis: { lines: { show: true } },
+                yaxis: { lines: { show: false } }
+            },
+            legend: { show: false },
             tooltip: {
-                enabled: totalSuaraPengawas > 0,
-                y: { formatter: (val) => `${val} Suara` }
+                theme: 'light',
+                y: {
+                    formatter: (val) => {
+                        const pct = totalSuaraPengawas > 0 ? ((val / totalSuaraPengawas) * 100).toFixed(1) : 0;
+                        return `${val} Suara (${pct}%)`;
+                    }
+                }
             }
         };
 
@@ -1049,21 +1099,21 @@
             }
         }
 
-        // Live update ApexCharts
+        // Live update ApexCharts (Modern Bar Leaderboard)
         if (apexKetuaChart && data.ketua_results) {
             const seriesK = data.ketua_results.map(k => k.suara);
-            const totalK = seriesK.reduce((a, b) => a + b, 0);
-            if (totalK > 0) {
-                apexKetuaChart.updateSeries(seriesK);
-            }
+            apexKetuaChart.updateSeries([{
+                name: 'Perolehan Suara',
+                data: seriesK
+            }]);
         }
 
         if (apexPengawasChart && data.pengawas_results) {
             const seriesP = data.pengawas_results.map(p => p.suara);
-            const totalP = seriesP.reduce((a, b) => a + b, 0);
-            if (totalP > 0) {
-                apexPengawasChart.updateSeries(seriesP);
-            }
+            apexPengawasChart.updateSeries([{
+                name: 'Perolehan Suara',
+                data: seriesP
+            }]);
         }
     }
 

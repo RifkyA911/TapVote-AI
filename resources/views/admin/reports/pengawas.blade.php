@@ -231,16 +231,16 @@
 
     <!-- Candidate Table Container -->
     <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm" id="candidates-datatable">
+        <div class="overflow-x-auto w-full">
+            <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="candidates-datatable">
                 <thead>
                     <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
-                        <th class="py-3.5 px-4">No. Urut</th>
-                        <th class="py-3.5 px-4">Kandidat Pengawas</th>
-                        <th class="py-3.5 px-4">NIK</th>
-                        <th class="py-3.5 px-4 text-right">Perolehan Suara</th>
-                        <th class="py-3.5 px-4 text-right">Persentase</th>
-                        <th class="py-3.5 px-4 text-center">Status</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">No. Urut</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Kandidat Pengawas</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">NIK</th>
+                        <th class="py-3.5 px-4 text-right whitespace-nowrap">Perolehan Suara</th>
+                        <th class="py-3.5 px-4 text-right whitespace-nowrap">Persentase</th>
+                        <th class="py-3.5 px-4 text-center whitespace-nowrap">Status</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100" id="candidate-table-body">
@@ -283,13 +283,13 @@
                                     <div class="bg-emerald-600 h-1.5 rounded-full" style="width: {{ $persen }}%"></div>
                                 </div>
                             </td>
-                            <td class="py-3 px-4 text-center">
+                            <td class="py-3 px-4 text-center whitespace-nowrap">
                                 @if($isSeri && $isTop)
-                                    <span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-100 text-amber-800 border border-amber-300">
+                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-100 text-amber-800 border border-amber-300">
                                         ⚖️ SERI
                                     </span>
                                 @elseif(!$isSeri && $isTop)
-                                    <span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
                                         🏆 TERPILIH
                                     </span>
                                 @else
