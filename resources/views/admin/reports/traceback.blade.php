@@ -6,18 +6,18 @@
 <div class="space-y-6">
 
     <!-- Top Header Banner & Action Bar -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-800 border border-blue-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                     {{ __('Forensic Audit') }}
                 </span>
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
                     {{ __('Traceback Ledger') }}
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Trace Back Rekapitulasi Suara') }}</h2>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">{{ __('Audit log pemilih dan verifikasi pasangan pilihan calon (Ketua & Pengawas) per transaksi.') }}</p>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ __('Trace Back Rekapitulasi Suara') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5 max-w-2xl">{{ __('Audit log pemilih dan verifikasi pasangan pilihan calon (Ketua & Pengawas) per transaksi.') }}</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
@@ -26,7 +26,7 @@
                 <span>{{ __('Export Excel') }}</span>
             </a>
 
-            <a href="{{ route('admin.reports.traceback.export.pdf') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="{{ __('Download Official Vector PDF') }}">
+            <a href="{{ route('admin.reports.traceback.export.pdf') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="{{ __('Download Official Vector PDF') }}">
                 <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 <span>{{ __('Export PDF') }}</span>
             </a>
@@ -35,51 +35,51 @@
 
     <!-- Quick Stats Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-slate-500 font-semibold">{{ __('Total Suara Terekam') }}</span>
-                <strong class="block text-2xl font-black text-slate-900 font-mono">{{ $totalVoted }}</strong>
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">{{ __('Total Suara Terekam') }}</span>
+                <strong class="block text-2xl font-black text-slate-900 dark:text-white font-mono">{{ $totalVoted }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+            <span class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </span>
         </div>
 
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-emerald-700 font-semibold">{{ __('Departemen Berpartisipasi') }}</span>
-                <strong class="block text-2xl font-black text-emerald-600 font-mono">{{ count($departments) }} {{ __('Divisi') }}</strong>
+                <span class="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">{{ __('Departemen Berpartisipasi') }}</span>
+                <strong class="block text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">{{ count($departments) }} {{ __('Divisi') }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
+            <span class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
             </span>
         </div>
 
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-indigo-700 font-semibold">{{ __('Integritas Kriptografis') }}</span>
-                <strong class="block text-base font-black text-indigo-600 truncate mt-1">{{ __('100% SHA-256 Valid') }}</strong>
+                <span class="text-xs text-indigo-700 dark:text-indigo-400 font-semibold">{{ __('Integritas Kriptografis') }}</span>
+                <strong class="block text-base font-black text-indigo-600 dark:text-indigo-400 truncate mt-1">{{ __('100% SHA-256 Valid') }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-indigo-50 text-indigo-600">
+            <span class="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
             </span>
         </div>
     </div>
 
     <!-- Foldable Interactive Query Toolbar -->
-    <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
+    <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3.5">
         <!-- Foldable Header with Icon -->
-        <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100" onclick="toggleFilterFold()">
+        <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100 dark:border-slate-800" onclick="toggleFilterFold()">
             <div class="flex items-center space-x-2.5">
-                <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                <div class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                 </div>
                 <div>
-                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">{{ __('Filter & Dynamic Search') }}</h4>
-                    <p class="text-[11px] text-slate-400">{{ __('Cari audit transaksi pemilih berdasarkan NIK, Nama, Departemen, atau Pilihan Kandidat') }}</p>
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-white">{{ __('Filter & Dynamic Search') }}</h4>
+                    <p class="text-[11px] text-slate-400 dark:text-slate-500">{{ __('Cari audit transaksi pemilih berdasarkan NIK, Nama, Departemen, atau Pilihan Kandidat') }}</p>
                 </div>
             </div>
-            <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
+            <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition">
                 <span id="filter-fold-icon" class="text-xs font-mono font-bold block transform transition-transform duration-200">▲</span>
             </button>
         </div>
@@ -93,13 +93,13 @@
                         id="traceback-search-input" 
                         placeholder="{{ __('Search by NIK, Name, Department, or Candidate choice (Press \'/\' to focus)...') }}"
                         oninput="filterTracebackTable()"
-                        class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
+                        class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
                     >
                     <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <button type="button" onclick="clearTracebackSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
+                    <button type="button" onclick="clearTracebackSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
                 </div>
                 <div class="hidden md:flex items-center shrink-0">
-                    <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
+                    <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[11px] font-bold font-mono">
                         /
                     </kbd>
                 </div>
@@ -108,7 +108,7 @@
             <!-- Row 2: Department Filter & Action Buttons -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 <div class="col-span-1 sm:col-span-2">
-                    <select id="traceback-dept-filter" onchange="filterTracebackTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                    <select id="traceback-dept-filter" onchange="filterTracebackTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 font-bold focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 outline-none cursor-pointer">
                         <option value="">{{ __('Semua Departemen') }}</option>
                         @foreach($departments as $d)
                             <option value="{{ $d }}">{{ $d }}</option>
@@ -132,7 +132,7 @@
                     <button 
                         type="button" 
                         onclick="resetTracebackFilters()" 
-                        class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
+                        class="w-full h-11 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
                     >
                         <span>↺</span>
                         <span>{{ __('Reset') }}</span>
@@ -143,11 +143,11 @@
     </div>
 
     <!-- Trace Back Table Container -->
-    <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
+    <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden relative">
         <div class="overflow-x-auto w-full">
             <table class="min-w-[860px] w-full text-left text-xs sm:text-sm" id="traceback-datatable">
                 <thead>
-                    <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
+                    <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80 dark:bg-slate-800/80">
                         <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Waktu Transaksi') }}</th>
                         <th class="py-3.5 px-4 whitespace-nowrap">{{ __('NIK Pemilih') }}</th>
                         <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Nama Pemilih') }}</th>
@@ -156,52 +156,56 @@
                         <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Pilihan Calon Pengawas') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100" id="traceback-table-body">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800" id="traceback-table-body">
                     @forelse($voters as $v)
                         @php
                             $ketuaNama = $v->hasilKetua?->kandidatKetua?->nama ?? '';
                             $pengawasNama = $v->hasilPengawas?->kandidatPengawas?->nama ?? '';
                         @endphp
-                        <tr class="hover:bg-slate-50/75 transition border-b border-slate-100 traceback-row"
+                        <tr class="hover:bg-slate-50/75 dark:hover:bg-slate-800/60 transition border-b border-slate-100 dark:border-slate-800 traceback-row"
                             data-nik="{{ $v->nik }}"
                             data-nama="{{ strtolower($v->nama) }}"
                             data-dept="{{ strtolower($v->dept) }}"
                             data-ketua="{{ strtolower($ketuaNama) }}"
                             data-pengawas="{{ strtolower($pengawasNama) }}">
-                            <td class="py-3.5 px-4 font-mono text-slate-500 text-xs whitespace-nowrap">
+                            <td class="py-3.5 px-4 font-mono text-slate-500 dark:text-slate-400 text-xs whitespace-nowrap">
                                 {{ $v->voted_at ? $v->voted_at->format('H:i:s d/m/Y') : '-' }}
                             </td>
-                            <td class="py-3.5 px-4 font-mono font-bold text-slate-700 whitespace-nowrap">{{ $v->nik }}</td>
-                            <td class="py-3.5 px-4 font-extrabold text-slate-900 whitespace-nowrap">{{ $v->nama }}</td>
+                            <td class="py-3.5 px-4 font-mono font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">{{ $v->nik }}</td>
+                            <td class="py-3.5 px-4 font-extrabold text-slate-900 dark:text-white whitespace-nowrap">{{ $v->nama }}</td>
                             <td class="py-3.5 px-4 whitespace-nowrap">
-                                <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700">
+                                <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                                     {{ $v->dept }}
                                 </span>
                             </td>
                             <td class="py-3.5 px-4 whitespace-nowrap">
                                 @if($v->hasilKetua && $v->hasilKetua->kandidatKetua)
-                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-xl bg-blue-50 text-blue-800 text-xs font-bold border border-blue-200">
+                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 text-xs font-bold border border-blue-200 dark:border-blue-800">
                                         No. {{ $v->hasilKetua->kandidatKetua->nomor_urut }} - {{ $v->hasilKetua->kandidatKetua->nama }}
                                     </span>
                                 @else
-                                    <span class="text-slate-400 italic text-xs whitespace-nowrap">{{ __('Belum memilih') }}</span>
+                                    <span class="text-slate-400 dark:text-slate-500 italic text-xs whitespace-nowrap">{{ __('Belum memilih') }}</span>
                                 @endif
                             </td>
                             <td class="py-3.5 px-4 whitespace-nowrap">
                                 @if($v->hasilPengawas && $v->hasilPengawas->kandidatPengawas)
-                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200">
+                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold border border-emerald-200 dark:border-emerald-800">
                                         No. {{ $v->hasilPengawas->kandidatPengawas->nomor_urut }} - {{ $v->hasilPengawas->kandidatPengawas->nama }}
                                     </span>
                                 @else
-                                    <span class="text-slate-400 italic text-xs whitespace-nowrap">{{ __('Belum memilih') }}</span>
+                                    <span class="text-slate-400 dark:text-slate-500 italic text-xs whitespace-nowrap">{{ __('Belum memilih') }}</span>
                                 @endif
                             </td>
                         </tr>
                     @empty
                         <tr id="empty-traceback-row">
-                            <td colspan="6" class="py-12 text-center text-slate-400 font-medium">{{ __('Belum ada transaksi pemungutan suara yang tercatat.') }}</td>
+                            <td colspan="6" class="py-12 text-center text-slate-400 dark:text-slate-500 font-medium">{{ __('Belum ada transaksi pemungutan suara yang tercatat.') }}</td>
                         </tr>
                     @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
                 </tbody>
             </table>
         </div>

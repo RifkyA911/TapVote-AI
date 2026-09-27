@@ -6,24 +6,24 @@
 <div class="space-y-6 sm:space-y-8">
 
     <!-- Top Header Banner & Action Bar -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-indigo-100 text-indigo-800 border border-indigo-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-indigo-100 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
                     🛰️ Telemetry Analytics
                 </span>
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                     Live Database Stream
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Analytics & Telemetri') }}</h2>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ __('Analytics & Telemetri') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5 max-w-2xl">
                 {{ __('Pusat observasi komprehensif metrik pemilu: lonjakan partisipasi per departemen, histori kecepatan voting, audit keaslian kartu RFID, dan deteksi anomali.') }}
             </p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 self-start sm:self-auto">
-            <a href="{{ route('admin.dashboard') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs border border-slate-200 transition flex items-center space-x-1.5 cursor-pointer">
+            <a href="{{ route('admin.dashboard') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs border border-slate-200 dark:border-slate-700 transition flex items-center space-x-1.5 cursor-pointer">
                 <span>← {{ __('Kembali ke Dashboard') }}</span>
             </a>
             <button type="button" onclick="window.location.reload()" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-xs transition flex items-center space-x-1.5 cursor-pointer">
@@ -233,20 +233,20 @@
     </div>
 
     <!-- ROW 1 (Full Width): 24-Hour Velocity Spectrum -->
-    <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-3">
+    <div class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 gap-3">
             <div>
                 <div class="flex items-center space-x-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse"></span>
-                    <h3 class="text-base sm:text-xl font-black text-slate-900 tracking-tight">Distribusi Kecepatan Suara per Jam (Hourly Voting Velocity)</h3>
+                    <h3 class="text-base sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">Distribusi Kecepatan Suara per Jam (Hourly Voting Velocity)</h3>
                 </div>
-                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Analisis histori ritme kedatangan anggota di bilik suara sepanjang 24 jam</p>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">Analisis histori ritme kedatangan anggota di bilik suara sepanjang 24 jam</p>
             </div>
             <div class="flex items-center gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
                     Puncak: {{ $peakHourLabel }} WIB ({{ $peakHourVotes }} suara)
                 </span>
-                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                     24-Hour Spectrum
                 </span>
             </div>
@@ -255,45 +255,45 @@
         <div id="chartHourlyVelocity" class="w-full min-h-[320px]"></div>
 
         <!-- Detailed Breakdown Timeline Strips -->
-        <div class="pt-4 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-            <div class="p-3 rounded-2xl bg-indigo-50/70 border border-indigo-100">
-                <span class="text-[10px] font-bold uppercase text-indigo-700 block">Jam Lonjakan Tertinggi</span>
-                <span class="text-lg font-black text-indigo-900 font-mono">{{ $peakHourLabel }} WIB</span>
-                <span class="text-[11px] text-indigo-600 block">{{ $peakHourVotes }} suara/jam</span>
+        <div class="pt-4 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div class="p-3 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-800/60">
+                <span class="text-[10px] font-bold uppercase text-indigo-700 dark:text-indigo-400 block">Jam Lonjakan Tertinggi</span>
+                <span class="text-lg font-black text-indigo-900 dark:text-indigo-200 font-mono">{{ $peakHourLabel }} WIB</span>
+                <span class="text-[11px] text-indigo-600 dark:text-indigo-300 block">{{ $peakHourVotes }} suara/jam</span>
             </div>
-            <div class="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-100">
-                <span class="text-[10px] font-bold uppercase text-emerald-700 block">Rata-rata Suara / Jam Aktif</span>
+            <div class="p-3 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-800/60">
+                <span class="text-[10px] font-bold uppercase text-emerald-700 dark:text-emerald-400 block">Rata-rata Suara / Jam Aktif</span>
                 @php
                     $activeHoursCount = count(array_filter($hoursValues));
                     $avgVotes = $activeHoursCount > 0 ? round($totalVoted / $activeHoursCount, 1) : 0;
                 @endphp
-                <span class="text-lg font-black text-emerald-900 font-mono">{{ $avgVotes }}</span>
-                <span class="text-[11px] text-emerald-600 block">suara per jam aktif</span>
+                <span class="text-lg font-black text-emerald-900 dark:text-emerald-200 font-mono">{{ $avgVotes }}</span>
+                <span class="text-[11px] text-emerald-600 dark:text-emerald-300 block">suara per jam aktif</span>
             </div>
-            <div class="p-3 rounded-2xl bg-blue-50/70 border border-blue-100">
-                <span class="text-[10px] font-bold uppercase text-blue-700 block">Rentang Jam Aktif</span>
-                <span class="text-lg font-black text-blue-900 font-mono">{{ $activeHoursCount }} Jam</span>
-                <span class="text-[11px] text-blue-600 block">tercatat ada aktivitas</span>
+            <div class="p-3 rounded-2xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-800/60">
+                <span class="text-[10px] font-bold uppercase text-blue-700 dark:text-blue-400 block">Rentang Jam Aktif</span>
+                <span class="text-lg font-black text-blue-900 dark:text-blue-200 font-mono">{{ $activeHoursCount }} Jam</span>
+                <span class="text-[11px] text-blue-600 dark:text-blue-300 block">tercatat ada aktivitas</span>
             </div>
-            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-                <span class="text-[10px] font-bold uppercase text-slate-500 block">Tingkat Kelancaran TPS</span>
-                <span class="text-lg font-black text-slate-800 font-mono">100% Bebas Antrean</span>
-                <span class="text-[11px] text-slate-500 block">Aliran lancar terdistribusi</span>
+            <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
+                <span class="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block">Tingkat Kelancaran TPS</span>
+                <span class="text-lg font-black text-slate-800 dark:text-slate-100 font-mono">100% Bebas Antrean</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400 block">Aliran lancar terdistribusi</span>
             </div>
         </div>
     </div>
 
     <!-- ROW 2 (Full Width): Department Turnout Ranking & Live Candidate Standing -->
-    <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-3">
+    <div class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 gap-3">
             <div>
                 <div class="flex items-center space-x-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
-                    <h3 class="text-base sm:text-xl font-black text-slate-900 tracking-tight">Peringkat Partisipasi & Klasemen Suara Kandidat</h3>
+                    <h3 class="text-base sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">Peringkat Partisipasi & Klasemen Suara Kandidat</h3>
                 </div>
-                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Komparasi tingkat partisipasi unit kerja koperasi & perolehan suara sementara</p>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">Komparasi tingkat partisipasi unit kerja koperasi & perolehan suara sementara</p>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                 {{ count($deptStats) }} Departemen Terdaftar
             </span>
         </div>
@@ -302,8 +302,8 @@
             <!-- Left: Department Horizontal Ranking Bar (7 cols) -->
             <div class="lg:col-span-7 space-y-3">
                 <div class="flex items-center justify-between">
-                    <h4 class="text-xs font-black uppercase text-slate-500 tracking-wider">Persentase Partisipasi per Unit Kerja</h4>
-                    <span class="text-xs text-slate-400 font-medium">Garis target Quorum: {{ $quorumThreshold }}%</span>
+                    <h4 class="text-xs font-black uppercase text-slate-500 dark:text-slate-400 tracking-wider">Persentase Partisipasi per Unit Kerja</h4>
+                    <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">Garis target Quorum: {{ $quorumThreshold }}%</span>
                 </div>
                 <div id="chartDeptRanking" class="w-full min-h-[340px]"></div>
             </div>
@@ -425,18 +425,18 @@
     </div>
 
     <!-- Department Detail Breakdown Table -->
-    <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+    <div class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
             <div>
-                <h3 class="text-base sm:text-lg font-black text-slate-900">Matriks Partisipasi Seluruh Departemen</h3>
-                <p class="text-xs text-slate-500">Data kuota absensi, suara sah tercatat, dan sisa belum memilih per departemen</p>
+                <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">Matriks Partisipasi Seluruh Departemen</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Data kuota absensi, suara sah tercatat, dan sisa belum memilih per departemen</p>
             </div>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+        <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
             <table class="w-full text-left text-xs sm:text-sm">
                 <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold uppercase text-[10px] tracking-wider">
+                    <tr class="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 font-extrabold uppercase text-[10px] tracking-wider">
                         <th class="py-3 px-4">Nama Departemen</th>
                         <th class="py-3 px-4 text-center">Total Anggota</th>
                         <th class="py-3 px-4 text-center">Suara Masuk</th>
@@ -445,20 +445,20 @@
                         <th class="py-3 px-4 w-44">Progress Bar</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 font-medium">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
                     @foreach($deptStats as $dept)
-                        <tr class="hover:bg-slate-50/80 transition">
-                            <td class="py-3 px-4 font-bold text-slate-900">{{ $dept['dept'] }}</td>
-                            <td class="py-3 px-4 text-center font-mono font-bold text-slate-700">{{ $dept['total'] }}</td>
-                            <td class="py-3 px-4 text-center font-mono font-bold text-emerald-700">{{ $dept['voted'] }}</td>
-                            <td class="py-3 px-4 text-center font-mono font-bold text-amber-700">{{ $dept['pending'] }}</td>
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition">
+                            <td class="py-3 px-4 font-bold text-slate-900 dark:text-white">{{ $dept['dept'] }}</td>
+                            <td class="py-3 px-4 text-center font-mono font-bold text-slate-700 dark:text-slate-300">{{ $dept['total'] }}</td>
+                            <td class="py-3 px-4 text-center font-mono font-bold text-emerald-700 dark:text-emerald-400">{{ $dept['voted'] }}</td>
+                            <td class="py-3 px-4 text-center font-mono font-bold text-amber-700 dark:text-amber-400">{{ $dept['pending'] }}</td>
                             <td class="py-3 px-4 text-center">
-                                <span class="px-2.5 py-1 rounded-full text-xs font-mono font-black {{ $dept['pct'] >= 50 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-700' }}">
+                                <span class="px-2.5 py-1 rounded-full text-xs font-mono font-black {{ $dept['pct'] >= 50 ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300' }}">
                                     {{ $dept['pct'] }}%
                                 </span>
                             </td>
                             <td class="py-3 px-4">
-                                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                                <div class="w-full bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
                                     <div class="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full" style="width: {{ $dept['pct'] }}%;"></div>
                                 </div>
                             </td>
@@ -470,21 +470,21 @@
     </div>
 
     <!-- Security & Hardware Anomaly Audit Log -->
-    <div class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+    <div class="p-5 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
             <div>
-                <h3 class="text-base sm:text-lg font-black text-slate-900">Audit Forensik Keamanan & Hardware Scanner</h3>
-                <p class="text-xs text-slate-500">Log insiden kartu tidak dikenal, pencegahan double voting, dan histori anomali sistem</p>
+                <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">Audit Forensik Keamanan & Hardware Scanner</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Log insiden kartu tidak dikenal, pencegahan double voting, dan histori anomali sistem</p>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-rose-50 text-rose-800 border border-rose-200">
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
                 {{ count($recentSecurityEvents) }} Event Terdeteksi
             </span>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+        <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
             <table class="w-full text-left text-xs sm:text-sm">
                 <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-extrabold uppercase text-[10px] tracking-wider">
+                    <tr class="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 font-extrabold uppercase text-[10px] tracking-wider">
                         <th class="py-3 px-4">Waktu</th>
                         <th class="py-3 px-4">Aksi / Event</th>
                         <th class="py-3 px-4">Aktor</th>
@@ -492,22 +492,22 @@
                         <th class="py-3 px-4 font-mono">IP Address</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 font-medium">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
                     @forelse($recentSecurityEvents as $ev)
-                        <tr class="hover:bg-slate-50/80 transition">
-                            <td class="py-3 px-4 font-mono text-xs text-slate-500">{{ $ev->created_at->format('d/m H:i:s') }}</td>
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition">
+                            <td class="py-3 px-4 font-mono text-xs text-slate-500 dark:text-slate-400">{{ $ev->created_at->format('d/m H:i:s') }}</td>
                             <td class="py-3 px-4">
-                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-300">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-100 dark:bg-rose-950/80 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
                                     {{ $ev->action }}
                                 </span>
                             </td>
-                            <td class="py-3 px-4 font-bold text-slate-800">{{ $ev->actor }}</td>
-                            <td class="py-3 px-4 text-slate-600">{{ $ev->description }}</td>
-                            <td class="py-3 px-4 font-mono text-xs text-slate-500">{{ $ev->ip_address ?: '-' }}</td>
+                            <td class="py-3 px-4 font-bold text-slate-800 dark:text-slate-200">{{ $ev->actor }}</td>
+                            <td class="py-3 px-4 text-slate-600 dark:text-slate-400">{{ $ev->description }}</td>
+                            <td class="py-3 px-4 font-mono text-xs text-slate-500 dark:text-slate-400">{{ $ev->ip_address ?: '-' }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-6 text-center text-slate-400">Tidak ada anomali atau ancaman keamanan yang terdeteksi. Sistem berjalan 100% normal.</td>
+                            <td colspan="5" class="py-6 text-center text-slate-400 dark:text-slate-500">Tidak ada anomali atau ancaman keamanan yang terdeteksi. Sistem berjalan 100% normal.</td>
                         </tr>
                     @endforelse
                 </tbody>

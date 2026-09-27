@@ -6,35 +6,35 @@
 <div class="space-y-6 sm:space-y-8">
 
     <!-- Top Header Banner & Action Bar -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-indigo-100 text-indigo-800 border border-indigo-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-indigo-100 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
                     {{ __('Vote Flow Intelligence') }}
                 </span>
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                     {{ __('Department Distribution Matrix') }}
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Aliran Suara & Distribusi Departemen') }}</h2>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ __('Aliran Suara & Distribusi Departemen') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5 max-w-2xl">
                 {{ __('Audit visualisasi aliran suara dari setiap departemen ke masing-masing kandidat, konsentrasi blok pemilih, serta rasio dominasi elektoral.') }}
             </p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
             <!-- Target Toggle (Ketua / Pengawas) -->
-            <div class="inline-flex p-1 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold">
-                <a href="{{ route('admin.vote-flow', ['target' => 'ketua']) }}" class="px-3.5 py-1.5 rounded-xl transition {{ $target === 'ketua' ? 'bg-white text-blue-700 shadow-2xs font-black' : 'text-slate-600 hover:text-slate-900' }}">
+            <div class="inline-flex p-1 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold">
+                <a href="{{ route('admin.vote-flow', ['target' => 'ketua']) }}" class="px-3.5 py-1.5 rounded-xl transition {{ $target === 'ketua' ? 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 shadow-2xs font-black' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white' }}">
                     {{ __('Ketua') }}
                 </a>
-                <a href="{{ route('admin.vote-flow', ['target' => 'pengawas']) }}" class="px-3.5 py-1.5 rounded-xl transition {{ $target === 'pengawas' ? 'bg-white text-emerald-700 shadow-2xs font-black' : 'text-slate-600 hover:text-slate-900' }}">
+                <a href="{{ route('admin.vote-flow', ['target' => 'pengawas']) }}" class="px-3.5 py-1.5 rounded-xl transition {{ $target === 'pengawas' ? 'bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-2xs font-black' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white' }}">
                     {{ __('Pengawas') }}
                 </a>
             </div>
 
             <!-- Export PDF Button -->
-            <a href="{{ route('admin.vote-flow.export.pdf', ['target' => $target]) }}" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="{{ __('Download Official Vector PDF Report') }}">
+            <a href="{{ route('admin.vote-flow.export.pdf', ['target' => $target]) }}" class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="{{ __('Download Official Vector PDF Report') }}">
                 <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 <span>{{ __('Export PDF') }}</span>
             </a>
@@ -43,12 +43,12 @@
 
     <!-- Quick Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-slate-500 font-semibold">{{ __('Total Suara Terpetakan') }}</span>
-                <strong class="block text-2xl font-black text-slate-900 font-mono">{{ $totalVotes }} {{ __('Suara') }}</strong>
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">{{ __('Total Suara Terpetakan') }}</span>
+                <strong class="block text-2xl font-black text-slate-900 dark:text-white font-mono">{{ $totalVotes }} {{ __('Suara') }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+            <span class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
             </span>
         </div>
@@ -56,15 +56,15 @@
         @php
             $topBroker = $brokerSummary[0] ?? null;
         @endphp
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-emerald-700 font-semibold">{{ __('Lumbung Suara Terbesar') }}</span>
-                <strong class="block text-xl font-black text-emerald-600 truncate mt-0.5">
+                <span class="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">{{ __('Lumbung Suara Terbesar') }}</span>
+                <strong class="block text-xl font-black text-emerald-600 dark:text-emerald-400 truncate mt-0.5">
                     {{ $topBroker ? $topBroker['dept'] : '-' }}
                 </strong>
-                <span class="text-[11px] text-slate-500 font-mono">{{ $topBroker ? $topBroker['total_votes'] . ' ' . __('Suara') . ' (' . $topBroker['dept_share_pct'] . '%)' : '-' }}</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">{{ $topBroker ? $topBroker['total_votes'] . ' ' . __('Suara') . ' (' . $topBroker['dept_share_pct'] . '%)' : '-' }}</span>
             </div>
-            <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
+            <span class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
             </span>
         </div>
@@ -72,13 +72,13 @@
         @php
             $avgLoyalty = count($brokerSummary) > 0 ? round(collect($brokerSummary)->avg('loyalty_rate'), 1) : 0;
         @endphp
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-indigo-700 font-semibold">{{ __('Rata-rata Soliditas Departemen') }}</span>
-                <strong class="block text-2xl font-black text-indigo-600 font-mono">{{ $avgLoyalty }}%</strong>
-                <span class="text-[11px] text-slate-500 font-medium">{{ __('Tingkat konsolidasi satu calon per divisi') }}</span>
+                <span class="text-xs text-indigo-700 dark:text-indigo-400 font-semibold">{{ __('Rata-rata Soliditas Departemen') }}</span>
+                <strong class="block text-2xl font-black text-indigo-600 dark:text-indigo-400 font-mono">{{ $avgLoyalty }}%</strong>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">{{ __('Tingkat konsolidasi satu calon per divisi') }}</span>
             </div>
-            <span class="p-2.5 rounded-xl bg-indigo-50 text-indigo-600">
+            <span class="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
             </span>
         </div>
@@ -133,24 +133,24 @@
     </div>
 
     <!-- INTERACTIVE SANKEY FLOW DIAGRAM -->
-    <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+    <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 gap-2">
             <div>
-                <h3 class="text-base font-extrabold text-slate-900 flex items-center space-x-2">
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white flex items-center space-x-2">
                     <span>🔀</span>
                     <span>{{ __('Diagram Aliran Interaktif (Sankey Flow Chart)') }}</span>
                 </h3>
-                <p class="text-xs text-slate-500">{{ __('Arahkan kursor (*hover*) pada garis untuk melihat jumlah suara dari departemen ke kandidat.') }}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Arahkan kursor (*hover*) pada garis untuk melihat jumlah suara dari departemen ke kandidat.') }}</p>
             </div>
-            <div class="inline-flex items-center space-x-2 text-xs font-mono font-bold text-slate-500">
+            <div class="inline-flex items-center space-x-2 text-xs font-mono font-bold text-slate-500 dark:text-slate-400">
                 <span>{{ __('Departemen') }} ➔ {{ ucfirst($target) }}</span>
             </div>
         </div>
 
         @if(count($flowLinks) > 0)
-            <div id="sankey-chart-container" class="w-full h-[420px] rounded-2xl bg-slate-50/50 p-2"></div>
+            <div id="sankey-chart-container" class="w-full h-[420px] rounded-2xl bg-slate-50/50 dark:bg-slate-800/40 p-2"></div>
         @else
-            <div class="py-16 text-center text-slate-400 font-medium">
+            <div class="py-16 text-center text-slate-400 dark:text-slate-500 font-medium">
                 <span class="text-3xl block mb-2">📭</span>
                 {{ __('Belum ada transaksi pemungutan suara yang tercatat untuk dipetakan ke dalam diagram alir.') }}
             </div>
@@ -160,18 +160,18 @@
     <!-- DEPARTMENT DISTRIBUTION RANKING TABLE -->
     <div class="space-y-4">
         <!-- Foldable Interactive Query Toolbar -->
-        <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
-            <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100" onclick="toggleBrokerFold()">
+        <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3.5">
+            <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100 dark:border-slate-800" onclick="toggleBrokerFold()">
                 <div class="flex items-center space-x-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                    <div class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                     </div>
                     <div>
-                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">{{ __('Filter & Pencarian Distribusi Departemen') }}</h4>
-                        <p class="text-[11px] text-slate-400">{{ __('Cari peringkat lumbung suara berdasarkan nama departemen') }}</p>
+                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-white">{{ __('Filter & Pencarian Distribusi Departemen') }}</h4>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500">{{ __('Cari peringkat lumbung suara berdasarkan nama departemen') }}</p>
                     </div>
                 </div>
-                <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
+                <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition">
                     <span id="broker-fold-icon" class="text-xs font-mono font-bold block transform transition-transform duration-200">▲</span>
                 </button>
             </div>
@@ -184,7 +184,7 @@
                             id="broker-search-input" 
                             placeholder="{{ __('Cari nama departemen (Tekan \'/\' untuk fokus)...') }}"
                             oninput="filterBrokerTable()"
-                            class="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
+                            class="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-slate-50/80 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
                         >
                         <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         <button type="button" onclick="clearBrokerSearch()" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
@@ -195,7 +195,7 @@
                         <select 
                             id="broker-dept-select" 
                             onchange="filterBrokerTable()" 
-                            class="px-3 py-2.5 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-500 outline-none cursor-pointer"
+                            class="px-3 py-2.5 rounded-2xl bg-slate-50/80 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-bold text-slate-800 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-500 outline-none cursor-pointer"
                         >
                             <option value="">{{ __('Semua Departemen') }}</option>
                             @foreach($departments as $dName)
@@ -206,7 +206,7 @@
                         <button 
                             type="button" 
                             onclick="resetBrokerFilters()" 
-                            class="px-3 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center space-x-1 cursor-pointer"
+                            class="px-3 py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition flex items-center space-x-1 cursor-pointer"
                             title="{{ __('Reset Filter') }}"
                         >
                             <span>↺</span>
@@ -218,11 +218,11 @@
         </div>
 
         <!-- Table Container -->
-        <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
+        <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden relative">
             <div class="overflow-x-auto w-full">
                 <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="broker-datatable">
                     <thead>
-                        <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
+                        <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80 dark:bg-slate-800/80">
                             <th class="py-3.5 px-4 text-center whitespace-nowrap">{{ __('Rank') }}</th>
                             <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Departemen') }}</th>
                             <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('Volume Suara') }}</th>
@@ -231,41 +231,41 @@
                             <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('Soliditas (%)') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100" id="broker-table-body">
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800" id="broker-table-body">
                         @forelse($brokerSummary as $idx => $b)
-                            <tr class="hover:bg-slate-50/75 transition border-b border-slate-100 broker-row"
+                            <tr class="hover:bg-slate-50/75 dark:hover:bg-slate-800/60 transition border-b border-slate-100 dark:border-slate-800 broker-row"
                                 data-dept="{{ strtolower($b['dept']) }}">
-                                <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500 whitespace-nowrap">
-                                    <span class="w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-bold {{ $idx < 3 ? 'bg-indigo-100 text-indigo-700 font-black' : 'bg-slate-100 text-slate-600' }}">
+                                <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                                    <span class="w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-bold {{ $idx < 3 ? 'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 font-black' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400' }}">
                                         {{ $idx + 1 }}
                                     </span>
                                 </td>
                                 <td class="py-3.5 px-4 whitespace-nowrap">
-                                    <strong class="text-slate-900 block font-black text-sm">{{ $b['dept'] }}</strong>
+                                    <strong class="text-slate-900 dark:text-white block font-black text-sm">{{ $b['dept'] }}</strong>
                                 </td>
-                                <td class="py-3.5 px-4 text-right font-mono font-black text-slate-900 whitespace-nowrap">
+                                <td class="py-3.5 px-4 text-right font-mono font-black text-slate-900 dark:text-white whitespace-nowrap">
                                     {{ $b['total_votes'] }} {{ __('Suara') }}
                                 </td>
                                 <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                    <span class="font-mono font-bold text-slate-700">{{ $b['dept_share_pct'] }}%</span>
-                                    <div class="w-16 bg-slate-100 rounded-full h-1.5 ml-auto mt-1 overflow-hidden">
+                                    <span class="font-mono font-bold text-slate-700 dark:text-slate-300">{{ $b['dept_share_pct'] }}%</span>
+                                    <div class="w-16 bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 ml-auto mt-1 overflow-hidden">
                                         <div class="bg-blue-600 h-1.5 rounded-full" style="width: {{ min(100, $b['dept_share_pct'] * 3) }}%"></div>
                                     </div>
                                 </td>
                                 <td class="py-3.5 px-4 whitespace-nowrap">
-                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-xl bg-indigo-50 text-indigo-800 text-xs font-bold border border-indigo-200">
+                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 text-xs font-bold border border-indigo-200 dark:border-indigo-800">
                                         {{ $b['top_candidate'] }} ({{ $b['top_candidate_votes'] }} {{ __('Suara') }})
                                     </span>
                                 </td>
                                 <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                    <span class="font-mono font-black text-xs {{ $b['loyalty_rate'] >= 60 ? 'text-emerald-600' : 'text-amber-600' }}">
+                                    <span class="font-mono font-black text-xs {{ $b['loyalty_rate'] >= 60 ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400' }}">
                                         {{ $b['loyalty_rate'] }}%
                                     </span>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="py-12 text-center text-slate-400 font-medium">{{ __('Belum ada data aliran suara.') }}</td>
+                                <td colspan="6" class="py-12 text-center text-slate-400 dark:text-slate-500 font-medium">{{ __('Belum ada data aliran suara.') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -275,21 +275,21 @@
     </div>
 
     <!-- DETAILED CROSS-TABULATION MATRIX TABLE -->
-    <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+    <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
             <div>
-                <h3 class="text-base font-extrabold text-slate-900 flex items-center space-x-2">
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white flex items-center space-x-2">
                     <span>📊</span>
                     <span>{{ __('Matriks Detail Aliran Suara (Department-to-Candidate Grid)') }}</span>
                 </h3>
-                <p class="text-xs text-slate-500">{{ __('Tabel tabulasi silang memperlihatkan rincian perolehan suara setiap calon di masing-masing departemen.') }}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Tabel tabulasi silang memperlihatkan rincian perolehan suara setiap calon di masing-masing departemen.') }}</p>
             </div>
         </div>
 
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs sm:text-sm border-collapse">
                 <thead>
-                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-600 uppercase text-[11px] font-extrabold tracking-wider">
+                    <tr class="bg-slate-50/80 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider">
                         <th class="py-3 px-4">{{ __('Departemen') }}</th>
                         @foreach($candidates as $c)
                             <th class="py-3 px-4 text-center">
@@ -300,36 +300,36 @@
                         <th class="py-3 px-4 text-right">{{ __('Total Dept') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 font-medium">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
                     @foreach($departments as $d)
-                        <tr class="hover:bg-slate-50 transition border-b border-slate-100 matrix-row" data-dept="{{ strtolower($d) }}">
-                            <td class="py-3 px-4 font-bold text-slate-900">{{ $d }}</td>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition border-b border-slate-100 dark:border-slate-800 matrix-row" data-dept="{{ strtolower($d) }}">
+                            <td class="py-3 px-4 font-bold text-slate-900 dark:text-white">{{ $d }}</td>
                             @foreach($candidates as $c)
                                 @php
                                     $v = $matrix[$d][$c->nik] ?? 0;
                                     $dTot = $deptTotals[$d] ?? 0;
                                     $pct = $dTot > 0 ? round(($v / $dTot) * 100) : 0;
                                 @endphp
-                                <td class="py-3 px-4 text-center font-mono {{ $v > 0 ? 'font-black text-indigo-700 bg-indigo-50/30' : 'text-slate-400' }}">
+                                <td class="py-3 px-4 text-center font-mono {{ $v > 0 ? 'font-black text-indigo-700 dark:text-indigo-400 bg-indigo-50/30 dark:bg-indigo-950/30' : 'text-slate-400' }}">
                                     <span>{{ $v }}</span>
                                     @if($v > 0)
                                         <span class="text-[10px] text-slate-400 block font-normal">{{ $pct }}%</span>
                                     @endif
                                 </td>
                             @endforeach
-                            <td class="py-3 px-4 text-right font-mono font-black text-slate-900 bg-slate-50/60">
+                            <td class="py-3 px-4 text-right font-mono font-black text-slate-900 dark:text-white bg-slate-50/60 dark:bg-slate-800/60">
                                 {{ $deptTotals[$d] ?? 0 }}
                             </td>
                         </tr>
                     @endforeach
-                    <tr class="bg-slate-100 font-black border-t-2 border-slate-300">
-                        <td class="py-3.5 px-4 uppercase text-slate-800">{{ __('Total Suara Calon') }}</td>
+                    <tr class="bg-slate-100 dark:bg-slate-800/90 font-black border-t-2 border-slate-300 dark:border-slate-700">
+                        <td class="py-3.5 px-4 uppercase text-slate-800 dark:text-slate-200">{{ __('Total Suara Calon') }}</td>
                         @foreach($candidates as $c)
-                            <td class="py-3.5 px-4 text-center font-mono text-blue-700">
+                            <td class="py-3.5 px-4 text-center font-mono text-blue-700 dark:text-blue-400">
                                 {{ $candidateTotals[$c->nik] ?? 0 }}
                             </td>
                         @endforeach
-                        <td class="py-3.5 px-4 text-right font-mono text-slate-900">
+                        <td class="py-3.5 px-4 text-right font-mono text-slate-900 dark:text-white">
                             {{ $totalVotes }}
                         </td>
                     </tr>

@@ -6,23 +6,23 @@
 <div class="space-y-6">
 
     <!-- Top Header Banner & Action Bar -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-800 border border-blue-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                     {{ __('Official Nominees') }}
                 </span>
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                     {{ __('Category: Chairman') }}
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Chairman Candidates Management') }}</h2>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">{{ __('Manage official candidate profiles, vision & mission statements, and real-time tallies.') }}</p>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ __('Chairman Candidates Management') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5 max-w-2xl">{{ __('Manage official candidate profiles, vision & mission statements, and real-time tallies.') }}</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
-            <a href="{{ route('admin.reports.ketua.export.pdf') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="{{ __('Download Official Vector PDF Roster') }}">
-                <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <a href="{{ route('admin.reports.ketua.export.pdf') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="{{ __('Download Official Vector PDF Roster') }}">
+                <svg class="w-4 h-4 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 <span>{{ __('Export PDF Roster') }}</span>
             </a>
 
@@ -39,41 +39,41 @@
         $leader = $kandidat->sortByDesc('perolehan_suara_count')->first();
     @endphp
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-slate-500 font-semibold">{{ __('Total Candidates') }}</span>
-                <strong class="block text-2xl font-black text-slate-900 font-mono">{{ $kandidat->count() }}</strong>
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">{{ __('Total Candidates') }}</span>
+                <strong class="block text-2xl font-black text-slate-900 dark:text-white font-mono">{{ $kandidat->count() }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+            <span class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
             </span>
         </div>
 
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-blue-700 font-semibold">{{ __('Total Votes Received') }}</span>
-                <strong class="block text-2xl font-black text-blue-600 font-mono">{{ $totalKetuaVotes }}</strong>
+                <span class="text-xs text-blue-700 dark:text-blue-400 font-semibold">{{ __('Total Votes Received') }}</span>
+                <strong class="block text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">{{ $totalKetuaVotes }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+            <span class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </span>
         </div>
 
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-emerald-700 font-semibold">{{ __('Leading Frontrunner') }}</span>
-                <strong class="block text-lg font-black text-emerald-700 truncate max-w-[180px]">
+                <span class="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">{{ __('Leading Frontrunner') }}</span>
+                <strong class="block text-lg font-black text-emerald-700 dark:text-emerald-400 truncate max-w-[180px]">
                     {{ $leader && $leader->perolehan_suara_count > 0 ? "No. {$leader->nomor_urut} {$leader->nama}" : __('No Votes Yet') }}
                 </strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
+            <span class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
             </span>
         </div>
     </div>
 
     <!-- Search & Filter Toolbar -->
-    <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
+    <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3.5">
         <div class="flex items-center gap-3">
             <div class="relative flex-1">
                 <input 
@@ -81,13 +81,13 @@
                     id="candidate-search-input" 
                     placeholder="{{ __('Search candidate by name, NIK, or vision (Press \'/\' to focus)...') }}"
                     oninput="filterCandidateTable()"
-                    class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition font-medium"
+                    class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition font-medium"
                 >
                 <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                <button type="button" onclick="clearCandidateSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="{{ __('Clear Search') }}">✕</button>
+                <button type="button" onclick="clearCandidateSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-bold cursor-pointer" title="{{ __('Clear Search') }}">✕</button>
             </div>
             <div class="hidden md:flex items-center shrink-0">
-                <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
+                <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[11px] font-bold font-mono">
                     /
                 </kbd>
             </div>
@@ -95,11 +95,11 @@
     </div>
 
     <!-- Candidate DataTable Container (Unified with DPT Table) -->
-    <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
+    <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden relative">
         <div class="overflow-x-auto w-full">
             <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="candidate-table">
                 <thead>
-                    <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none">
+                    <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80 dark:bg-slate-800/80">
                         <th class="py-3 px-2 text-center w-10 whitespace-nowrap" title="{{ __('Drag & Drop prioritize order') }}">{{ __('Drag') }}</th>
                         <th class="py-3 px-3 text-center w-16 whitespace-nowrap">{{ __('No.') }}</th>
                         <th class="py-3 px-3 text-center w-24 whitespace-nowrap">{{ __('Photo') }}</th>
@@ -109,15 +109,15 @@
                         <th class="py-3 px-3 text-right w-28 whitespace-nowrap">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100" id="candidate-table-body">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800" id="candidate-table-body">
                     @forelse($kandidat as $k)
                         @php
                             $fotoKandidat = $k->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($k->nama).'&background=2563eb&color=ffffff&size=400';
                             $pct = $totalKetuaVotes > 0 ? round(($k->perolehan_suara_count / $totalKetuaVotes) * 100, 1) : 0;
                         @endphp
-                        <tr draggable="true" class="hover:bg-slate-50/80 transition candidate-row cursor-grab active:cursor-grabbing group" data-nik="{{ $k->nik }}" data-name="{{ strtolower($k->nama) }}" data-visi="{{ strtolower($k->visi) }}">
+                        <tr draggable="true" class="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition candidate-row cursor-grab active:cursor-grabbing group" data-nik="{{ $k->nik }}" data-name="{{ strtolower($k->nama) }}" data-visi="{{ strtolower($k->visi) }}">
                             <!-- Drag Handle Column -->
-                            <td class="py-3 px-2 text-center text-slate-400 group-hover:text-blue-600 transition select-none font-bold text-base">
+                            <td class="py-3 px-2 text-center text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition select-none font-bold text-base">
                                 <span title="Drag to reorder ballot priority">⋮⋮</span>
                             </td>
 
@@ -133,7 +133,7 @@
                                 <button 
                                     type="button" 
                                     onclick="openCardlessPreview('{{ $fotoKandidat }}', '{{ addslashes($k->nama) }}', 'No. {{ $k->nomor_urut }} • Chairman', '{{ $k->nik }}')"
-                                    class="group relative w-14 h-18 rounded-xl overflow-hidden bg-slate-900 border-2 border-slate-200 hover:border-blue-500 transition-all duration-300 shadow-2xs hover:shadow-md cursor-pointer inline-block"
+                                    class="group relative w-14 h-18 rounded-xl overflow-hidden bg-slate-900 border-2 border-slate-200 dark:border-slate-700 hover:border-blue-500 transition-all duration-300 shadow-2xs hover:shadow-md cursor-pointer inline-block"
                                     title="Click to view cardless high-res photo"
                                 >
                                     <img src="{{ $fotoKandidat }}" alt="{{ $k->nama }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
@@ -145,9 +145,9 @@
 
                             <!-- Candidate Identity -->
                             <td class="py-3 px-3">
-                                <div class="font-extrabold text-slate-900 text-sm sm:text-base">{{ $k->nama }}</div>
+                                <div class="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">{{ $k->nama }}</div>
                                 <div class="flex items-center space-x-2 mt-1">
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[11px] font-mono font-bold border border-blue-200">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 text-[11px] font-mono font-bold border border-blue-200 dark:border-blue-800">
                                         NIK: {{ $k->nik }}
                                     </span>
                                 </div>
@@ -155,22 +155,22 @@
 
                             <!-- Vision & Mission Preview -->
                             <td class="py-3 px-3 max-w-xs sm:max-w-md">
-                                <div class="text-xs text-slate-700 font-semibold line-clamp-2" title="{{ $k->visi }}">
-                                    <strong class="text-slate-900">{{ __('Vision:') }}</strong> {{ $k->visi }}
+                                <div class="text-xs text-slate-700 dark:text-slate-300 font-semibold line-clamp-2" title="{{ $k->visi }}">
+                                    <strong class="text-slate-900 dark:text-white">{{ __('Vision:') }}</strong> {{ $k->visi }}
                                 </div>
-                                <div class="text-[11px] text-slate-500 line-clamp-1 mt-1">
-                                    <strong class="text-slate-700">{{ __('Mission:') }}</strong> {{ $k->misi }}
+                                <div class="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-1">
+                                    <strong class="text-slate-700 dark:text-slate-300">{{ __('Mission:') }}</strong> {{ $k->misi }}
                                 </div>
                             </td>
 
                             <!-- Vote Tally & Percentage -->
                             <td class="py-3 px-3 text-center whitespace-nowrap">
                                 <div class="flex items-baseline justify-center space-x-1.5">
-                                    <span class="text-base sm:text-lg font-black text-blue-700 font-mono">{{ $k->perolehan_suara_count }}</span>
-                                    <span class="text-xs text-slate-500 font-bold">{{ __('Votes') }}</span>
-                                    <span class="text-xs font-bold text-slate-600">({{ $pct }}%)</span>
+                                    <span class="text-base sm:text-lg font-black text-blue-700 dark:text-blue-400 font-mono">{{ $k->perolehan_suara_count }}</span>
+                                    <span class="text-xs text-slate-500 dark:text-slate-400 font-bold">{{ __('Votes') }}</span>
+                                    <span class="text-xs font-bold text-slate-600 dark:text-slate-400">({{ $pct }}%)</span>
                                 </div>
-                                <div class="w-full bg-slate-100 rounded-full h-2 mt-1.5 overflow-hidden">
+                                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mt-1.5 overflow-hidden">
                                     <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: {{ $pct }}%;"></div>
                                 </div>
                             </td>
@@ -178,14 +178,14 @@
                             <!-- Actions -->
                             <td class="py-3 px-3 text-right whitespace-nowrap">
                                 <div class="flex items-center justify-end space-x-1.5">
-                                    <a href="{{ route('admin.ketua.edit', $k->nik) }}" class="p-2 rounded-xl bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 transition" title="{{ __('Edit Candidate') }}">
+                                    <a href="{{ route('admin.ketua.edit', $k->nik) }}" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/50 hover:text-blue-700 dark:hover:text-blue-300 text-slate-700 dark:text-slate-300 transition" title="{{ __('Edit Candidate') }}">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                     </a>
 
                                     <form action="{{ route('admin.ketua.destroy', $k->nik) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete Chairman candidate') }} {{ $k->nama }}?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition cursor-pointer" title="{{ __('Delete Candidate') }}">
+                                        <button type="submit" class="p-2 rounded-xl bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 dark:hover:bg-rose-900/50 text-rose-600 dark:text-rose-400 transition cursor-pointer" title="{{ __('Delete Candidate') }}">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                         </button>
                                     </form>
@@ -194,7 +194,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="py-12 text-center text-slate-400">
+                            <td colspan="6" class="py-12 text-center text-slate-400 dark:text-slate-500">
                                 {{ __('No Chairman candidates found. Click "Add Chairman Candidate" to register.') }}
                             </td>
                         </tr>

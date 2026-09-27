@@ -6,18 +6,18 @@
 <div class="space-y-6">
 
     <!-- Top Header Banner & Action Bar -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-800 border border-blue-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                     {{ __('Chairman Recap') }}
                 </span>
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                     {{ __('Official Report 01') }}
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Hasil & Rekapitulasi Ketua Koperasi') }}</h2>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">{{ __('Perolehan suara resmi, penetapan calon ketua terpilih, dan rincian suara per kandidat.') }}</p>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ __('Hasil & Rekapitulasi Ketua Koperasi') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5 max-w-2xl">{{ __('Perolehan suara resmi, penetapan calon ketua terpilih, dan rincian suara per kandidat.') }}</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
@@ -26,7 +26,7 @@
                 <span>{{ __('Export Excel') }}</span>
             </a>
 
-            <a href="{{ route('admin.reports.ketua.export.pdf') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="{{ __('Download Official Vector PDF') }}">
+            <a href="{{ route('admin.reports.ketua.export.pdf') }}" class="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="{{ __('Download Official Vector PDF') }}">
                 <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 <span>{{ __('Export PDF') }}</span>
             </a>
@@ -35,34 +35,34 @@
 
     <!-- Quick Stats Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-slate-500 font-semibold">{{ __('Total Suara Sah Masuk') }}</span>
-                <strong class="block text-2xl font-black text-slate-900 font-mono">{{ $totalSuara }}</strong>
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">{{ __('Total Suara Sah Masuk') }}</span>
+                <strong class="block text-2xl font-black text-slate-900 dark:text-white font-mono">{{ $totalSuara }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+            <span class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </span>
         </div>
 
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-emerald-700 font-semibold">{{ __('Perolehan Suara Tertinggi') }}</span>
-                <strong class="block text-2xl font-black text-emerald-600 font-mono">{{ $maxVotes }} {{ __('Suara') }}</strong>
+                <span class="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">{{ __('Perolehan Suara Tertinggi') }}</span>
+                <strong class="block text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">{{ $maxVotes }} {{ __('Suara') }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
+            <span class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
             </span>
         </div>
 
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs {{ $isSeri ? 'text-amber-700' : 'text-indigo-700' }} font-semibold">{{ __('Status Hasil Pemilihan') }}</span>
-                <strong class="block text-base font-black {{ $isSeri ? 'text-amber-600' : 'text-indigo-600' }} truncate mt-1">
+                <span class="text-xs {{ $isSeri ? 'text-amber-700 dark:text-amber-400' : 'text-indigo-700 dark:text-indigo-400' }} font-semibold">{{ __('Status Hasil Pemilihan') }}</span>
+                <strong class="block text-base font-black {{ $isSeri ? 'text-amber-600 dark:text-amber-400' : 'text-indigo-600 dark:text-indigo-400' }} truncate mt-1">
                     {{ $isSeri ? __('⚖️ HASIL SERI (DRAW)') : ($pemenang ? __('🏆 ADA PEMENANG') : __('BELUM ADA SUARA')) }}
                 </strong>
             </div>
-            <span class="p-2.5 rounded-xl {{ $isSeri ? 'bg-amber-50 text-amber-600' : 'bg-indigo-50 text-indigo-600' }}">
+            <span class="p-2.5 rounded-xl {{ $isSeri ? 'bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400' : 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
             </span>
         </div>
@@ -70,30 +70,30 @@
 
     <!-- TIE / SERI ALERT BANNER -->
     @if($isSeri)
-        <div class="p-6 sm:p-7 rounded-3xl bg-amber-50 border-2 border-amber-300 shadow-2xs relative overflow-hidden">
+        <div class="p-6 sm:p-7 rounded-3xl bg-amber-50/80 dark:bg-amber-950/20 border-2 border-amber-300 dark:border-amber-700 shadow-2xs relative overflow-hidden">
             <div class="flex flex-col md:flex-row items-start gap-5">
                 <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                 </div>
                 <div class="flex-1">
-                    <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-200 text-amber-900 border border-amber-300 mb-2">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-200 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 mb-2">
                         {{ __('⚖️ HASIL SERI / DRAW (Suara Terbanyak Seimbang)') }}
                     </div>
-                    <h3 class="text-xl sm:text-2xl font-black text-slate-900">{{ __('Belum Ada Pemenang Tunggal Ketua Koperasi') }}</h3>
-                    <p class="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                    <h3 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">{{ __('Belum Ada Pemenang Tunggal Ketua Koperasi') }}</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                         {{ __('Terdapat') }} <strong>{{ $topCandidates->count() }} {{ __('kandidat') }}</strong> {{ __('yang memperoleh perolehan suara tertinggi sama persis, yaitu') }} <strong>{{ $maxVotes }} {{ __('suara') }}</strong>. {{ __('Diperlukan musyawarah mufakat atau pemungutan suara putaran kedua (run-off).') }}
                     </p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                         @foreach($topCandidates as $c)
-                            <div class="p-3.5 rounded-2xl bg-white border border-amber-200 shadow-2xs flex items-center space-x-3">
-                                <div class="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 border border-amber-300 shrink-0">
+                            <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-800 shadow-2xs flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-700 border border-amber-300 dark:border-amber-700 shrink-0">
                                     <img src="{{ $c->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($c->nama).'&background=d97706&color=ffffff&size=200' }}" alt="{{ $c->nama }}" class="w-full h-full object-cover object-top">
                                 </div>
                                 <div class="min-w-0">
-                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-100 text-amber-800">No. {{ $c->nomor_urut }}</span>
-                                    <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate mt-0.5">{{ $c->nama }}</h4>
-                                    <p class="text-xs font-mono font-bold text-amber-700">{{ $c->perolehan_suara_count }} {{ __('Suara') }}</p>
+                                    <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300">No. {{ $c->nomor_urut }}</span>
+                                    <h4 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate mt-0.5">{{ $c->nama }}</h4>
+                                    <p class="text-xs font-mono font-bold text-amber-700 dark:text-amber-400">{{ $c->perolehan_suara_count }} {{ __('Suara') }}</p>
                                 </div>
                             </div>
                         @endforeach
@@ -105,10 +105,10 @@
         @php
             $persenPemenang = $totalSuara > 0 ? round(($pemenang->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
         @endphp
-        <div class="p-6 sm:p-7 rounded-3xl bg-blue-50/80 border-2 border-blue-200 shadow-2xs relative overflow-hidden">
+        <div class="p-6 sm:p-7 rounded-3xl bg-blue-50/80 dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800 shadow-2xs relative overflow-hidden">
             <div class="flex flex-col sm:flex-row items-center gap-6 relative z-10">
                 <div class="relative">
-                    <div class="w-28 h-28 rounded-2xl overflow-hidden bg-white border-2 border-blue-500 shadow-md">
+                    <div class="w-28 h-28 rounded-2xl overflow-hidden bg-white dark:bg-slate-800 border-2 border-blue-500 shadow-md">
                         <img 
                             src="{{ $pemenang->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($pemenang->nama).'&background=2563eb&color=ffffff&size=400' }}" 
                             alt="{{ $pemenang->nama }}" 
@@ -121,22 +121,22 @@
                 </div>
 
                 <div class="text-center sm:text-left flex-1">
-                    <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-extrabold uppercase tracking-wider mb-2">
+                    <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 text-xs font-extrabold uppercase tracking-wider mb-2">
                         <span>🏆</span>
                         <span>{{ __('Kandidat Terpilih (Suara Terbanyak)') }}</span>
                     </div>
-                    <h3 class="text-2xl sm:text-3xl font-black text-slate-900">{{ $pemenang->nama }}</h3>
-                    <p class="text-xs text-blue-700 font-mono mt-0.5">NIK: {{ $pemenang->nik }}</p>
+                    <h3 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{{ $pemenang->nama }}</h3>
+                    <p class="text-xs text-blue-700 dark:text-blue-400 font-mono mt-0.5">NIK: {{ $pemenang->nik }}</p>
 
-                    <div class="flex flex-wrap items-center gap-6 mt-4 pt-4 border-t border-blue-200">
+                    <div class="flex flex-wrap items-center gap-6 mt-4 pt-4 border-t border-blue-200 dark:border-blue-800">
                         <div>
-                            <span class="text-[11px] uppercase tracking-wider text-slate-500 block font-semibold">{{ __('Total Perolehan') }}</span>
-                            <strong class="text-2xl font-black text-slate-900 font-mono">{{ $pemenang->perolehan_suara_count }} {{ __('Suara') }}</strong>
+                            <span class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 block font-semibold">{{ __('Total Perolehan') }}</span>
+                            <strong class="text-2xl font-black text-slate-900 dark:text-white font-mono">{{ $pemenang->perolehan_suara_count }} {{ __('Suara') }}</strong>
                         </div>
-                        <div class="h-8 w-px bg-blue-200"></div>
+                        <div class="h-8 w-px bg-blue-200 dark:bg-blue-800"></div>
                         <div>
-                            <span class="text-[11px] uppercase tracking-wider text-slate-500 block font-semibold">{{ __('Persentase') }}</span>
-                            <strong class="text-2xl font-black text-blue-600 font-mono">{{ $persenPemenang }}%</strong>
+                            <span class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 block font-semibold">{{ __('Persentase') }}</span>
+                            <strong class="text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">{{ $persenPemenang }}%</strong>
                         </div>
                     </div>
                 </div>
@@ -145,19 +145,19 @@
     @endif
 
     <!-- Foldable Interactive Query Toolbar -->
-    <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
+    <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3.5">
         <!-- Foldable Header with Icon -->
-        <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100" onclick="toggleFilterFold()">
+        <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100 dark:border-slate-800" onclick="toggleFilterFold()">
             <div class="flex items-center space-x-2.5">
-                <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                <div class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                 </div>
                 <div>
-                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">{{ __('Filter & Dynamic Search') }}</h4>
-                    <p class="text-[11px] text-slate-400">{{ __('Cari kandidat berdasarkan nomor urut, nama lengkap, atau NIK') }}</p>
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-white">{{ __('Filter & Dynamic Search') }}</h4>
+                    <p class="text-[11px] text-slate-400 dark:text-slate-500">{{ __('Cari kandidat berdasarkan nomor urut, nama lengkap, atau NIK') }}</p>
                 </div>
             </div>
-            <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
+            <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition">
                 <span id="filter-fold-icon" class="text-xs font-mono font-bold block transform transition-transform duration-200">▲</span>
             </button>
         </div>
@@ -171,13 +171,13 @@
                         id="candidate-search-input" 
                         placeholder="{{ __('Cari kandidat berdasarkan Nomor Urut, Nama, atau NIK (Tekan \'/\' untuk fokus)...') }}"
                         oninput="filterCandidateTable()"
-                        class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
+                        class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
                     >
                     <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <button type="button" onclick="clearCandidateSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
+                    <button type="button" onclick="clearCandidateSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
                 </div>
                 <div class="hidden md:flex items-center shrink-0">
-                    <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
+                    <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[11px] font-bold font-mono">
                         /
                     </kbd>
                 </div>
@@ -186,7 +186,7 @@
             <!-- Row 2: Status & Action Filters -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 <div class="col-span-1">
-                    <select id="candidate-status-filter" onchange="filterCandidateTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                    <select id="candidate-status-filter" onchange="filterCandidateTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 font-bold focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 outline-none cursor-pointer">
                         <option value="">{{ __('Semua Status') }}</option>
                         <option value="TERPILIH">{{ __('Terpilih') }}</option>
                         <option value="SERI">{{ __('Seri') }}</option>
@@ -195,7 +195,7 @@
                 </div>
 
                 <div class="col-span-1">
-                    <select id="candidate-sort-select" onchange="sortCandidateTable(this.value)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                    <select id="candidate-sort-select" onchange="sortCandidateTable(this.value)" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 font-bold focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 outline-none cursor-pointer">
                         <option value="votes_desc">{{ __('Suara Terbanyak (Default)') }}</option>
                         <option value="votes_asc">{{ __('Suara Tersedikit') }}</option>
                         <option value="nomor_asc">{{ __('Nomor Urut (1, 2, 3...)') }}</option>
@@ -219,7 +219,7 @@
                     <button 
                         type="button" 
                         onclick="resetCandidateFilters()" 
-                        class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
+                        class="w-full h-11 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
                     >
                         <span>↺</span>
                         <span>{{ __('Reset') }}</span>
@@ -230,11 +230,11 @@
     </div>
 
     <!-- Candidate Table Container -->
-    <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
+    <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden relative">
         <div class="overflow-x-auto w-full">
             <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="candidates-datatable">
                 <thead>
-                    <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
+                    <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80 dark:bg-slate-800/80">
                         <th class="py-3.5 px-4 whitespace-nowrap">{{ __('No. Urut') }}</th>
                         <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Kandidat Ketua') }}</th>
                         <th class="py-3.5 px-4 whitespace-nowrap">{{ __('NIK') }}</th>
@@ -243,57 +243,57 @@
                         <th class="py-3.5 px-4 text-center whitespace-nowrap">{{ __('Status') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100" id="candidate-table-body">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800" id="candidate-table-body">
                     @foreach($kandidatKetua as $k)
                         @php
                             $persen = $totalSuara > 0 ? round(($k->perolehan_suara_count / $totalSuara) * 100, 2) : 0;
                             $isTop = $maxVotes > 0 && $k->perolehan_suara_count === $maxVotes;
                             $statusKey = ($isSeri && $isTop) ? 'SERI' : ((!$isSeri && $isTop) ? 'TERPILIH' : 'BELUM');
                         @endphp
-                        <tr class="hover:bg-slate-50/75 transition border-b border-slate-100 candidate-row" 
+                        <tr class="hover:bg-slate-50/75 dark:hover:bg-slate-800/60 transition border-b border-slate-100 dark:border-slate-800 candidate-row" 
                             data-nomor="{{ $k->nomor_urut }}"
                             data-nama="{{ strtolower($k->nama) }}"
                             data-nik="{{ $k->nik }}"
                             data-votes="{{ $k->perolehan_suara_count }}"
                             data-status="{{ $statusKey }}">
-                            <td class="py-3 px-4 font-mono font-bold text-slate-900">
-                                <span class="w-7 h-7 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center font-bold text-xs">
+                            <td class="py-3 px-4 font-mono font-bold text-slate-900 dark:text-white">
+                                <span class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 flex items-center justify-center font-bold text-xs">
                                     {{ $k->nomor_urut }}
                                 </span>
                             </td>
                             <td class="py-3 px-4">
                                 <div class="flex items-center space-x-3">
-                                    <div class="w-10 h-10 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                                    <div class="w-10 h-10 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shrink-0">
                                         <img src="{{ $k->foto ?: 'https://ui-avatars.com/api/?name='.urlencode($k->nama).'&background=2563eb&color=ffffff&size=100' }}" alt="{{ $k->nama }}" class="w-full h-full object-cover object-top">
                                     </div>
                                     <div>
-                                        <strong class="font-extrabold text-slate-900 block">{{ $k->nama }}</strong>
-                                        <span class="text-xs text-slate-400">{{ __('Calon Ketua Koperasi') }}</span>
+                                        <strong class="font-extrabold text-slate-900 dark:text-white block">{{ $k->nama }}</strong>
+                                        <span class="text-xs text-slate-400 dark:text-slate-500">{{ __('Calon Ketua Koperasi') }}</span>
                                     </div>
                                 </div>
                             </td>
-                            <td class="py-3 px-4 text-slate-500 font-mono">{{ $k->nik }}</td>
+                            <td class="py-3 px-4 text-slate-500 dark:text-slate-400 font-mono">{{ $k->nik }}</td>
                             <td class="py-3 px-4 text-right">
-                                <strong class="font-black text-slate-900 font-mono text-sm">{{ $k->perolehan_suara_count }}</strong>
-                                <span class="text-xs text-slate-400 ml-0.5">{{ __('Suara') }}</span>
+                                <strong class="font-black text-slate-900 dark:text-white font-mono text-sm">{{ $k->perolehan_suara_count }}</strong>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 ml-0.5">{{ __('Suara') }}</span>
                             </td>
                             <td class="py-3 px-4 text-right">
-                                <span class="font-mono font-black text-blue-600 text-sm">{{ $persen }}%</span>
-                                <div class="w-20 bg-slate-100 rounded-full h-1.5 ml-auto mt-1 overflow-hidden">
-                                    <div class="bg-blue-600 h-1.5 rounded-full" style="width: {{ $persen }}%"></div>
+                                <span class="font-mono font-black text-blue-600 dark:text-blue-400 text-sm">{{ $persen }}%</span>
+                                <div class="w-20 bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 ml-auto mt-1 overflow-hidden">
+                                    <div class="bg-blue-600 dark:bg-blue-500 h-1.5 rounded-full" style="width: {{ $persen }}%"></div>
                                 </div>
                             </td>
                             <td class="py-3 px-4 text-center whitespace-nowrap">
                                 @if($isSeri && $isTop)
-                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-100 text-amber-800 border border-amber-300">
+                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
                                         ⚖️ {{ __('SERI') }}
                                     </span>
                                 @elseif(!$isSeri && $isTop)
-                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                    <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
                                         🏆 {{ __('TERPILIH') }}
                                     </span>
                                 @else
-                                    <span class="text-slate-400 text-xs font-medium">-</span>
+                                    <span class="text-slate-400 dark:text-slate-500 text-xs font-medium">-</span>
                                 @endif
                             </td>
                         </tr>

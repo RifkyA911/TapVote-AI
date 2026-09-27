@@ -6,25 +6,25 @@
 <div class="space-y-6 sm:space-y-8 max-w-5xl mx-auto pb-12">
 
     <!-- Top Header Banner & Action Bar -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 text-blue-800 border border-blue-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                     System Control Center
                 </span>
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                     Realtime Sync
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('System Settings & Controls') }}</h2>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ __('System Settings & Controls') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5 max-w-2xl">
                 {{ __('Pengaturan operasional pemungutan suara, parameter kuorum, batas waktu, sensor hardware, dan sinkronisasi real-time.') }}
             </p>
         </div>
 
         <div class="flex items-center space-x-2">
             <!-- Active Autosave Indicator -->
-            <div id="autosave-status" class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200 shadow-2xs transition-all duration-300">
+            <div id="autosave-status" class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-mono font-bold border border-slate-200 dark:border-slate-700 shadow-2xs transition-all duration-300">
                 <span id="autosave-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                 <span id="autosave-text">{{ __('Autosave Siap') }}</span>
             </div>
@@ -36,17 +36,17 @@
         @csrf
 
         <!-- 1. VOTING OPERATIONAL STATE CONTROL -->
-        <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-5">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 gap-2">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">🚦</span>
                     <div>
-                        <h3 class="text-base font-extrabold text-slate-900">{{ __('1. Status Operasional Pemungutan Suara') }}</h3>
-                        <p class="text-xs text-slate-500 font-medium">{{ __('Kendalikan akses bilik pemungutan suara secara terpusat.') }}</p>
+                        <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ __('1. Status Operasional Pemungutan Suara') }}</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">{{ __('Kendalikan akses bilik pemungutan suara secara terpusat.') }}</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-1.5">
-                    <span id="status-badge-current" class="px-3 py-1 rounded-full text-xs font-black flex items-center {{ $settings['voting_status'] === 'STARTED' ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' : ($settings['voting_status'] === 'PAUSED' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-rose-100 text-rose-800 border border-rose-300') }}">
+                    <span id="status-badge-current" class="px-3 py-1 rounded-full text-xs font-black flex items-center {{ $settings['voting_status'] === 'STARTED' ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800' : ($settings['voting_status'] === 'PAUSED' ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800' : 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-800') }}">
                         <span id="status-badge-dot" class="w-2 h-2 rounded-full mr-1.5 {{ $settings['voting_status'] === 'STARTED' ? 'bg-emerald-500 animate-ping' : ($settings['voting_status'] === 'PAUSED' ? 'bg-amber-500' : 'bg-rose-500') }}"></span>
                         <span id="status-badge-label">CURRENT: {{ $settings['voting_status'] === 'STARTED' ? 'LIVE' : ($settings['voting_status'] === 'PAUSED' ? 'PAUSED' : 'FINISHED') }}</span>
                     </span>
@@ -56,93 +56,93 @@
             <!-- Segmented Radio Cards for Voting Status -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="voting-status-cards">
                 <!-- LIVE / STARTED -->
-                <label id="card-status-STARTED" onclick="handleStatusRadioClick(event, 'STARTED')" class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'STARTED' ? 'border-emerald-500 bg-emerald-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50' }}">
+                <label id="card-status-STARTED" onclick="handleStatusRadioClick(event, 'STARTED')" class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'STARTED' ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20 shadow-sm' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 bg-slate-50/50 dark:bg-slate-800/40' }}">
                     <input type="radio" name="voting_status" value="STARTED" class="sr-only peer" {{ $settings['voting_status'] === 'STARTED' ? 'checked' : '' }}>
                     <div class="flex items-center justify-between mb-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500 text-white uppercase tracking-wider">
                             ● LIVE
                         </span>
-                        <span class="radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center {{ $settings['voting_status'] === 'STARTED' ? 'border-emerald-600 bg-emerald-600' : '' }}"></span>
+                        <span class="radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center {{ $settings['voting_status'] === 'STARTED' ? 'border-emerald-600 bg-emerald-600' : '' }}"></span>
                     </div>
-                    <strong class="text-sm font-black text-slate-900">{{ __('Bilik Terbuka & Aktif') }}</strong>
-                    <p class="text-xs text-slate-500 mt-1">{{ __('Pemilih dapat tap RFID / NFC dan memberikan suara di bilik voting secara normal.') }}</p>
+                    <strong class="text-sm font-black text-slate-900 dark:text-white">{{ __('Bilik Terbuka & Aktif') }}</strong>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ __('Pemilih dapat tap RFID / NFC dan memberikan suara di bilik voting secara normal.') }}</p>
                 </label>
 
                 <!-- PAUSED -->
-                <label id="card-status-PAUSED" onclick="handleStatusRadioClick(event, 'PAUSED')" class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'PAUSED' ? 'border-amber-500 bg-amber-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50' }}">
+                <label id="card-status-PAUSED" onclick="handleStatusRadioClick(event, 'PAUSED')" class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'PAUSED' ? 'border-amber-500 bg-amber-50/50 dark:bg-amber-950/20 shadow-sm' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 bg-slate-50/50 dark:bg-slate-800/40' }}">
                     <input type="radio" name="voting_status" value="PAUSED" class="sr-only peer" {{ $settings['voting_status'] === 'PAUSED' ? 'checked' : '' }}>
                     <div class="flex items-center justify-between mb-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-500 text-white uppercase tracking-wider">
                             ❚❚ PAUSED
                         </span>
-                        <span class="radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center {{ $settings['voting_status'] === 'PAUSED' ? 'border-amber-600 bg-amber-600' : '' }}"></span>
+                        <span class="radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center {{ $settings['voting_status'] === 'PAUSED' ? 'border-amber-600 bg-amber-600' : '' }}"></span>
                     </div>
-                    <strong class="text-sm font-black text-slate-900">{{ __('Jeda Sementara (Break)') }}</strong>
-                    <p class="text-xs text-slate-500 mt-1">{{ __('Bilik suara dibekukan sementara untuk istirahat, ISHOMA, atau verifikasi teknis.') }}</p>
+                    <strong class="text-sm font-black text-slate-900 dark:text-white">{{ __('Jeda Sementara (Break)') }}</strong>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ __('Bilik suara dibekukan sementara untuk istirahat, ISHOMA, atau verifikasi teknis.') }}</p>
                 </label>
 
                 <!-- FINISHED / STOPPED -->
-                <label id="card-status-STOPPED" onclick="handleStatusRadioClick(event, 'STOPPED')" class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'STOPPED' ? 'border-rose-500 bg-rose-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50' }}">
+                <label id="card-status-STOPPED" onclick="handleStatusRadioClick(event, 'STOPPED')" class="relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 {{ $settings['voting_status'] === 'STOPPED' ? 'border-rose-500 bg-rose-50/50 dark:bg-rose-950/20 shadow-sm' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 bg-slate-50/50 dark:bg-slate-800/40' }}">
                     <input type="radio" name="voting_status" value="STOPPED" class="sr-only peer" {{ $settings['voting_status'] === 'STOPPED' ? 'checked' : '' }}>
                     <div class="flex items-center justify-between mb-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-black bg-rose-600 text-white uppercase tracking-wider">
                             ■ FINISHED
                         </span>
-                        <span class="radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center {{ $settings['voting_status'] === 'STOPPED' ? 'border-rose-600 bg-rose-600' : '' }}"></span>
+                        <span class="radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center {{ $settings['voting_status'] === 'STOPPED' ? 'border-rose-600 bg-rose-600' : '' }}"></span>
                     </div>
-                    <strong class="text-sm font-black text-slate-900">{{ __('Ditutup Resmi (End)') }}</strong>
-                    <p class="text-xs text-slate-500 mt-1">{{ __('Pemungutan suara resmi selesai. Kunci bilik permanen & hasil suara final diumumkan.') }}</p>
+                    <strong class="text-sm font-black text-slate-900 dark:text-white">{{ __('Ditutup Resmi (End)') }}</strong>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ __('Pemungutan suara resmi selesai. Kunci bilik permanen & hasil suara final diumumkan.') }}</p>
                 </label>
             </div>
         </div>
 
         <!-- 2. IDENTITAS, KUORUM & DEADLINE PEMILU -->
-        <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-5">
-            <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-5">
+            <div class="flex items-center space-x-2 pb-3 border-b border-slate-100 dark:border-slate-800">
                 <span class="text-lg">🏛️</span>
-                <h3 class="text-base font-extrabold text-slate-900">{{ __('2. Parameter Utama Pemilihan, Kuorum & Deadline') }}</h3>
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ __('2. Parameter Utama Pemilihan, Kuorum & Deadline') }}</h3>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <!-- Judul Resmi Bahasa Indonesia -->
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Judul Resmi Pemilihan (Bahasa Indonesia)') }}</label>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('Judul Resmi Pemilihan (Bahasa Indonesia)') }}</label>
                     <input 
                         type="text" 
                         name="election_title_id" 
                         required 
                         value="{{ old('election_title_id', $settings['election_title_id'] ?? $settings['election_title']) }}" 
-                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-medium focus:bg-white focus:border-blue-500 outline-none"
+                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white font-medium focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none"
                     >
-                    <p class="text-[11px] text-slate-500 mt-1">{{ __('Judul resmi pemilu yang tampil saat antarmuka menggunakan Bahasa Indonesia.') }}</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">{{ __('Judul resmi pemilu yang tampil saat antarmuka menggunakan Bahasa Indonesia.') }}</p>
                 </div>
 
                 <!-- Judul Resmi Bahasa Inggris -->
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Judul Resmi Pemilihan (Bahasa Inggris / English)') }}</label>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('Judul Resmi Pemilihan (Bahasa Inggris / English)') }}</label>
                     <input 
                         type="text" 
                         name="election_title_en" 
                         required 
                         value="{{ old('election_title_en', $settings['election_title_en'] ?? '') }}" 
-                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-medium focus:bg-white focus:border-blue-500 outline-none"
+                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white font-medium focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none"
                     >
-                    <p class="text-[11px] text-slate-500 mt-1">{{ __('Judul resmi pemilu yang tampil saat antarmuka menggunakan Bahasa Inggris.') }}</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">{{ __('Judul resmi pemilu yang tampil saat antarmuka menggunakan Bahasa Inggris.') }}</p>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Nama Institusi / Badan Koperasi') }}</label>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('Nama Institusi / Badan Koperasi') }}</label>
                     <input 
                         type="text" 
                         name="institution_name" 
                         required 
                         value="{{ old('institution_name', $settings['institution_name']) }}" 
-                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-medium focus:bg-white focus:border-blue-500 outline-none"
+                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white font-medium focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none"
                     >
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Batas Minimum Kuorum Suara (%)') }}</label>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('Batas Minimum Kuorum Suara (%)') }}</label>
                     <div class="relative">
                         <input 
                             type="number" 
@@ -152,21 +152,21 @@
                             name="quorum_percentage" 
                             required 
                             value="{{ old('quorum_percentage', $settings['quorum_percentage']) }}" 
-                            class="w-full px-4 py-2.5 pr-10 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-mono font-bold focus:bg-white focus:border-blue-500 outline-none"
+                            class="w-full px-4 py-2.5 pr-10 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white font-mono font-bold focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none"
                         >
                         <span class="absolute right-3.5 top-2.5 text-xs font-bold text-slate-400">%</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-1">{{ __('Standar aturan koperasi umumnya mensyaratkan minimal 50% partisipasi anggota.') }}</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">{{ __('Standar aturan koperasi umumnya mensyaratkan minimal 50% partisipasi anggota.') }}</p>
                 </div>
 
                 <!-- DEADLINE WAKTU PEMILIHAN -->
                 <div>
                     <div class="flex items-center justify-between mb-1.5">
-                        <label class="block text-xs font-bold text-slate-700">{{ __('Tenggat Waktu / Deadline Pemilihan') }}</label>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">{{ __('Tenggat Waktu / Deadline Pemilihan') }}</label>
                         <div class="flex items-center space-x-2 text-[11px]">
-                            <button type="button" onclick="setDeadlinePreset('today17')" class="text-blue-600 font-bold hover:underline cursor-pointer">{{ __('Hari Ini 17:00') }}</button>
-                            <span class="text-slate-300">•</span>
-                            <button type="button" onclick="setDeadlinePreset('clear')" class="text-rose-600 font-bold hover:underline cursor-pointer">{{ __('Hapus') }}</button>
+                            <button type="button" onclick="setDeadlinePreset('today17')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline cursor-pointer">{{ __('Hari Ini 17:00') }}</button>
+                            <span class="text-slate-300 dark:text-slate-600">•</span>
+                            <button type="button" onclick="setDeadlinePreset('clear')" class="text-rose-600 dark:text-rose-400 font-bold hover:underline cursor-pointer">{{ __('Hapus') }}</button>
                         </div>
                     </div>
                     <input 
@@ -174,15 +174,15 @@
                         name="voting_deadline" 
                         id="voting_deadline_input"
                         value="{{ old('voting_deadline', $settings['voting_deadline']) }}" 
-                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-mono font-bold focus:bg-white focus:border-blue-500 outline-none"
+                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white font-mono font-bold focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none"
                     >
-                    <p class="text-[11px] text-slate-500 mt-1">
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
                         {{ __('Batas waktu selesai mencakup hari, tanggal, dan jam. Disiarkan langsung (*streaming*) dengan countdown ke publik.') }}
                     </p>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Kiosk Click Throttle (Anti Double-Tap / Jitter)') }}</label>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('Kiosk Click Throttle (Anti Double-Tap / Jitter)') }}</label>
                     <div class="relative">
                         <input 
                             type="number" 
@@ -192,98 +192,98 @@
                             step="100" 
                             required 
                             value="{{ old('throttle_click_ms', $settings['throttle_click_ms']) }}" 
-                            class="w-full sm:w-64 px-4 py-2.5 pr-12 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-900 font-mono font-bold focus:bg-white focus:border-blue-500 outline-none"
+                            class="w-full sm:w-64 px-4 py-2.5 pr-12 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white font-mono font-bold focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none"
                         >
                         <span class="absolute sm:left-56 right-3.5 top-2.5 text-xs font-bold text-slate-400">ms</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-1">{{ __('Waktu perlindungan tombol untuk mencegah klik ganda tak sengaja (rekomendasi: 800ms).') }}</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">{{ __('Waktu perlindungan tombol untuk mencegah klik ganda tak sengaja (rekomendasi: 800ms).') }}</p>
                 </div>
             </div>
         </div>
 
         <!-- 3. FITUR KIOSK, SENSOR & PUBLIK STREAM -->
-        <div class="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-5">
-            <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
+        <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-5">
+            <div class="flex items-center space-x-2 pb-3 border-b border-slate-100 dark:border-slate-800">
                 <span class="text-lg">📡</span>
-                <h3 class="text-base font-extrabold text-slate-900">{{ __('3. Fitur Kiosk, Hardware Sensor & Public Stream') }}</h3>
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">{{ __('3. Fitur Kiosk, Hardware Sensor & Public Stream') }}</h3>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- Public SSE -->
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Public Realtime SSE Stream') }}</strong>
-                        <span class="text-[11px] text-slate-500">{{ __('Izinkan publik mengakses siaran langsung Server-Sent Events di beranda utama tanpa login admin.') }}</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Public Realtime SSE Stream') }}</strong>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Izinkan publik mengakses siaran langsung Server-Sent Events di beranda utama tanpa login admin.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="public_sse_enabled" value="1" {{ ($settings['public_sse_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                 </div>
 
                 <!-- Show Candidate NIK -->
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Tampilkan NIK Kandidat di Surat Suara') }}</strong>
-                        <span class="text-[11px] text-slate-500">{{ __('Menampilkan NIK resmi kandidat di bawah nama pada bilik pemungutan suara.') }}</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Tampilkan NIK Kandidat di Surat Suara') }}</strong>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Menampilkan NIK resmi kandidat di bawah nama pada bilik pemungutan suara.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="show_candidate_nik" value="1" {{ ($settings['show_candidate_nik'] ?? '0') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                 </div>
 
                 <!-- Mobile NFC Sensor -->
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Sensor Web NFC (Mobile Phones)') }}</strong>
-                        <span class="text-[11px] text-slate-500">{{ __('Aktifkan NDEF Reader hardware bawaan smartphone Chrome Android untuk tap kartu anggota.') }}</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Sensor Web NFC (Mobile Phones)') }}</strong>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Aktifkan NDEF Reader hardware bawaan smartphone Chrome Android untuk tap kartu anggota.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="enable_nfc_mobile" value="1" {{ ($settings['enable_nfc_mobile'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                 </div>
 
                 <!-- Demo Accounts Display -->
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Tampilkan Akun Demo di Halaman Voter') }}</strong>
-                        <span class="text-[11px] text-slate-500">{{ __('Tampilkan tabel akun demo untuk simulasi cepat penguji / demonstrasi panitia.') }}</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Tampilkan Akun Demo di Halaman Voter') }}</strong>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Tampilkan tabel akun demo untuk simulasi cepat penguji / demonstrasi panitia.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="enable_demo_accounts" value="1" {{ ($settings['enable_demo_accounts'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                 </div>
 
                 <!-- Voice Greeting -->
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Sambutan Suara Otomatis (Voice Greeting)') }}</strong>
-                        <span class="text-[11px] text-slate-500">{{ __('Auto-play suara sambutan "Selamat Datang Mas Admin" & panduan bilik suara.') }}</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Sambutan Suara Otomatis (Voice Greeting)') }}</strong>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Auto-play suara sambutan "Selamat Datang Mas Admin" & panduan bilik suara.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="enable_voice_greeting" value="1" {{ ($settings['enable_voice_greeting'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                 </div>
 
                 <!-- Sound FX -->
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
                     <div>
-                        <strong class="text-xs sm:text-sm text-slate-900 block font-extrabold">{{ __('Efek Suara Audio (Sound FX)') }}</strong>
-                        <span class="text-[11px] text-slate-500">{{ __('Suara klik tombol, tap RFID, submit bilik, dan gong undian doorprize.') }}</span>
+                        <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Efek Suara Audio (Sound FX)') }}</strong>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Suara klik tombol, tap RFID, submit bilik, dan gong undian doorprize.') }}</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
                         <input type="checkbox" name="enable_sound_fx" value="1" {{ ($settings['enable_sound_fx'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                 </div>
 
                 <!-- Kiosk Session Timeout -->
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 sm:col-span-2">
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ __('Batas Waktu Auto-Logout Bilik Suara (Detik)') }}</label>
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 sm:col-span-2">
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">{{ __('Batas Waktu Auto-Logout Bilik Suara (Detik)') }}</label>
                     <input 
                         type="number" 
                         name="kiosk_session_timeout" 
@@ -291,9 +291,9 @@
                         max="600" 
                         required 
                         value="{{ old('kiosk_session_timeout', $settings['kiosk_session_timeout']) }}" 
-                        class="w-full sm:w-64 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs sm:text-sm text-slate-900 font-mono font-bold focus:border-blue-500 outline-none"
+                        class="w-full sm:w-64 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white font-mono font-bold focus:border-blue-500 outline-none"
                     >
-                    <p class="text-[11px] text-slate-500 mt-1">{{ __('Sesi bilik akan otomatis ditutup jika pemilih tidak melakukan aktivitas dalam bilik.') }}</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">{{ __('Sesi bilik akan otomatis ditutup jika pemilih tidak melakukan aktivitas dalam bilik.') }}</p>
                 </div>
             </div>
         </div>
@@ -453,18 +453,18 @@ function applyStatusUI(status) {
 
         if (s === status) {
             if (s === 'STARTED') {
-                card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-emerald-500 bg-emerald-50/50 shadow-sm';
+                card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20 shadow-sm';
                 if (indicator) indicator.className = 'radio-indicator w-4 h-4 rounded-full border-2 border-emerald-600 bg-emerald-600 flex items-center justify-center';
             } else if (s === 'PAUSED') {
-                card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-amber-500 bg-amber-50/50 shadow-sm';
+                card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-amber-500 bg-amber-50/50 dark:bg-amber-950/20 shadow-sm';
                 if (indicator) indicator.className = 'radio-indicator w-4 h-4 rounded-full border-2 border-amber-600 bg-amber-600 flex items-center justify-center';
             } else {
-                card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-rose-500 bg-rose-50/50 shadow-sm';
+                card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-rose-500 bg-rose-50/50 dark:bg-rose-950/20 shadow-sm';
                 if (indicator) indicator.className = 'radio-indicator w-4 h-4 rounded-full border-2 border-rose-600 bg-rose-600 flex items-center justify-center';
             }
         } else {
-            card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-slate-200 hover:border-slate-300 bg-slate-50/50';
-            if (indicator) indicator.className = 'radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center';
+            card.className = 'relative flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 bg-slate-50/50 dark:bg-slate-800/40';
+            if (indicator) indicator.className = 'radio-indicator w-4 h-4 rounded-full border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center';
         }
     });
 
@@ -474,15 +474,15 @@ function applyStatusUI(status) {
     const label = document.getElementById('status-badge-label');
     if (badge && dot && label) {
         if (status === 'STARTED') {
-            badge.className = 'px-3 py-1 rounded-full text-xs font-black flex items-center bg-emerald-100 text-emerald-700 border border-emerald-300';
+            badge.className = 'px-3 py-1 rounded-full text-xs font-black flex items-center bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800';
             dot.className = 'w-2 h-2 rounded-full mr-1.5 bg-emerald-500 animate-ping';
             label.textContent = 'CURRENT: LIVE';
         } else if (status === 'PAUSED') {
-            badge.className = 'px-3 py-1 rounded-full text-xs font-black flex items-center bg-amber-100 text-amber-800 border border-amber-300';
+            badge.className = 'px-3 py-1 rounded-full text-xs font-black flex items-center bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800';
             dot.className = 'w-2 h-2 rounded-full mr-1.5 bg-amber-500';
             label.textContent = 'CURRENT: PAUSED';
         } else {
-            badge.className = 'px-3 py-1 rounded-full text-xs font-black flex items-center bg-rose-100 text-rose-800 border border-rose-300';
+            badge.className = 'px-3 py-1 rounded-full text-xs font-black flex items-center bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-800';
             dot.className = 'w-2 h-2 rounded-full mr-1.5 bg-rose-500';
             label.textContent = 'CURRENT: FINISHED';
         }
@@ -502,7 +502,7 @@ function triggerAutosave() {
     
     dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping';
     text.innerText = 'Menyimpan...';
-    statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-amber-50 text-amber-800 text-xs font-mono font-bold border border-amber-300 shadow-2xs';
+    statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-xs font-mono font-bold border border-amber-300 dark:border-amber-800 shadow-2xs';
 
     autosaveTimer = setTimeout(async () => {
         const form = document.getElementById('settings-form');
@@ -522,16 +522,16 @@ function triggerAutosave() {
             if (res.ok && data.success) {
                 dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500';
                 text.innerText = 'Tersimpan ' + data.saved_at;
-                statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-mono font-bold border border-emerald-300 shadow-2xs';
+                statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-mono font-bold border border-emerald-300 dark:border-emerald-800 shadow-2xs';
             } else {
                 dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
                 text.innerText = 'Gagal menyimpan';
-                statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-rose-50 text-rose-800 text-xs font-mono font-bold border border-rose-300 shadow-2xs';
+                statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 text-xs font-mono font-bold border border-rose-300 dark:border-rose-800 shadow-2xs';
             }
         } catch(err) {
             dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
             text.innerText = 'Koneksi terputus';
-            statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-rose-50 text-rose-800 text-xs font-mono font-bold border border-rose-300 shadow-2xs';
+            statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 text-xs font-mono font-bold border border-rose-300 dark:border-rose-800 shadow-2xs';
         }
     }, 600);
 }
@@ -588,32 +588,32 @@ async function testGeminiConnection() {
 
         resultBox.classList.remove('hidden');
         if (data.success) {
-            resultBox.className = 'p-4 rounded-2xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-start space-x-2';
+            resultBox.className = 'p-4 rounded-2xl text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 flex items-start space-x-2';
             resultBox.innerHTML = `
                 <span class="text-base">✅</span>
                 <div>
                     <strong class="font-bold block">${data.message || 'Koneksi Sukses!'}</strong>
-                    <span class="text-[11px] text-emerald-700">Model: ${data.model || 'gemini-2.0-flash'} • Latensi: ${data.latency_ms || 0}ms</span>
+                    <span class="text-[11px] text-emerald-700 dark:text-emerald-400">Model: ${data.model || 'gemini-2.0-flash'} • Latensi: ${data.latency_ms || 0}ms</span>
                 </div>
             `;
         } else {
-            resultBox.className = 'p-4 rounded-2xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-200 flex items-start space-x-2';
+            resultBox.className = 'p-4 rounded-2xl text-xs font-semibold bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800 flex items-start space-x-2';
             resultBox.innerHTML = `
                 <span class="text-base">❌</span>
                 <div>
                     <strong class="font-bold block">Koneksi Gagal</strong>
-                    <span class="text-[11px] text-rose-700">${data.message || 'Periksa kembali API Key Anda.'}</span>
+                    <span class="text-[11px] text-rose-700 dark:text-rose-400">${data.message || 'Periksa kembali API Key Anda.'}</span>
                 </div>
             `;
         }
     } catch (err) {
         resultBox.classList.remove('hidden');
-        resultBox.className = 'p-4 rounded-2xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-200 flex items-start space-x-2';
+        resultBox.className = 'p-4 rounded-2xl text-xs font-semibold bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800 flex items-start space-x-2';
         resultBox.innerHTML = `
             <span class="text-base">⚠️</span>
             <div>
                 <strong class="font-bold block">Kesalahan Jaringan</strong>
-                <span class="text-[11px] text-rose-700">${err.message}</span>
+                <span class="text-[11px] text-rose-700 dark:text-rose-400">${err.message}</span>
             </div>
         `;
     } finally {

@@ -6,18 +6,18 @@
 <div class="space-y-6 sm:space-y-8">
 
     <!-- Top Header Banner & Action Bar -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-amber-100 text-amber-800 border border-amber-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
                     {{ __('Modul Undian & Master Hadiah') }}
                 </span>
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                     {{ __('Pool Sah:') }} <strong>{{ $totalEligible }}</strong> {{ __('Anggota') }}
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Undian Doorprize Anggota') }}</h2>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ __('Undian Doorprize Anggota') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5 max-w-2xl">
                 {{ __('Sistem undian digital acak dengan status serah terima hadiah (Diterima / Ditolak), upload foto hadiah, dan display panggung penonton.') }}
             </p>
         </div>
@@ -27,12 +27,12 @@
             <a 
                 href="{{ route('doorprize.public') }}" 
                 target="_blank" 
-                class="px-4 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black shadow-xs transition flex items-center space-x-2 cursor-pointer"
+                class="px-4 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/50 hover:bg-amber-100 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 text-xs font-black shadow-xs transition flex items-center space-x-2 cursor-pointer"
                 title="{{ __('Buka Halaman Khusus Penonton untuk Layar Proyektor') }}"
             >
                 <span class="text-base">📺</span>
                 <span>{{ __('Stage View') }}</span>
-                <svg class="w-3.5 h-3.5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                <svg class="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
             </a>
 
             <!-- Add Doorprize Reward Button -->
@@ -52,50 +52,50 @@
     <div class="space-y-4">
         <!-- Quick Stats Cards for Rewards -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+            <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
                 <div>
-                    <span class="text-xs text-slate-500 font-semibold">{{ __('Total Item Hadiah') }}</span>
-                    <strong class="block text-2xl font-black text-slate-900 font-mono">{{ count($doorprizes) }}</strong>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">{{ __('Total Item Hadiah') }}</span>
+                    <strong class="block text-2xl font-black text-slate-900 dark:text-white font-mono">{{ count($doorprizes) }}</strong>
                 </div>
-                <span class="p-2.5 rounded-xl bg-amber-50 text-amber-600">
+                <span class="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4m-14 0v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
                 </span>
             </div>
 
-            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+            <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
                 <div>
-                    <span class="text-xs text-emerald-700 font-semibold">{{ __('Total Unit Tersedia') }}</span>
-                    <strong class="block text-2xl font-black text-emerald-600 font-mono">{{ $doorprizes->sum('quantity') }} {{ __('Unit') }}</strong>
+                    <span class="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">{{ __('Total Unit Tersedia') }}</span>
+                    <strong class="block text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">{{ $doorprizes->sum('quantity') }} {{ __('Unit') }}</strong>
                 </div>
-                <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
+                <span class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
                 </span>
             </div>
 
-            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+            <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
                 <div>
-                    <span class="text-xs text-blue-700 font-semibold">{{ __('Sisa Kuota Belum Diundi') }}</span>
-                    <strong class="block text-2xl font-black text-blue-600 font-mono">{{ $doorprizes->sum('remaining_slots') }} {{ __('Unit') }}</strong>
+                    <span class="text-xs text-blue-700 dark:text-blue-400 font-semibold">{{ __('Sisa Kuota Belum Diundi') }}</span>
+                    <strong class="block text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">{{ $doorprizes->sum('remaining_slots') }} {{ __('Unit') }}</strong>
                 </div>
-                <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+                <span class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </span>
             </div>
         </div>
 
         <!-- Foldable Interactive Query Toolbar for Rewards -->
-        <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
-            <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100" onclick="toggleRewardsFold()">
+        <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3.5">
+            <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100 dark:border-slate-800" onclick="toggleRewardsFold()">
                 <div class="flex items-center space-x-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                    <div class="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                     </div>
                     <div>
-                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">{{ __('Master Pilihan Hadiah Doorprize & Search') }}</h4>
-                        <p class="text-[11px] text-slate-400">{{ __('Cari reward berdasarkan nama hadiah, kategori, atau sponsor') }}</p>
+                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-white">{{ __('Master Pilihan Hadiah Doorprize & Search') }}</h4>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500">{{ __('Cari reward berdasarkan nama hadiah, kategori, atau sponsor') }}</p>
                     </div>
                 </div>
-                <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
+                <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition">
                     <span id="rewards-fold-icon" class="text-xs font-mono font-bold block transform transition-transform duration-200">▲</span>
                 </button>
             </div>
@@ -108,13 +108,13 @@
                             id="doorprize-search" 
                             placeholder="{{ __('Cari nama hadiah atau sponsor (Tekan \'/\' untuk fokus)...') }}" 
                             oninput="filterDoorprizeTable()"
-                            class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none transition font-medium"
+                            class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none transition font-medium"
                         >
                         <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <button type="button" onclick="clearDoorprizeSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
+                        <button type="button" onclick="clearDoorprizeSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
                     </div>
                     <div class="hidden md:flex items-center shrink-0">
-                        <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
+                        <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[11px] font-bold font-mono">
                             /
                         </kbd>
                     </div>
@@ -122,7 +122,7 @@
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                     <div class="col-span-1 sm:col-span-2">
-                        <select id="doorprize-category-filter" onchange="filterDoorprizeTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-amber-500 outline-none cursor-pointer">
+                        <select id="doorprize-category-filter" onchange="filterDoorprizeTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 font-bold focus:bg-white dark:focus:bg-slate-800 focus:border-amber-500 outline-none cursor-pointer">
                             <option value="">{{ __('Semua Kategori Hadiah') }}</option>
                             <option value="Grand Prize">Grand Prize</option>
                             <option value="Utama">{{ __('Utama') }}</option>
@@ -149,7 +149,7 @@
                         <button 
                             type="button" 
                             onclick="resetDoorprizeFilters()" 
-                            class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
+                            class="w-full h-11 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
                         >
                             <span>↺</span>
                             <span>{{ __('Reset') }}</span>
@@ -160,11 +160,11 @@
         </div>
 
         <!-- Master Rewards Table Container -->
-        <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
+        <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden relative">
             <div class="overflow-x-auto w-full">
                 <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="doorprizes-datatable">
                     <thead>
-                        <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
+                        <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80 dark:bg-slate-800/80">
                             <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Foto / Ikon') }}</th>
                             <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Nama Hadiah & Deskripsi') }}</th>
                             <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Kategori') }}</th>
@@ -174,14 +174,14 @@
                             <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('Aksi') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 font-medium">
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
                         @forelse($doorprizes as $d)
-                            <tr id="prize-row-{{ $d->id }}" class="hover:bg-amber-50/40 transition border-b border-slate-100 {{ $loop->first ? 'bg-amber-50/70 font-semibold' : '' }}">
+                            <tr id="prize-row-{{ $d->id }}" class="hover:bg-amber-50/40 dark:hover:bg-amber-950/20 transition border-b border-slate-100 dark:border-slate-800 {{ $loop->first ? 'bg-amber-50/70 dark:bg-amber-950/40 font-semibold' : '' }}">
                                 <td class="py-3 px-4 whitespace-nowrap">
                                     @if($d->image)
-                                        <img src="{{ $d->image_url }}" alt="{{ $d->title }}" class="w-12 h-12 rounded-xl object-cover border border-slate-300 shadow-xs">
+                                        <img src="{{ $d->image_url }}" alt="{{ $d->title }}" class="w-12 h-12 rounded-xl object-cover border border-slate-300 dark:border-slate-700 shadow-xs">
                                     @else
-                                        <div class="w-12 h-12 rounded-xl bg-amber-100 border border-amber-300 text-amber-800 flex items-center justify-center text-2xl shadow-xs">
+                                        <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-300 flex items-center justify-center text-2xl shadow-xs">
                                             @if(str_contains(strtolower($d->title), 'sepeda')) 🚲
                                             @elseif(str_contains(strtolower($d->title), 'tv')) 📺
                                             @elseif(str_contains(strtolower($d->title), 'kulkas') || str_contains(strtolower($d->title), 'mesin')) 🧺
@@ -193,44 +193,44 @@
                                     @endif
                                 </td>
                                 <td class="py-3 px-4">
-                                    <strong class="text-slate-900 block text-sm font-extrabold">{{ $d->title }}</strong>
+                                    <strong class="text-slate-900 dark:text-white block text-sm font-extrabold">{{ $d->title }}</strong>
                                     @if($d->description)
-                                        <span class="text-xs text-slate-500 block line-clamp-1 mt-0.5">{{ $d->description }}</span>
+                                        <span class="text-xs text-slate-500 dark:text-slate-400 block line-clamp-1 mt-0.5">{{ $d->description }}</span>
                                     @endif
                                 </td>
                                 <td class="py-3 px-4 whitespace-nowrap">
-                                    <span class="whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
+                                    <span class="whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                                         {{ $d->category }}
                                     </span>
                                 </td>
-                                <td class="py-3 px-4 font-mono font-bold text-slate-700 whitespace-nowrap">
+                                <td class="py-3 px-4 font-mono font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">
                                     {{ $d->quantity }} Unit
                                 </td>
                                 <td class="py-3 px-4 whitespace-nowrap">
-                                    <span id="prize-remaining-{{ $d->id }}" class="whitespace-nowrap px-2.5 py-1 rounded-full text-xs font-mono font-bold {{ $d->remaining_slots > 0 ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-rose-100 text-rose-900 border border-rose-300' }}">
+                                    <span id="prize-remaining-{{ $d->id }}" class="whitespace-nowrap px-2.5 py-1 rounded-full text-xs font-mono font-bold {{ $d->remaining_slots > 0 ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800' : 'bg-rose-100 dark:bg-rose-950/60 text-rose-900 dark:text-rose-300 border border-rose-300 dark:border-rose-800' }}">
                                         {{ $d->remaining_slots }} / {{ $d->quantity }}
                                     </span>
                                 </td>
-                                <td class="py-3 px-4 text-slate-600 whitespace-nowrap">
+                                <td class="py-3 px-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                                     {{ $d->sponsor ?: '-' }}
                                 </td>
                                 <td class="py-3 px-4 text-right whitespace-nowrap">
                                     <div class="inline-flex items-center space-x-1.5">
                                         <button 
-                                            type="button" 
-                                            onclick="selectPrize({{ $d->id }}, '{{ addslashes($d->title) }}', '{{ $d->category }}', {{ $d->remaining_slots }})"
-                                            class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 transition cursor-pointer flex items-center space-x-1"
-                                            title="{{ __('Pilih reward ini untuk diundi pada mesin di bawah') }}"
+                                             type="button" 
+                                             onclick="selectPrize({{ $d->id }}, '{{ addslashes($d->title) }}', '{{ $d->category }}', {{ $d->remaining_slots }})"
+                                             class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs border border-slate-300 dark:border-slate-700 transition cursor-pointer flex items-center space-x-1"
+                                             title="{{ __('Pilih reward ini untuk diundi pada mesin di bawah') }}"
                                         >
                                             <span>🎯</span>
                                             <span>{{ __('Pilih') }}</span>
                                         </button>
 
                                         <button 
-                                            type="button" 
-                                            onclick="openEditRewardModal({{ $d->id }}, '{{ addslashes($d->title) }}', '{{ addslashes($d->category) }}', {{ $d->quantity }}, '{{ addslashes($d->sponsor ?? '') }}', '{{ addslashes($d->description ?? '') }}', '{{ $d->image ? $d->image_url : '' }}')"
-                                            class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 transition cursor-pointer flex items-center space-x-1"
-                                            title="{{ __('Edit Hadiah & Ganti Foto') }}"
+                                             type="button" 
+                                             onclick="openEditRewardModal({{ $d->id }}, '{{ addslashes($d->title) }}', '{{ addslashes($d->category) }}', {{ $d->quantity }}, '{{ addslashes($d->sponsor ?? '') }}', '{{ addslashes($d->description ?? '') }}', '{{ $d->image ? $d->image_url : '' }}')"
+                                             class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs border border-slate-300 dark:border-slate-700 transition cursor-pointer flex items-center space-x-1"
+                                             title="{{ __('Edit Hadiah & Ganti Foto') }}"
                                         >
                                             <span>✏️</span>
                                             <span>{{ __('Edit') }}</span>
@@ -239,7 +239,7 @@
                                         <form action="{{ route('admin.reports.doorprize.destroy', $d->id) }}" method="POST" onsubmit="return confirm('{{ __('Hapus reward :title?', ['title' => $d->title]) }}');" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="p-1.5 rounded-xl text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition" title="{{ __('Hapus Hadiah') }}">
+                                            <button type="submit" class="p-1.5 rounded-xl text-rose-500 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition cursor-pointer" title="{{ __('Hapus Hadiah') }}">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </form>
@@ -248,7 +248,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="py-8 text-center text-slate-400">{{ __('Belum ada master hadiah doorprize. Klik :btn di atas.', ['btn' => '+ ' . __('Tambah Hadiah Baru')]) }}</td>
+                                <td colspan="7" class="py-8 text-center text-slate-400 dark:text-slate-500">{{ __('Belum ada master hadiah doorprize. Klik :btn di atas.', ['btn' => '+ ' . __('Tambah Hadiah Baru')]) }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -260,7 +260,7 @@
     <!-- ======================================================== -->
     <!-- 2. ANIMATED DIGITAL LOTTERY STAGE (NO STARS / NO CLIPPING)-->
     <!-- ======================================================== -->
-    <div id="undi-section" class="scroll-mt-24 rounded-3xl bg-gradient-to-br from-amber-50/90 via-white to-yellow-50/70 text-slate-900 border-2 border-amber-300 shadow-xl relative overflow-hidden text-center">
+    <div id="undi-section" class="scroll-mt-24 rounded-3xl bg-gradient-to-br from-amber-50/90 via-white to-yellow-50/70 dark:from-slate-900 dark:via-slate-900 dark:to-amber-950/30 text-slate-900 dark:text-white border-2 border-amber-300 dark:border-amber-700/60 shadow-xl relative overflow-hidden text-center">
         {{-- Three.js 3D Canvas (renders behind content) --}}
         <div id="doorprize-3d-canvas" class="absolute inset-0 z-0 pointer-events-none"></div>
 
@@ -271,18 +271,18 @@
         <div class="max-w-xl mx-auto relative z-10 space-y-6 p-6 sm:p-10">
 
             {{-- Active Selected Prize Indicator Badge --}}
-            <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-amber-100/90 text-amber-950 border border-amber-300 text-xs font-black shadow-xs backdrop-blur-sm">
+            <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-amber-100/90 dark:bg-amber-950/80 text-amber-950 dark:text-amber-200 border border-amber-300 dark:border-amber-700 text-xs font-black shadow-xs backdrop-blur-sm">
                 <span>🎁 {{ __('Target Hadiah:') }}</span>
-                <strong id="active-prize-title" class="text-slate-900 font-extrabold">{{ $doorprizes->first()?->title ?? __('Pilih Hadiah') }}</strong>
-                <span id="active-prize-slots" class="text-amber-800 font-mono">({{ $doorprizes->first()?->remaining_slots ?? 0 }} {{ __('Sisa') }})</span>
+                <strong id="active-prize-title" class="text-slate-900 dark:text-white font-extrabold">{{ $doorprizes->first()?->title ?? __('Pilih Hadiah') }}</strong>
+                <span id="active-prize-slots" class="text-amber-800 dark:text-amber-300 font-mono">({{ $doorprizes->first()?->remaining_slots ?? 0 }} {{ __('Sisa') }})</span>
             </div>
 
             {{-- STATE 1: INITIAL READY STATE --}}
             <div id="doorprize-stage-initial" class="{{ $totalEligible > 0 ? '' : 'hidden' }} space-y-5">
                 <div class="h-44 sm:h-52"></div> {{-- spacer for 3D canvas --}}
 
-                <h3 class="text-2xl sm:text-3xl font-black text-slate-950">{{ __('Mesin Undian Digital Anggota') }}</h3>
-                <p class="text-xs sm:text-sm text-slate-600 max-w-md mx-auto font-medium">
+                <h3 class="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white">{{ __('Mesin Undian Digital Anggota') }}</h3>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-md mx-auto font-medium">
                     {{ __('Pilih hadiah pada tabel di atas, lalu tekan tombol di bawah untuk memutar silinder undian digital. Pemenang sah akan otomatis tersimpan dalam database.') }}
                 </p>
 
@@ -303,17 +303,17 @@
             <div id="doorprize-stage-spinning" class="hidden space-y-6">
                 <div class="h-44 sm:h-52"></div> {{-- spacer for 3D canvas --}}
 
-                <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-amber-100/90 text-amber-950 border border-amber-300 text-xs font-black animate-pulse backdrop-blur-sm">
+                <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-amber-100/90 dark:bg-amber-950/80 text-amber-950 dark:text-amber-200 border border-amber-300 dark:border-amber-700 text-xs font-black animate-pulse backdrop-blur-sm">
                     <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
                     <span>{{ __('SILINDER DIGITAL BERPUTAR CEPAT...') }}</span>
                 </div>
 
                 {{-- Digital Reel Card --}}
-                <div class="p-6 rounded-3xl bg-white/90 backdrop-blur-md border-2 border-amber-400 shadow-xl min-h-[140px] flex flex-col justify-center items-center doorprize-reel-glow">
-                    <span class="text-[11px] font-extrabold text-amber-700 uppercase tracking-widest block mb-1">{{ __('Mencari Nama Pemenang...') }}</span>
-                    <h4 id="slot-name" class="text-2xl sm:text-3xl font-black text-slate-950 transition-all">{{ __('Memutar Data...') }}</h4>
-                    <p id="slot-dept" class="text-sm font-bold text-amber-900 mt-1 font-mono">{{ __('Bagian:') }} -</p>
-                    <span id="slot-nik" class="text-xs text-slate-500 font-mono mt-0.5">{{ __('NIK:') }} -</span>
+                <div class="p-6 rounded-3xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-2 border-amber-400 dark:border-amber-500/80 shadow-xl min-h-[140px] flex flex-col justify-center items-center doorprize-reel-glow">
+                    <span class="text-[11px] font-extrabold text-amber-700 dark:text-amber-400 uppercase tracking-widest block mb-1">{{ __('Mencari Nama Pemenang...') }}</span>
+                    <h4 id="slot-name" class="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white transition-all">{{ __('Memutar Data...') }}</h4>
+                    <p id="slot-dept" class="text-sm font-bold text-amber-900 dark:text-amber-300 mt-1 font-mono">{{ __('Bagian:') }} -</p>
+                    <span id="slot-nik" class="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">{{ __('NIK:') }} -</span>
                 </div>
             </div>
 
@@ -326,19 +326,19 @@
                     <span>{{ __('SELAMAT! PEMENANG RESMI TERCATAT') }}</span>
                 </div>
 
-                <div class="p-6 sm:p-8 rounded-3xl bg-white/95 backdrop-blur-md border-2 border-amber-400 shadow-2xl relative overflow-hidden doorprize-winner-card-enter">
+                <div class="p-6 sm:p-8 rounded-3xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-2 border-amber-400 dark:border-amber-500/80 shadow-2xl relative overflow-hidden doorprize-winner-card-enter">
                     <div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-tr from-amber-400 to-yellow-300 text-slate-950 flex items-center justify-center text-4xl mb-3 shadow-md">
                         🎉
                     </div>
 
-                    <span id="winner-prize-badge" class="px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-900 border border-amber-300 inline-block mb-2">
+                    <span id="winner-prize-badge" class="px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 inline-block mb-2">
                         {{ __('Hadiah:') }} -
                     </span>
 
-                    <h3 id="winner-name" class="text-3xl sm:text-4xl font-black text-slate-950 mb-1">{{ __('Nama Pemenang') }}</h3>
-                    <p id="winner-meta" class="text-base text-amber-800 font-bold mb-3 font-mono">{{ __('NIK:') }} - • {{ __('Bagian:') }} -</p>
+                    <h3 id="winner-name" class="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white mb-1">{{ __('Nama Pemenang') }}</h3>
+                    <p id="winner-meta" class="text-base text-amber-800 dark:text-amber-300 font-bold mb-3 font-mono">{{ __('NIK:') }} - • {{ __('Bagian:') }} -</p>
 
-                    <div class="inline-flex items-center px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 font-medium">
+                    <div class="inline-flex items-center px-4 py-2 rounded-xl bg-slate-50 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600 text-xs text-slate-600 dark:text-slate-300 font-medium">
                         <span id="winner-time">{{ __('Tercatat:') }} -</span>
                     </div>
                 </div>
@@ -356,7 +356,7 @@
 
             {{-- EMPTY POOL STATE --}}
             @if($totalEligible === 0)
-                <div class="p-6 text-center text-slate-400">
+                <div class="p-6 text-center text-slate-400 dark:text-slate-500">
                     <p class="font-medium text-sm">{{ __('Belum ada anggota yang memberikan suara (Pool undian masih kosong).') }}</p>
                 </div>
             @endif
@@ -372,15 +372,15 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <div class="flex items-center space-x-2 mb-1">
-                    <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-amber-100 text-amber-800 border border-amber-200">
+                    <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
                         {{ __('Winners Ledger') }}
                     </span>
-                    <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                    <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                         {{ __('Total Pemenang:') }} {{ count($winners) }}
                     </span>
                 </div>
-                <h3 class="text-xl sm:text-2xl font-black text-slate-900">{!! __('3. Log Pemenang & Status Klaim Doorprize') !!}</h3>
-                <p class="text-xs text-slate-500">{{ __('Pencatatan resmi pemenang undian, status serah terima (Diterima / Ditolak), dan alasan.') }}</p>
+                <h3 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">{!! __('3. Log Pemenang & Status Klaim Doorprize') !!}</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Pencatatan resmi pemenang undian, status serah terima (Diterima / Ditolak), dan alasan.') }}</p>
             </div>
 
             <div class="flex items-center gap-2">
@@ -388,7 +388,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     <span>{{ __('Export Excel') }}</span>
                 </a>
-                <a href="{{ route('admin.reports.doorprize.export.pdf') }}" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
+                <a href="{{ route('admin.reports.doorprize.export.pdf') }}" class="px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs border border-slate-300 dark:border-slate-700 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
                     <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     <span>{{ __('Export PDF') }}</span>
                 </a>
@@ -396,18 +396,18 @@
         </div>
 
         <!-- Foldable Interactive Query Toolbar for Winners -->
-        <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
-            <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100" onclick="toggleWinnersFold()">
+        <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3.5">
+            <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100 dark:border-slate-800" onclick="toggleWinnersFold()">
                 <div class="flex items-center space-x-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                    <div class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                     </div>
                     <div>
-                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">Filter & Pemenang Search</h4>
-                        <p class="text-[11px] text-slate-400">Cari pemenang berdasarkan nama, NIK, hadiah, atau status serah terima</p>
+                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-white">{{ __('Filter & Pemenang Search') }}</h4>
+                        <p class="text-[11px] text-slate-400 dark:text-slate-500">{{ __('Cari pemenang berdasarkan nama, NIK, hadiah, atau status serah terima') }}</p>
                     </div>
                 </div>
-                <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
+                <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition">
                     <span id="winners-fold-icon" class="text-xs font-mono font-bold block transform transition-transform duration-200">▲</span>
                 </button>
             </div>
@@ -418,18 +418,18 @@
                         <input 
                             type="text" 
                             id="winner-search" 
-                            placeholder="Cari pemenang, NIK, atau hadiah..." 
+                            placeholder="{{ __('Cari pemenang, NIK, atau hadiah...') }}" 
                             oninput="filterWinnerTable()"
-                            class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
+                            class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
                         >
                         <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <button type="button" onclick="clearWinnerSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
+                        <button type="button" onclick="clearWinnerSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                     <div class="col-span-1 sm:col-span-2">
-                        <select id="winner-status-filter" onchange="filterWinnerTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                        <select id="winner-status-filter" onchange="filterWinnerTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 font-bold focus:bg-white dark:focus:bg-slate-800 focus:border-indigo-500 outline-none cursor-pointer">
                             <option value="">{{ __('Semua Status Klaim') }}</option>
                             <option value="Sudah Diterima">{{ __('Sudah Diterima') }} (accepted)</option>
                             <option value="Ditolak">{{ __('Ditolak') }} (rejected)</option>
@@ -453,7 +453,7 @@
                         <button 
                             type="button" 
                             onclick="resetWinnerFilters()" 
-                            class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
+                            class="w-full h-11 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
                         >
                             <span>↺</span>
                             <span>{{ __('Reset') }}</span>
@@ -464,11 +464,11 @@
         </div>
 
         <!-- Winners Table Container -->
-        <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
+        <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden relative">
             <div class="overflow-x-auto w-full">
                 <table class="min-w-[850px] w-full text-left text-xs sm:text-sm" id="winners-datatable">
                     <thead>
-                        <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
+                        <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80 dark:bg-slate-800/80">
                             <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Waktu Undian') }}</th>
                             <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Hadiah (Reward)') }}</th>
                             <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Nama Pemenang') }}</th>
@@ -479,46 +479,46 @@
                             <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('Aksi') }}</th>
                         </tr>
                     </thead>
-                    <tbody id="winners-table-body" class="divide-y divide-slate-100 font-medium">
+                    <tbody id="winners-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
                         @forelse($winners as $w)
-                            <tr id="winner-row-{{ $w->id }}" class="hover:bg-slate-50/75 transition border-b border-slate-100">
-                                <td class="py-3 px-4 font-mono text-slate-500 text-xs whitespace-nowrap">{{ $w->won_at->format('H:i:s d/m/Y') }}</td>
-                                <td class="py-3 px-4 font-bold text-amber-900 whitespace-nowrap">
-                                    <span class="whitespace-nowrap px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 inline-flex items-center space-x-1.5">
+                            <tr id="winner-row-{{ $w->id }}" class="hover:bg-slate-50/75 dark:hover:bg-slate-800/60 transition border-b border-slate-100 dark:border-slate-800">
+                                <td class="py-3 px-4 font-mono text-slate-500 dark:text-slate-400 text-xs whitespace-nowrap">{{ $w->won_at->format('H:i:s d/m/Y') }}</td>
+                                <td class="py-3 px-4 font-bold text-amber-900 dark:text-amber-300 whitespace-nowrap">
+                                    <span class="whitespace-nowrap px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 inline-flex items-center space-x-1.5">
                                         <span>🎁</span>
                                         <span>{{ $w->doorprize?->title ?? __('Hadiah Dihapus') }}</span>
                                     </span>
                                 </td>
-                                <td class="py-3 px-4 font-black text-slate-900 whitespace-nowrap">{{ $w->pemilih?->nama ?? '-' }}</td>
-                                <td class="py-3 px-4 font-mono text-blue-700 font-bold whitespace-nowrap">{{ $w->nik }}</td>
-                                <td class="py-3 px-4 text-slate-600 whitespace-nowrap">{{ $w->pemilih?->dept ?? '-' }}</td>
+                                <td class="py-3 px-4 font-black text-slate-900 dark:text-white whitespace-nowrap">{{ $w->pemilih?->nama ?? '-' }}</td>
+                                <td class="py-3 px-4 font-mono text-blue-700 dark:text-blue-400 font-bold whitespace-nowrap">{{ $w->nik }}</td>
+                                <td class="py-3 px-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{{ $w->pemilih?->dept ?? '-' }}</td>
                                 <td class="py-3 px-4 whitespace-nowrap">
                                     @if($w->status === 'accepted')
-                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
                                             <span>✓</span>
                                             <span>{{ __('Sudah Diterima') }}</span>
                                         </span>
                                         @if($w->received_at)
-                                            <span class="block text-[10px] text-slate-400 font-mono mt-0.5 whitespace-nowrap">{{ $w->received_at->format('d/m/Y H:i') }}</span>
+                                            <span class="block text-[10px] text-slate-400 dark:text-slate-500 font-mono mt-0.5 whitespace-nowrap">{{ $w->received_at->format('d/m/Y H:i') }}</span>
                                         @endif
                                     @elseif($w->status === 'rejected')
-                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-rose-100 text-rose-800 border border-rose-300">
+                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
                                             <span>✕</span>
                                             <span>{{ __('Ditolak') }}</span>
                                         </span>
                                     @elseif($w->status === 'other')
-                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-slate-100 text-slate-800 border border-slate-300">
+                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700">
                                             <span>ℹ</span>
                                             <span>{{ __('Lainnya') }}</span>
                                         </span>
                                     @else
-                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300">
+                                        <span class="whitespace-nowrap inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
                                             <span>⏳</span>
                                             <span>{{ __('Belum Diambil') }}</span>
                                         </span>
                                     @endif
                                 </td>
-                                <td class="py-3 px-4 text-slate-600 text-xs max-w-xs truncate" title="{{ $w->status_note }}">
+                                <td class="py-3 px-4 text-slate-600 dark:text-slate-400 text-xs max-w-xs truncate" title="{{ $w->status_note }}">
                                     {{ $w->status_note ?: '-' }}
                                 </td>
                                 <td class="py-3 px-4 text-right whitespace-nowrap">
@@ -526,7 +526,7 @@
                                         <button 
                                             type="button" 
                                             onclick="openUpdateStatusModal({{ $w->id }}, '{{ $w->status }}', '{{ addslashes($w->status_note ?? '') }}', '{{ addslashes($w->pemilih?->nama ?? $w->nik) }}', '{{ addslashes($w->doorprize?->title ?? '') }}')"
-                                            class="p-1.5 rounded-xl text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition cursor-pointer"
+                                            class="p-1.5 rounded-xl text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition cursor-pointer"
                                             title="{{ __('Ubah Status Serah Terima Hadiah') }}"
                                         >
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
@@ -535,7 +535,7 @@
                                         <form action="{{ route('admin.reports.doorprize.winner.destroy', $w->id) }}" method="POST" onsubmit="return confirm('{{ __('Batalkan kemenangan :nama? Kuota hadiah akan dikembalikan.', ['nama' => $w->pemilih?->nama]) }}')" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="p-1.5 rounded-xl text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition" title="{{ __('Batalkan Kemenangan') }}">
+                                            <button type="submit" class="p-1.5 rounded-xl text-rose-500 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition cursor-pointer" title="{{ __('Batalkan Kemenangan') }}">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </form>
@@ -544,7 +544,7 @@
                             </tr>
                         @empty
                             <tr id="empty-winners-row">
-                                <td colspan="8" class="py-8 text-center text-slate-400 font-medium">{{ __('Belum ada pemenang yang diundi.') }}</td>
+                                <td colspan="8" class="py-8 text-center text-slate-400 dark:text-slate-500 font-medium">{{ __('Belum ada pemenang yang diundi.') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -558,35 +558,35 @@
 
 <!-- Modal Tambah Master Reward Baru (Dengan Upload Gambar & Deskripsi) -->
 <div id="add-reward-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-white border-2 border-slate-200 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
-            <h3 class="text-lg font-black text-slate-900">{{ __('Tambah Master Hadiah Doorprize') }}</h3>
-            <button onclick="closeAddRewardModal()" type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1 rounded-xl">✕</button>
+    <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+            <h3 class="text-lg font-black text-slate-900 dark:text-white">{{ __('Tambah Master Hadiah Doorprize') }}</h3>
+            <button onclick="closeAddRewardModal()" type="button" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-xl font-bold p-1 rounded-xl cursor-pointer">✕</button>
         </div>
 
         <form action="{{ route('admin.reports.doorprize.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Nama Hadiah / Reward') }} <span class="text-rose-500">*</span></label>
-                <input type="text" name="title" required placeholder="{{ __('Contoh: Sepeda Listrik Smart e-Bike') }}" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Nama Hadiah / Reward') }} <span class="text-rose-500">*</span></label>
+                <input type="text" name="title" required placeholder="{{ __('Contoh: Sepeda Listrik Smart e-Bike') }}" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-amber-500 outline-none">
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Deskripsi Singkat / Spesifikasi') }}</label>
-                <textarea name="description" rows="2" placeholder="{{ __('Contoh: Garansi resmi 1 tahun, baterai lithium 48V...') }}" class="w-full px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none"></textarea>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Deskripsi Singkat / Spesifikasi') }}</label>
+                <textarea name="description" rows="2" placeholder="{{ __('Contoh: Garansi resmi 1 tahun, baterai lithium 48V...') }}" class="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-amber-500 outline-none"></textarea>
             </div>
 
             <!-- Upload Gambar Hadiah -->
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Upload Foto Hadiah (Opsional)') }}</label>
-                <input type="file" name="image" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200 cursor-pointer">
-                <span class="text-[11px] text-slate-400 block mt-1">{{ __('Format: JPG, PNG, atau WebP (Maks. 4 MB)') }}</span>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Upload Foto Hadiah (Opsional)') }}</label>
+                <input type="file" name="image" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-slate-600 dark:text-slate-300 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-amber-100 dark:file:bg-amber-950/60 file:text-amber-900 dark:file:text-amber-300 hover:file:bg-amber-200 dark:hover:file:bg-amber-900/60 cursor-pointer">
+                <span class="text-[11px] text-slate-400 dark:text-slate-500 block mt-1">{{ __('Format: JPG, PNG, atau WebP (Maks. 4 MB)') }}</span>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Kategori Hadiah') }}</label>
-                    <select name="category" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none font-semibold">
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Kategori Hadiah') }}</label>
+                    <select name="category" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-amber-500 outline-none font-semibold">
                         <option value="Grand Prize">Grand Prize</option>
                         <option value="Utama">{{ __('Utama') }}</option>
                         <option value="Elektronik">{{ __('Elektronik') }}</option>
@@ -596,18 +596,18 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Jumlah Unit (Qty)') }} <span class="text-rose-500">*</span></label>
-                    <input type="number" name="quantity" required min="1" max="1000" value="1" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none font-mono">
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Jumlah Unit (Qty)') }} <span class="text-rose-500">*</span></label>
+                    <input type="number" name="quantity" required min="1" max="1000" value="1" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-amber-500 outline-none font-mono">
                 </div>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Sponsor / Donatur (Opsional)') }}</label>
-                <input type="text" name="sponsor" placeholder="{{ __('Contoh: Bank Mitra / Koperasi Bersama') }}" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Sponsor / Donatur (Opsional)') }}</label>
+                <input type="text" name="sponsor" placeholder="{{ __('Contoh: Bank Mitra / Koperasi Bersama') }}" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-amber-500 outline-none">
             </div>
 
-            <div class="pt-3 border-t border-slate-200 flex justify-end space-x-2">
-                <button type="button" onclick="closeAddRewardModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer">{{ __('Batal') }}</button>
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-end space-x-2">
+                <button type="button" onclick="closeAddRewardModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold cursor-pointer">{{ __('Batal') }}</button>
                 <button type="submit" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black shadow-md cursor-pointer">{{ __('Simpan Hadiah') }}</button>
             </div>
         </form>
@@ -616,42 +616,42 @@
 
 <!-- Modal Edit Master Reward (Ganti Foto, Ubah Data) -->
 <div id="edit-reward-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-white border-2 border-slate-200 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+    <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
             <div>
-                <h3 class="text-lg font-black text-slate-900">{{ __('Edit Data & Foto Hadiah') }}</h3>
-                <p class="text-xs text-slate-500">{{ __('Perbarui spesifikasi, kuota, atau ganti foto hadiah') }}</p>
+                <h3 class="text-lg font-black text-slate-900 dark:text-white">{{ __('Edit Data & Foto Hadiah') }}</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('Perbarui spesifikasi, kuota, atau ganti foto hadiah') }}</p>
             </div>
-            <button onclick="closeEditRewardModal()" type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1 rounded-xl">✕</button>
+            <button onclick="closeEditRewardModal()" type="button" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-xl font-bold p-1 rounded-xl cursor-pointer">✕</button>
         </div>
 
         <form id="edit-reward-form" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Nama Hadiah / Reward') }} <span class="text-rose-500">*</span></label>
-                <input type="text" name="title" id="edit-reward-title" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none font-bold">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Nama Hadiah / Reward') }} <span class="text-rose-500">*</span></label>
+                <input type="text" name="title" id="edit-reward-title" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-amber-500 outline-none font-bold">
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Deskripsi Singkat / Spesifikasi') }}</label>
-                <textarea name="description" id="edit-reward-description" rows="2" class="w-full px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none"></textarea>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Deskripsi Singkat / Spesifikasi') }}</label>
+                <textarea name="description" id="edit-reward-description" rows="2" class="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-amber-500 outline-none"></textarea>
             </div>
 
             <!-- Pratinjau & Upload Foto Baru -->
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Foto Hadiah') }}</label>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Foto Hadiah') }}</label>
                 <div class="flex items-center space-x-3 mb-2">
-                    <img id="edit-reward-current-img" src="" alt="{{ __('Pratinjau Hadiah') }}" class="w-16 h-16 rounded-xl object-cover border border-slate-300 shadow-xs hidden">
-                    <span id="edit-reward-no-img" class="text-xs text-slate-400 italic">{{ __('Belum ada foto terpasang') }}</span>
+                    <img id="edit-reward-current-img" src="" alt="{{ __('Pratinjau Hadiah') }}" class="w-16 h-16 rounded-xl object-cover border border-slate-300 dark:border-slate-700 shadow-xs hidden">
+                    <span id="edit-reward-no-img" class="text-xs text-slate-400 dark:text-slate-500 italic">{{ __('Belum ada foto terpasang') }}</span>
                 </div>
-                <input type="file" name="image" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200 cursor-pointer">
-                <span class="text-[11px] text-slate-400 block mt-1">{{ __('Pilih file baru jika ingin mengganti foto (JPG, PNG, WebP maks 4MB)') }}</span>
+                <input type="file" name="image" accept="image/png,image/jpeg,image/webp" class="w-full text-xs text-slate-600 dark:text-slate-300 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-extrabold file:bg-amber-100 dark:file:bg-amber-950/60 file:text-amber-900 dark:file:text-amber-300 hover:file:bg-amber-200 dark:hover:file:bg-amber-900/60 cursor-pointer">
+                <span class="text-[11px] text-slate-400 dark:text-slate-500 block mt-1">{{ __('Pilih file baru jika ingin mengganti foto (JPG, PNG, WebP maks 4MB)') }}</span>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Kategori Hadiah') }}</label>
-                    <select name="category" id="edit-reward-category" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none font-semibold">
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Kategori Hadiah') }}</label>
+                    <select name="category" id="edit-reward-category" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-amber-500 outline-none font-semibold">
                         <option value="Grand Prize">Grand Prize</option>
                         <option value="Utama">{{ __('Utama') }}</option>
                         <option value="Elektronik">{{ __('Elektronik') }}</option>
@@ -664,18 +664,18 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Jumlah Unit (Qty)') }} <span class="text-rose-500">*</span></label>
-                    <input type="number" name="quantity" id="edit-reward-quantity" required min="1" max="1000" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none font-mono font-bold">
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Jumlah Unit (Qty)') }} <span class="text-rose-500">*</span></label>
+                    <input type="number" name="quantity" id="edit-reward-quantity" required min="1" max="1000" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-amber-500 outline-none font-mono font-bold">
                 </div>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Sponsor / Donatur') }}</label>
-                <input type="text" name="sponsor" id="edit-reward-sponsor" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-amber-500 outline-none">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Sponsor / Donatur') }}</label>
+                <input type="text" name="sponsor" id="edit-reward-sponsor" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-amber-500 outline-none">
             </div>
 
-            <div class="pt-3 border-t border-slate-200 flex justify-end space-x-2">
-                <button type="button" onclick="closeEditRewardModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer">{{ __('Batal') }}</button>
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-end space-x-2">
+                <button type="button" onclick="closeEditRewardModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold cursor-pointer">{{ __('Batal') }}</button>
                 <button type="submit" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black shadow-md cursor-pointer">{{ __('Simpan Perubahan') }}</button>
             </div>
         </form>
@@ -684,20 +684,20 @@
 
 <!-- Modal Update Status Serah Terima Pemenang (Diterima / Ditolak / Alasan Lain) -->
 <div id="update-winner-status-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-white border-2 border-slate-200 rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+    <div class="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl relative space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
             <div>
-                <h3 class="text-base font-black text-slate-900">{{ __('Ubah Status Klaim Hadiah') }}</h3>
-                <p id="modal-winner-info" class="text-xs text-slate-500">{{ __('Pemenang:') }} -</p>
+                <h3 class="text-base font-black text-slate-900 dark:text-white">{{ __('Ubah Status Klaim Hadiah') }}</h3>
+                <p id="modal-winner-info" class="text-xs text-slate-500 dark:text-slate-400">{{ __('Pemenang:') }} -</p>
             </div>
-            <button onclick="closeUpdateStatusModal()" type="button" class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1 rounded-xl">✕</button>
+            <button onclick="closeUpdateStatusModal()" type="button" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-xl font-bold p-1 rounded-xl cursor-pointer">✕</button>
         </div>
 
         <form id="update-status-form" method="POST" onsubmit="handleWinnerStatusSubmit(event)" class="space-y-4">
             @csrf
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Status Hadiah') }}</label>
-                <select name="status" id="modal-winner-status-select" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 font-bold focus:border-blue-600 outline-none">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Status Hadiah') }}</label>
+                <select name="status" id="modal-winner-status-select" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white font-bold focus:border-blue-600 outline-none">
                     <option value="pending">⏳ {{ __('Belum Diambil (Pending)') }}</option>
                     <option value="accepted">✓ {{ __('Sudah Diterima') }}</option>
                     <option value="rejected">✕ {{ __('Ditolak (Tidak Hadir / Membatalkan)') }}</option>
@@ -706,12 +706,12 @@
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">{{ __('Catatan / Alasan Penyerahan (Opsional)') }}</label>
-                <textarea name="status_note" id="modal-winner-note-input" rows="3" placeholder="{{ __('Contoh: Diterima langsung di panggung / Tidak hadir setelah dipanggil 3 kali...') }}" class="w-full px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:border-blue-600 outline-none"></textarea>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Catatan / Alasan Penyerahan (Opsional)') }}</label>
+                <textarea name="status_note" id="modal-winner-note-input" rows="3" placeholder="{{ __('Contoh: Diterima langsung di panggung / Tidak hadir setelah dipanggil 3 kali...') }}" class="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:border-blue-600 outline-none"></textarea>
             </div>
 
-            <div class="pt-3 border-t border-slate-200 flex justify-end space-x-2">
-                <button type="button" onclick="closeUpdateStatusModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer">{{ __('Batal') }}</button>
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-end space-x-2">
+                <button type="button" onclick="closeUpdateStatusModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold cursor-pointer">{{ __('Batal') }}</button>
                 <button type="submit" id="btn-save-status" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow-md cursor-pointer">{{ __('Simpan Status') }}</button>
             </div>
         </form>
@@ -1218,27 +1218,27 @@
         if (countEl) countEl.innerText = parseInt(countEl.innerText || 0) + 1;
 
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-slate-50 transition bg-amber-50/60 font-medium';
+        tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/60 transition bg-amber-50/60 dark:bg-amber-950/40 border-b border-slate-100 dark:border-slate-800 font-medium';
         tr.innerHTML = `
-            <td class="py-3 px-3 font-mono text-slate-500 text-xs">${winner.won_at}</td>
-            <td class="py-3 px-3 font-bold text-amber-900">
-                <span class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 inline-flex items-center space-x-1.5">
+            <td class="py-3 px-4 font-mono text-slate-500 dark:text-slate-400 text-xs">${winner.won_at}</td>
+            <td class="py-3 px-4 font-bold text-amber-900 dark:text-amber-300">
+                <span class="px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 inline-flex items-center space-x-1.5">
                     <span>🎁</span>
                     <span>${prize.title}</span>
                 </span>
             </td>
-            <td class="py-3 px-3 font-black text-slate-900">${winner.nama}</td>
-            <td class="py-3 px-3 font-mono text-blue-700 font-bold">${winner.nik}</td>
-            <td class="py-3 px-3 text-slate-600">${winner.dept}</td>
-            <td class="py-3 px-3">
-                <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300">
+            <td class="py-3 px-4 font-black text-slate-900 dark:text-white">${winner.nama}</td>
+            <td class="py-3 px-4 font-mono text-blue-700 dark:text-blue-400 font-bold">${winner.nik}</td>
+            <td class="py-3 px-4 text-slate-600 dark:text-slate-400">${winner.dept}</td>
+            <td class="py-3 px-4">
+                <span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
                     <span>⏳</span>
                     <span>Belum Diambil</span>
                 </span>
             </td>
-            <td class="py-3 px-3 text-slate-400 text-xs">-</td>
-            <td class="py-3 px-3 text-right">
-                <span class="text-xs text-emerald-600 font-bold">Baru Terpilih ✓</span>
+            <td class="py-3 px-4 text-slate-400 dark:text-slate-500 text-xs">-</td>
+            <td class="py-3 px-4 text-right">
+                <span class="text-xs text-emerald-600 dark:text-emerald-400 font-bold">Baru Terpilih ✓</span>
             </td>
         `;
         tbody.prepend(tr);

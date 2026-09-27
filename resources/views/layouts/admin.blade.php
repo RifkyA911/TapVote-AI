@@ -257,15 +257,15 @@
 
         <!-- Flash Alert Messages -->
         @if(session('success'))
-            <div class="m-4 sm:m-6 mb-0 p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-400 text-emerald-900 text-sm font-bold flex items-center space-x-3 shadow-2xs">
-                <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <div class="m-4 sm:m-6 mb-0 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border-2 border-emerald-400 dark:border-emerald-800 text-emerald-900 dark:text-emerald-300 text-sm font-bold flex items-center space-x-3 shadow-2xs">
+                <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 <span>{{ session('success') }}</span>
             </div>
         @endif
 
         @if(session('error') || $errors->any())
-            <div class="m-4 sm:m-6 mb-0 p-4 rounded-2xl bg-rose-50 border-2 border-rose-400 text-rose-900 text-sm font-bold flex items-center space-x-3 shadow-2xs">
-                <svg class="w-5 h-5 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <div class="m-4 sm:m-6 mb-0 p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border-2 border-rose-400 dark:border-rose-800 text-rose-900 dark:text-rose-300 text-sm font-bold flex items-center space-x-3 shadow-2xs">
+                <svg class="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 <span>{{ session('error') ?? $errors->first() }}</span>
             </div>
         @endif

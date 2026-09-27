@@ -6,23 +6,23 @@
 <div class="space-y-6">
 
     <!-- Top Header Banner & Action Bar -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 sm:p-7 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-800 border border-slate-300">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
                     {{ __('Security Audit') }}
                 </span>
-                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
                     {{ __('Activity Ledger') }}
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Audit Trail & Security Logs') }}</h2>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">{{ __('Rekam jejak setiap aksi sistem: otentikasi login, tap RFID, transaksi bilik suara, dan aktivitas administratif.') }}</p>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ __('Audit Trail & Security Logs') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5 max-w-2xl">{{ __('Rekam jejak setiap aksi sistem: otentikasi login, tap RFID, transaksi bilik suara, dan aktivitas administratif.') }}</p>
         </div>
 
         <div class="flex items-center gap-2.5 self-start sm:self-auto">
-            <button onclick="window.print()" type="button" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
-                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            <button onclick="window.print()" type="button" class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer">
+                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                 <span>{{ __('Export PDF / Print') }}</span>
             </button>
         </div>
@@ -30,32 +30,32 @@
 
     <!-- Quick Stats Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-slate-500 font-semibold">{{ __('Total Rekam Jejak') }}</span>
-                <strong class="block text-2xl font-black text-slate-900 font-mono">{{ $totalLogs ?? count($logs) }}</strong>
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">{{ __('Total Rekam Jejak') }}</span>
+                <strong class="block text-2xl font-black text-slate-900 dark:text-white font-mono">{{ $totalLogs ?? count($logs) }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+            <span class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
             </span>
         </div>
 
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-rose-700 font-semibold">{{ __('Security Alerts / Gagal') }}</span>
-                <strong class="block text-2xl font-black text-rose-600 font-mono">{{ $securityEvents ?? 0 }}</strong>
+                <span class="text-xs text-rose-700 dark:text-rose-400 font-semibold">{{ __('Security Alerts / Gagal') }}</span>
+                <strong class="block text-2xl font-black text-rose-600 dark:text-rose-400 font-mono">{{ $securityEvents ?? 0 }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-rose-50 text-rose-600">
+            <span class="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             </span>
         </div>
 
-        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-emerald-700 font-semibold">{{ __('Transaksi Sukses') }}</span>
-                <strong class="block text-2xl font-black text-emerald-600 font-mono">{{ $successEvents ?? 0 }}</strong>
+                <span class="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">{{ __('Transaksi Sukses') }}</span>
+                <strong class="block text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">{{ $successEvents ?? 0 }}</strong>
             </div>
-            <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
+            <span class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </span>
         </div>
@@ -110,19 +110,19 @@
     </div>
 
     <!-- Foldable Interactive Query Toolbar -->
-    <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-3.5">
+    <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3.5">
         <!-- Foldable Header with Icon -->
-        <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100" onclick="toggleFilterFold()">
+        <div class="flex items-center justify-between cursor-pointer select-none pb-2 border-b border-slate-100 dark:border-slate-800" onclick="toggleFilterFold()">
             <div class="flex items-center space-x-2.5">
-                <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                <div class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                 </div>
                 <div>
-                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">{{ __('Filter & Dynamic Search') }}</h4>
-                    <p class="text-[11px] text-slate-400">{{ __('Cari log berdasarkan kata kunci deskripsi, modul, aksi, atau IP Address') }}</p>
+                    <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200">{{ __('Filter & Dynamic Search') }}</h4>
+                    <p class="text-[11px] text-slate-400 dark:text-slate-500">{{ __('Cari log berdasarkan kata kunci deskripsi, modul, aksi, atau IP Address') }}</p>
                 </div>
             </div>
-            <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
+            <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition">
                 <span id="filter-fold-icon" class="text-xs font-mono font-bold block transform transition-transform duration-200">▲</span>
             </button>
         </div>
@@ -136,13 +136,13 @@
                         id="logs-search-input" 
                         placeholder="{{ __('Cari deskripsi, user identifier, atau IP address (Tekan \'/\' untuk fokus)...') }}"
                         oninput="filterLogsTable()"
-                        class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
+                        class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
                     >
                     <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <button type="button" onclick="clearLogsSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
+                    <button type="button" onclick="clearLogsSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
                 </div>
                 <div class="hidden md:flex items-center shrink-0">
-                    <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
+                    <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[11px] font-bold font-mono">
                         /
                     </kbd>
                 </div>
@@ -151,7 +151,7 @@
             <!-- Row 2: Module, Action Filters, and Buttons -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 <div class="col-span-1">
-                    <select id="logs-module-filter" onchange="filterLogsTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                    <select id="logs-module-filter" onchange="filterLogsTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 font-bold focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-500 outline-none cursor-pointer">
                         <option value="">{{ __('Semua Modul') }}</option>
                         @foreach($modules as $m)
                             <option value="{{ $m }}">{{ $m }}</option>
@@ -160,7 +160,7 @@
                 </div>
 
                 <div class="col-span-1">
-                    <select id="logs-action-filter" onchange="filterLogsTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-bold focus:bg-white focus:border-indigo-500 outline-none cursor-pointer">
+                    <select id="logs-action-filter" onchange="filterLogsTable()" class="w-full h-11 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 font-bold focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-500 outline-none cursor-pointer">
                         <option value="">{{ __('Semua Aksi') }}</option>
                         @foreach($actions as $a)
                             <option value="{{ $a }}">{{ $a }}</option>
@@ -184,7 +184,7 @@
                     <button 
                         type="button" 
                         onclick="resetLogsFilters()" 
-                        class="w-full h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
+                        class="w-full h-11 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-transparent dark:border-slate-700 text-xs font-bold transition flex items-center justify-center space-x-1 cursor-pointer"
                     >
                         <span>↺</span>
                         <span>{{ __('Reset') }}</span>
@@ -195,11 +195,11 @@
     </div>
 
     <!-- Logs Table Container -->
-    <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs overflow-hidden relative">
+    <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden relative">
         <div class="overflow-x-auto w-full">
             <table class="min-w-[760px] w-full text-left text-xs sm:text-sm" id="logs-datatable">
                 <thead>
-                    <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
+                    <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80 dark:bg-slate-800/80">
                         <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Timestamp') }}</th>
                         <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Tipe Modul') }}</th>
                         <th class="py-3.5 px-4 whitespace-nowrap">{{ __('Aksi') }}</th>
@@ -207,30 +207,30 @@
                         <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('IP Address') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100" id="logs-table-body">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800" id="logs-table-body">
                     @forelse($logs as $log)
-                        <tr class="hover:bg-slate-50/75 transition border-b border-slate-100 logs-row"
+                        <tr class="hover:bg-slate-50/75 dark:hover:bg-slate-800/60 transition border-b border-slate-100 dark:border-slate-800 logs-row"
                             data-module="{{ strtolower($log->module) }}"
                             data-action="{{ strtolower($log->action) }}"
                             data-desc="{{ strtolower($log->description) }}"
                             data-ip="{{ $log->ip_address }}">
-                            <td class="py-3 px-4 font-mono text-slate-500 text-xs whitespace-nowrap">{{ $log->created_at->format('H:i:s d/m/Y') }}</td>
-                            <td class="py-3 px-4 font-bold text-slate-700 whitespace-nowrap">
-                                <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-100 text-slate-700">
+                            <td class="py-3 px-4 font-mono text-slate-500 dark:text-slate-400 text-xs whitespace-nowrap">{{ $log->created_at->format('H:i:s d/m/Y') }}</td>
+                            <td class="py-3 px-4 font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">
+                                <span class="whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                                     {{ $log->module }}
                                 </span>
                             </td>
                             <td class="py-3 px-4 whitespace-nowrap">
-                                <span class="whitespace-nowrap inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider {{ str_contains($log->action, 'FAIL') || str_contains($log->action, 'REJECT') ? 'bg-rose-100 text-rose-800 border border-rose-200' : (str_contains($log->action, 'SUCCESS') ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-700 border border-slate-200') }}">
+                                <span class="whitespace-nowrap inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider {{ str_contains($log->action, 'FAIL') || str_contains($log->action, 'REJECT') ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800' : (str_contains($log->action, 'SUCCESS') ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700') }}">
                                     {{ $log->action }}
                                 </span>
                             </td>
-                            <td class="py-3 px-4 text-slate-800 font-medium">{{ $log->description }}</td>
-                            <td class="py-3 px-4 text-right font-mono text-slate-500 text-xs whitespace-nowrap">{{ $log->ip_address }}</td>
+                            <td class="py-3 px-4 text-slate-800 dark:text-slate-200 font-medium">{{ $log->description }}</td>
+                            <td class="py-3 px-4 text-right font-mono text-slate-500 dark:text-slate-400 text-xs whitespace-nowrap">{{ $log->ip_address }}</td>
                         </tr>
                     @empty
                         <tr id="empty-logs-row">
-                            <td colspan="5" class="py-12 text-center text-slate-400 font-medium">{{ __('Belum ada rekam log aktivitas.') }}</td>
+                            <td colspan="5" class="py-12 text-center text-slate-400 dark:text-slate-500 font-medium">{{ __('Belum ada rekam log aktivitas.') }}</td>
                         </tr>
                     @endforelse
                 </tbody>
