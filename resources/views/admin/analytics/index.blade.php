@@ -26,11 +26,11 @@
                 </p>
             </div>
 
-            <div class="flex items-center gap-2.5 self-start md:self-auto">
-                <a href="{{ route('admin.dashboard') }}" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition flex items-center space-x-1.5 cursor-pointer">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 w-full md:w-auto">
+                <a href="{{ route('admin.dashboard') }}" class="flex-1 sm:flex-none justify-center px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition flex items-center space-x-1.5 cursor-pointer">
                     <span>← Kembali ke Dashboard</span>
                 </a>
-                <button type="button" onclick="window.location.reload()" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs shadow-md transition flex items-center space-x-1.5 cursor-pointer">
+                <button type="button" onclick="window.location.reload()" class="flex-1 sm:flex-none justify-center px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs shadow-md transition flex items-center space-x-1.5 cursor-pointer">
                     <span>↻ Segarkan Data</span>
                 </button>
             </div>
@@ -38,12 +38,12 @@
     </div>
 
     <!-- Filter & PDF Export Bar -->
-    <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <form method="GET" action="{{ route('admin.analytics') }}" class="flex flex-wrap items-center gap-3 flex-1">
+    <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <form method="GET" action="{{ route('admin.analytics') }}" class="flex flex-wrap items-center gap-2.5 sm:gap-3 flex-1 w-full">
             <!-- Filter Dept -->
-            <div class="flex items-center space-x-1.5 text-xs">
+            <div class="flex items-center space-x-1.5 text-xs w-full sm:w-auto justify-between sm:justify-start">
                 <span class="font-bold text-slate-600">Departemen:</span>
-                <select name="dept" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
+                <select name="dept" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
                     <option value="">Semua Departemen</option>
                     @foreach($allDepartments as $deptName)
                         <option value="{{ $deptName }}" {{ $selectedDept === $deptName ? 'selected' : '' }}>{{ $deptName }}</option>
@@ -52,18 +52,18 @@
             </div>
 
             <!-- Filter Date -->
-            <div class="flex items-center space-x-1.5 text-xs">
+            <div class="flex items-center space-x-1.5 text-xs w-full sm:w-auto justify-between sm:justify-start">
                 <span class="font-bold text-slate-600">Tanggal:</span>
-                <select name="date" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
+                <select name="date" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
                     <option value="">Semua Tanggal</option>
                     <option value="today" {{ $selectedDate === 'today' ? 'selected' : '' }}>Hari Ini</option>
                 </select>
             </div>
 
             <!-- Filter Shift -->
-            <div class="flex items-center space-x-1.5 text-xs">
+            <div class="flex items-center space-x-1.5 text-xs w-full sm:w-auto justify-between sm:justify-start">
                 <span class="font-bold text-slate-600">Waktu:</span>
-                <select name="shift" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
+                <select name="shift" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
                     <option value="">Semua Jam (24H)</option>
                     <option value="morning" {{ $selectedShift === 'morning' ? 'selected' : '' }}>Pagi (06:00 - 12:00)</option>
                     <option value="afternoon" {{ $selectedShift === 'afternoon' ? 'selected' : '' }}>Siang (12:00 - 18:00)</option>
@@ -72,19 +72,21 @@
             </div>
 
             <!-- Buttons -->
-            <button type="submit" class="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1 cursor-pointer">
-                <span>🔍 Terapkan Filter</span>
-            </button>
-            @if($selectedDept || $selectedDate || $selectedShift)
-                <a href="{{ route('admin.analytics') }}" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs transition cursor-pointer">
-                    ✕ Reset
-                </a>
-            @endif
+            <div class="flex items-center gap-2 w-full sm:w-auto mt-1 sm:mt-0">
+                <button type="submit" class="flex-1 sm:flex-none justify-center px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1 cursor-pointer">
+                    <span>🔍 Terapkan Filter</span>
+                </button>
+                @if($selectedDept || $selectedDate || $selectedShift)
+                    <a href="{{ route('admin.analytics') }}" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs transition cursor-pointer">
+                        ✕ Reset
+                    </a>
+                @endif
+            </div>
         </form>
 
-        <div class="flex items-center gap-2">
-            <a href="{{ route('admin.analytics.export.pdf', request()->query()) }}" target="_blank" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-md shadow-rose-600/20 transition flex items-center space-x-1.5 cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <div class="flex items-center gap-2 w-full lg:w-auto">
+            <a href="{{ route('admin.analytics.export.pdf', request()->query()) }}" target="_blank" class="w-full lg:w-auto justify-center px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-md shadow-rose-600/20 transition flex items-center space-x-1.5 cursor-pointer">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 <span>Unduh Laporan Telemetri (PDF)</span>
             </a>
         </div>

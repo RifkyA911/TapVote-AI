@@ -58,13 +58,29 @@ export function initRfid3DCard(containerId, options = {}) {
     const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
     cardGroup.add(coreMesh);
 
-    // B. Front Face (Procedural Design matching contoh.png)
+    // B. Front Face (Procedural Design matching image.png / dashboard-ubs-card.png)
     const frontGeometry = new THREE.PlaneGeometry(cardWidth, cardHeight);
     const frontMaterial = new THREE.MeshStandardMaterial({
         map: frontTexture,
         metalness: 0.1,
         roughness: 0.28,
     });
+
+    // Directly load high-res UBS Gold Card image asset (C:\Users\rifky\Downloads\image.png)
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.load(
+        '/images/dashboard-ubs-card.png',
+        (loadedTex) => {
+            loadedTex.colorSpace = THREE.SRGBColorSpace;
+            frontMaterial.map = loadedTex;
+            frontMaterial.needsUpdate = true;
+        },
+        undefined,
+        (err) => {
+            console.warn('Fallback to procedural UBS front texture:', err);
+        }
+    );
+
     const frontMesh = new THREE.Mesh(frontGeometry, frontMaterial);
     frontMesh.position.z = cardThickness / 2 + 0.002;
     cardGroup.add(frontMesh);
@@ -116,7 +132,7 @@ export function initRfid3DCard(containerId, options = {}) {
     claspGroup.add(clampMesh);
     cardGroup.add(claspGroup);
 
-    // G. Shiny Crimson Red Lanyard Ribbon Loop (Double loop matching contoh.png)
+    // G. Shiny Royal Blue Lanyard Ribbon Loop (matching image.png)
     const topY = cardHeight / 2 + 0.58;
     const ribbonCurve = new THREE.CatmullRomCurve3([
         new THREE.Vector3(0, topY, 0),
@@ -128,7 +144,7 @@ export function initRfid3DCard(containerId, options = {}) {
     ]);
     const ribbonGeom = new THREE.TubeGeometry(ribbonCurve, 64, 0.075, 16, false);
     const ribbonMat = new THREE.MeshStandardMaterial({
-        color: 0xb91c1c, // Crimson Red matching the satin ribbon in contoh.png
+        color: 0x2563eb, // Royal Blue matching the lanyard in image.png
         roughness: 0.45,
         metalness: 0.25,
     });
@@ -377,17 +393,17 @@ function createProceduralFrontTexture() {
     ctx.fill();
     ctx.restore();
 
-    // Title Text: "TAPVOTE" in Royal Navy Blue
-    ctx.font = 'italic 900 88px "Plus Jakarta Sans", Impact, sans-serif';
+    // Title Text: "UBS GOLD" in Royal Navy Blue
+    ctx.font = 'italic 900 82px "Plus Jakarta Sans", Impact, sans-serif';
     ctx.fillStyle = '#1e3a8a';
     ctx.textAlign = 'left';
-    ctx.fillText('TAPVOTE', 300, 245);
+    ctx.fillText('UBS GOLD', 300, 245);
 
-    // Subtitle in Red: "MEMBER SMART PASS • 2026"
-    ctx.font = 'bold 26px "Plus Jakarta Sans", sans-serif';
-    ctx.fillStyle = '#b91c1c';
+    // Subtitle in Blue/Slate: "SMART CARD MEMBER • 2026"
+    ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
+    ctx.fillStyle = '#2563eb';
     ctx.letterSpacing = '2px';
-    ctx.fillText('MEMBER SMART PASS • 2026', 302, 288);
+    ctx.fillText('SMART CARD MEMBER • 2026', 302, 288);
 
     // 6. Member Photo (Left side, blue shirt like contoh.png)
     const photoX = 90;
@@ -511,16 +527,16 @@ function createProceduralFrontTexture() {
     ctx.fillStyle = '#09090b'; // Solid rich black
     ctx.fillRect(nameBarX, nameBarY, nameBarW, nameBarH);
 
-    // Name text: "RIFKY" in large, crisp white bold font
+    // Name text: "BUDI" in large, crisp white bold font
     ctx.fillStyle = '#ffffff';
     ctx.font = '900 76px "Plus Jakarta Sans", sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText('RIFKY', nameBarX + 45, nameBarY + 95);
+    ctx.fillText('BUDI', nameBarX + 45, nameBarY + 95);
 
     // Member metadata below name
     ctx.fillStyle = '#94a3b8';
     ctx.font = 'bold 24px "Plus Jakarta Sans", monospace';
-    ctx.fillText('018513 • ICT DIV.', nameBarX + 48, nameBarY + 142);
+    ctx.fillText('018513 • PRODUCTION DIV.', nameBarX + 48, nameBarY + 142);
 
     // 8. Bottom Light Section with Barcode (Exact replicate of contoh.png)
     const barcodeY = 1190;

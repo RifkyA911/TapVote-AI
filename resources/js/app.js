@@ -331,6 +331,44 @@ class SoundFX {
         osc.start(now);
         osc.stop(now + 0.65);
     }
+
+    // 8. 2-Second Smooth Electronic Rising Harmonic Chime & Ambient Swell for Starting Voting
+    startVotingTransition(duration = 2.0) {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        // Elegant rising harmonic tone progression with smooth natural decay tail before 1.88s
+        const notes = [
+            { freq: 196.00, delay: 0.00, dur: 1.80, type: 'triangle', gain: 0.16 }, // G3 (warm pad anchor)
+            { freq: 261.63, delay: 0.12, dur: 1.68, type: 'sine',     gain: 0.20 }, // C4
+            { freq: 329.63, delay: 0.30, dur: 1.50, type: 'triangle', gain: 0.22 }, // E4
+            { freq: 392.00, delay: 0.55, dur: 1.20, type: 'sine',     gain: 0.24 }, // G4
+            { freq: 523.25, delay: 0.85, dur: 0.90, type: 'triangle', gain: 0.25 }, // C5
+            { freq: 659.25, delay: 1.10, dur: 0.65, type: 'sine',     gain: 0.23 }, // E5
+            { freq: 783.99, delay: 1.30, dur: 0.45, type: 'sine',     gain: 0.21 }, // G5
+            { freq: 1046.5, delay: 1.45, dur: 0.38, type: 'triangle', gain: 0.24 }  // C6 (Peak crystal resolve at 1.45s with ringing tail ending at 1.83s)
+        ];
+
+        notes.forEach(n => {
+            const start = now + n.delay;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = n.type;
+            osc.frequency.setValueAtTime(n.freq, start);
+
+            gain.gain.setValueAtTime(0.0001, start);
+            gain.gain.linearRampToValueAtTime(n.gain, start + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + n.dur);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(start);
+            osc.stop(start + n.dur + 0.02);
+        });
+    }
 }
 
 window.SoundEffects = new SoundFX();

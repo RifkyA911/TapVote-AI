@@ -16,9 +16,9 @@
                     Broker Summary Matrix
                 </span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Aliran Suara & Broker Summary</h2>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{{ __('Aliran Suara & Broker Summary') }}</h2>
             <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5 max-w-2xl">
-                Audit visualisasi aliran suara dari setiap departemen ke masing-masing kandidat, konsentrasi blok pemilih, serta rasio dominasi elektoral.
+                {{ __('Audit visualisasi aliran suara dari setiap departemen ke masing-masing kandidat, konsentrasi blok pemilih, serta rasio dominasi elektoral.') }}
             </p>
         </div>
 
@@ -26,17 +26,17 @@
             <!-- Target Toggle (Ketua / Pengawas) -->
             <div class="inline-flex p-1 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold">
                 <a href="{{ route('admin.vote-flow', ['target' => 'ketua']) }}" class="px-3.5 py-1.5 rounded-xl transition {{ $target === 'ketua' ? 'bg-white text-blue-700 shadow-2xs font-black' : 'text-slate-600 hover:text-slate-900' }}">
-                    Ketua
+                    {{ __('Ketua') }}
                 </a>
                 <a href="{{ route('admin.vote-flow', ['target' => 'pengawas']) }}" class="px-3.5 py-1.5 rounded-xl transition {{ $target === 'pengawas' ? 'bg-white text-emerald-700 shadow-2xs font-black' : 'text-slate-600 hover:text-slate-900' }}">
-                    Pengawas
+                    {{ __('Pengawas') }}
                 </a>
             </div>
 
             <!-- Export PDF Button -->
             <a href="{{ route('admin.vote-flow.export.pdf', ['target' => $target]) }}" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-300 shadow-2xs transition flex items-center space-x-1.5 cursor-pointer" title="Download Official Vector PDF Report">
                 <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                <span>Export PDF</span>
+                <span>{{ __('Export PDF') }}</span>
             </a>
         </div>
     </div>
@@ -45,8 +45,8 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-slate-500 font-semibold">Total Suara Terpetakan</span>
-                <strong class="block text-2xl font-black text-slate-900 font-mono">{{ $totalVotes }} Suara</strong>
+                <span class="text-xs text-slate-500 font-semibold">{{ __('Total Suara Terpetakan') }}</span>
+                <strong class="block text-2xl font-black text-slate-900 font-mono">{{ $totalVotes }} {{ __('Suara') }}</strong>
             </div>
             <span class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
@@ -58,11 +58,11 @@
         @endphp
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-emerald-700 font-semibold">Lumbung Suara Terbesar (Top Broker)</span>
+                <span class="text-xs text-emerald-700 font-semibold">{{ __('Lumbung Suara Terbesar (Top Broker)') }}</span>
                 <strong class="block text-xl font-black text-emerald-600 truncate mt-0.5">
                     {{ $topBroker ? $topBroker['dept'] : '-' }}
                 </strong>
-                <span class="text-[11px] text-slate-500 font-mono">{{ $topBroker ? $topBroker['total_votes'] . ' Suara (' . $topBroker['dept_share_pct'] . '%)' : '-' }}</span>
+                <span class="text-[11px] text-slate-500 font-mono">{{ $topBroker ? $topBroker['total_votes'] . ' ' . __('Suara') . ' (' . $topBroker['dept_share_pct'] . '%)' : '-' }}</span>
             </div>
             <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
@@ -74,9 +74,9 @@
         @endphp
         <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex items-center justify-between">
             <div>
-                <span class="text-xs text-indigo-700 font-semibold">Rata-rata Soliditas Departemen</span>
+                <span class="text-xs text-indigo-700 font-semibold">{{ __('Rata-rata Soliditas Departemen') }}</span>
                 <strong class="block text-2xl font-black text-indigo-600 font-mono">{{ $avgLoyalty }}%</strong>
-                <span class="text-[11px] text-slate-500 font-medium">Tingkat konsolidasi satu calon per divisi</span>
+                <span class="text-[11px] text-slate-500 font-medium">{{ __('Tingkat konsolidasi satu calon per divisi') }}</span>
             </div>
             <span class="p-2.5 rounded-xl bg-indigo-50 text-indigo-600">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
@@ -97,12 +97,12 @@
                     </div>
                     <div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <h3 class="text-lg sm:text-xl font-black text-white tracking-tight">AI Vision Flow Intelligence</h3>
+                            <h3 class="text-lg sm:text-xl font-black text-white tracking-tight">{{ __('AI Vision Flow Intelligence') }}</h3>
                             <span id="flow-ai-engine-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
                                 Google Gemini 2.0 Flash / Heuristic
                             </span>
                         </div>
-                        <p class="text-xs text-indigo-200/70 mt-0.5">Penalaran AI mengenai pola lumbung suara, blok pemilih solid, dan kingmaker elektoral</p>
+                        <p class="text-xs text-indigo-200/70 mt-0.5">{{ __('Penalaran AI mengenai pola lumbung suara, blok pemilih solid, dan kingmaker elektoral') }}</p>
                     </div>
                 </div>
 
@@ -114,7 +114,7 @@
                         class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs sm:text-sm font-extrabold shadow-lg shadow-indigo-900/30 transition cursor-pointer flex items-center space-x-2"
                     >
                         <span id="flow-ai-btn-icon">⚡</span>
-                        <span id="flow-ai-btn-text">Jalankan Analisis AI Vision</span>
+                        <span id="flow-ai-btn-text">{{ __('Jalankan Analisis AI Vision') }}</span>
                     </button>
                 </div>
             </div>
@@ -123,9 +123,9 @@
             <div id="flow-ai-container" class="space-y-4">
                 <div class="p-5 rounded-2xl bg-indigo-950/60 border border-indigo-800/40 text-center py-8">
                     <span class="text-3xl block mb-2">🌊</span>
-                    <h4 class="text-sm font-black text-white">AI Vision Flow Intelligence Siap Digunakan</h4>
+                    <h4 class="text-sm font-black text-white">{{ __('AI Vision Flow Intelligence Siap Digunakan') }}</h4>
                     <p class="text-xs text-indigo-200/70 max-w-md mx-auto mt-1">
-                        Klik tombol di atas untuk menganalisis pemetaan aliansi departemen, lumbung suara penentu, dan tingkat soliditas pemilih secara otomatis.
+                        {{ __('Klik tombol di atas untuk menganalisis pemetaan aliansi departemen, lumbung suara penentu, dan tingkat soliditas pemilih secara otomatis.') }}
                     </p>
                 </div>
             </div>
@@ -138,12 +138,12 @@
             <div>
                 <h3 class="text-base font-extrabold text-slate-900 flex items-center space-x-2">
                     <span>🔀</span>
-                    <span>Diagram Aliran Interaktif (Sankey Flow Chart)</span>
+                    <span>{{ __('Diagram Aliran Interaktif (Sankey Flow Chart)') }}</span>
                 </h3>
-                <p class="text-xs text-slate-500">Arahkan kursor (*hover*) pada garis untuk melihat jumlah suara dari departemen ke kandidat.</p>
+                <p class="text-xs text-slate-500">{{ __('Arahkan kursor (*hover*) pada garis untuk melihat jumlah suara dari departemen ke kandidat.') }}</p>
             </div>
             <div class="inline-flex items-center space-x-2 text-xs font-mono font-bold text-slate-500">
-                <span>Departemen ➔ Calon {{ ucfirst($target) }}</span>
+                <span>{{ __('Departemen') }} ➔ {{ ucfirst($target) }}</span>
             </div>
         </div>
 
@@ -152,7 +152,7 @@
         @else
             <div class="py-16 text-center text-slate-400 font-medium">
                 <span class="text-3xl block mb-2">📭</span>
-                Belum ada transaksi pemungutan suara yang tercatat untuk dipetakan ke dalam diagram alir.
+                {{ __('Belum ada transaksi pemungutan suara yang tercatat untuk dipetakan ke dalam diagram alir.') }}
             </div>
         @endif
     </div>
@@ -167,8 +167,8 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                     </div>
                     <div>
-                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">Filter & Broker Summary Search</h4>
-                        <p class="text-[11px] text-slate-400">Cari peringkat lumbung suara berdasarkan nama departemen</p>
+                        <h4 class="text-xs font-black uppercase tracking-wider text-slate-800">{{ __('Filter & Broker Summary Search') }}</h4>
+                        <p class="text-[11px] text-slate-400">{{ __('Cari peringkat lumbung suara berdasarkan nama departemen') }}</p>
                     </div>
                 </div>
                 <button type="button" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition">
@@ -182,7 +182,7 @@
                         <input 
                             type="text" 
                             id="broker-search-input" 
-                            placeholder="Cari nama departemen (Tekan '/' untuk fokus)..."
+                            placeholder="{{ __('Cari nama departemen (Tekan \'/\' untuk fokus)...') }}"
                             oninput="filterBrokerTable()"
                             class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
                         >
@@ -205,11 +205,11 @@
                     <thead>
                         <tr class="border-b border-slate-200 text-slate-500 font-extrabold uppercase text-[11px] tracking-wider select-none bg-slate-50/80">
                             <th class="py-3.5 px-4 text-center">Rank</th>
-                            <th class="py-3.5 px-4">Departemen (Broker)</th>
-                            <th class="py-3.5 px-4 text-right">Volume Suara</th>
-                            <th class="py-3.5 px-4 text-right">Porsi (%)</th>
-                            <th class="py-3.5 px-4">Kandidat Terunggul di Divisi</th>
-                            <th class="py-3.5 px-4 text-right">Soliditas (%)</th>
+                            <th class="py-3.5 px-4">{{ __('Departemen (Broker)') }}</th>
+                            <th class="py-3.5 px-4 text-right">{{ __('Volume Suara') }}</th>
+                            <th class="py-3.5 px-4 text-right">{{ __('Porsi (%)') }}</th>
+                            <th class="py-3.5 px-4">{{ __('Kandidat Terunggul di Divisi') }}</th>
+                            <th class="py-3.5 px-4 text-right">{{ __('Soliditas (%)') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100" id="broker-table-body">
@@ -225,7 +225,7 @@
                                     <strong class="text-slate-900 block font-black text-sm">{{ $b['dept'] }}</strong>
                                 </td>
                                 <td class="py-3.5 px-4 text-right font-mono font-black text-slate-900">
-                                    {{ $b['total_votes'] }} Suara
+                                    {{ $b['total_votes'] }} {{ __('Suara') }}
                                 </td>
                                 <td class="py-3.5 px-4 text-right">
                                     <span class="font-mono font-bold text-slate-700">{{ $b['dept_share_pct'] }}%</span>
@@ -235,7 +235,7 @@
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-xl bg-indigo-50 text-indigo-800 text-xs font-bold border border-indigo-200">
-                                        {{ $b['top_candidate'] }} ({{ $b['top_candidate_votes'] }} suara)
+                                        {{ $b['top_candidate'] }} ({{ $b['top_candidate_votes'] }} {{ __('Suara') }})
                                     </span>
                                 </td>
                                 <td class="py-3.5 px-4 text-right">
@@ -246,7 +246,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="py-12 text-center text-slate-400 font-medium">Belum ada data aliran suara.</td>
+                                <td colspan="6" class="py-12 text-center text-slate-400 font-medium">{{ __('Belum ada data aliran suara.') }}</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -261,9 +261,9 @@
             <div>
                 <h3 class="text-base font-extrabold text-slate-900 flex items-center space-x-2">
                     <span>📊</span>
-                    <span>Matriks Detail Aliran Suara (Department-to-Candidate Grid)</span>
+                    <span>{{ __('Matriks Detail Aliran Suara (Department-to-Candidate Grid)') }}</span>
                 </h3>
-                <p class="text-xs text-slate-500">Tabel tabulasi silang memperlihatkan rincian perolehan suara setiap calon di masing-masing departemen.</p>
+                <p class="text-xs text-slate-500">{{ __('Tabel tabulasi silang memperlihatkan rincian perolehan suara setiap calon di masing-masing departemen.') }}</p>
             </div>
         </div>
 
@@ -271,14 +271,14 @@
             <table class="w-full text-left text-xs sm:text-sm border-collapse">
                 <thead>
                     <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-600 uppercase text-[11px] font-extrabold tracking-wider">
-                        <th class="py-3 px-4">Departemen</th>
+                        <th class="py-3 px-4">{{ __('Departemen') }}</th>
                         @foreach($candidates as $c)
                             <th class="py-3 px-4 text-center">
-                                <span class="block">No. {{ $c->nomor_urut }}</span>
+                                <span class="block">{{ __('Candidate No.') }} {{ $c->nomor_urut }}</span>
                                 <span class="text-[10px] text-slate-400 font-normal lowercase truncate block max-w-[120px]">{{ $c->nama }}</span>
                             </th>
                         @endforeach
-                        <th class="py-3 px-4 text-right">Total Dept</th>
+                        <th class="py-3 px-4 text-right">{{ __('Total Dept') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 font-medium">
@@ -304,7 +304,7 @@
                         </tr>
                     @endforeach
                     <tr class="bg-slate-100 font-black border-t-2 border-slate-300">
-                        <td class="py-3.5 px-4 uppercase text-slate-800">Total Suara Calon</td>
+                        <td class="py-3.5 px-4 uppercase text-slate-800">{{ __('Total Suara Calon') }}</td>
                         @foreach($candidates as $c)
                             <td class="py-3.5 px-4 text-center font-mono text-blue-700">
                                 {{ $candidateTotals[$c->nik] ?? 0 }}

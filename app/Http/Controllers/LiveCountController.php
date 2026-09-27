@@ -26,13 +26,20 @@ class LiveCountController extends Controller
      */
     public function stream(): StreamedResponse
     {
+        // Prevent session locking on concurrent requests (eliminates 502 Bad Gateway)
+        if (session()->isStarted()) {
+            session()->save();
+        }
+        if (function_exists('session_write_close')) {
+            session_write_close();
+        }
+
         return response()->stream(function () {
-            // Memberikan instruksi reconnect instan 1000ms ke browser
-            echo "retry: 1000\n\n";
+            echo "retry: 2000\n\n";
 
             $start = time();
-            // Streaming loop aktif selama 25 detik per koneksi dengan interval 1 detik
-            while (time() - $start < 25) {
+            // Streaming loop aktif selama 20 detik per koneksi dengan interval 2 detik
+            while (time() - $start < 20) {
                 if (connection_aborted()) {
                     break;
                 }
@@ -40,12 +47,12 @@ class LiveCountController extends Controller
                 $payload = $this->getMetricsData();
                 echo "data: " . json_encode($payload) . "\n\n";
 
-                if (ob_get_level() > 0) {
-                    ob_flush();
+                while (ob_get_level() > 0) {
+                    ob_end_flush();
                 }
                 flush();
 
-                sleep(1);
+                sleep(2);
             }
         }, 200, [
             'Content-Type' => 'text/event-stream',

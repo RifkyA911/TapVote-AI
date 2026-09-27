@@ -34,6 +34,12 @@
         .voting-hero-card:hover {
             box-shadow: 0 22px 48px -6px rgba(124, 58, 237, 0.5), 0 0 36px 4px rgba(6, 182, 212, 0.35);
         }
+
+        .scroll-sundul-init {
+            opacity: 0;
+            transform: translateY(60px) scale(0.96);
+            will-change: transform, opacity;
+        }
     </style>
 @endpush
 
@@ -42,37 +48,31 @@
     <!-- 1. FULLSCREEN INITIAL FLUID WELCOMING LOADING OVERLAY (2s) -->
     <!-- ======================================================== -->
     <div id="welcome-loading-overlay"
-        class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 text-white overflow-hidden transition-all duration-700">
-        <!-- Ambient Animated Glow Spheres -->
-        <div class="absolute -top-32 -left-32 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl"></div>
+        class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white text-slate-900 overflow-hidden transition-all duration-700">
+        <!-- Subtle Ambient Light Glows -->
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-purple-100/50 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-cyan-100/50 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-50/60 rounded-full blur-3xl pointer-events-none"></div>
 
         <!-- Central Loading Container -->
         <div class="relative z-10 flex flex-col items-center text-center px-6 max-w-md">
-            <!-- Pulsing Gradient Spinner Ring -->
-            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-tr from-purple-600 via-blue-600 to-cyan-400 p-1 shadow-2xl shadow-cyan-500/30 mb-6 flex items-center justify-center animate-spin" style="animation-duration: 5s;">
-                <div class="w-full h-full bg-slate-950 rounded-[20px] flex items-center justify-center">
-                    <svg class="w-9 h-9 sm:w-11 sm:h-11 text-cyan-300 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
-                        <rect x="3" y="5" width="18" height="14" rx="3" stroke-width="2.2" />
-                        <path stroke-linecap="round" d="M7 15h3M7 11h2" stroke-width="2" />
-                        <path stroke-linecap="round" d="M16 9a3 3 0 0 1 0 6m2.5-8a6 6 0 0 1 0 10" stroke-width="2.2" />
-                    </svg>
-                </div>
+            <!-- 3D Card Loading Container (Exact Three.js Card replica with smooth rotation) -->
+            <div class="w-36 h-[200px] sm:w-44 sm:h-[240px] rounded-3xl bg-slate-50/90 border-2 border-slate-200/90 shadow-2xl flex items-center justify-center relative mb-5 overflow-hidden">
+                <div id="overlay-card-3d-canvas" class="w-full h-full flex items-center justify-center pointer-events-none"></div>
             </div>
 
-            <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white mb-1.5 drop-shadow-sm">
-                TapVote <span class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">AI</span>
+            <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 mb-1 drop-shadow-xs">
+                TapVote <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">AI</span>
             </h2>
-            <p class="text-xs sm:text-sm font-bold text-slate-400 mb-6 uppercase tracking-wider">
+            <p class="text-xs sm:text-sm font-bold text-slate-500 mb-5 uppercase tracking-wider">
                 {{ __('Authenticating Electoral Live Stream...') }}
             </p>
 
             <!-- Fluid 2-Second Progress Bar -->
-            <div class="w-64 sm:w-80 bg-slate-900/90 rounded-full h-2.5 overflow-hidden border border-slate-700/80 p-0.5 shadow-inner">
+            <div class="w-64 sm:w-80 bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200 p-0.5 shadow-inner">
                 <div id="welcome-loading-bar" class="h-full bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 rounded-full w-0 transition-all duration-[2000ms] ease-out"></div>
             </div>
-            <span id="welcome-loading-status" class="text-[11px] font-mono text-cyan-300/90 mt-2.5 font-black tracking-widest uppercase">System Initialization • 100%</span>
+            <span id="welcome-loading-status" class="text-[11px] font-mono text-slate-500 mt-2.5 font-bold tracking-widest uppercase">System Initialization • 100%</span>
         </div>
     </div>
 
@@ -80,37 +80,56 @@
 
         <!-- Top Navigation & Live Header (Row 1 Header Text at Top, Row 2 Controls & Large Language Switcher) -->
         <header id="main-header" class="pb-6 mb-6 border-b border-slate-200 space-y-4">
-            <!-- Row 1: Header Text (Brand Logo + Title + Subtitle + Live SSE Badge at Top Full Width) -->
-            <div class="flex items-center space-x-3.5 min-w-0">
-                <div
-                    class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-xs shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                        </path>
-                    </svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="flex items-center space-x-2.5 flex-wrap gap-y-1">
-                        <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-                            {{ __('Live Count Cooperative Election') }}</h1>
-                        <span id="sse-status-badge"
-                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 shrink-0">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1.5"></span>
-                            <span id="sse-status-text">Live SSE</span>
-                        </span>
+            <!-- Row 1: Header Text (Brand Logo + Title + Subtitle + Live SSE Badge + Voting Deadline Badge on Right) -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 min-w-0">
+                <div class="flex items-center space-x-3.5 min-w-0">
+                    <div
+                        class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-xs shrink-0">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
                     </div>
-                    <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                        {{ __('Last Updated') }} • <span id="last-updated-text"
-                            class="font-bold text-slate-800">{{ $metrics['last_updated'] ?? (now()->timezone('Asia/Jakarta')->format('H:i:s') . ' WIB') }}</span>
-                    </p>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center space-x-2.5 flex-wrap gap-y-1">
+                            <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
+                                {{ \App\Models\AppSetting::get('election_title', __('Live Count Cooperative Election')) }}</h1>
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 shrink-0">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1.5"></span>
+                                <span>Live SSE</span>
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                            {{ __('Last Updated') }} • <span id="last-updated-text"
+                                class="font-bold text-slate-800">{{ $metrics['last_updated'] ?? (now()->timezone('Asia/Jakarta')->format('H:i:s') . ' WIB') }}</span>
+                        </p>
+                    </div>
                 </div>
+
+                <!-- Right: Deadline Waktu Badge dengan aksen merah (Satu row dengan judul, di atas EN/ID) -->
+                @if(!empty($metrics['voting_deadline']))
+                <div id="header-deadline-badge" class="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-2 rounded-2xl bg-rose-50 border-2 border-rose-300 text-rose-900 shadow-2xs self-start md:self-auto shrink-0">
+                    <span class="relative flex h-2.5 w-2.5 shrink-0">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-600"></span>
+                    </span>
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <span class="text-[11px] sm:text-xs font-black uppercase tracking-wider text-rose-800">{{ __('Batas Waktu') }}:</span>
+                        <span id="header-deadline-timer" class="font-mono font-black text-rose-700 text-xs sm:text-sm tracking-wide">--:--:--</span>
+                        @if(!empty($metrics['deadline_formatted']))
+                            <span class="text-[11px] text-rose-600/90 font-bold hidden xl:inline">({{ $metrics['deadline_formatted'] }})</span>
+                        @endif
+                    </div>
+                </div>
+                @endif
             </div>
 
             <!-- Row 2: Action Controls Row (Expand/Collapse on Left, Large EN/ID Language Switcher on Right) -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-                <!-- Left: Section Expand/Collapse Controls -->
-                <div class="flex items-center space-x-2.5">
+                <!-- Left: Section Expand/Collapse Controls & Guide Button & Admin Button if IP is 192.168.1.5 -->
+                <div class="flex items-center space-x-2.5 flex-wrap gap-y-2">
                     <button type="button" onclick="expandAllSections()"
                         class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-200 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-2 cursor-pointer">
                         <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,6 +144,23 @@
                         </svg>
                         <span>{{ __('Collapse All') }}</span>
                     </button>
+                    <button type="button" onclick="scrollToGuideSection(event)"
+                        class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-900 border-2 border-amber-300 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-2 cursor-pointer">
+                        <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        <span>{{ __('Voting Guide') }}</span>
+                    </button>
+
+                    @if(in_array(request()->ip(), ['192.168.1.5', '127.0.0.1', '::1']) || request()->server('REMOTE_ADDR') === '192.168.1.5')
+                        <a href="{{ route('admin.login') }}"
+                            class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white border-2 border-slate-700 text-xs sm:text-sm font-black shadow-2xs transition flex items-center space-x-2 cursor-pointer">
+                            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                            </svg>
+                            <span>{{ __('Admin Panel') }}</span>
+                        </a>
+                    @endif
                 </div>
 
                 <!-- Right: Large EN / ID Language Switcher Buttons (Boomer-Readable) -->
@@ -148,7 +184,7 @@
         <!-- Fluid 3D Three.js Asset + Purple/Blue/Cyan Blend Card    -->
         <!-- ======================================================== -->
         <a href="{{ route('voter.tap') }}" id="voting-hero-card" onclick="handleVotingHeroClick(event)"
-            class="voting-hero-card group w-full p-5 sm:p-6 lg:p-7 rounded-3xl text-white shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-between gap-4 cursor-pointer mb-8 border-2 border-white/25 hover:border-white/40 hover:scale-[1.008] active:scale-[0.995] relative overflow-hidden">
+            class="voting-hero-card group w-full py-3 px-5 sm:py-4 sm:px-6 lg:py-5 lg:px-7 rounded-3xl text-white shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-between gap-4 cursor-pointer mb-8 border-2 border-white/25 hover:border-white/40 hover:scale-[1.008] active:scale-[0.995] relative overflow-hidden">
             
             <!-- Soft Ambient Glow Orbs -->
             <div class="absolute -right-20 -top-20 w-72 h-72 bg-cyan-400/25 rounded-full blur-3xl pointer-events-none"></div>
@@ -176,10 +212,10 @@
                 </div>
             </div>
 
-            <!-- Right: Interactive 3D Rectangular ID Card Pass (Three.js WebGL) -->
+            <!-- Right: Interactive 3D Rectangular ID Card Pass (Three.js WebGL, 610x988 aspect ratio, enlarged transparent space) -->
             <div class="shrink-0 flex items-center relative z-10 pl-2">
                 <div id="hero-card-3d-wrapper"
-                    class="w-24 h-32 sm:w-28 sm:h-36 md:w-32 md:h-40 rounded-2xl sm:rounded-3xl bg-white/10 backdrop-blur-md border border-white/25 shadow-inner flex items-center justify-center relative overflow-hidden group-hover:border-cyan-300/60 group-hover:scale-105 group-hover:shadow-cyan-500/30 group-hover:shadow-lg transition-all duration-300">
+                    class="w-32 h-[185px] sm:w-40 sm:h-[225px] md:w-48 md:h-[265px] rounded-3xl bg-white/10 backdrop-blur-md border border-white/25 shadow-inner flex items-center justify-center relative group-hover:border-cyan-300/60 group-hover:scale-105 group-hover:shadow-cyan-500/30 group-hover:shadow-lg transition-all duration-300">
                     <!-- Three.js Canvas mounts here -->
                     <div id="hero-card-3d-canvas" class="w-full h-full flex items-center justify-center pointer-events-none"></div>
                 </div>
@@ -411,7 +447,7 @@
         <!-- ======================================================== -->
         <!-- SECTION 2: ADVANCED COMPARATIVE BAR CHART (FOLDABLE)     -->
         <!-- ======================================================== -->
-        <div id="sec-chart" class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
+        <div id="sec-chart" class="scroll-sundul-init p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
             <!-- Section Foldable Header (Row 1 Full Width Title, Row 2 Filter Tabs) -->
             <div class="pb-5 border-b border-slate-100 space-y-4">
                 <!-- Row 1: Full-Width Title & Fold Trigger (No Truncation) -->
@@ -470,11 +506,11 @@
         <!-- ======================================================== -->
         <!-- SECTION 3: PROCEDURAL VOTING GUIDE (3 QUICK FULL-WIDTH ROWS) -->
         <!-- ======================================================== -->
-        <div id="sec-guide" class="p-5 sm:p-7 rounded-3xl bg-slate-50 border border-slate-200 mb-8 transition-all">
-            <!-- Section Foldable Header (Minimalist Dot Color) -->
-            <div class="flex items-center justify-between gap-3 pb-4 border-b border-slate-200 cursor-pointer select-none group"
-                onclick="toggleSection('sec-guide')">
-                <div class="flex items-center space-x-3 min-w-0">
+        <div id="sec-guide" class="scroll-sundul-init p-5 sm:p-7 rounded-3xl bg-slate-50 border border-slate-200 mb-8 transition-all">
+            <!-- Section Foldable Header (Minimalist Dot Color + Text to Voice TTS) -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
+                <div class="flex items-center space-x-3 min-w-0 cursor-pointer select-none group"
+                    onclick="toggleSection('sec-guide')">
                     <span class="w-3.5 h-3.5 rounded-full bg-amber-500 ring-4 ring-amber-100 shrink-0"></span>
                     <div class="min-w-0">
                         <h2
@@ -486,17 +522,29 @@
                         </p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-2 shrink-0">
-                    <span id="sec-guide-state"
-                        class="text-xs sm:text-sm font-bold text-slate-500 group-hover:text-slate-800 transition hidden sm:inline-block">
-                        {{ __('Fold Section') }}
-                    </span>
-                    <div
-                        class="w-8 h-8 rounded-lg bg-white group-hover:bg-slate-200 text-slate-600 border border-slate-200 flex items-center justify-center transition">
-                        <svg id="sec-guide-chevron" class="w-4 h-4 transition-transform duration-300" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                <div class="flex items-center space-x-2.5 shrink-0 justify-between sm:justify-end">
+                    <!-- Text to Voice Button for Voting Guide -->
+                    <button type="button" id="btn-guide-tts" onclick="toggleVotingGuideTTS(event)"
+                        class="inline-flex items-center justify-center space-x-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-black text-xs sm:text-sm border-2 border-amber-300 shadow-xs transition cursor-pointer">
+                        <svg id="guide-tts-icon" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
                         </svg>
+                        <span id="guide-tts-label">{{ __('Listen to Guide (TTS)') }}</span>
+                    </button>
+
+                    <!-- Fold Trigger -->
+                    <div class="flex items-center space-x-2 cursor-pointer select-none" onclick="toggleSection('sec-guide')">
+                        <span id="sec-guide-state"
+                            class="text-xs sm:text-sm font-bold text-slate-500 hover:text-slate-800 transition hidden sm:inline-block">
+                            {{ __('Fold Section') }}
+                        </span>
+                        <div
+                            class="w-8 h-8 rounded-lg bg-white hover:bg-slate-200 text-slate-600 border border-slate-200 flex items-center justify-center transition">
+                            <svg id="sec-guide-chevron" class="w-4 h-4 transition-transform duration-300" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -565,7 +613,7 @@
         <!-- SECTION 4: KANDIDAT KETUA KOPERASI SHOWCASE (FOLDABLE)   -->
         <!-- ======================================================== -->
         <section id="sec-ketua"
-            class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
+            class="scroll-sundul-init p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
             <!-- Section Foldable Header (Minimalist Dot Color) -->
             <div class="flex items-center justify-between gap-3 pb-4 border-b border-slate-200 cursor-pointer select-none group"
                 onclick="toggleSection('sec-ketua')">
@@ -690,7 +738,7 @@
         <!-- SECTION 5: KANDIDAT PENGAWAS KOPERASI SHOWCASE (FOLDABLE) -->
         <!-- ======================================================== -->
         <section id="sec-pengawas"
-            class="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
+            class="scroll-sundul-init p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xs mb-8 transition-all">
             <!-- Section Foldable Header (Minimalist Dot Color) -->
             <div class="flex items-center justify-between gap-3 pb-4 border-b border-slate-200 cursor-pointer select-none group"
                 onclick="toggleSection('sec-pengawas')">
@@ -1386,7 +1434,9 @@
                 const secsEl = document.getElementById('deadline-secs');
                 const pillEl = document.getElementById('deadline-status-pill');
 
+                const headerTimerEl = document.getElementById('header-deadline-timer');
                 if (diff <= 0) {
+                    if (headerTimerEl) headerTimerEl.innerText = '{{ __('Berakhir') }}';
                     if (daysEl) daysEl.innerText = '00d';
                     if (hoursEl) hoursEl.innerText = '00h';
                     if (minsEl) minsEl.innerText = '00m';
@@ -1403,6 +1453,9 @@
                 const mins = Math.floor((diff % 3600) / 60);
                 const secs = diff % 60;
 
+                if (headerTimerEl) {
+                    headerTimerEl.innerText = (days > 0 ? days + 'd ' : '') + String(hours).padStart(2, '0') + ':' + String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+                }
                 if (daysEl) daysEl.innerText = String(days).padStart(2, '0') + 'd';
                 if (hoursEl) hoursEl.innerText = String(hours).padStart(2, '0') + 'h';
                 if (minsEl) minsEl.innerText = String(mins).padStart(2, '0') + 'm';
@@ -1602,6 +1655,16 @@
                 }
             }
 
+            // Overlay Loading 3D Rotating ID Card (Three.js WebGL)
+            let overlayCard3DInstance = null;
+            function startOverlay3DCard() {
+                if (typeof window.initHero3DCard === 'function') {
+                    overlayCard3DInstance = window.initHero3DCard('overlay-card-3d-canvas', { autoRotate: true, rotationSpeed: 1.8 });
+                } else {
+                    setTimeout(startOverlay3DCard, 50);
+                }
+            }
+
             // Hero Interactive 3D Rectangular ID Card Pass (Three.js WebGL)
             let heroCard3DInstance = null;
             function startHero3DCard() {
@@ -1617,9 +1680,13 @@
                 const overlay = document.getElementById('welcome-loading-overlay');
                 const bar = document.getElementById('welcome-loading-bar');
                 if (!overlay || !bar) {
+                    startHero3DCard();
                     triggerEntranceSundul();
                     return;
                 }
+
+                // Mount 3D spinning ID card in the white loading overlay
+                startOverlay3DCard();
 
                 // Trigger smooth 2-second progress bar fill
                 requestAnimationFrame(() => {
@@ -1639,6 +1706,11 @@
                             ease: 'power4.inOut',
                             onComplete: () => {
                                 overlay.style.display = 'none';
+                                if (overlayCard3DInstance && typeof overlayCard3DInstance.destroy === 'function') {
+                                    overlayCard3DInstance.destroy();
+                                    overlayCard3DInstance = null;
+                                }
+                                startHero3DCard();
                                 triggerEntranceSundul();
                             }
                         });
@@ -1647,6 +1719,11 @@
                         overlay.style.transform = 'translateY(-100%)';
                         setTimeout(() => {
                             overlay.style.display = 'none';
+                            if (overlayCard3DInstance && typeof overlayCard3DInstance.destroy === 'function') {
+                                overlayCard3DInstance.destroy();
+                                overlayCard3DInstance = null;
+                            }
+                            startHero3DCard();
                             triggerEntranceSundul();
                         }, 800);
                     }
@@ -1681,29 +1758,137 @@
                 setupScrollSundul();
             }
 
-            // 3. Anchor Section Hit & Scroll "Sundul" Animations (For all actual sections)
+            // 3. Anchor Section Hit & Scroll "Sundul" Animations (Initially hidden, springs up on scroll)
             function setupScrollSundul() {
-                if (!('IntersectionObserver' in window)) return;
+                const sections = document.querySelectorAll('#sec-chart, #sec-guide, #sec-ketua, #sec-pengawas');
+                if (!('IntersectionObserver' in window)) {
+                    sections.forEach(sec => sec.classList.remove('scroll-sundul-init'));
+                    return;
+                }
 
-                const sections = document.querySelectorAll('#sec-overview, #sec-chart, #sec-guide, #sec-ketua, #sec-pengawas');
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting && !entry.target.dataset.sundulAnimated) {
                             entry.target.dataset.sundulAnimated = 'true';
+                            entry.target.classList.remove('scroll-sundul-init');
                             if (window.gsap) {
                                 window.gsap.fromTo(entry.target, 
-                                    { y: 48, scale: 0.98, opacity: 0.35 }, 
-                                    { y: 0, scale: 1.0, opacity: 1, duration: 0.7, ease: 'back.out(1.7)', clearProps: 'transform,opacity' }
+                                    { y: 65, scale: 0.95, opacity: 0 }, 
+                                    { y: 0, scale: 1.0, opacity: 1, duration: 0.75, ease: 'back.out(1.6)', clearProps: 'transform,opacity' }
                                 );
                             }
+                            observer.unobserve(entry.target);
                         }
                     });
-                }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+                }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
 
                 sections.forEach(sec => observer.observe(sec));
+
+                // Safe fallback after 4s to ensure accessibility
+                setTimeout(() => {
+                    sections.forEach(sec => sec.classList.remove('scroll-sundul-init'));
+                }, 4000);
             }
 
-            // 4. Card Swipe-Out on Click (No Overlay, Snappy & Satisfying)
+            window.scrollToGuideSection = function(e) {
+                if (e) e.preventDefault();
+                const guideSec = document.getElementById('sec-guide');
+                if (!guideSec) return;
+
+                // Expand guide section if it was folded
+                const content = document.getElementById('sec-guide-content');
+                if (content && content.classList.contains('hidden')) {
+                    toggleSection('sec-guide');
+                }
+
+                // Immediately clear init hidden state
+                guideSec.classList.remove('scroll-sundul-init');
+                guideSec.dataset.sundulAnimated = 'true';
+
+                // Smooth scroll to guide
+                guideSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                // Highlight sundul bounce effect
+                if (window.gsap) {
+                    window.gsap.fromTo(guideSec,
+                        { scale: 0.96 },
+                        { scale: 1.0, duration: 0.6, ease: 'back.out(2)', clearProps: 'transform' }
+                    );
+                }
+            };
+
+            // 4. Voting Guide Text-to-Speech (TTS) Engine
+            let isGuideSpeaking = false;
+            window.toggleVotingGuideTTS = function(e) {
+                if (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+                if (window.SoundEffects) window.SoundEffects.click();
+
+                if (!('speechSynthesis' in window)) {
+                    alert('Text-to-Speech tidak didukung pada browser ini.');
+                    return;
+                }
+
+                if (isGuideSpeaking) {
+                    window.speechSynthesis.cancel();
+                    isGuideSpeaking = false;
+                    updateGuideTTSUI(false);
+                    return;
+                }
+
+                const lang = '{{ app()->getLocale() }}';
+                let guideText = '';
+                if (lang === 'id') {
+                    guideText = "Petunjuk Cara Memilih di Bilik Suara. Langkah 1: Tempelkan kartu identitas anggota Koperasi ke alat pembaca scanner untuk membuka surat suara digital. Langkah 2: Sentuh foto kandidat pada layar untuk memilih 1 Calon Ketua dan 1 Calon Pengawas pilihan Anda. Anda dapat menyentuh tombol lihat profil untuk membaca visi misi. Langkah 3: Tinjau kembali pilihan Anda pada layar konfirmasi, lalu sentuh Kirim Suara untuk menyimpan suara secara aman. Terima kasih.";
+                } else {
+                    guideText = "Voting Guide. Step 1: Tap your registered cooperative RFID card on the reader to authenticate your identity. Step 2: Touch candidate photos to choose 1 Chairman and 1 Supervisory Board candidate. Step 3: Review your selections and tap Submit Vote to securely record your ballot. Thank you.";
+                }
+
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(guideText);
+                utterance.lang = lang === 'id' ? 'id-ID' : 'en-US';
+                utterance.rate = 0.92;
+                utterance.pitch = 1.0;
+
+                const voices = window.speechSynthesis.getVoices();
+                const matchedVoice = voices.find(v => lang === 'id' ? (v.lang.startsWith('id') || v.lang.includes('ID')) : (v.lang.startsWith('en') || v.lang.includes('US')));
+                if (matchedVoice) utterance.voice = matchedVoice;
+
+                utterance.onstart = function() {
+                    isGuideSpeaking = true;
+                    updateGuideTTSUI(true);
+                };
+
+                utterance.onend = function() {
+                    isGuideSpeaking = false;
+                    updateGuideTTSUI(false);
+                };
+
+                utterance.onerror = function() {
+                    isGuideSpeaking = false;
+                    updateGuideTTSUI(false);
+                };
+
+                window.speechSynthesis.speak(utterance);
+            };
+
+            function updateGuideTTSUI(speaking) {
+                const btn = document.getElementById('btn-guide-tts');
+                const label = document.getElementById('guide-tts-label');
+                if (!btn || !label) return;
+
+                if (speaking) {
+                    btn.className = 'inline-flex items-center justify-center space-x-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-black text-xs sm:text-sm border-2 border-amber-600 shadow-md transition cursor-pointer animate-pulse';
+                    label.innerText = '{{ __("Stop Voice") }} ⏹';
+                } else {
+                    btn.className = 'inline-flex items-center justify-center space-x-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-black text-xs sm:text-sm border-2 border-amber-300 shadow-xs transition cursor-pointer';
+                    label.innerText = '{{ __("Listen to Guide (TTS)") }}';
+                }
+            }
+
+            // 5. Card Swipe-Out on Click with 2-Second Delay & Synced Audio Transition (Never Clipped)
             let isNavigatingToBooth = false;
             window.handleVotingHeroClick = function(e) {
                 e.preventDefault();
@@ -1712,34 +1897,37 @@
 
                 const targetUrl = document.getElementById('voting-hero-card').getAttribute('href');
 
-                // A. Play tactile click / scan sound
-                if (window.SoundEffects && typeof window.SoundEffects.click === 'function') {
-                    window.SoundEffects.click();
+                // A. Play dedicated 2.0-second rising harmonic transition sound
+                if (window.SoundEffects && typeof window.SoundEffects.startVotingTransition === 'function') {
+                    window.SoundEffects.startVotingTransition(2.0);
+                } else if (window.SoundEffects && typeof window.SoundEffects.welcome === 'function') {
+                    window.SoundEffects.welcome();
                 }
 
                 // B. Confetti particles burst
                 if (typeof window.confetti === 'function') {
                     window.confetti({
-                        particleCount: 45,
-                        spread: 60,
+                        particleCount: 65,
+                        spread: 80,
                         origin: { y: 0.6 }
                     });
                 }
 
-                // C. Trigger 3D card physical swipe out acceleration
+                // C. Trigger 3D card physical glide acceleration (1850ms duration)
                 if (heroCard3DInstance && typeof heroCard3DInstance.triggerSwipeOut === 'function') {
-                    heroCard3DInstance.triggerSwipeOut();
+                    heroCard3DInstance.triggerSwipeOut(1850);
                 }
 
-                // D. Swipe-out animation on the card element itself
+                // D. Smooth dissolve & gentle drift (Safe within layout bounds, no knife cuts, no clipping)
                 if (window.gsap) {
                     window.gsap.to('#voting-hero-card', {
-                        x: '115%',
+                        x: 40,
+                        y: -6,
                         opacity: 0,
-                        rotate: 3,
                         scale: 0.96,
-                        duration: 0.45,
-                        ease: 'power3.in',
+                        filter: 'blur(8px)',
+                        duration: 1.85,
+                        ease: 'power2.inOut',
                         onComplete: () => {
                             window.location.href = targetUrl;
                         }
@@ -1747,24 +1935,23 @@
                 } else {
                     const card = document.getElementById('voting-hero-card');
                     if (card) {
-                        card.style.transition = 'transform 0.45s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.45s ease';
-                        card.style.transform = 'translateX(115%) rotate(3deg) scale(0.96)';
+                        card.style.transition = 'transform 1.85s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.85s ease, filter 1.85s ease';
+                        card.style.transform = 'translateX(40px) translateY(-6px) scale(0.96)';
                         card.style.opacity = '0';
+                        card.style.filter = 'blur(8px)';
                     }
                     setTimeout(() => {
                         window.location.href = targetUrl;
-                    }, 450);
+                    }, 2000);
                 }
             };
 
             // Initialize 3D Card & Loading Overlay on Load
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => {
-                    startHero3DCard();
                     runInitialLoadingOverlay();
                 });
             } else {
-                startHero3DCard();
                 runInitialLoadingOverlay();
             }
         </script>

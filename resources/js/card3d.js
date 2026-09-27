@@ -36,18 +36,28 @@ export function initHero3DCard(containerId, options = {}) {
     container.appendChild(renderer.domElement);
 
     // 3. Card Textures:
-    // Front: Load exact /images/ubs-card.png with canvas fallback
+    // Front: Load exact /images/ubs-card.png
     const textureLoader = new THREE.TextureLoader();
     const frontTexture = textureLoader.load(
-        '/images/ubs-card.png',
-        () => {
+        '/images/ubs-card.png?v=3',
+        (tex) => {
+            tex.colorSpace = THREE.SRGBColorSpace;
+            tex.minFilter = THREE.LinearFilter;
+            tex.magFilter = THREE.LinearFilter;
+            tex.needsUpdate = true;
+            if (frontMat) {
+                frontMat.map = tex;
+                frontMat.needsUpdate = true;
+            }
             renderer.render(scene, camera);
         },
         undefined,
         () => {
             const fallback = createUbsFallbackTexture();
-            frontMesh.material.map = fallback;
-            frontMesh.material.needsUpdate = true;
+            if (frontMat) {
+                frontMat.map = fallback;
+                frontMat.needsUpdate = true;
+            }
         }
     );
     frontTexture.colorSpace = THREE.SRGBColorSpace;
@@ -60,11 +70,12 @@ export function initHero3DCard(containerId, options = {}) {
     const cardGroup = new THREE.Group();
     scene.add(cardGroup);
 
-    // Exact Dimensions (3:4 ratio matching 768x1024)
-    const cardW = 1.95;
-    const cardH = 2.60;
-    const cardCornerRadius = 0.18; // Physical rounded corners matching credit/ID card
-    const cardThickness = 0.042;
+    // Exact Dimensions (matching w 610px x h 988px from ubs card.png, ratio 0.6174)
+    const cardW = 1.68;
+    const cardH = 2.72;
+    const cardCornerRadius = 0.16; // Physical rounded corners matching credit/ID card
+    const cardThickness = 0.04;
+    const cardBevelThickness = 0.006;
 
     // A. Core PVC Body with Extruded Rounded Edges
     const coreGeom = createRoundedCoreGeometry(cardW, cardH, cardCornerRadius, cardThickness);
@@ -76,31 +87,27 @@ export function initHero3DCard(containerId, options = {}) {
     const coreMesh = new THREE.Mesh(coreGeom, coreMat);
     cardGroup.add(coreMesh);
 
-    // B. Front Face Plate (Rounded Square Geometry with UV-mapped UBS Gold card)
+    // B. Front Face Plate (Vivid UBS Gold Card Texture placed strictly above core bevel)
     const frontGeom = createRoundedPlaneGeometry(cardW, cardH, cardCornerRadius);
-    const frontMat = new THREE.MeshPhysicalMaterial({
+    const frontMat = new THREE.MeshBasicMaterial({
         map: frontTexture,
-        metalness: 0.12,
-        roughness: 0.22,
-        clearcoat: 1.0,
-        clearcoatRoughness: 0.08,
-        reflectivity: 0.9,
+        transparent: false,
     });
     const frontMesh = new THREE.Mesh(frontGeom, frontMat);
-    frontMesh.position.z = cardThickness / 2 + 0.002;
+    // Bevel reaches cardThickness / 2 + cardBevelThickness = 0.026. Place frontMesh at 0.028 to prevent occlusion!
+    frontMesh.position.z = cardThickness / 2 + cardBevelThickness + 0.002;
     cardGroup.add(frontMesh);
 
     // C. Back Face Plate (Rounded Square Pure Spotless White PVC)
     const backGeom = createRoundedPlaneGeometry(cardW, cardH, cardCornerRadius);
-    const backMat = new THREE.MeshPhysicalMaterial({
+    const backMat = new THREE.MeshStandardMaterial({
         map: backTexture,
         color: 0xffffff,
-        metalness: 0.05,
+        metalness: 0.02,
         roughness: 0.25,
-        clearcoat: 0.9,
     });
     const backMesh = new THREE.Mesh(backGeom, backMat);
-    backMesh.position.z = -(cardThickness / 2 + 0.002);
+    backMesh.position.z = -(cardThickness / 2 + cardBevelThickness + 0.002);
     backMesh.rotation.y = Math.PI;
     cardGroup.add(backMesh);
 
@@ -122,9 +129,11 @@ export function initHero3DCard(containerId, options = {}) {
     cyanFill.position.set(-2.0, -1.8, 2.5);
     scene.add(cyanFill);
 
-    // 6. Interactive Cursor Tracking (Directly Driven by Cursor Movement)
+    // 6. Interactive Cursor Tracking & 360 Flip on Hover
     let isHovered = false;
     let isSwipingOut = false;
+    let isSpinning = false;
+    let spinAngleY = 0;
     let targetRotX = 0.05;
     let targetRotY = -0.12;
     let currentRotX = 0.05;
@@ -136,6 +145,47 @@ export function initHero3DCard(containerId, options = {}) {
 
     const parentCard = container.closest('a') || container;
 
+    // Smooth 360° Flip Animation so the user can inspect the white PVC back
+    function trigger360Flip() {
+        if (isSwipingOut || isSpinning) return;
+        isSpinning = true;
+
+        if (window.SoundEffects && typeof window.SoundEffects.click === 'function') {
+            window.SoundEffects.click();
+        }
+
+        const spinObj = { angle: 0 };
+        if (window.gsap) {
+            window.gsap.to(spinObj, {
+                angle: Math.PI * 2,
+                duration: 1.25,
+                ease: 'power2.inOut',
+                onUpdate: () => {
+                    spinAngleY = spinObj.angle;
+                },
+                onComplete: () => {
+                    spinAngleY = 0;
+                    isSpinning = false;
+                }
+            });
+        } else {
+            const startT = performance.now();
+            const dur = 1250;
+            function stepSpin(now) {
+                const p = Math.min(1, (now - startT) / dur);
+                const ease = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+                spinAngleY = ease * Math.PI * 2;
+                if (p < 1) {
+                    requestAnimationFrame(stepSpin);
+                } else {
+                    spinAngleY = 0;
+                    isSpinning = false;
+                }
+            }
+            requestAnimationFrame(stepSpin);
+        }
+    }
+
     function onMouseMove(e) {
         if (isSwipingOut) return;
         isHovered = true;
@@ -143,17 +193,18 @@ export function initHero3DCard(containerId, options = {}) {
         const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
         const ny = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
 
-        targetRotY = nx * 0.72;
-        targetRotX = -ny * 0.52;
-        targetPosZ = 0.32;
-        targetScale = 1.06;
+        targetRotY = nx * 0.65;
+        targetRotX = -ny * 0.45;
+        targetPosZ = 0.35;
+        targetScale = 1.08;
     }
 
     function onMouseEnter() {
         if (isSwipingOut) return;
         isHovered = true;
-        targetPosZ = 0.32;
-        targetScale = 1.06;
+        targetPosZ = 0.35;
+        targetScale = 1.08;
+        trigger360Flip();
     }
 
     function onMouseLeave() {
@@ -189,10 +240,18 @@ export function initHero3DCard(containerId, options = {}) {
         animId = requestAnimationFrame(animate);
         const elapsedTime = clock.getElapsedTime();
 
-        if (!isSwipingOut) {
+        if (options.autoRotate) {
+            const rotSpeed = options.rotationSpeed || 1.8;
+            cardGroup.rotation.y = elapsedTime * rotSpeed;
+            cardGroup.rotation.x = Math.sin(elapsedTime * 1.6) * 0.12;
+            cardGroup.position.y = Math.sin(elapsedTime * 2.2) * 0.08;
+            cardGroup.position.z = 0.15;
+            goldRim.position.x = 1.5 + Math.sin(elapsedTime * 1.5) * 0.8;
+            goldRim.position.y = 1.8 + Math.cos(elapsedTime * 1.2) * 0.6;
+        } else if (!isSwipingOut) {
             let idleFloatY = 0;
             let idleFloatRot = 0;
-            if (!isHovered) {
+            if (!isHovered && !isSpinning) {
                 idleFloatY = Math.sin(elapsedTime * 2.2) * 0.05;
                 idleFloatRot = Math.sin(elapsedTime * 1.4) * 0.07;
             }
@@ -203,7 +262,7 @@ export function initHero3DCard(containerId, options = {}) {
             currentScale += (targetScale - currentScale) * 0.08;
 
             cardGroup.rotation.x = currentRotX;
-            cardGroup.rotation.y = currentRotY;
+            cardGroup.rotation.y = currentRotY + spinAngleY;
             cardGroup.position.y = idleFloatY;
             cardGroup.position.z = currentPosZ;
             cardGroup.scale.set(currentScale, currentScale, currentScale);
@@ -232,23 +291,27 @@ export function initHero3DCard(containerId, options = {}) {
 
     window.addEventListener('resize', handleResize);
 
-    // 9. Satisfying Swipe Out Animation on Click
-    function triggerSwipeOut(onComplete) {
+    // 9. Satisfying 2-Second Swipe Out Animation on Click
+    function triggerSwipeOut(duration = 2000, onComplete) {
+        if (typeof duration === 'function') {
+            onComplete = duration;
+            duration = 2000;
+        }
         isSwipingOut = true;
         const startTime = performance.now();
-        const duration = 450; // Snappy 450ms swipe out
         const startX = cardGroup.position.x;
         const startRotY = cardGroup.rotation.y;
         const startRotZ = cardGroup.rotation.z;
 
         function step(now) {
             const progress = Math.min(1, (now - startTime) / duration);
-            const t = Math.pow(progress, 2.5); // Fast acceleration curve
+            const t = Math.pow(progress, 1.8); // Smooth fluid glide
 
-            cardGroup.position.x = startX + t * 4.8; // Swipe out rapidly to the right
-            cardGroup.rotation.y = startRotY + t * 0.8;
-            cardGroup.rotation.z = startRotZ - t * 0.35;
-            const s = Math.max(0.1, 1 - t * 0.4);
+            cardGroup.position.x = startX + t * 1.5; // Controlled glide, never clipped by canvas edge
+            cardGroup.position.z = currentPosZ + t * 0.8;
+            cardGroup.rotation.y = startRotY + t * 0.9;
+            cardGroup.rotation.z = startRotZ - t * 0.2;
+            const s = Math.max(0.05, 1 - t * 0.4);
             cardGroup.scale.set(s, s, s);
 
             if (progress < 1) {
@@ -263,6 +326,7 @@ export function initHero3DCard(containerId, options = {}) {
 
     return {
         triggerSwipeOut,
+        trigger360Flip,
         destroy: () => {
             if (animId) cancelAnimationFrame(animId);
             window.removeEventListener('resize', handleResize);

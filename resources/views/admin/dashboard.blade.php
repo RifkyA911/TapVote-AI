@@ -285,14 +285,14 @@
             </span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             <!-- ApexCharts Donut Viewport (Left) -->
-            <div class="md:col-span-5 flex items-center justify-center min-h-[270px]">
+            <div class="lg:col-span-5 flex items-center justify-center min-h-[270px]">
                 <div id="apexChartKetua" class="w-full"></div>
             </div>
 
             <!-- Progress & Tally List (Right) -->
-            <div class="md:col-span-7 space-y-3" id="admin-ketua-list">
+            <div class="lg:col-span-7 space-y-3" id="admin-ketua-list">
                 @foreach($ketuaResults as $k)
                     <div class="p-4 rounded-2xl bg-slate-50 hover:bg-blue-50/40 border border-slate-200/80 transition space-y-2">
                         <div class="flex items-center justify-between gap-3">
@@ -341,14 +341,14 @@
             </span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             <!-- ApexCharts Donut Viewport (Left) -->
-            <div class="md:col-span-5 flex items-center justify-center min-h-[270px]">
+            <div class="lg:col-span-5 flex items-center justify-center min-h-[270px]">
                 <div id="apexChartPengawas" class="w-full"></div>
             </div>
 
             <!-- Progress & Tally List (Right) -->
-            <div class="md:col-span-7 space-y-3" id="admin-pengawas-list">
+            <div class="lg:col-span-7 space-y-3" id="admin-pengawas-list">
                 @foreach($pengawasResults as $p)
                     <div class="p-4 rounded-2xl bg-slate-50 hover:bg-emerald-50/40 border border-slate-200/80 transition space-y-2">
                         <div class="flex items-center justify-between gap-3">
@@ -397,7 +397,7 @@
             <div class="lg:col-span-5 space-y-4 text-left">
                 <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/25 text-blue-300 border border-blue-400/40 text-xs font-black uppercase tracking-wider">
                     <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-                    <span>Admin Hardware & RFID Credential Simulator</span>
+                    <span>Admin Hardware & Keplek Lanyard 3D RFID Simulator</span>
                 </div>
 
                 <h3 class="text-xl sm:text-3xl font-black text-white tracking-tight leading-tight">
@@ -667,7 +667,7 @@
             plotOptions: {
                 pie: {
                     donut: {
-                        size: '68%',
+                        size: '50%',
                         labels: {
                             show: true,
                             total: {
@@ -728,7 +728,7 @@
             plotOptions: {
                 pie: {
                     donut: {
-                        size: '68%',
+                        size: '50%',
                         labels: {
                             show: true,
                             total: {

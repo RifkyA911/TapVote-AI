@@ -1,55 +1,52 @@
 @extends('layouts.app')
 
-@section('title', __('Kios Pemilih - Tempelkan Kartu'))
+@section('title', \App\Models\AppSetting::get('election_title', __('Kios Pemilih - Tempelkan Kartu')))
 
 @section('content')
 <div class="flex-1 flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full min-h-screen">
 
     <!-- Header Instansi & Navigasi -->
-    <header class="flex flex-col sm:flex-row items-center sm:justify-between gap-3 py-3 border-b border-slate-200">
-        <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
-            <a href="{{ route('home') }}" class="flex items-center space-x-3 group cursor-pointer" title="Kembali ke Beranda Live Count">
+    <header class="flex items-center justify-between gap-3 py-3 border-b border-slate-200">
+        <div class="flex items-center space-x-3 min-w-0 max-w-[200px] sm:max-w-md">
+            <a href="{{ route('home') }}" class="flex items-center space-x-2.5 sm:space-x-3 group cursor-pointer min-w-0" title="{{ __('Kembali ke Beranda Live Count') }}">
                 <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-600 group-hover:bg-blue-700 text-white flex items-center justify-center shadow-sm shrink-0 transition">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
                 </div>
-                <div>
-                    <h1 class="text-base sm:text-lg font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition">TapVote AI</h1>
-                    <p class="text-xs text-slate-500 font-medium">{{ __('Digital Voting Booth') }} • <span class="text-blue-600 font-bold">← {{ __('Beranda') }}</span></p>
+                <div class="min-w-0">
+                    <h1 class="text-sm sm:text-base font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition truncate">{{ \App\Models\AppSetting::get('election_title', 'TapVote AI') }}</h1>
+                    <p class="text-[11px] text-slate-500 font-medium truncate">{{ __('Digital Voting Booth') }} • <span class="text-blue-600 font-bold">← {{ __('Beranda') }}</span></p>
                 </div>
             </a>
-
-            <!-- Language Switcher Pill for Mobile View -->
-            <div class="inline-flex sm:hidden rounded-xl border border-slate-200 bg-white p-1 text-xs font-bold shadow-2xs">
-                <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">EN</a>
-                <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
-            </div>
         </div>
 
-        <div class="flex items-center justify-end space-x-2 sm:space-x-3.5 w-full sm:w-auto">
-            <!-- Language Switcher Pill (Desktop) -->
-            <div class="hidden sm:inline-flex rounded-xl border border-slate-200 bg-white p-1 text-xs sm:text-sm font-bold shadow-2xs">
-                <a href="{{ route('lang.switch', 'en') }}" class="px-3 py-1.5 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">EN</a>
-                <a href="{{ route('lang.switch', 'id') }}" class="px-3 py-1.5 rounded-lg transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
+        <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+            <!-- Language Switcher Pill (Single Responsive Pill) -->
+            <div class="inline-flex rounded-xl border border-slate-200 bg-white p-1 text-xs sm:text-sm font-bold shadow-2xs shrink-0">
+                <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-blue-600' }}">EN</a>
+                <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-blue-600' }}">ID</a>
             </div>
 
             <!-- Tombol Petunjuk Cara Memilih -->
             <button 
                 type="button" 
                 onclick="openGuideModal()"
-                class="flex-1 sm:flex-none text-xs sm:text-base font-extrabold text-amber-900 hover:text-amber-950 py-2.5 px-3.5 sm:py-3 sm:px-5 rounded-2xl border-2 border-amber-300 hover:border-amber-400 bg-amber-50 hover:bg-amber-100 shadow-xs transition flex items-center justify-center space-x-2 cursor-pointer"
+                class="text-xs sm:text-sm font-extrabold text-amber-900 hover:text-amber-950 py-2 sm:py-2.5 px-3 sm:px-4 rounded-2xl border-2 border-amber-300 hover:border-amber-400 bg-amber-50 hover:bg-amber-100 shadow-xs transition flex items-center justify-center space-x-1.5 cursor-pointer shrink-0"
+                title="{{ __('Petunjuk Memilih') }}"
             >
-                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
                 </svg>
-                <span>{{ __('Petunjuk Memilih') }}</span>
+                <span class="hidden sm:inline">{{ __('Petunjuk Memilih') }}</span>
+                <span class="sm:hidden">{{ __('Petunjuk') }}</span>
             </button>
 
-            <!-- Tombol Live Count -->
-            <a href="{{ route('home') }}" class="flex-1 sm:flex-none text-xs sm:text-base font-extrabold text-slate-800 hover:text-blue-700 py-2.5 px-3.5 sm:py-3 sm:px-5 rounded-2xl border-2 border-slate-200 hover:border-blue-400 bg-white hover:bg-slate-50 shadow-xs transition flex items-center justify-center space-x-2 cursor-pointer">
-                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M3 20.25h18M3.75 20.25V3.75" /></svg>
-                <span>{{ __('Live Count') }}</span>
+            <!-- Tombol Live Count (Tanpa teks, background cyan mencolok, icon putih) -->
+            <a href="{{ route('home') }}" class="p-2 sm:p-2.5 rounded-2xl bg-cyan-500 hover:bg-cyan-600 text-white shadow-md hover:shadow-cyan-500/30 transition flex items-center justify-center shrink-0 cursor-pointer" title="{{ __('Live Count') }}">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M3 20.25h18M3.75 20.25V3.75" />
+                </svg>
             </a>
         </div>
     </header>
@@ -244,7 +241,7 @@
             </p>
 
             <!-- Mobile Mode Switcher: NFC vs Scanner (Clean Segmented Toggle, No Phone Icon) -->
-            <div class="w-full max-w-sm mx-auto mt-4 space-y-2.5 block sm:hidden">
+            <div id="mobile-mode-controls" class="w-full max-w-sm mx-auto mt-4 space-y-2.5 block sm:hidden">
                 <!-- Segmented Toggle -->
                 <div class="inline-flex rounded-2xl bg-slate-100 p-1 border border-slate-200 w-full shadow-inner gap-1">
                     <button 
@@ -731,15 +728,6 @@
             showDangerError("{{ __('Terjadi kendala koneksi saat verifikasi kartu.') }}");
         });
     }
-        setTimeout(() => {
-            document.body.classList.add('transition-opacity', 'duration-500', 'opacity-0');
-        }, 1800);
-
-        setTimeout(() => {
-            rfidInput.value = rfid;
-            tapForm.submit();
-        }, 2300);
-    }
 
     // 3. Pencegahan & Animasi Ripple Kuning/Amber Jika Sudah Pernah Memilih
     function showAlreadyVotedWarning(nama, waktu) {
@@ -998,6 +986,77 @@
     setInterval(updateTapDeadline, 1000);
     updateTapDeadline();
     @endif
+
+    // Smooth GSAP / Framer-like Entrance Rendering Animation on /voter
+    function initVoterEntranceAnimation() {
+        let attempts = 0;
+        function run() {
+            if (window.gsap) {
+                // 1. Header slide down smoothly
+                window.gsap.from('header', {
+                    y: -25,
+                    opacity: 0,
+                    duration: 1.1,
+                    ease: 'power2.out',
+                    clearProps: 'transform,opacity'
+                });
+
+                // 2. Sensor Container smooth pop-in (Silky, Non-jarring)
+                window.gsap.from('#sensor-container', {
+                    scale: 0.82,
+                    y: 32,
+                    opacity: 0,
+                    duration: 1.35,
+                    delay: 0.12,
+                    ease: 'power3.out',
+                    clearProps: 'transform,opacity'
+                });
+
+                // 3. Keplek card badge gentle floating reveal
+                window.gsap.from('#card-graphic', {
+                    y: 18,
+                    scale: 0.88,
+                    opacity: 0,
+                    duration: 1.35,
+                    delay: 0.22,
+                    ease: 'power2.out',
+                    clearProps: 'transform,opacity'
+                });
+
+                // 4. Title, Status Pill, and Subtitle staggered reveal
+                window.gsap.from(['#tap-title', '#tap-status-pill', '#tap-kiosk-box > p'], {
+                    y: 22,
+                    opacity: 0,
+                    duration: 1.1,
+                    delay: 0.32,
+                    stagger: 0.14,
+                    ease: 'power2.out',
+                    clearProps: 'transform,opacity'
+                });
+
+                // 5. Mobile Mode toggle & bottom control elements
+                window.gsap.from(['#mobile-mode-controls', '#demo-voters-section', '#manual-input-box'], {
+                    y: 25,
+                    opacity: 0,
+                    duration: 1.1,
+                    delay: 0.45,
+                    stagger: 0.12,
+                    ease: 'power2.out',
+                    clearProps: 'transform,opacity'
+                });
+            } else if (attempts < 80) {
+                attempts++;
+                setTimeout(run, 25);
+            }
+        }
+        run();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initVoterEntranceAnimation);
+    } else {
+        initVoterEntranceAnimation();
+    }
 </script>
 @endpush
 @endsection

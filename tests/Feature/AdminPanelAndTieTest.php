@@ -173,7 +173,7 @@ class AdminPanelAndTieTest extends TestCase
     {
         $this->actingAs($this->admin);
 
-        $response = $this->get(route('admin.reports.doorprize'));
+        $response = $this->withSession(['locale' => 'id'])->get(route('admin.reports.doorprize'));
         $response->assertStatus(200);
         $response->assertSee('Master Pilihan Hadiah Doorprize');
         $response->assertSee('Log Pemenang & Status Klaim Doorprize', false);

@@ -16,6 +16,8 @@
 - **Direct Smartphone Web NFC Support (`NDEFReader`)**:
   - Android Chrome users can tap physical NFC/RFID cards directly against the back of their smartphone.
   - Built-in guidance modal for enabling Web NFC over LAN IP development origins via `chrome://flags/#unsafely-treat-insecure-origin-as-secure`.
+- **Smooth GSAP Entrance Animation**:
+  - Fluid, cinematic staggered entrance animation powered by GreenSock GSAP for headers, card containers, and interactive controls upon kiosk boot.
 - **Hardware-Only Tap (Zero Text Input)**:
   - Eliminated manual text input fields entirely to ensure complete voting integrity and prevent spoofing.
   - Automatically captures hardware RFID reader keystrokes or Web NFC tag serial numbers without exposing any editable inputs.
@@ -25,8 +27,8 @@
   - Relaxed, gentle ripple waves (4.5s) optimized for older eyes.
   - Floating card hover animation with tactile spring-lift ("sundul") on touch/hover (`.ballot-card-sundul`).
   - Fluid **Nova Green** success transition and gentle **Danger Red** error warning wave.
-- **Privacy & Security**:
-  - Personal NIK numbers are completely omitted from candidate cards on public voting ballots.
+- **Dynamic Contextual Election Title**:
+  - Synchronized dynamically with the official election title configured in Admin System Settings (`/admin/settings`).
 - **Demo Accounts Interactive DataTable**:
   - Searchable, status-filtered DataTable replacing old static card grids for testing and dry runs.
 - **Interactive Audio Feedback (Web Audio API)**:
@@ -34,37 +36,41 @@
 
 ### 2. Public Live Count (`/`)
 - **Real-Time SSE Streaming**: Live updates broadcast without page refreshes.
+- **Interactive 3D UBS Gold Card Showcase**:
+  - Three.js vertical badge card loaded with official UBS Card front texture, white PVC back, and responsive touch/cursor drag rotation.
+  - Smooth card swipe-out animation and white overlay transition on Start Voting with synchronized audio cue.
 - **Slimmed Bar Chart & Candidate Avatars**: Slimmer, modern bars (`barThickness: 22`) powered by Chart.js featuring custom circular candidate portrait avatars, ballot numbers, and candidate names directly on the x-axis.
-- **Election Categories & Procedural Guide**: Clean explanatory section between live tally charts and candidate cards explaining Chairman, Supervisory Board, and 3-step voting procedure.
+- **Election Categories & Procedural Guide with Text-to-Speech (TTS)**:
+  - Explanatory section explaining Chairman and Supervisory Board roles, with Web Speech API audio narration and audio playback toggles.
 - **Candidate Manifesto & Profile Modals**: Click to inspect Vision (*Visi*), Mission (*Misi*), and background.
-- **Clean Public Header**: High-contrast, spacious layout with single official timestamp and instant language switcher (`EN` / `ID`).
+- **Clean Public Header**: High-contrast, spacious layout with deadline countdown badge, client IP admin quick-link, and instant language switcher (`EN` / `ID`).
 
 ### 3. Executive Admin Control Panel (`/admin`)
-- **Procedural 3D RFID Smart Card Reconstructed (`/admin/dashboard`)**:
-  - High-resolution procedural Three.js model generated via HTML5 canvas mirroring `contoh.png`: coral-crimson gradient, dynamic white swoosh curve, gentleman photo in light blue collared shirt, solid black box with white "RIFKY" text and "018513 • ICT DIV.", vertical barcode, and TapVote diamond crest.
-  - Pure, spotless white back face ("back itu putih polos") with oblong slot punch hole.
-  - Full 3D accessories: black loop cord, black breakaway clasp buckle, and double-loop crimson satin lanyard ribbon.
-  - 360° interactive rotation on X & Y axes with auto-spin, flip, 360° X, and view reset controls.
-- **Mata Langit (Sky Eye Analytics) Module (`/admin/analytics`)**:
-  - Deep telemetry center featuring real database analytics: 24-hour voting velocity histogram, department turnout ranking and participation matrix, RFID Mifare authenticity audit & foreign card scan tracking, and forensic audit timeline.
+- **Clean Light Theme by Default**:
+  - Standardized modern light theme interface across all admin views, with optional dark/system mode toggle saved in local storage.
+- **Interactive 3D RFID Smart Card Simulator (`/admin/dashboard`)**:
+  - Realistic Three.js model featuring UBS Gold Card design: "BUDI" nameplate on solid black bar, blue collared shirt portrait, vertical barcode, and royal blue satin lanyard ribbon loop.
+  - 360° interactive rotation on X & Y axes with auto-spin, flip, and view reset controls.
+- **ApexCharts Donut Charts & Responsive Candidate Recaps**:
+  - Donut pie charts with thickened slices (`size: 50%`) and responsive column stacking (`lg:grid-cols-12`) preventing chart and tally collisions on tablet/mobile screens.
+- **Telemetry Analytics Module (`/admin/analytics`)**:
+  - Comprehensive telemetry center: 24-hour voting velocity histogram, department turnout rankings, RFID Mifare authenticity audit, foreign card scan tracking, and downloadable PDF report.
+- **Vote Flow & Broker Summary Module (`/admin/vote-flow`)**:
+  - **100% Real Database Analytics**: Direct relational SQL joins across ballots (`hasil_ketua`, `hasil_pengawas`), voters (`pemilih`), and candidates (`kandidat_ketua`, `kandidat_pengawas`).
+  - **Interactive Apache ECharts Sankey Flow Diagram**: Maps directional vote currents from individual departments to candidates.
+  - **Department Broker Summary & Cross-Tabulation Matrix**: Real-time division rankings, vote share %, candidate solidity scores, and search filter with shortcut key (`/`).
+  - **AI Vision Flow Intelligence**: Integrated Google Gemini 2.0 Flash reasoning with bilingual heuristic fallback (EN / ID) for identifying dominant coalitions and swing departments.
 - **System Settings Management Panel (`/admin/settings`)**:
-  - Comprehensive control panel for election title, quorum threshold percentage, Gemini AI model and API keys, voice greeting autoplay, sound effects toggles, and kiosk session timeouts.
-- **SpeechSynthesis Auto-Play Welcome Greeting**:
-  - Web Speech API greeting upon administrator login: *"Selamat datang, Mas Admin di Control Panel TapVote AI."*
-- **HeadlessUI-Style Confirmation Modal (`layouts/admin.blade.php`)**:
-  - Custom HeadlessUI-style animated popup modal replacing native browser `confirm()` for START, PAUSE, and STOP voting system controls.
+  - Comprehensive control panel for official election title, quorum threshold percentage, Gemini AI model and API keys, voice greeting autoplay, sound effects toggles, and kiosk session timeouts.
 - **Candidate Drag-and-Drop Reordering (`/admin/ketua`, `/admin/pengawas`)**:
   - Interactive HTML5 table row drag-and-drop with real-time ballot number recalculation and asynchronous AJAX persistence.
 - **Custom Controller-Based Vector PDF & Excel Exports**:
   - Real server-side PDF exports via DomPDF (`Barryvdh\DomPDF\Facade\Pdf`) and CSV/Excel downloads for Chairman, Supervisor, Forensic Traceback, Doorprize, and Voter rosters.
-- **Doorprize Raffle & Digital Gyroscope Roulette (`/admin/reports/doorprize`)**:
-  - Matched "Pilih" button styling to "Edit" button with smooth anchor scroll directly to `#undi-section`.
-  - High-tech digital gyroscope roulette animation with glowing concentric rings and clean light-theme styling.
 - **Uniform Eligible Voters DataTable (`/admin/voters`)**:
-  - Replaced DPT with "Eligible Voters", added a foldable "Filter" header with icon, renamed "Run QUERY" to "Apply", and changed department text input to `<select>` dropdown in the Add Voter modal.
+  - Standardized Eligible Voters table with search filter toolbar, department selection dropdowns, and batch operations.
 - **Progressive Web App (PWA)**:
-  - Supports installable standalone web application on Android, iOS, Windows, and Linux via Web App Manifest and Service Worker.
-  - Polished responsive filter toolbar optimized for **iPad Mini (768px-834px)**, mobile, and desktop.
+  - Installable standalone application on Android, iOS, Windows, and Linux via Web App Manifest and Service Worker.
+  - Fully responsive on mobile, iPad Mini (768px-834px), and desktop displays.
 
 ### 4. Doorprize System & Winner Claim Tracking (`/admin/reports/doorprize`)
 - **Admin Light Theme Harmonization**: Full light theme overhaul replacing dark backgrounds.

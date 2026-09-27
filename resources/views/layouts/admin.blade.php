@@ -22,13 +22,12 @@
     <meta name="msapplication-TileColor" content="#2563eb">
     <meta name="msapplication-TileImage" content="/images/pwa/icon-192.png">
 
-    <!-- Admin Panel Only Theme Initializer (Strictly Isolated to Admin) -->
+    <!-- Admin Panel Only Theme Initializer (Defaults to Clean Light Theme) -->
     <script>
         (function() {
             try {
-                const theme = localStorage.getItem('tapvote_admin_theme') || 'system';
-                const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                if (isDark) {
+                const theme = localStorage.getItem('tapvote_admin_theme') || 'light';
+                if (theme === 'dark') {
                     document.documentElement.classList.add('dark', 'admin-dark');
                 } else {
                     document.documentElement.classList.remove('dark', 'admin-dark');
@@ -72,11 +71,11 @@
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 <span>Live Dashboard</span>
             </a>
-            <a href="{{ route('admin.analytics') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.analytics') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800' }}">
+            <a href="{{ route('admin.analytics') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.analytics') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                 <span>Analytics</span>
             </a>
-            <a href="{{ route('admin.vote-flow') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.vote-flow*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800' }}">
+            <a href="{{ route('admin.vote-flow') }}" class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-bold text-sm transition {{ request()->routeIs('admin.vote-flow*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">
                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                 <span>Vote Flow</span>
             </a>
@@ -157,14 +156,14 @@
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
         <!-- Top App Bar (Matched Height: h-16) -->
         <header class="sticky top-0 z-20 h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 flex items-center justify-between shadow-2xs shrink-0">
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
                 <!-- Toggle Sidebar Button (Visible on mobile/tablet and desktop) -->
                 <button 
                     onclick="toggleSidebar()" 
                     type="button" 
                     id="sidebar-toggle-btn"
                     title="Toggle Sidebar"
-                    class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center justify-center"
+                    class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center justify-center shrink-0"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
@@ -186,40 +185,6 @@
                         <span id="voting-status-text">{{ $statusDisplayLabel }}</span>
                     </div>
                 </div>
-
-                <!-- Modern Throttled Segmented Controls: LIVE / PAUSE / END -->
-                <div id="voting-controls-group" class="inline-flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200/90 dark:border-slate-700 shadow-2xs space-x-0.5">
-                    <button 
-                        type="button" 
-                        id="btn-status-started"
-                        onclick="handleVotingStatusAction('STARTED')"
-                        title="Start / Resume Voting System (LIVE)"
-                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STARTED' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-emerald-700 hover:bg-white dark:hover:bg-slate-700' }}"
-                    >
-                        <span>●</span>
-                        <span>LIVE</span>
-                    </button>
-                    <button 
-                        type="button" 
-                        id="btn-status-paused"
-                        onclick="handleVotingStatusAction('PAUSED')"
-                        title="Pause Voting System"
-                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'PAUSED' ? 'bg-amber-500 text-white shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-amber-700 hover:bg-white dark:hover:bg-slate-700' }}"
-                    >
-                        <span>⏸</span>
-                        <span>PAUSE</span>
-                    </button>
-                    <button 
-                        type="button" 
-                        id="btn-status-stopped"
-                        onclick="handleVotingStatusAction('STOPPED')"
-                        title="Officially End Voting System (FINISHED)"
-                        class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center space-x-1 {{ $adminVotingStatus === 'STOPPED' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-rose-700 hover:bg-white dark:hover:bg-slate-700' }}"
-                    >
-                        <span>⏹</span>
-                        <span>END</span>
-                    </button>
-                </div>
             </div>
 
             <!-- Center Command Palette Search Bar -->
@@ -238,7 +203,7 @@
             </div>
 
             <!-- Right Header Actions (Search Mobile, Theme Switcher, Language, Live SSE) -->
-            <div class="flex items-center space-x-2.5 text-xs text-slate-600 dark:text-slate-300">
+            <div class="flex items-center space-x-1.5 sm:space-x-2 text-xs text-slate-600 dark:text-slate-300 shrink-0">
                 <!-- Mobile Search Button -->
                 <button 
                     type="button" 
@@ -275,13 +240,13 @@
 
                 <!-- Language Switcher EN / ID -->
                 <div class="inline-flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs font-extrabold">
-                    <a href="{{ route('lang.switch', 'en') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}">EN</a>
-                    <a href="{{ route('lang.switch', 'id') }}" class="px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}">ID</a>
+                    <a href="{{ route('lang.switch', 'en') }}" class="px-2 sm:px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'en' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}">EN</a>
+                    <a href="{{ route('lang.switch', 'id') }}" class="px-2 sm:px-2.5 py-1 rounded-lg transition {{ app()->getLocale() === 'id' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}">ID</a>
                 </div>
 
-                <a href="{{ route('home') }}" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-blue-700 font-bold border border-slate-200 transition flex items-center space-x-1.5 shadow-2xs">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                    <span>Live SSE</span>
+                <a href="{{ route('home') }}" target="_blank" class="px-2 sm:px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-blue-700 font-bold border border-slate-200 transition flex items-center space-x-1 sm:space-x-1.5 shadow-2xs" title="Live SSE Screen">
+                    <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    <span class="hidden sm:inline">Live SSE</span>
                 </a>
             </div>
         </header>

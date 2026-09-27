@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Ballot Booth - Cooperative Election'))
+@section('title', \App\Models\AppSetting::get('election_title', __('Ballot Booth - Cooperative Election')))
 
 @section('content')
 <!-- Friendly Warm Light Welcoming Overlay (Sopan, Teduh & Nyaman untuk Mata 40+ Tahun) -->
@@ -15,7 +15,7 @@
         </div>
 
         <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-black tracking-wide uppercase bg-emerald-100 text-emerald-800 border border-emerald-300 mb-3">
-            {{ __('Bilik Suara Terverifikasi') }}
+            {{ \App\Models\AppSetting::get('election_title', __('Bilik Suara Terverifikasi')) }}
         </span>
 
         <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-2">

@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @stack('meta')
-    <title>@yield('title', 'TapVote AI') - {{ __('Live Count Cooperative Election') }}</title>
+    <title>@yield('title', 'TapVote AI') - {{ \App\Models\AppSetting::get('election_title', __('Live Count Cooperative Election')) }}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

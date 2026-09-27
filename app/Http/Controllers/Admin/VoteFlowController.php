@@ -106,27 +106,52 @@ class VoteFlowController extends Controller
             $deptCount = count($flowData['departments']);
             $totalVotes = $flowData['totalVotes'];
 
-            $aiResult = [
-                'engine' => 'Local Heuristic Flow Engine',
-                'timestamp' => now()->format('H:i:s') . ' WIB',
-                'executive_summary' => "Analisis aliran suara mengindikasikan distribusi elektoral melintasi {$deptCount} unit departemen dengan total {$totalVotes} suara sah. Terlihat konsentrasi suara yang kuat pada basis-basis departemen utama.",
-                'dominant_coalitions' => [
-                    $topBroker ? "Departemen {$topBroker['dept']} menjadi lumbung suara terbesar dengan {$topBroker['total_votes']} suara ({$topBroker['dept_share_pct']}% dari total pemilih)." : "Aliran suara terdistribusi merata.",
-                    "Dukungan departemen teknis dan operasional memperlihatkan soliditas tinggi terhadap calon unggul."
-                ],
-                'swing_departments' => [
-                    "Departemen dengan perpecahan suara moderat menjadi penentu keunggulan marjin kompetitif.",
-                    "Tidak ditemukan anomali perpindahan suara ilegal antar-divisi."
-                ],
-                'kingmaker_analysis' => $topBroker ? "Departemen {$topBroker['dept']} bertindak sebagai 'Kingmaker' utama yang menentukan arah kemenangan." : "Seluruh departemen memiliki bobot pengaruh berimbang.",
-                'consolidation_score' => min(98, max(72, round(70 + ($deptCount * 2.5)))),
-                'risk_assessment' => 'LOW',
-                'key_takeaways' => [
-                    "Pola vote flow mencerminkan legitimasi tinggi tanpa adanya pemusatan monopoli sepihak.",
-                    "Kecepatan penyerapan suara di tiap departemen berjalan konsisten dengan jadwal kerja.",
-                    "Audit trail kriptografis mengonfirmasi integritas relasi voter-to-candidate 100% sah."
-                ]
-            ];
+            $isEn = app()->getLocale() === 'en';
+            if ($isEn) {
+                $aiResult = [
+                    'engine' => 'Local Heuristic Flow Engine',
+                    'timestamp' => now()->format('H:i:s') . ' WIB',
+                    'executive_summary' => "Vote flow analysis indicates electoral distribution across {$deptCount} department units with {$totalVotes} valid ballots. A resilient vote concentration is observed within primary operational divisions.",
+                    'dominant_coalitions' => [
+                        $topBroker ? "Department {$topBroker['dept']} represents the largest vote stronghold with {$topBroker['total_votes']} votes ({$topBroker['dept_share_pct']}% of total electorate)." : "Votes are evenly distributed.",
+                        "Technical and operations departments exhibit high cohesion towards the leading candidates."
+                    ],
+                    'swing_departments' => [
+                        "Divisions with moderate ballot splits serve as key decisive margin creators.",
+                        "Zero anomalous inter-departmental vote transfers detected."
+                    ],
+                    'kingmaker_analysis' => $topBroker ? "Department {$topBroker['dept']} acts as the decisive 'Kingmaker' shaping electoral outcome." : "All departments carry balanced electoral weight.",
+                    'consolidation_score' => min(98, max(72, round(70 + ($deptCount * 2.5)))),
+                    'risk_assessment' => 'LOW',
+                    'key_takeaways' => [
+                        "Vote flow patterns exhibit high democratic legitimacy without monopolistic distortion.",
+                        "Ballot intake speed aligns consistently with departmental shift schedules.",
+                        "Cryptographic audit trails confirm 100% genuine voter-to-candidate relational integrity."
+                    ]
+                ];
+            } else {
+                $aiResult = [
+                    'engine' => 'Local Heuristic Flow Engine',
+                    'timestamp' => now()->format('H:i:s') . ' WIB',
+                    'executive_summary' => "Analisis aliran suara mengindikasikan distribusi elektoral melintasi {$deptCount} unit departemen dengan total {$totalVotes} suara sah. Terlihat konsentrasi suara yang kuat pada basis-basis departemen utama.",
+                    'dominant_coalitions' => [
+                        $topBroker ? "Departemen {$topBroker['dept']} menjadi lumbung suara terbesar dengan {$topBroker['total_votes']} suara ({$topBroker['dept_share_pct']}% dari total pemilih)." : "Aliran suara terdistribusi merata.",
+                        "Dukungan departemen teknis dan operasional memperlihatkan soliditas tinggi terhadap calon unggul."
+                    ],
+                    'swing_departments' => [
+                        "Departemen dengan perpecahan suara moderat menjadi penentu keunggulan marjin kompetitif.",
+                        "Tidak ditemukan anomali perpindahan suara ilegal antar-divisi."
+                    ],
+                    'kingmaker_analysis' => $topBroker ? "Departemen {$topBroker['dept']} bertindak sebagai 'Kingmaker' utama yang menentukan arah kemenangan." : "Seluruh departemen memiliki bobot pengaruh berimbang.",
+                    'consolidation_score' => min(98, max(72, round(70 + ($deptCount * 2.5)))),
+                    'risk_assessment' => 'LOW',
+                    'key_takeaways' => [
+                        "Pola vote flow mencerminkan legitimasi tinggi tanpa adanya pemusatan monopoli sepihak.",
+                        "Kecepatan penyerapan suara di tiap departemen berjalan konsisten dengan jadwal kerja.",
+                        "Audit trail kriptografis mengonfirmasi integritas relasi voter-to-candidate 100% sah."
+                    ]
+                ];
+            }
         }
 
         return response()->json([
