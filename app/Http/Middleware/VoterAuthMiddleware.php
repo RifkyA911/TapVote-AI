@@ -17,22 +17,61 @@ class VoterAuthMiddleware
         $voterNik = session('voter_nik');
 
         if (!$voterNik) {
+            $msg = 'Sesi belum aktif. Silakan tap kartu ID RFID Anda terlebih dahulu.';
+            if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                    'redirect' => route('voter.tap'),
+                ], 401);
+            }
             return redirect()->route('voter.tap')
-                ->with('error', 'Sesi belum aktif. Silakan tap kartu ID RFID Anda terlebih dahulu.');
+                ->with('error', $msg);
         }
 
         $pemilih = Pemilih::find($voterNik);
 
         if (!$pemilih) {
             session()->forget('voter_nik');
+            $msg = 'Data pemilih tidak ditemukan dalam sistem.';
+            if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                    'redirect' => route('voter.tap'),
+                ], 404);
+            }
             return redirect()->route('voter.tap')
-                ->with('error', 'Data pemilih tidak ditemukan dalam sistem.');
+                ->with('error', $msg);
+        }
+
+        if (!$pemilih->can_raffle) {
+            session()->forget('voter_nik');
+            $msg = "Akses Ditolak: Anggota [{$pemilih->nik} - {$pemilih->nama}] dinonaktifkan dari partisipasi undian & pemilihan.";
+            if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                    'redirect' => route('voter.tap'),
+                ], 403);
+            }
+            return redirect()->route('voter.tap')
+                ->with('error', $msg);
         }
 
         if ($pemilih->sudahMemilih()) {
             session()->forget('voter_nik');
+            $waktu = $pemilih->voted_at ? $pemilih->voted_at->timezone('Asia/Jakarta')->format('H:i') . ' WIB' : 'sesi sebelumnya';
+            $msg = "Hak suara untuk NIK {$pemilih->nik} ({$pemilih->nama}) telah digunakan pada {$waktu}.";
+            if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                    'redirect' => route('voter.tap'),
+                ], 403);
+            }
             return redirect()->route('voter.tap')
-                ->with('error', "Hak suara untuk NIK {$pemilih->nik} ({$pemilih->nama}) telah digunakan pada " . ($pemilih->voted_at ? $pemilih->voted_at->format('H:i:s') : 'sesi sebelumnya') . '.');
+                ->with('error', $msg);
         }
 
         return $next($request);

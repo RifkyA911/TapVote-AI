@@ -109,9 +109,21 @@ class VoterController extends Controller
         $voter = Pemilih::findOrFail($nik);
         $nama = $voter->nama;
 
+        if ($voter->pilih === 'T' || $voter->voted_at !== null) {
+            $msg = "Tidak dapat menghapus pemilih [{$nama}] karena hak suaranya telah digunakan dan tercatat dalam audit pemilihan.";
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            return redirect()->route('admin.voters.index')->with('error', $msg);
+        }
+
         $voter->delete();
 
         ActivityLog::log('DELETE_VOTER', 'PEMILIH', "Menghapus pemilih: {$nama} (NIK: {$nik})");
+
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json(['success' => true, 'message' => "Data pemilih {$nama} berhasil dihapus."]);
+        }
 
         return redirect()->route('admin.voters.index')->with('success', "Data pemilih {$nama} berhasil dihapus.");
     }

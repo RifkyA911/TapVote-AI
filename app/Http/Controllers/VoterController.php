@@ -9,6 +9,7 @@ use App\Models\HasilPengawas;
 use App\Models\KandidatKetua;
 use App\Models\KandidatPengawas;
 use App\Models\Pemilih;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -132,12 +133,10 @@ class VoterController extends Controller
 
         $candidates = array_unique(array_filter($candidates));
 
-        // Cari pemilih berdasarkan RFID UID, NIK, atau representasi konversi
-        $pemilih = Pemilih::where(function ($query) use ($candidates, $search) {
+        // Cari pemilih berdasarkan RFID UID, NIK, atau representasi konversi secara presisi
+        $pemilih = Pemilih::where(function ($query) use ($candidates) {
             $query->whereIn('rfid', $candidates)
-                  ->orWhereIn('nik', $candidates)
-                  ->orWhere('rfid', 'LIKE', '%' . $search . '%')
-                  ->orWhere('nik', 'LIKE', '%' . $search . '%');
+                  ->orWhereIn('nik', $candidates);
         })->first();
 
         if (!$pemilih) {
@@ -217,6 +216,12 @@ class VoterController extends Controller
                 ->with('error', 'Bilik suara tidak dapat diakses karena sistem pemungutan suara sedang ' . ($status === 'PAUSED' ? 'di-jeda sementara' : 'resmi ditutup') . '.');
         }
 
+        $deadline = AppSetting::get('voting_deadline');
+        if ($deadline && Carbon::parse($deadline)->isPast()) {
+            return redirect()->route('voter.tap')
+                ->with('error', 'Bilik suara ditutup: Batas waktu pemilihan telah berakhir (' . Carbon::parse($deadline)->timezone('Asia/Jakarta')->format('d M Y, H:i') . ' WIB).');
+        }
+
         $voterNik = session('voter_nik');
         if (!$voterNik) {
             return redirect()->route('voter.tap');
@@ -227,6 +232,12 @@ class VoterController extends Controller
             session()->forget('voter_nik');
             return redirect()->route('voter.tap')
                 ->with('error', 'Akses Ditolak: Anda tidak diizinkan mengikuti pemilihan & undian. Silakan hubungi panitia.');
+        }
+
+        if ($pemilih->sudahMemilih()) {
+            session()->forget('voter_nik');
+            return redirect()->route('voter.tap')
+                ->with('error', 'Hak suara Anda telah digunakan sebelumnya.');
         }
 
         $kandidatKetua = KandidatKetua::orderBy('nomor_urut', 'asc')->get();
@@ -242,16 +253,56 @@ class VoterController extends Controller
     {
         $status = AppSetting::get('voting_status', 'STARTED');
         if ($status !== 'STARTED') {
-            return redirect()->route('voter.tap')
-                ->with('error', 'Suara Anda tidak dapat dikirim karena sistem pemungutan suara sedang ' . ($status === 'PAUSED' ? 'di-jeda sementara' : 'resmi ditutup') . '.');
+            $msg = 'Suara Anda tidak dapat dikirim karena sistem pemungutan suara sedang ' . ($status === 'PAUSED' ? 'di-jeda sementara' : 'resmi ditutup') . '.';
+            if ($request->wantsJson() || $request->ajax() || $request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                    'redirect' => route('voter.tap'),
+                ], 403);
+            }
+            return redirect()->route('voter.tap')->with('error', $msg);
+        }
+
+        $deadline = AppSetting::get('voting_deadline');
+        if ($deadline && Carbon::parse($deadline)->isPast()) {
+            $msg = 'Waktu pemungutan suara telah berakhir (Melewati batas: ' . Carbon::parse($deadline)->timezone('Asia/Jakarta')->format('d M Y, H:i') . ' WIB).';
+            if ($request->wantsJson() || $request->ajax() || $request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                    'redirect' => route('voter.tap'),
+                ], 403);
+            }
+            return redirect()->route('voter.tap')->with('error', $msg);
         }
 
         $voterNik = session('voter_nik');
-        $pemilih = Pemilih::find($voterNik);
+        $pemilih = $voterNik ? Pemilih::find($voterNik) : null;
         if (!$pemilih || !$pemilih->can_raffle) {
             session()->forget('voter_nik');
-            return redirect()->route('voter.tap')
-                ->with('error', 'Akses Ditolak: Anda tidak diizinkan memberikan suara.');
+            $msg = 'Akses Ditolak: Anda tidak diizinkan memberikan suara.';
+            if ($request->wantsJson() || $request->ajax() || $request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                    'redirect' => route('voter.tap'),
+                ], 403);
+            }
+            return redirect()->route('voter.tap')->with('error', $msg);
+        }
+
+        if ($pemilih->sudahMemilih()) {
+            session()->forget('voter_nik');
+            $msg = 'Hak suara Anda telah digunakan sebelumnya.';
+            if ($request->wantsJson() || $request->ajax() || $request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $msg,
+                    'redirect' => route('voter.tap'),
+                ], 403);
+            }
+            return redirect()->route('voter.tap')->with('error', $msg);
         }
 
         $request->validate([

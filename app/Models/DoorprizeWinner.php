@@ -30,4 +30,14 @@ class DoorprizeWinner extends Model
     {
         return $this->belongsTo(Pemilih::class, 'nik', 'nik');
     }
+
+    public function getClaimStatusAttribute(): string
+    {
+        return $this->status ?? 'pending';
+    }
+
+    public function getPemilihNikAttribute(): ?string
+    {
+        return $this->nik;
+    }
 }

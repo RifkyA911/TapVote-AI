@@ -1021,6 +1021,13 @@
                 // Tampilkan Animasi Gebyar Meriah Congrats selama 5 detik
                 showGebyarCongrats(data.redirect || "{{ route('voter.tap') }}");
             } else {
+                if (data.redirect && (response.status === 403 || response.status === 401)) {
+                    showSpicyError(data.message || "{{ __('Hak suara Anda tidak dapat diproses.') }}");
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 2500);
+                    return;
+                }
                 throw new Error(data.message || "{{ __('Gagal mencatat suara. Silakan coba lagi.') }}");
             }
 

@@ -364,61 +364,64 @@ class ReportController extends Controller
              'doorprize_id' => 'required|exists:doorprizes,id',
          ]);
 
-         $doorprize = Doorprize::withCount('winners')->findOrFail($request->doorprize_id);
+         return DB::transaction(function () use ($request) {
+             $doorprize = Doorprize::withCount('winners')->lockForUpdate()->findOrFail($request->doorprize_id);
 
-         if ($doorprize->remaining_slots <= 0) {
-             return response()->json([
-                 'success' => false,
-                 'message' => "Kuota hadiah [{$doorprize->title}] sudah habis!",
-             ], 422);
-         }
+             if ($doorprize->remaining_slots <= 0) {
+                 return response()->json([
+                     'success' => false,
+                     'message' => "Kuota hadiah [{$doorprize->title}] sudah habis!",
+                 ], 422);
+             }
 
-         // Exclude anggota yang sudah memenangkan hadiah ini
-         $existingWinners = DoorprizeWinner::where('doorprize_id', $doorprize->id)->pluck('nik');
+             // Exclude anggota yang sudah memenangkan hadiah ini
+             $existingWinners = DoorprizeWinner::where('doorprize_id', $doorprize->id)->pluck('nik');
 
-         $winnerVoter = Pemilih::where('pilih', 'T')
-             ->where('can_raffle', true)
-             ->whereNotIn('nik', $existingWinners)
-             ->inRandomOrder()
-             ->first();
+             $winnerVoter = Pemilih::where('pilih', 'T')
+                 ->where('can_raffle', true)
+                 ->whereNotIn('nik', $existingWinners)
+                 ->inRandomOrder()
+                 ->lockForUpdate()
+                 ->first();
 
-         if (!$winnerVoter) {
-             return response()->json([
-                 'success' => false,
-                 'message' => "Tidak ada anggota sah yang tersisa untuk memenangkan hadiah ini.",
-             ], 422);
-         }
+             if (!$winnerVoter) {
+                 return response()->json([
+                     'success' => false,
+                     'message' => "Tidak ada anggota sah yang tersisa untuk memenangkan hadiah ini.",
+                 ], 422);
+             }
 
-         // Simpan log pemenang resmi
-         $winner = DoorprizeWinner::create([
-             'doorprize_id' => $doorprize->id,
-             'nik' => $winnerVoter->nik,
-             'won_at' => now(),
-         ]);
-
-         ActivityLog::log(
-             'DOORPRIZE_WINNER',
-             'DOORPRIZE',
-             "Anggota {$winnerVoter->nama} (NIK: {$winnerVoter->nik}, Dept: {$winnerVoter->dept}) memenangkan Doorprize: {$doorprize->title}"
-         );
-
-         return response()->json([
-             'success' => true,
-             'winner' => [
-                 'id' => $winner->id,
+             // Simpan log pemenang resmi
+             $winner = DoorprizeWinner::create([
+                 'doorprize_id' => $doorprize->id,
                  'nik' => $winnerVoter->nik,
-                 'nama' => $winnerVoter->nama,
-                 'dept' => $winnerVoter->dept,
-                 'won_at' => $winner->won_at->format('H:i:s d/m/Y'),
-             ],
-             'doorprize' => [
-                 'id' => $doorprize->id,
-                 'title' => $doorprize->title,
-                 'category' => $doorprize->category,
-                 'remaining_slots' => $doorprize->remaining_slots - 1,
-             ],
-             'message' => "Selamat kepada {$winnerVoter->nama} telah memenangkan {$doorprize->title}!"
-         ]);
+                 'won_at' => now(),
+             ]);
+
+             ActivityLog::log(
+                 'DOORPRIZE_WINNER',
+                 'DOORPRIZE',
+                 "Anggota {$winnerVoter->nama} (NIK: {$winnerVoter->nik}, Dept: {$winnerVoter->dept}) memenangkan Doorprize: {$doorprize->title}"
+             );
+
+             return response()->json([
+                 'success' => true,
+                 'winner' => [
+                     'id' => $winner->id,
+                     'nik' => $winnerVoter->nik,
+                     'nama' => $winnerVoter->nama,
+                     'dept' => $winnerVoter->dept,
+                     'won_at' => $winner->won_at->format('H:i:s d/m/Y'),
+                 ],
+                 'doorprize' => [
+                     'id' => $doorprize->id,
+                     'title' => $doorprize->title,
+                     'category' => $doorprize->category,
+                     'remaining_slots' => $doorprize->fresh()->remaining_slots,
+                 ],
+                 'message' => "Selamat kepada {$winnerVoter->nama} telah memenangkan {$doorprize->title}!"
+             ]);
+         });
      }
 
      /**
