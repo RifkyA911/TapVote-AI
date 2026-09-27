@@ -10,10 +10,10 @@
         <div>
             <div class="flex items-center space-x-2 mb-1.5">
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                    System Control Center
+                    {{ __('System Control Center') }}
                 </span>
                 <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                    Realtime Sync
+                    {{ __('Realtime Sync') }}
                 </span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">{{ __('System Settings & Controls') }}</h2>
@@ -215,9 +215,10 @@
                         <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Public Realtime SSE Stream') }}</strong>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Izinkan publik mengakses siaran langsung Server-Sent Events di beranda utama tanpa login admin.') }}</span>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
+                    <label class="relative inline-flex items-center cursor-pointer select-none ml-3 shrink-0">
                         <input type="checkbox" name="public_sse_enabled" value="1" {{ ($settings['public_sse_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-checked:bg-blue-600 rounded-full transition-colors duration-200"></div>
+                        <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-5 pointer-events-none"></div>
                     </label>
                 </div>
 
@@ -227,9 +228,10 @@
                         <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Tampilkan NIK Kandidat di Surat Suara') }}</strong>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Menampilkan NIK resmi kandidat di bawah nama pada bilik pemungutan suara.') }}</span>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
+                    <label class="relative inline-flex items-center cursor-pointer select-none ml-3 shrink-0">
                         <input type="checkbox" name="show_candidate_nik" value="1" {{ ($settings['show_candidate_nik'] ?? '0') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-checked:bg-blue-600 rounded-full transition-colors duration-200"></div>
+                        <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-5 pointer-events-none"></div>
                     </label>
                 </div>
 
@@ -239,9 +241,10 @@
                         <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Sensor Web NFC (Mobile Phones)') }}</strong>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Aktifkan NDEF Reader hardware bawaan smartphone Chrome Android untuk tap kartu anggota.') }}</span>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
+                    <label class="relative inline-flex items-center cursor-pointer select-none ml-3 shrink-0">
                         <input type="checkbox" name="enable_nfc_mobile" value="1" {{ ($settings['enable_nfc_mobile'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-checked:bg-blue-600 rounded-full transition-colors duration-200"></div>
+                        <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-5 pointer-events-none"></div>
                     </label>
                 </div>
 
@@ -251,9 +254,10 @@
                         <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Tampilkan Akun Demo di Halaman Voter') }}</strong>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Tampilkan tabel akun demo untuk simulasi cepat penguji / demonstrasi panitia.') }}</span>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
+                    <label class="relative inline-flex items-center cursor-pointer select-none ml-3 shrink-0">
                         <input type="checkbox" name="enable_demo_accounts" value="1" {{ ($settings['enable_demo_accounts'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-checked:bg-blue-600 rounded-full transition-colors duration-200"></div>
+                        <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-5 pointer-events-none"></div>
                     </label>
                 </div>
 
@@ -263,9 +267,10 @@
                         <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Sambutan Suara Otomatis (Voice Greeting)') }}</strong>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Auto-play suara sambutan "Selamat Datang Mas Admin" & panduan bilik suara.') }}</span>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
+                    <label class="relative inline-flex items-center cursor-pointer select-none ml-3 shrink-0">
                         <input type="checkbox" name="enable_voice_greeting" value="1" {{ ($settings['enable_voice_greeting'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-checked:bg-blue-600 rounded-full transition-colors duration-200"></div>
+                        <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-5 pointer-events-none"></div>
                     </label>
                 </div>
 
@@ -275,9 +280,10 @@
                         <strong class="text-xs sm:text-sm text-slate-900 dark:text-white block font-extrabold">{{ __('Efek Suara Audio (Sound FX)') }}</strong>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Suara klik tombol, tap RFID, submit bilik, dan gong undian doorprize.') }}</span>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer ml-3 shrink-0">
+                    <label class="relative inline-flex items-center cursor-pointer select-none ml-3 shrink-0">
                         <input type="checkbox" name="enable_sound_fx" value="1" {{ ($settings['enable_sound_fx'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-checked:bg-blue-600 rounded-full transition-colors duration-200"></div>
+                        <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-5 pointer-events-none"></div>
                     </label>
                 </div>
 
@@ -501,7 +507,7 @@ function triggerAutosave() {
     const statusBox = document.getElementById('autosave-status');
     
     dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping';
-    text.innerText = 'Menyimpan...';
+    text.innerText = '{{ __('Menyimpan...') }}';
     statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-xs font-mono font-bold border border-amber-300 dark:border-amber-800 shadow-2xs';
 
     autosaveTimer = setTimeout(async () => {
@@ -521,16 +527,16 @@ function triggerAutosave() {
             const data = await res.json();
             if (res.ok && data.success) {
                 dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500';
-                text.innerText = 'Tersimpan ' + data.saved_at;
+                text.innerText = '{{ __('Tersimpan') }} ' + data.saved_at;
                 statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-mono font-bold border border-emerald-300 dark:border-emerald-800 shadow-2xs';
             } else {
                 dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
-                text.innerText = 'Gagal menyimpan';
+                text.innerText = '{{ __('Gagal menyimpan') }}';
                 statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 text-xs font-mono font-bold border border-rose-300 dark:border-rose-800 shadow-2xs';
             }
         } catch(err) {
             dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
-            text.innerText = 'Koneksi terputus';
+            text.innerText = '{{ __('Koneksi terputus') }}';
             statusBox.className = 'inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 text-xs font-mono font-bold border border-rose-300 dark:border-rose-800 shadow-2xs';
         }
     }, 600);
@@ -571,7 +577,7 @@ async function testGeminiConnection() {
 
     btn.disabled = true;
     icon.innerHTML = '<span class="inline-block animate-spin">⏳</span>';
-    label.innerText = 'Testing...';
+    label.innerText = '{{ __('Testing...') }}';
     resultBox.classList.add('hidden');
 
     try {
@@ -592,7 +598,7 @@ async function testGeminiConnection() {
             resultBox.innerHTML = `
                 <span class="text-base">✅</span>
                 <div>
-                    <strong class="font-bold block">${data.message || 'Koneksi Sukses!'}</strong>
+                    <strong class="font-bold block">${data.message || '{{ __('Koneksi Sukses!') }}'}</strong>
                     <span class="text-[11px] text-emerald-700 dark:text-emerald-400">Model: ${data.model || 'gemini-2.0-flash'} • Latensi: ${data.latency_ms || 0}ms</span>
                 </div>
             `;
@@ -601,8 +607,8 @@ async function testGeminiConnection() {
             resultBox.innerHTML = `
                 <span class="text-base">❌</span>
                 <div>
-                    <strong class="font-bold block">Koneksi Gagal</strong>
-                    <span class="text-[11px] text-rose-700 dark:text-rose-400">${data.message || 'Periksa kembali API Key Anda.'}</span>
+                    <strong class="font-bold block">{{ __('Koneksi Gagal') }}</strong>
+                    <span class="text-[11px] text-rose-700 dark:text-rose-400">${data.message || '{{ __('Periksa kembali API Key Anda.') }}'}</span>
                 </div>
             `;
         }
@@ -612,14 +618,14 @@ async function testGeminiConnection() {
         resultBox.innerHTML = `
             <span class="text-base">⚠️</span>
             <div>
-                <strong class="font-bold block">Kesalahan Jaringan</strong>
+                <strong class="font-bold block">{{ __('Kesalahan Jaringan') }}</strong>
                 <span class="text-[11px] text-rose-700 dark:text-rose-400">${err.message}</span>
             </div>
         `;
     } finally {
         btn.disabled = false;
         icon.innerHTML = '⚡';
-        label.innerText = 'Test AI Connection';
+        label.innerText = '{{ __('Test AI Connection') }}';
     }
 }
 

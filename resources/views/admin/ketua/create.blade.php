@@ -1,16 +1,16 @@
 @extends('layouts.admin')
 
-@section('title', 'Tambah Kandidat Ketua')
+@section('title', __('Tambah Kandidat Ketua'))
 
 @section('content')
 <div class="max-w-2xl mx-auto space-y-6">
     <div class="flex items-center justify-between">
         <div>
-            <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Tambah Calon Ketua Koperasi</h2>
-            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Lengkapi informasi biodata, visi, dan misi kandidat.</p>
+            <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">{{ __('Tambah Calon Ketua Koperasi') }}</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">{{ __('Lengkapi informasi biodata, visi, dan misi kandidat.') }}</p>
         </div>
         <a href="{{ route('admin.ketua.index') }}" class="text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-            ← Kembali
+            ← {{ __('Kembali') }}
         </a>
     </div>
 
@@ -18,7 +18,7 @@
         <div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs sm:text-sm">
             <div class="font-bold flex items-center space-x-2 mb-1">
                 <svg class="w-4 h-4 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                <span>Terdapat kesalahan pada input form:</span>
+                <span>{{ __('Terdapat kesalahan pada input form:') }}</span>
             </div>
             <ul class="list-disc list-inside space-y-0.5">
                 @foreach($errors->all() as $error)
@@ -34,29 +34,29 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nomor Urut</label>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Nomor Urut') }}</label>
                     <input type="number" name="nomor_urut" value="{{ old('nomor_urut', $nextNomor) }}" required min="1" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">NIK (Nomor Induk Kandidat)</label>
-                    <input type="text" name="nik" value="{{ old('nik') }}" required placeholder="Contoh: KT04 atau 102488" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('NIK (Nomor Induk Kandidat)') }}</label>
+                    <input type="text" name="nik" value="{{ old('nik') }}" required placeholder="{{ __('Contoh: KT04 atau 102488') }}" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">
                 </div>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nama Lengkap & Gelar</label>
-                <input type="text" name="nama" value="{{ old('nama') }}" required placeholder="Contoh: Ir. Muhammad Rizky, M.M." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Nama Lengkap & Gelar') }}</label>
+                <input type="text" name="nama" value="{{ old('nama') }}" required placeholder="{{ __('Contoh: Ir. Muhammad Rizky, M.M.') }}" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">
             </div>
 
             <div class="space-y-3">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Upload File Foto Profile (Disimpan ke Storage)</label>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Upload File Foto Profile (Disimpan ke Storage)') }}</label>
                         <input type="file" name="foto" id="foto-input" accept="image/*" onchange="handlePhotoChange(event)" class="w-full px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-50 dark:file:bg-blue-950/60 file:text-blue-700 dark:file:text-blue-300 cursor-pointer">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Atau Gunakan URL Gambar Eksternal</label>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Atau Gunakan URL Gambar Eksternal') }}</label>
                         <input type="url" name="foto_url" value="{{ old('foto_url') }}" placeholder="https://..." class="w-full px-4 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">
                     </div>
                 </div>
@@ -68,31 +68,31 @@
                         <svg id="preview-placeholder-icon" class="w-6 h-6 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     </div>
                     <div class="text-xs text-slate-500 dark:text-slate-400 space-y-0.5">
-                        <p class="font-bold text-slate-800 dark:text-slate-200" id="preview-filename">Belum ada file dipilih</p>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Format: JPG, JPEG, PNG, WEBP (Maksimal 10MB).</p>
-                        <p class="text-[11px] font-semibold text-blue-700 dark:text-blue-400">Folder Storage: <code class="font-mono bg-blue-50 dark:bg-blue-950/60 px-1 py-0.5 rounded text-blue-800 dark:text-blue-300">storage/app/public/kandidat_ketua</code></p>
+                        <p class="font-bold text-slate-800 dark:text-slate-200" id="preview-filename">{{ __('Belum ada file dipilih') }}</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">{{ __('Format: JPG, JPEG, PNG, WEBP (Maksimal 10MB).') }}</p>
+                        <p class="text-[11px] font-semibold text-blue-700 dark:text-blue-400">{{ __('Folder Storage:') }} <code class="font-mono bg-blue-50 dark:bg-blue-950/60 px-1 py-0.5 rounded text-blue-800 dark:text-blue-300">storage/app/public/kandidat_ketua</code></p>
                     </div>
                 </div>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Visi (Tipe TEXT)</label>
-                <textarea name="visi" rows="3" required placeholder="Tuliskan visi calon ketua koperasi..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">{{ old('visi') }}</textarea>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Visi (Tipe TEXT)') }}</label>
+                <textarea name="visi" rows="3" required placeholder="{{ __('Tuliskan visi calon ketua koperasi...') }}" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">{{ old('visi') }}</textarea>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Misi (Tipe TEXT)</label>
-                <textarea name="misi" rows="4" required placeholder="Tuliskan poin-poin misi calon ketua koperasi..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">{{ old('misi') }}</textarea>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Misi (Tipe TEXT)') }}</label>
+                <textarea name="misi" rows="4" required placeholder="{{ __('Tuliskan poin-poin misi calon ketua koperasi...') }}" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">{{ old('misi') }}</textarea>
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Deskripsi Singkat / Rekam Jejak</label>
-                <textarea name="deskripsi" rows="2" placeholder="Pengalaman atau latar belakang organisasi..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">{{ old('deskripsi') }}</textarea>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{{ __('Deskripsi Singkat / Rekam Jejak') }}</label>
+                <textarea name="deskripsi" rows="2" placeholder="{{ __('Pengalaman atau latar belakang organisasi...') }}" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 outline-none">{{ old('deskripsi') }}</textarea>
             </div>
 
             <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end space-x-3">
-                <a href="{{ route('admin.ketua.index') }}" class="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition border border-transparent dark:border-slate-700">Batal</a>
-                <button type="submit" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition">Simpan Calon Ketua</button>
+                <a href="{{ route('admin.ketua.index') }}" class="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition border border-transparent dark:border-slate-700">{{ __('Batal') }}</a>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition">{{ __('Simpan Calon Ketua') }}</button>
             </div>
         </form>
     </div>

@@ -256,12 +256,12 @@
                                 @endif
                             </td>
                             <td class="py-3 px-3 text-center whitespace-nowrap">
-                                <label class="hui-switch" title="{{ $v->can_raffle ? __('Boleh Ikut Undian & Voting (Klik untuk menonaktifkan)') : __('Tidak Boleh Ikut Undian & Voting (Klik untuk mengaktifkan)') }}">
+                                <label class="relative inline-flex items-center cursor-pointer select-none" title="{{ $v->can_raffle ? __('Boleh Ikut Undian & Voting (Klik untuk menonaktifkan)') : __('Tidak Boleh Ikut Undian & Voting (Klik untuk mengaktifkan)') }}">
                                     <input type="checkbox" class="sr-only peer" {{ $v->can_raffle ? 'checked' : '' }}
                                            onchange="toggleVoterRaffle('{{ $v->nik }}', this)"
                                            data-nik="{{ $v->nik }}">
-                                    <span class="hui-switch-track peer-checked:bg-emerald-500"></span>
-                                    <span class="hui-switch-knob peer-checked:translate-x-[18px]"></span>
+                                    <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-checked:bg-emerald-500 rounded-full transition-colors duration-200"></div>
+                                    <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-5 pointer-events-none"></div>
                                 </label>
                             </td>
                             <td class="py-3 px-3 text-center font-mono text-slate-500 dark:text-slate-400 text-xs whitespace-nowrap">
@@ -566,12 +566,12 @@
 
                 const isRaffle = v.can_raffle !== false;
                 const raffleSwitch = `
-                    <label class="hui-switch">
+                    <label class="relative inline-flex items-center cursor-pointer select-none">
                         <input type="checkbox" class="sr-only peer" ${isRaffle ? 'checked' : ''}
                                onchange="toggleVoterRaffle('${v.nik}', this)"
                                data-nik="${v.nik}">
-                        <span class="hui-switch-track peer-checked:bg-emerald-500"></span>
-                        <span class="hui-switch-knob peer-checked:translate-x-[18px]"></span>
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-checked:bg-emerald-500 rounded-full transition-colors duration-200"></div>
+                        <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out peer-checked:translate-x-5 pointer-events-none"></div>
                     </label>
                 `;
 
@@ -687,50 +687,5 @@
     });
 </script>
 @endpush
-
-@push('styles')
-<style>
-    .hui-switch {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        width: 44px;
-        height: 24px;
-        cursor: pointer;
-        user-select: none;
-    }
-    .hui-switch-track {
-        position: absolute;
-        inset: 0;
-        border-radius: 9999px;
-        background-color: #cbd5e1;
-        transition: background-color 200ms ease-in-out;
-    }
-    .dark .hui-switch-track {
-        background-color: #475569;
-    }
-    .hui-switch-knob {
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        width: 20px;
-        height: 20px;
-        border-radius: 9999px;
-        background: white;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.1);
-        transition: transform 200ms ease-in-out;
-        pointer-events: none;
-    }
-    .hui-switch input:checked ~ .hui-switch-track {
-        background-color: #10b981;
-    }
-    .hui-switch input:checked ~ .hui-switch-knob {
-        transform: translateX(20px);
-    }
-    .hui-switch input:focus-visible ~ .hui-switch-track {
-        outline: 2px solid #10b981;
-        outline-offset: 2px;
-    }
-</style>
-@endpush
 @endsection
+

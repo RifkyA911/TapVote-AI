@@ -118,7 +118,7 @@
                         <tr draggable="true" class="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition candidate-row cursor-grab active:cursor-grabbing group" data-nik="{{ $p->nik }}" data-name="{{ strtolower($p->nama) }}" data-visi="{{ strtolower($p->visi) }}">
                             <!-- Drag Handle Column -->
                             <td class="py-3 px-2 text-center text-slate-400 dark:text-slate-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition select-none font-bold text-base">
-                                <span title="Drag to reorder ballot priority">⋮⋮</span>
+                                <span title="{{ __('Drag to reorder ballot priority') }}">⋮⋮</span>
                             </td>
 
                             <!-- Ballot Number -->
@@ -132,9 +132,9 @@
                             <td class="py-3 px-3 text-center">
                                 <button 
                                     type="button" 
-                                    onclick="openCardlessPreview('{{ $fotoKandidat }}', '{{ addslashes($p->nama) }}', 'No. {{ $p->nomor_urut }} • Supervisor', '{{ $p->nik }}')"
+                                    onclick="openCardlessPreview('{{ $fotoKandidat }}', '{{ addslashes($p->nama) }}', '{{ __('No.') }} {{ $p->nomor_urut }} • {{ __('Supervisor') }}', '{{ $p->nik }}')"
                                     class="group relative w-14 h-18 rounded-xl overflow-hidden bg-slate-900 border-2 border-slate-200 dark:border-slate-700 hover:border-emerald-500 transition-all duration-300 shadow-2xs hover:shadow-md cursor-pointer inline-block"
-                                    title="Click to view cardless high-res photo"
+                                    title="{{ __('Click to view cardless high-res photo') }}"
                                 >
                                     <img src="{{ $fotoKandidat }}" alt="{{ $p->nama }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
                                     <div class="absolute inset-0 bg-emerald-600/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition duration-200">
@@ -194,7 +194,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="py-12 text-center text-slate-400 dark:text-slate-500">
+                            <td colspan="7" class="py-12 text-center text-slate-400 dark:text-slate-500">
                                 {{ __('No Supervisor candidates found. Click "Add Supervisor Candidate" to register.') }}
                             </td>
                         </tr>
@@ -227,9 +227,9 @@
 
             <div class="absolute bottom-5 left-5 right-5 text-white">
                 <span id="cardless-modal-badge" class="px-2.5 py-0.5 rounded-lg text-[11px] font-black uppercase tracking-wider bg-emerald-600 text-white border border-emerald-400/40 inline-block mb-1">
-                    No. 1 • Supervisor
+                    {{ __('No.') }} 1 • {{ __('Supervisor') }}
                 </span>
-                <h3 id="cardless-modal-name" class="text-2xl font-black text-white tracking-tight">Candidate Name</h3>
+                <h3 id="cardless-modal-name" class="text-2xl font-black text-white tracking-tight">{{ __('Candidate Name') }}</h3>
                 <p id="cardless-modal-nik" class="text-xs text-slate-300 font-mono mt-0.5">NIK: -</p>
             </div>
         </div>
