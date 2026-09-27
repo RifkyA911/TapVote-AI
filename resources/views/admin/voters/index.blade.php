@@ -256,16 +256,13 @@
                                 @endif
                             </td>
                             <td class="py-3 px-3 text-center whitespace-nowrap">
-                                <button type="button" 
-                                        onclick="toggleVoterRaffle('{{ $v->nik }}', this)" 
-                                        data-nik="{{ $v->nik }}"
-                                        data-active="{{ $v->can_raffle ? '1' : '0' }}"
-                                        class="relative inline-flex items-center h-[22px] w-[40px] shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none {{ $v->can_raffle ? 'bg-emerald-500' : 'bg-slate-300' }}"
-                                        role="switch" 
-                                        aria-checked="{{ $v->can_raffle ? 'true' : 'false' }}"
-                                        title="{{ $v->can_raffle ? __('Boleh Ikut Undian & Voting (Klik untuk menonaktifkan)') : __('Tidak Boleh Ikut Undian & Voting (Klik untuk mengaktifkan)') }}">
-                                    <span class="pointer-events-none inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out" style="transform: translateX({{ $v->can_raffle ? '20px' : '2px' }})"></span>
-                                </button>
+                                <label class="hui-switch" title="{{ $v->can_raffle ? __('Boleh Ikut Undian & Voting (Klik untuk menonaktifkan)') : __('Tidak Boleh Ikut Undian & Voting (Klik untuk mengaktifkan)') }}">
+                                    <input type="checkbox" class="sr-only peer" {{ $v->can_raffle ? 'checked' : '' }}
+                                           onchange="toggleVoterRaffle('{{ $v->nik }}', this)"
+                                           data-nik="{{ $v->nik }}">
+                                    <span class="hui-switch-track peer-checked:bg-emerald-500"></span>
+                                    <span class="hui-switch-knob peer-checked:translate-x-[18px]"></span>
+                                </label>
                             </td>
                             <td class="py-3 px-3 text-center font-mono text-slate-500 text-xs whitespace-nowrap">
                                 {{ $v->voted_at ? $v->voted_at->format('H:i:s d/m/Y') : '-' }}
@@ -569,16 +566,13 @@
 
                 const isRaffle = v.can_raffle !== false;
                 const raffleSwitch = `
-                    <button type="button" 
-                            onclick="toggleVoterRaffle('${v.nik}', this)" 
-                            data-nik="${v.nik}"
-                            data-active="${isRaffle ? '1' : '0'}"
-                            class="relative inline-flex items-center h-[22px] w-[40px] shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${isRaffle ? 'bg-emerald-500' : 'bg-slate-300'}"
-                            role="switch" 
-                            aria-checked="${isRaffle ? 'true' : 'false'}"
-                            title="${isRaffle ? '{{ __('Boleh Ikut Undian & Voting (Klik untuk menonaktifkan)') }}' : '{{ __('Tidak Boleh Ikut Undian & Voting (Klik untuk mengaktifkan)') }}'}">
-                        <span class="pointer-events-none inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out" style="transform: translateX(${isRaffle ? '20px' : '2px'})"></span>
-                    </button>
+                    <label class="hui-switch">
+                        <input type="checkbox" class="sr-only peer" ${isRaffle ? 'checked' : ''}
+                               onchange="toggleVoterRaffle('${v.nik}', this)"
+                               data-nik="${v.nik}">
+                        <span class="hui-switch-track"></span>
+                        <span class="hui-switch-knob"></span>
+                    </label>
                 `;
 
                 rowsHtml += `
@@ -648,14 +642,14 @@
         container.innerHTML = html;
     }
 
-    async function toggleVoterRaffle(nik, btnEl) {
-        if (!btnEl) return;
-        const currentActive = btnEl.getAttribute('data-active') === '1';
-        const nextActive = !currentActive;
+    async function toggleVoterRaffle(nik, inputEl) {
+        if (!inputEl) return;
+        const nextActive = inputEl.checked;
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        const label = inputEl.closest('.hui-switch');
 
-        btnEl.disabled = true;
-        btnEl.style.opacity = '0.6';
+        inputEl.disabled = true;
+        if (label) label.style.opacity = '0.5';
 
         try {
             const res = await fetch(`/admin/voters/${encodeURIComponent(nik)}/toggle-raffle`, {
@@ -669,33 +663,21 @@
             });
             const data = await res.json();
             if (data.success) {
-                const isActive = data.can_raffle;
-                btnEl.setAttribute('data-active', isActive ? '1' : '0');
-                btnEl.setAttribute('aria-checked', isActive ? 'true' : 'false');
-                const dot = btnEl.querySelector('span');
-                if (isActive) {
-                    btnEl.classList.remove('bg-slate-300');
-                    btnEl.classList.add('bg-emerald-500');
-                    if (dot) dot.style.transform = 'translateX(20px)';
-                    btnEl.title = "{{ __('Boleh Ikut Undian & Voting (Klik untuk menonaktifkan)') }}";
-                } else {
-                    btnEl.classList.remove('bg-emerald-500');
-                    btnEl.classList.add('bg-slate-300');
-                    if (dot) dot.style.transform = 'translateX(2px)';
-                    btnEl.title = "{{ __('Tidak Boleh Ikut Undian & Voting (Klik untuk mengaktifkan)') }}";
-                }
+                inputEl.checked = data.can_raffle;
                 if (window.SoundEffects && window.SoundEffects.click) {
                     window.SoundEffects.click();
                 }
             } else {
+                inputEl.checked = !nextActive;
                 alert(data.message || 'Gagal mengubah status undian.');
             }
         } catch (err) {
             console.error('Toggle error:', err);
+            inputEl.checked = !nextActive;
             alert('Terjadi kesalahan jaringan saat memperbarui status.');
         } finally {
-            btnEl.disabled = false;
-            btnEl.style.opacity = '1';
+            inputEl.disabled = false;
+            if (label) label.style.opacity = '1';
         }
     }
 
@@ -704,5 +686,48 @@
         executeQuery(1);
     });
 </script>
+@endpush
+
+@push('styles')
+<style>
+    .hui-switch {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        width: 44px;
+        height: 24px;
+        cursor: pointer;
+        user-select: none;
+    }
+    .hui-switch-track {
+        position: absolute;
+        inset: 0;
+        border-radius: 9999px;
+        background-color: #cbd5e1;
+        transition: background-color 200ms ease-in-out;
+    }
+    .hui-switch-knob {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 9999px;
+        background: white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.1);
+        transition: transform 200ms ease-in-out;
+        pointer-events: none;
+    }
+    .hui-switch input:checked ~ .hui-switch-track {
+        background-color: #10b981;
+    }
+    .hui-switch input:checked ~ .hui-switch-knob {
+        transform: translateX(20px);
+    }
+    .hui-switch input:focus-visible ~ .hui-switch-track {
+        outline: 2px solid #10b981;
+        outline-offset: 2px;
+    }
+</style>
 @endpush
 @endsection
