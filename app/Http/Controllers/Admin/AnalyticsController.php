@@ -42,6 +42,10 @@ class AnalyticsController extends Controller
      */
     private function gatherAnalyticsData(Request $request)
     {
+        $category = $request->query('category', 'ketua');
+        if (!in_array($category, ['ketua', 'pengawas'])) {
+            $category = 'ketua';
+        }
         $selectedDept = $request->query('dept', '');
         $selectedDate = $request->query('date', '');
         $selectedShift = $request->query('shift', '');
@@ -183,7 +187,13 @@ class AnalyticsController extends Controller
             ->orderBy('nomor_urut', 'asc')
             ->get();
 
+        $totalVotesKetua = HasilKetua::count();
+        $totalVotesPengawas = HasilPengawas::count();
+
         return compact(
+            'category',
+            'totalVotesKetua',
+            'totalVotesPengawas',
             'totalVoters',
             'totalVoted',
             'remaining',

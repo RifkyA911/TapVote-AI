@@ -3,11 +3,11 @@
 @section('title', \App\Models\AppSetting::getElectionTitle())
 
 @section('content')
-<div class="flex-1 flex flex-col justify-between px-4 pt-2 sm:pt-3 pb-4 sm:pb-6 lg:pb-8 max-w-4xl mx-auto w-full min-h-screen">
+<div class="flex-1 flex flex-col justify-between px-4 pt-2 sm:pt-3 pb-4 sm:pb-6 lg:pb-8 max-w-6xl mx-auto w-full min-h-screen">
 
     <!-- Header Instansi & Navigasi -->
-    <header class="flex items-center justify-between gap-3 py-2 sm:py-2.5 border-b border-slate-200">
-        <div class="flex items-center space-x-3 min-w-0 max-w-[200px] sm:max-w-md">
+    <header class="flex items-center justify-between gap-4 py-2 sm:py-3 border-b border-slate-200">
+        <div class="flex items-center space-x-3 min-w-0 flex-1 pr-2">
             <a href="{{ route('home') }}" class="flex items-center space-x-2.5 sm:space-x-3 group cursor-pointer min-w-0" title="{{ __('Kembali ke Beranda Live Count') }}">
                 <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-600 group-hover:bg-blue-700 text-white flex items-center justify-center shadow-sm shrink-0 transition">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -15,8 +15,8 @@
                     </svg>
                 </div>
                 <div class="min-w-0">
-                    <h1 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition truncate">{{ \App\Models\AppSetting::getElectionTitle() }}</h1>
-                    <p class="text-[11px] text-slate-500 font-medium truncate">{{ __('Digital Voting Booth') }} • <span class="text-blue-600 font-bold">← {{ __('Beranda') }}</span></p>
+                    <h1 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 tracking-tight group-hover:text-blue-600 transition leading-snug">{{ \App\Models\AppSetting::getElectionTitle() }}</h1>
+                    <p class="text-[11px] text-slate-500 font-medium whitespace-nowrap">{{ __('Digital Voting Booth') }} • <span class="text-blue-600 font-bold">← {{ __('Beranda') }}</span></p>
                 </div>
             </a>
         </div>

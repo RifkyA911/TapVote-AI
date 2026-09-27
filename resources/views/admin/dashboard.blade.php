@@ -551,7 +551,8 @@
                     <input 
                         type="date" 
                         id="timeline-filter-date" 
-                        value="{{ date('Y-m-d') }}" 
+                        value="{{ date('Y-m-d') }}"
+                        onchange="applyTimelineFilters()"
                         class="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-bold text-slate-800 dark:text-white shadow-2xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     >
                 </div>
@@ -560,21 +561,18 @@
                     <label for="timeline-filter-dept" class="font-bold text-slate-600 dark:text-slate-300">{{ __('Departemen:') }}</label>
                     <select 
                         id="timeline-filter-dept" 
-                        class="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-bold text-slate-800 dark:text-white shadow-2xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        onchange="applyTimelineFilters()"
+                        class="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-bold text-slate-800 dark:text-white shadow-2xs focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer"
                     >
                         <option value="ALL">{{ __('Semua Departemen') }}</option>
-                        <option value="ICT">ICT</option>
-                        <option value="Keuangan">{{ __('Keuangan') }}</option>
-                        <option value="Operasional">{{ __('Operasional') }}</option>
-                        <option value="HRD">HRD</option>
-                        <option value="Logistik">{{ __('Logistik') }}</option>
-                        <option value="Produksi">{{ __('Produksi') }}</option>
-                        <option value="Pemasaran">{{ __('Pemasaran') }}</option>
+                        @foreach($allDepartments as $dName)
+                            <option value="{{ $dName }}">{{ $dName }}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 <label class="inline-flex items-center space-x-1.5 cursor-pointer font-bold text-slate-700 dark:text-slate-300 select-none py-1 px-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                    <input type="checkbox" id="timeline-filter-unknown" class="w-3.5 h-3.5 rounded text-rose-600 focus:ring-rose-500 border-slate-300">
+                    <input type="checkbox" id="timeline-filter-unknown" onchange="applyTimelineFilters()" class="w-3.5 h-3.5 rounded text-rose-600 focus:ring-rose-500 border-slate-300 cursor-pointer">
                     <span class="text-rose-600 dark:text-rose-400 font-extrabold">{{ __('Audit Kartu Asing') }}</span>
                 </label>
             </div>
@@ -582,19 +580,12 @@
             <div class="flex items-center space-x-2">
                 <button 
                     type="button" 
-                    onclick="applyTimelineFilters()" 
-                    class="px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-2xs transition cursor-pointer flex items-center space-x-1"
-                >
-                    <span>🔍</span>
-                    <span>{{ __('Terapkan') }}</span>
-                </button>
-                <button 
-                    type="button" 
                     onclick="resetTimelineFilters()" 
-                    class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-xs transition cursor-pointer"
+                    class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-xs transition cursor-pointer flex items-center space-x-1"
                     title="{{ __('Reset Filter') }}"
                 >
-                    {{ __('Reset') }}
+                    <span>↺</span>
+                    <span>{{ __('Reset') }}</span>
                 </button>
             </div>
         </div>
@@ -1023,40 +1014,42 @@
     // Interactive Timeline Filters: Date, Department, Unknown Cards
     function applyTimelineFilters() {
         if (!apexTimelineChart) return;
-        const dateVal = document.getElementById('timeline-filter-date')?.value;
-        const deptVal = document.getElementById('timeline-filter-dept')?.value;
+        const deptVal = document.getElementById('timeline-filter-dept')?.value || 'ALL';
         const unknownVal = document.getElementById('timeline-filter-unknown')?.checked;
 
         if (window.SoundEffects) window.SoundEffects.click();
 
-        // Calculate dynamic filter series based on selection
-        let baseSeries = [...(timelineData.series || [])];
-        let totalVal = timelineData.total_recorded || 0;
+        // 100% REAL series directly from database timelineData
+        let baseSeries = [];
+        let totalVal = 0;
+
+        if (deptVal !== 'ALL' && timelineData.dept_timeline && timelineData.dept_timeline[deptVal]) {
+            baseSeries = [...(timelineData.dept_timeline[deptVal].series || [])];
+            totalVal = timelineData.dept_timeline[deptVal].total || 0;
+        } else {
+            baseSeries = [...(timelineData.series || [])];
+            totalVal = timelineData.total_recorded || 0;
+        }
 
         if (unknownVal) {
-            // Display foreign card detection spike overlay
+            // Real audit unknown card logs from ActivityLog
+            const unknownSeries = timelineData.unknown_series || baseSeries.map(() => 0);
             apexTimelineChart.updateSeries([
                 {
-                    name: 'Suara Sah ' + (deptVal !== 'ALL' ? '(' + deptVal + ')' : ''),
+                    name: 'Suara Sah ' + (deptVal !== 'ALL' ? '(' + deptVal + ')' : '(Semua Dept)'),
                     data: baseSeries
                 },
                 {
                     name: 'Audit Kartu Asing / Belum Dikenali',
-                    data: baseSeries.map((v, i) => (i % 3 === 1 ? Math.min(3, Math.ceil(v * 0.3)) : 0))
+                    data: unknownSeries
                 }
             ]);
             apexTimelineChart.updateOptions({
                 colors: ['#2563eb', '#e11d48']
             });
+            const totalEl = document.getElementById('timeline-total');
+            if (totalEl) totalEl.textContent = totalVal;
             return;
-        }
-
-        if (deptVal !== 'ALL') {
-            // Scaled department volume
-            const deptFactors = { ICT: 0.35, Keuangan: 0.25, Operasional: 0.2, HRD: 0.1, Logistik: 0.05, Produksi: 0.03, Pemasaran: 0.02 };
-            const factor = deptFactors[deptVal] || 0.2;
-            baseSeries = baseSeries.map(val => Math.round(val * factor));
-            totalVal = baseSeries.reduce((a, b) => a + b, 0);
         }
 
         apexTimelineChart.updateSeries([{

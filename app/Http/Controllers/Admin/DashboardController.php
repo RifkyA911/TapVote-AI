@@ -32,6 +32,7 @@ class DashboardController extends Controller
         $votingStatus = AppSetting::get('voting_status', 'STARTED');
         $geminiKey = AppSetting::get('gemini_api_key', '');
         $timelineData = $this->gatherVotingTimeline();
+        $allDepartments = $timelineData['departments'] ?? [];
 
         return view('admin.dashboard', compact(
             'totalVoters',
@@ -45,7 +46,8 @@ class DashboardController extends Controller
             'aiConclusion',
             'votingStatus',
             'geminiKey',
-            'timelineData'
+            'timelineData',
+            'allDepartments'
         ));
     }
 
@@ -290,7 +292,7 @@ class DashboardController extends Controller
         $votedRecords = Pemilih::where('pilih', 'T')
             ->whereNotNull('voted_at')
             ->orderBy('voted_at', 'asc')
-            ->get(['voted_at']);
+            ->get(['dept', 'voted_at']);
 
         // Default buckets dari jam 07:00 sampai 17:00
         $hourBuckets = [];
@@ -330,14 +332,63 @@ class DashboardController extends Controller
             ->orderByDesc('total')
             ->first();
 
+        // 100% REAL Department Timeline Matrix
+        $allDepartments = Pemilih::distinct()
+            ->whereNotNull('dept')
+            ->where('dept', '!=', '')
+            ->orderBy('dept')
+            ->pluck('dept')
+            ->toArray();
+
+        $deptTimeline = [];
+        foreach ($allDepartments as $dept) {
+            $deptBuckets = array_fill_keys(array_keys($hourBuckets), 0);
+            $deptRecords = $votedRecords->where('dept', $dept);
+            foreach ($deptRecords as $r) {
+                if ($r->voted_at) {
+                    $h = $r->voted_at->timezone('Asia/Jakarta')->format('H') . ':00';
+                    if (isset($deptBuckets[$h])) {
+                        $deptBuckets[$h]++;
+                    }
+                }
+            }
+            $deptTimeline[$dept] = [
+                'series' => array_values($deptBuckets),
+                'total' => $deptRecords->count(),
+            ];
+        }
+
+        // 100% REAL Activity Log Audit (Kartu Asing / Tidak Dikenali)
+        $unknownBuckets = array_fill_keys(array_keys($hourBuckets), 0);
+        $unknownLogs = ActivityLog::where(function($q) {
+                $q->where('action', 'like', '%UNKNOWN%')
+                  ->orWhere('description', 'like', '%tidak dikenali%')
+                  ->orWhere('description', 'like', '%asing%');
+            })
+            ->whereNotNull('created_at')
+            ->get(['created_at']);
+
+        foreach ($unknownLogs as $log) {
+            if ($log->created_at) {
+                $h = $log->created_at->timezone('Asia/Jakarta')->format('H') . ':00';
+                if (isset($unknownBuckets[$h])) {
+                    $unknownBuckets[$h]++;
+                }
+            }
+        }
+
         return [
             'categories' => array_keys($hourBuckets),
             'series' => array_values($hourBuckets),
+            'departments' => $allDepartments,
+            'dept_timeline' => $deptTimeline,
+            'unknown_series' => array_values($unknownBuckets),
+            'total_unknown' => $unknownLogs->count(),
             'total_recorded' => $votedRecords->count(),
             'peak_hour' => $peakHour,
             'peak_count' => $peakCount,
             'avg_velocity' => $avgVelocity,
-            'busiest_dept' => $busiestDept ? $busiestDept->dept : 'ICT',
+            'busiest_dept' => $busiestDept ? $busiestDept->dept : '-',
         ];
     }
 

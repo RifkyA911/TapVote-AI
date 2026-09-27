@@ -177,22 +177,41 @@
             </div>
 
             <div id="broker-filter-body" class="space-y-3.5 transition-all duration-300">
-                <div class="flex items-center gap-3">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                     <div class="relative flex-1">
                         <input 
                             type="text" 
                             id="broker-search-input" 
                             placeholder="{{ __('Cari nama departemen (Tekan \'/\' untuk fokus)...') }}"
                             oninput="filterBrokerTable()"
-                            class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
+                            class="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition font-medium"
                         >
-                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <button type="button" onclick="clearBrokerSearch()" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="Hapus Pencarian">✕</button>
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <button type="button" onclick="clearBrokerSearch()" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer" title="{{ __('Hapus Pencarian') }}">✕</button>
                     </div>
-                    <div class="hidden md:flex items-center shrink-0">
-                        <kbd class="px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-[11px] font-bold font-mono">
-                            /
-                        </kbd>
+
+                    <!-- Department Dropdown Select -->
+                    <div class="flex items-center space-x-2">
+                        <select 
+                            id="broker-dept-select" 
+                            onchange="filterBrokerTable()" 
+                            class="px-3 py-2.5 rounded-2xl bg-slate-50/80 border border-slate-200 text-xs sm:text-sm font-bold text-slate-800 focus:bg-white focus:border-indigo-500 outline-none cursor-pointer"
+                        >
+                            <option value="">{{ __('Semua Departemen') }}</option>
+                            @foreach($departments as $dName)
+                                <option value="{{ $dName }}" {{ $selectedDept === $dName ? 'selected' : '' }}>{{ $dName }}</option>
+                            @endforeach
+                        </select>
+
+                        <button 
+                            type="button" 
+                            onclick="resetBrokerFilters()" 
+                            class="px-3 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center space-x-1 cursor-pointer"
+                            title="{{ __('Reset Filter') }}"
+                        >
+                            <span>↺</span>
+                            <span>{{ __('Reset') }}</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -283,7 +302,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100 font-medium">
                     @foreach($departments as $d)
-                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100 matrix-row" data-dept="{{ strtolower($d) }}">
                             <td class="py-3 px-4 font-bold text-slate-900">{{ $d }}</td>
                             @foreach($candidates as $c)
                                 @php
@@ -388,18 +407,36 @@ function toggleBrokerFold() {
 
 function clearBrokerSearch() {
     const input = document.getElementById('broker-search-input');
-    input.value = '';
+    if (input) input.value = '';
     filterBrokerTable();
-    input.focus();
+    if (input) input.focus();
+}
+
+function resetBrokerFilters() {
+    const input = document.getElementById('broker-search-input');
+    const select = document.getElementById('broker-dept-select');
+    if (input) input.value = '';
+    if (select) select.value = '';
+    filterBrokerTable();
 }
 
 function filterBrokerTable() {
     const search = (document.getElementById('broker-search-input')?.value || '').toLowerCase().trim();
-    const rows = document.querySelectorAll('.broker-row');
+    const deptSelect = (document.getElementById('broker-dept-select')?.value || '').toLowerCase().trim();
+    const filterTerm = search || deptSelect;
 
-    rows.forEach(r => {
-        const dept = r.getAttribute('data-dept') || '';
-        r.style.display = (!search || dept.includes(search)) ? '' : 'none';
+    const brokerRows = document.querySelectorAll('.broker-row');
+    brokerRows.forEach(r => {
+        const dept = (r.getAttribute('data-dept') || '').toLowerCase();
+        const match = (!filterTerm || dept.includes(filterTerm));
+        r.style.display = match ? '' : 'none';
+    });
+
+    const matrixRows = document.querySelectorAll('.matrix-row');
+    matrixRows.forEach(r => {
+        const dept = (r.getAttribute('data-dept') || '').toLowerCase();
+        const match = (!filterTerm || dept.includes(filterTerm));
+        r.style.display = match ? '' : 'none';
     });
 }
 

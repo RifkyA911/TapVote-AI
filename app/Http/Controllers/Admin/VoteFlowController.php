@@ -31,6 +31,8 @@ class VoteFlowController extends Controller
             'departments' => $data['departments'],
             'candidates' => $data['candidates'],
             'matrix' => $data['matrix'],
+            'deptTotals' => $data['deptTotals'],
+            'candidateTotals' => $data['candidateTotals'],
             'flowLinks' => $data['flowLinks'],
             'sankeyNodes' => $data['sankeyNodes'],
             'brokerSummary' => $data['brokerSummary'],

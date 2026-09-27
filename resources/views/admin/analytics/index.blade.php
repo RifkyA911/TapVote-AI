@@ -32,9 +32,46 @@
         </div>
     </div>
 
+    <!-- Category Tabs Switcher: Ketua vs Pengawas -->
+    <div class="flex items-center justify-between gap-3 p-2 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
+        <div class="grid grid-cols-2 gap-2 flex-1 sm:flex-none sm:inline-flex">
+            <!-- Tab 1: Ketua Koperasi -->
+            <a 
+                href="{{ route('admin.analytics', array_merge(request()->query(), ['category' => 'ketua'])) }}" 
+                class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center space-x-2 {{ $category === 'ketua' ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}"
+            >
+                <span class="text-base">👔</span>
+                <span>{{ __('Pemilihan Ketua Koperasi') }}</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold {{ $category === 'ketua' ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300' : 'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300' }}">
+                    {{ $totalVotesKetua }} {{ __('Suara') }}
+                </span>
+            </a>
+
+            <!-- Tab 2: Pengawas Koperasi -->
+            <a 
+                href="{{ route('admin.analytics', array_merge(request()->query(), ['category' => 'pengawas'])) }}" 
+                class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition flex items-center justify-center space-x-2 {{ $category === 'pengawas' ? 'bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm border border-slate-200 dark:border-slate-700' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}"
+            >
+                <span class="text-base">🛡️</span>
+                <span>{{ __('Pemilihan Pengawas Koperasi') }}</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold {{ $category === 'pengawas' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300' }}">
+                    {{ $totalVotesPengawas }} {{ __('Suara') }}
+                </span>
+            </a>
+        </div>
+
+        <div class="hidden sm:flex items-center space-x-2 px-3 text-xs text-slate-500 font-semibold">
+            <span>{{ __('Kategori Aktif:') }}</span>
+            <strong class="{{ $category === 'pengawas' ? 'text-emerald-600' : 'text-indigo-600' }}">
+                {{ $category === 'pengawas' ? __('Pengawas Koperasi') : __('Ketua Koperasi') }}
+            </strong>
+        </div>
+    </div>
+
     <!-- Filter & PDF Export Bar -->
     <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <form method="GET" action="{{ route('admin.analytics') }}" class="flex flex-wrap items-center gap-2.5 sm:gap-3 flex-1 w-full">
+            <input type="hidden" name="category" value="{{ $category }}">
             <!-- Filter Dept -->
             <div class="flex items-center space-x-1.5 text-xs w-full sm:w-auto justify-between sm:justify-start">
                 <span class="font-bold text-slate-600 dark:text-slate-300">{{ __('Departemen:') }}</span>
@@ -72,7 +109,7 @@
                     <span>🔍 {{ __('Terapkan Filter') }}</span>
                 </button>
                 @if($selectedDept || $selectedDate || $selectedShift)
-                    <a href="{{ route('admin.analytics') }}" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs transition cursor-pointer">
+                    <a href="{{ route('admin.analytics', ['category' => $category]) }}" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs transition cursor-pointer">
                         ✕ {{ __('Reset') }}
                     </a>
                 @endif
@@ -273,51 +310,116 @@
 
             <!-- Right: Candidate Live Leaderboard (5 cols) -->
             <div class="lg:col-span-5 space-y-4">
-                <h4 class="text-xs font-black uppercase text-slate-500 tracking-wider">Klasemen Perolehan Suara Sementara</h4>
-
-                <!-- Ketua Standing -->
-                <div class="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-black text-indigo-900 uppercase">Calon Ketua Koperasi</span>
-                        <span class="text-[10px] font-bold text-indigo-600 font-mono">{{ $totalVoted }} Suara Masuk</span>
-                    </div>
-                    <div class="space-y-2">
-                        @foreach($rankingKetua as $rk)
-                            @php $rkPct = $totalVoted > 0 ? round(($rk->perolehan_suara_count / $totalVoted) * 100, 1) : 0; @endphp
-                            <div class="space-y-1">
-                                <div class="flex justify-between text-xs font-bold text-slate-800">
-                                    <span>#{{ $rk->nomor_urut }} {{ $rk->nama }}</span>
-                                    <span class="font-mono text-indigo-700">{{ $rk->perolehan_suara_count }} ({{ $rkPct }}%)</span>
-                                </div>
-                                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                                    <div class="h-full bg-indigo-600 rounded-full" style="width: {{ $rkPct }}%;"></div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
+                <div class="flex items-center justify-between">
+                    <h4 class="text-xs font-black uppercase text-slate-500 tracking-wider">{{ __('Klasemen Perolehan Suara') }}</h4>
+                    <span class="text-[11px] font-bold text-slate-400">
+                        {{ $category === 'pengawas' ? __('Fokus: Pengawas') : __('Fokus: Ketua') }}
+                    </span>
                 </div>
 
-                <!-- Pengawas Standing -->
-                <div class="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-black text-emerald-900 uppercase">Calon Pengawas Koperasi</span>
-                        <span class="text-[10px] font-bold text-emerald-600 font-mono">{{ $totalVoted }} Suara Masuk</span>
-                    </div>
-                    <div class="space-y-2">
-                        @foreach($rankingPengawas as $rp)
-                            @php $rpPct = $totalVoted > 0 ? round(($rp->perolehan_suara_count / $totalVoted) * 100, 1) : 0; @endphp
-                            <div class="space-y-1">
-                                <div class="flex justify-between text-xs font-bold text-slate-800">
-                                    <span>#{{ $rp->nomor_urut }} {{ $rp->nama }}</span>
-                                    <span class="font-mono text-emerald-700">{{ $rp->perolehan_suara_count }} ({{ $rpPct }}%)</span>
+                @if($category === 'pengawas')
+                    <!-- Pengawas Standing (Primary / Active) -->
+                    <div class="p-4 rounded-2xl bg-emerald-50/70 border-2 border-emerald-300 dark:bg-emerald-950/40 dark:border-emerald-700 space-y-3 shadow-xs">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-emerald-900 dark:text-emerald-300 uppercase flex items-center space-x-1.5">
+                                <span>🛡️</span>
+                                <span>{{ __('Calon Pengawas Koperasi') }}</span>
+                                <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-emerald-200 text-emerald-800 dark:bg-emerald-800 dark:text-emerald-100 uppercase">{{ __('Aktif') }}</span>
+                            </span>
+                            <span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 font-mono">{{ $totalVotesPengawas }} {{ __('Suara Masuk') }}</span>
+                        </div>
+                        <div class="space-y-2">
+                            @foreach($rankingPengawas as $rp)
+                                @php $rpPct = $totalVotesPengawas > 0 ? round(($rp->perolehan_suara_count / $totalVotesPengawas) * 100, 1) : 0; @endphp
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs font-bold text-slate-800 dark:text-slate-200">
+                                        <span>#{{ $rp->nomor_urut }} {{ $rp->nama }}</span>
+                                        <span class="font-mono text-emerald-700 dark:text-emerald-400">{{ $rp->perolehan_suara_count }} ({{ $rpPct }}%)</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-600 rounded-full" style="width: {{ $rpPct }}%;"></div>
+                                    </div>
                                 </div>
-                                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                                    <div class="h-full bg-emerald-600 rounded-full" style="width: {{ $rpPct }}%;"></div>
-                                </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
-                </div>
+
+                    <!-- Ketua Standing (Secondary) -->
+                    <div class="p-4 rounded-2xl bg-indigo-50/40 border border-indigo-100 dark:bg-indigo-950/20 dark:border-indigo-900 space-y-3 opacity-90">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-indigo-900 dark:text-indigo-300 uppercase flex items-center space-x-1.5">
+                                <span>👔</span>
+                                <span>{{ __('Calon Ketua Koperasi') }}</span>
+                            </span>
+                            <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 font-mono">{{ $totalVotesKetua }} {{ __('Suara Masuk') }}</span>
+                        </div>
+                        <div class="space-y-2">
+                            @foreach($rankingKetua as $rk)
+                                @php $rkPct = $totalVotesKetua > 0 ? round(($rk->perolehan_suara_count / $totalVotesKetua) * 100, 1) : 0; @endphp
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs font-bold text-slate-800 dark:text-slate-200">
+                                        <span>#{{ $rk->nomor_urut }} {{ $rk->nama }}</span>
+                                        <span class="font-mono text-indigo-700 dark:text-indigo-400">{{ $rk->perolehan_suara_count }} ({{ $rkPct }}%)</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                                        <div class="h-full bg-indigo-600 rounded-full" style="width: {{ $rkPct }}%;"></div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @else
+                    <!-- Ketua Standing (Primary / Active) -->
+                    <div class="p-4 rounded-2xl bg-indigo-50/70 border-2 border-indigo-300 dark:bg-indigo-950/40 dark:border-indigo-700 space-y-3 shadow-xs">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-indigo-900 dark:text-indigo-300 uppercase flex items-center space-x-1.5">
+                                <span>👔</span>
+                                <span>{{ __('Calon Ketua Koperasi') }}</span>
+                                <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-indigo-200 text-indigo-800 dark:bg-indigo-800 dark:text-indigo-100 uppercase">{{ __('Aktif') }}</span>
+                            </span>
+                            <span class="text-[10px] font-bold text-indigo-700 dark:text-indigo-400 font-mono">{{ $totalVotesKetua }} {{ __('Suara Masuk') }}</span>
+                        </div>
+                        <div class="space-y-2">
+                            @foreach($rankingKetua as $rk)
+                                @php $rkPct = $totalVotesKetua > 0 ? round(($rk->perolehan_suara_count / $totalVotesKetua) * 100, 1) : 0; @endphp
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs font-bold text-slate-800 dark:text-slate-200">
+                                        <span>#{{ $rk->nomor_urut }} {{ $rk->nama }}</span>
+                                        <span class="font-mono text-indigo-700 dark:text-indigo-400">{{ $rk->perolehan_suara_count }} ({{ $rkPct }}%)</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                                        <div class="h-full bg-indigo-600 rounded-full" style="width: {{ $rkPct }}%;"></div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Pengawas Standing (Secondary) -->
+                    <div class="p-4 rounded-2xl bg-emerald-50/40 border border-emerald-100 dark:bg-emerald-950/20 dark:border-emerald-900 space-y-3 opacity-90">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-emerald-900 dark:text-emerald-300 uppercase flex items-center space-x-1.5">
+                                <span>🛡️</span>
+                                <span>{{ __('Calon Pengawas Koperasi') }}</span>
+                            </span>
+                            <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 font-mono">{{ $totalVotesPengawas }} {{ __('Suara Masuk') }}</span>
+                        </div>
+                        <div class="space-y-2">
+                            @foreach($rankingPengawas as $rp)
+                                @php $rpPct = $totalVotesPengawas > 0 ? round(($rp->perolehan_suara_count / $totalVotesPengawas) * 100, 1) : 0; @endphp
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-xs font-bold text-slate-800 dark:text-slate-200">
+                                        <span>#{{ $rp->nomor_urut }} {{ $rp->nama }}</span>
+                                        <span class="font-mono text-emerald-700 dark:text-emerald-400">{{ $rp->perolehan_suara_count }} ({{ $rpPct }}%)</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-600 rounded-full" style="width: {{ $rpPct }}%;"></div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
